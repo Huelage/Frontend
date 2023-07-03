@@ -19,7 +19,7 @@ To run the Huelage app locally, follow these steps:
 
 - Clone the repository:
   '''
-  git clone https://github.com/your-username/huelage-app.git
+  git clone https://github.com/Toby2507/Huelage-Frontend.git
   '''
 
 - Install the dependencies:
