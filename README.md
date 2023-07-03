@@ -18,19 +18,22 @@ Huelage is a cross-platform food delivery mobile application built with React Na
 To run the Huelage app locally, follow these steps:
 
 - Clone the repository:
-  '''
-  git clone https://github.com/Toby2507/Huelage-Frontend.git
-  '''
+
+```
+git clone https://github.com/Toby2507/Huelage-Frontend.git
+```
 
 - Install the dependencies:
-  '''
-  npm install
-  '''
+
+```
+npm install
+```
 
 - Start the development server:
-  '''
-  npm start
-  '''
+
+```
+npm start
+```
 
 - Install the Expo app on your mobile device from the App Store or Google Play Store.
 - Scan the QR code displayed in the terminal or Expo Dev Tools using the Expo app.
