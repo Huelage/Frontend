@@ -21,6 +21,7 @@ import {
   OpenSans_700Bold,
   OpenSans_700Bold_Italic
 } from '@expo-google-fonts/dev';
+import { useFonts as useFontsNative } from "expo-font";
 import OnBoardScreen from "./src/screens/OnBoardScreen";
 
 const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
+    Cooper_Black_Regular: require('./assets/fonts/Cooper_Black_Regular.ttf'),
     Inter_200ExtraLight,
     Inter_300Light,
     Inter_400Regular,
@@ -46,6 +48,10 @@ const App = () => {
     OpenSans_700Bold,
     OpenSans_700Bold_Italic
   });
+
+  // const [fontLoaded] = useFontsNative({
+  //   Cooper_Black_Regular: require('./assets/fonts/Cooper_Black_Regular.ttf')
+  // });
 
   if (!fontsLoaded) return null;
   return (
