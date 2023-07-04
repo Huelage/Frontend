@@ -1,15 +1,11 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
-  useFonts,
+  BerkshireSwash_400Regular,
   Inter_200ExtraLight,
   Inter_300Light,
   Inter_400Regular,
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-  BerkshireSwash_400Regular,
   OpenSans_300Light,
   OpenSans_300Light_Italic,
   OpenSans_400Regular,
@@ -19,9 +15,12 @@ import {
   OpenSans_600SemiBold,
   OpenSans_600SemiBold_Italic,
   OpenSans_700Bold,
-  OpenSans_700Bold_Italic
+  OpenSans_700Bold_Italic,
+  useFonts
 } from '@expo-google-fonts/dev';
-import { useFonts as useFontsNative } from "expo-font";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnBoardScreen from "./src/screens/OnBoardScreen";
 
 const Stack = createNativeStackNavigator();
@@ -48,10 +47,6 @@ const App = () => {
     OpenSans_700Bold,
     OpenSans_700Bold_Italic
   });
-
-  // const [fontLoaded] = useFontsNative({
-  //   Cooper_Black_Regular: require('./assets/fonts/Cooper_Black_Regular.ttf')
-  // });
 
   if (!fontsLoaded) return null;
   return (
