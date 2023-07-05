@@ -2,6 +2,7 @@ export enum fonts {
   C_400 = "Cooper_Black_Regular",
   I_200 = "Inter_200ExtraLight",
   I_300 = "Inter_300Light",
+  I_300I = "InterTight_300Light_Italic",
   I_400 = "Inter_400Regular",
   I_500 = "Inter_500Medium",
   I_600 = "Inter_600SemiBold",
