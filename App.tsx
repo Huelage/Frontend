@@ -1,5 +1,6 @@
 import {
   BerkshireSwash_400Regular,
+  InterTight_300Light_Italic,
   Inter_200ExtraLight,
   Inter_300Light,
   Inter_400Regular,
@@ -18,19 +19,18 @@ import {
   OpenSans_700Bold_Italic,
   useFonts
 } from '@expo-google-fonts/dev';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import OnBoardScreen from "./src/screens/OnBoardScreen";
+import { useState } from 'react';
+import StackNavigator from './src/navigators/StackNavigator';
+import TabNavigator from './src/navigators/TabNavigator';
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
     Cooper_Black_Regular: require('./assets/fonts/Cooper_Black_Regular.ttf'),
     Inter_200ExtraLight,
     Inter_300Light,
+    InterTight_300Light_Italic,
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
@@ -47,14 +47,13 @@ const App = () => {
     OpenSans_700Bold,
     OpenSans_700Bold_Italic
   });
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
 
   if (!fontsLoaded) return null;
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="OnBoard">
-        <Stack.Screen name="OnBoard" component={OnBoardScreen} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      {isSignedIn ? <TabNavigator /> : <StackNavigator />}
+    </NavigationContainer >
   );
 };
 
