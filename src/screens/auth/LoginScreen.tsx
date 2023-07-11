@@ -1,18 +1,23 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
+import AuthNavigate from '../../components/account/AuthNavigate';
 import CustomTextInput from '../../components/account/CustomTextInput';
 import Hero from '../../components/account/Hero';
-import SubmitAndSocial from '../../components/account/SubmitAndSocial';
+import SocialLogin from '../../components/account/SocialLogin';
+import SubmitButton from '../../components/account/SubmitButton';
 import { shadowStyle } from '../../utils';
 import { fonts } from '../../utils/fontEnum';
 import { LoginInfoInterface } from '../../utils/interfaces';
+import UserVendor from '../../components/account/UserVendor';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LoginScreen = () => {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
+  const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
     console.log(data);
   };
@@ -40,30 +45,54 @@ const LoginScreen = () => {
           />
         </Svg>
         <View style={styles.heroTwoInputBox}>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <CustomTextInput
-                autoCapitalize='none'
-                autoCorrect={false}
-                isPass={false}
-                keyboardType='email-address'
-                label='Email Address'
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                placeholder='example@email.com'
-                value={value}
-              />
-            )}
-            name="email"
-            rules={{
-              required: "Email is required",
-              pattern: {
-                value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
-                message: "Email is invalid"
-              }
-            }}
-          />
+          <Text style={styles.heroTwoIntro}>
+            Sign in to <Text style={styles.heroTwoIntroAccent}>Huelage</Text>
+          </Text>
+          <UserVendor isVendor={isVendor} onPress={setIsVendor} />
+          {isVendor ? (
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomTextInput
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  isPass={false}
+                  label='Vendor ID'
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="email"
+              rules={{
+                required: "Vendor ID is required",
+              }}
+            />
+          ) : (
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomTextInput
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  isPass={false}
+                  keyboardType='email-address'
+                  label='Email address'
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="email"
+              rules={{
+                required: "Email is required",
+                pattern: {
+                  value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
+                  message: "Email is invalid"
+                }
+              }}
+            />
+          )}
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -73,7 +102,7 @@ const LoginScreen = () => {
                 isPass={true}
                 label='Password'
                 onBlur={onBlur}
-                onChangeText={value => onChange(value)}
+                onChangeText={onChange}
                 value={value}
               />
             )}
@@ -81,7 +110,9 @@ const LoginScreen = () => {
             rules={{ required: "Password is required" }}
           />
           <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
-          <SubmitAndSocial page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
+          <SubmitButton page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
+          {/* <SocialLogin page='SI' /> */}
+          <AuthNavigate page='SI' />
         </View>
       </View>
     </LinearGradient>
@@ -103,6 +134,14 @@ const styles = StyleSheet.create({
     gap: 25,
     marginHorizontal: wp("8%") + 8,
   },
+  heroTwoIntro: {
+    fontFamily: fonts.I_700,
+    fontSize: 24,
+    textAlign: 'center'
+  },
+  heroTwoIntroAccent: {
+    color: "#47CA4C"
+  },
   heroTwoLoginButton: {
     alignItems: 'center',
     backgroundColor: "#4CAF50",
@@ -118,7 +157,7 @@ const styles = StyleSheet.create({
   },
   heroTwoTextForgot: {
     alignSelf: 'flex-end',
-    fontFamily: fonts.I_300,
-    fontSize: 18
+    fontFamily: fonts.I_500,
+    fontSize: 16
   }
 });

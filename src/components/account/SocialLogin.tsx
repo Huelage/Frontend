@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { fonts } from '../../utils/fontEnum';
+import { shadowStyle } from '../../utils';
 
 const SocialLogin = ({ page }: { page: 'SU' | 'SI'; }) => {
   return (
@@ -21,7 +22,7 @@ export default SocialLogin;
 const styles = StyleSheet.create({
   decoBox: {
     borderBottomWidth: 2,
-    marginHorizontal: 30,
+    marginHorizontal: 40,
     borderColor: 'rgba(0, 0, 0, 0.50)'
   },
   decoText: {
@@ -35,17 +36,19 @@ const styles = StyleSheet.create({
   },
   socialLogin: {
     alignItems: 'center',
+    backgroundColor: '#fff',
     borderColor: "#4CAF50",
     borderWidth: 2,
-    borderRadius: 35,
+    borderRadius: 10,
     flexDirection: "row",
     gap: 15,
-    height: 60,
-    justifyContent: 'center'
+    height: 50,
+    justifyContent: 'center',
+    ...shadowStyle
   },
   socialIcon: {
-    width: 40,
-    height: 40
+    width: 30,
+    height: 30
   },
   socialText: {
     color: "#4CAF50",

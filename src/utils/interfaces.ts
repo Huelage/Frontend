@@ -2,13 +2,15 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export interface LoginInfoInterface {
-  email: string,
+  vendorId?: number,
+  email?: string,
   password: string;
 }
 
 export interface SignUpInfoInterface {
   fullname: string,
   email: string,
+  businessname?: string,
   password: string;
 }
 
@@ -16,6 +18,7 @@ export type StackParamList = {
   OnBoard: undefined,
   Login: undefined,
   SignUp: undefined;
+  OTP: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;

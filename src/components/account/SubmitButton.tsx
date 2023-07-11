@@ -12,7 +12,7 @@ const SubmitButton = ({ page, onSubmit }: SubmitProps) => {
 	return (
 		<TouchableOpacity onPress={onSubmit}>
 			<View style={styles.loginButton}>
-				<Text style={styles.loginText}>{page == 'SU' ? "CREATE ACCOUNT" : "LOGIN"}</Text>
+				<Text style={styles.loginText}>{page == 'SU' ? "CREATE ACCOUNT" : "LOG IN"}</Text>
 			</View>
 		</TouchableOpacity>
 	);
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
 	loginButton: {
 		alignItems: 'center',
 		backgroundColor: "#4CAF50",
-		borderRadius: 18,
-		height: 55,
+		borderRadius: 10,
+		height: 50,
 		justifyContent: 'center',
 		...shadowStyle
 	},

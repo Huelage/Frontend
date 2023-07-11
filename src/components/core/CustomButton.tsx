@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontFamily: fonts.O_600,
+    fontFamily: fonts.I_700,
   }
 });

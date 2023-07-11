@@ -1,18 +1,22 @@
+import { CheckBox } from '@rneui/themed';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
+import AuthNavigate from '../../components/account/AuthNavigate';
 import CustomTextInput from '../../components/account/CustomTextInput';
 import Hero from '../../components/account/Hero';
-import SubmitAndSocial from '../../components/account/SubmitAndSocial';
+import SocialLogin from '../../components/account/SocialLogin';
+import SubmitButton from '../../components/account/SubmitButton';
 import { shadowStyle } from '../../utils';
 import { fonts } from '../../utils/fontEnum';
 import { SignUpInfoInterface } from '../../utils/interfaces';
 
 const SignUpScreen = () => {
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
+  const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit = (data: SignUpInfoInterface) => console.log(data);
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);
@@ -45,16 +49,15 @@ const SignUpScreen = () => {
                 autoCapitalize='words'
                 autoCorrect={false}
                 isPass={false}
-                label='Full Name'
+                label={isVendor ? "Vendor's name" : "Full name"}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                placeholder='John Doe'
                 value={value}
               />
             )}
             name="fullname"
             rules={{
-              required: 'Name is required',
+              required: "Name is required",
               pattern: {
                 value: /^[\w.+-]{3,}$/,
                 message: "Name has to be atleast 3 characters"
@@ -69,10 +72,9 @@ const SignUpScreen = () => {
                 autoCorrect={false}
                 isPass={false}
                 keyboardType='email-address'
-                label='Email Address'
+                label={isVendor ? "Vendor's email" : "Email address"}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                placeholder='example@email.com'
                 value={value}
               />
             )}
@@ -85,6 +87,30 @@ const SignUpScreen = () => {
               }
             }}
           />
+          {isVendor && (
+            <Controller
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <CustomTextInput
+                  autoCapitalize='words'
+                  autoCorrect={false}
+                  isPass={false}
+                  label="Business name"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="businessname"
+              rules={{
+                required: "Business name is required",
+                pattern: {
+                  value: /^[\w.+-]{3,}$/,
+                  message: "Business name has to be atleast 3 characters"
+                }
+              }}
+            />
+          )}
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -92,7 +118,7 @@ const SignUpScreen = () => {
                 autoCapitalize='none'
                 autoCorrect={false}
                 isPass={true}
-                label='Password'
+                label='Create password'
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -107,7 +133,22 @@ const SignUpScreen = () => {
               }
             }}
           />
-          <SubmitAndSocial page='SU' onSubmit={handleSubmit(onSubmit, onError)} />
+          {isVendor && (
+            <CheckBox
+              checked={true}
+              center
+              onPress={() => { }}
+              iconType="material-community"
+              checkedIcon="checkbox-marked"
+              uncheckedIcon="checkbox-blank-outline"
+              checkedColor="#084506"
+              title="I accept all terms and condition"
+              textStyle={styles.termsText}
+            />
+          )}
+          <SubmitButton page='SU' onSubmit={handleSubmit(onSubmit, onError)} />
+          {!isVendor && <SocialLogin page='SU' />}
+          <AuthNavigate page='SU' />
         </View>
       </View>
     </LinearGradient>
@@ -146,5 +187,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: fonts.I_300,
     fontSize: 18
+  },
+  termsText: {
+    color: '#000',
+    fontFamily: fonts.I_400I,
+    fontSize: 14
   }
 });

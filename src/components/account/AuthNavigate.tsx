@@ -1,25 +1,33 @@
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { fonts } from '../../utils/fontEnum';
+import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../utils/interfaces';
+import { fonts } from '../../utils/fontEnum';
 
 const AuthNavigate = ({ page }: { page: 'SU' | 'SI'; }) => {
   const { navigate } = useNavigation<NavigationProps>();
   const navTo = page == 'SU' ? 'Login' : 'SignUp';
   return (
-    <Text style={styles.accountRedirect}>
-      {page == 'SU' ? "Already a member" : "Don't have an account"}?&nbsp;
+    <View style={styles.accountBox}>
+      <Text style={styles.accountRedirect}>
+        {page == 'SU' ? "Already a member" : "Don't have an account"}?
+      </Text>
       <TouchableOpacity onPress={() => navigate(navTo)}>
         <Text style={styles.accountAccent}>{page == 'SU' ? "Login" : "Sign Up"}</Text>
       </TouchableOpacity>
-    </Text>
+    </View>
   );
 };
 
 export default AuthNavigate;
 
 const styles = StyleSheet.create({
+  accountBox: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 5,
+    justifyContent: 'center'
+  },
   accountRedirect: {
     fontFamily: fonts.I_400,
     fontSize: 16,
@@ -27,6 +35,7 @@ const styles = StyleSheet.create({
   },
   accountAccent: {
     color: "#4CAF50",
-    fontFamily: fonts.I_600
+    fontFamily: fonts.I_700,
+    fontSize: 17
   }
 });

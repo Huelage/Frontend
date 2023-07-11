@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
 import React from 'react';
-import { fonts } from '../../utils/fontEnum';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { fonts } from '../../utils/fontEnum';
 
 interface HeroProp {
   lead: string,
@@ -10,13 +10,14 @@ interface HeroProp {
 }
 const Hero = ({ lead, accent, page }: HeroProp) => {
   const heroOne = page == 'SU' ? { ...styles.heroOne, marginBottom: 5 } : styles.heroOne;
+  const heroOneAccentText = page === 'SI' ? { ...styles.heroOneAccentText, marginLeft: 8 } : styles.heroOneAccentText;
   return (
     <View style={heroOne}>
       <View style={styles.heroOneLogo}>
-        <Image style={styles.logoImage} source={require('../../../assets/images/onboardLogo.png')} />
+        <Image style={styles.logoImage} source={require('../../../assets/images/rectangle.png')} />
       </View>
       <Text style={styles.heroOneLeadText}>{lead}</Text>
-      <Text style={styles.heroOneAccentText}>{accent}</Text>
+      <Text style={heroOneAccentText}>{accent}</Text>
     </View>
   );
 };
@@ -30,18 +31,17 @@ const styles = StyleSheet.create({
   },
   heroOneLogo: {
     alignItems: 'flex-end',
-    marginBottom: hp("2%")
+    marginBottom: hp("4%")
   },
   heroOneLeadText: {
     color: '#fff',
     fontSize: 40,
-    fontFamily: fonts.C_400
+    fontFamily: fonts.I_700
   },
   heroOneAccentText: {
     color: '#fff',
     fontSize: 20,
     fontFamily: fonts.I_400,
-    paddingLeft: 8
   },
   logoImage: {
     width: 60,

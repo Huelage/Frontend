@@ -17,6 +17,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useState } from 'react';
 import StackNavigator from './src/navigators/StackNavigator';
 import TabNavigator from './src/navigators/TabNavigator';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 const App = () => {
@@ -34,13 +35,15 @@ const App = () => {
     Inter_700Bold,
     InterTight_700Bold_Italic
   });
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
 
   if (!fontsLoaded) return null;
   return (
-    <NavigationContainer>
-      {isSignedIn ? <TabNavigator /> : <StackNavigator />}
-    </NavigationContainer >
+    <SafeAreaProvider>
+      <NavigationContainer>
+        {isSignedIn ? <TabNavigator /> : <StackNavigator />}
+      </NavigationContainer >
+    </SafeAreaProvider>
   );
 };
 
