@@ -14,11 +14,12 @@ const CustomTextInput = ({ label, isPass, ...inputProps }: CustomTextInputProps)
   const toggleShowText = () => setShowText(show => !show);
   return (
     <View style={styles.inputContainer}>
-      <Text style={styles.label}>{label}</Text>
       <View style={styles.input}>
         <TextInput
           secureTextEntry={!showText}
           style={styles.textInput}
+          placeholder={label}
+          placeholderTextColor="#BCB5B5"
           {...inputProps}
         />
         {isPass && (
@@ -40,18 +41,6 @@ const CustomTextInput = ({ label, isPass, ...inputProps }: CustomTextInputProps)
 export default CustomTextInput;
 
 const styles = StyleSheet.create({
-  label: {
-    alignSelf: 'flex-start',
-    backgroundColor: "#fff",
-    color: '#4CAF50',
-    fontFamily: fonts.I_400,
-    fontSize: 18,
-    left: 20,
-    letterSpacing: .5,
-    paddingHorizontal: 5,
-    position: 'absolute',
-    top: -12
-  },
   input: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -61,21 +50,20 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   inputContainer: {
-    borderColor: "#4CAF50",
-    borderRadius: 15,
+    borderColor: "#47CA4C",
+    borderRadius: 10,
     borderWidth: 2,
-    height: 70,
+    height: 55,
     paddingHorizontal: 15,
   },
   textInput: {
     flex: 1,
-    fontFamily: fonts.I_300,
-    fontSize: 20,
-    height: 40,
-    width: '100%'
+    fontFamily: fonts.I_500,
+    fontSize: 18,
+    height: 40
   },
   textIcon: {
     color: "rgba(0, 0, 0, .5)",
-    fontSize: 28
+    fontSize: 24
   }
 });
