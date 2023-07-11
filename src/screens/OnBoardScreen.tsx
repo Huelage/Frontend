@@ -18,23 +18,22 @@ const OnBoardScreen = () => {
         <View style={styles.logoWrapper}>
           <Image
             style={styles.logo}
-            source={require("../../assets/images/image.jpg")}
+            source={require("../../assets/images/onboard_logo.png")}
           />
         </View>
       </View>
       <View style={styles.label}>
         <View style={styles.welcomeToHUELAGEWrapper}>
-          <Text style={styles.welcomeToHUELAGE}>
-            <Text style={styles.textWrapper}>Welcome to{"\n"}</Text>
-            <Text style={styles.span}>&nbsp;&nbsp; </Text>
-            <Text style={styles.textWrapper2}>HUELAGE</Text>
-          </Text>
+          <Text style={styles.textWrapper2}>HUELAGE</Text>
         </View>
       </View>
       <TouchableOpacity style={styles.loginWrap}>
         <Text style={styles.login}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.signWrap}>
+      <TouchableOpacity
+        style={styles.signWrap}
+        onPress={() => navigation.navigate("WelcomePage")}
+      >
         <Text style={styles.signUp}>SIGN UP</Text>
       </TouchableOpacity>
       <Button title="Cart" onPress={() => navigation.navigate("Cart")} />
@@ -61,16 +60,17 @@ const styles = StyleSheet.create({
   },
   logoWrapper: {
     border: "0px none",
-    height: 537.16,
-    width: 716.4,
+    height: 230,
+    width: 330,
     alignItems: "center",
+    top: -80,
   },
   logo: {
-    height: 306,
+    height: 180,
     left: 0,
     position: "relative",
     top: 0,
-    width: 306,
+    width: 180,
     borderRadius: 200,
     marginBottom: 100,
   },
@@ -83,41 +83,25 @@ const styles = StyleSheet.create({
   },
   welcomeToHUELAGEWrapper: {
     border: "0px none",
-    height: 120,
-    width: 398,
-    top: -150,
+    height: 50,
+    width: 200,
+    top: -100,
     marginBottom: 100,
+    alignItems: "center",
   },
-  welcomeToHUELAGE: {
-    color: "#ffffff",
-    fontSize: 30,
-    fontWeight: "400",
-    left: 0,
-    letterSpacing: 0,
 
-    top: 0,
-  },
-  textWrapper: {
-    color: "#ffffff",
-    fontFamily: fonts.BS_400,
-    fontSize: 48,
-    fontWeight: "400",
-    letterSpacing: 0,
-  },
-  span: {
-    fontFamily: fonts.C_400,
-    fontSize: 70,
-  },
   textWrapper2: {
     fontFamily: fonts.C_400,
-    fontSize: 80,
+    fontSize: 50,
+    fontWeight: "700",
+    color: "#ffffff",
   },
   loginWrap: {
     backgroundColor: "white",
     width: "80%",
     height: 75,
-    top: -100,
-    borderRadius: 50,
+    bottom: -220,
+    borderRadius: 20,
     padding: 18,
     alignItems: "center",
     marginBottom: 20,
@@ -145,8 +129,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     width: "80%",
     height: 75,
-    top: -100,
-    borderRadius: 50,
+    bottom: -220,
+    borderRadius: 20,
     padding: 18,
     alignItems: "center",
   },

@@ -18,17 +18,18 @@ import {
   OpenSans_700Bold_Italic,
   useFonts,
 } from "@expo-google-fonts/dev";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnBoardScreen from "./src/screens/OnBoardScreen";
 import CartScreen from "./src/screens/CartScreen";
+import WelcomePage from "./src/screens/WelcomePage";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
-    Cooper_Black_Regular: require("./assets/fonts/Cooper_Black_Regular.ttf"),
     Inter_200ExtraLight,
     Inter_300Light,
     Inter_400Regular,
@@ -58,6 +59,7 @@ const App = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="WelcomePage" component={WelcomePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
