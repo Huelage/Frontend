@@ -13,7 +13,10 @@ const TabHeader = ({ navigation, route, options }: BottomTabHeaderProps) => {
       <View style={styles.container}>
         <Image style={styles.headerImage} source={require('../../../assets/images/beejay_dp.png')} />
         <View style={styles.headerBox}>
-          <Text style={styles.headerText}>Hi, Beejay</Text>
+          <View style={styles.headerTextBox}>
+            <Text style={styles.headerText1}>Good morning</Text>
+            <Text style={styles.headerText2}>John Jane Doe</Text>
+          </View>
           <Feather name="menu" size={32} color="black" />
         </View>
       </View>
@@ -45,8 +48,15 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25
   },
-  headerText: {
-    fontFamily: fonts.O_700,
-    fontSize: 22
+  headerTextBox: {
+    alignItems: 'flex-start',
+  },
+  headerText1: {
+    fontFamily: fonts.I_400,
+    fontSize: 15
+  },
+  headerText2: {
+    fontFamily: fonts.I_700,
+    fontSize: 20
   }
 });
