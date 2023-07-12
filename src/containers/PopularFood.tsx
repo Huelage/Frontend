@@ -1,28 +1,29 @@
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { fonts } from '../utils/fontEnum';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import Food from '../api/mockFoodData';
+import CustomButton from '../components/core/CustomButton';
 import FoodDemo from '../components/core/FoodDemo';
-import { FoodInterface } from '../utils/interfaces';
+import { fonts } from '../utils/fontEnum';
 
 const PopularFood = () => {
   const addToCart = () => console.log("hello");
-  const demoFood: FoodInterface = {
-    id: Date.now(),
-    name: "River prawn spicy soap",
-    desc: "River prawn spiacy soup eunde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
-    price: 1000,
-    imgUrl: "",
-    location: 'Lagos, Nigeria'
-  };
   return (
     <View style={styles.container}>
       <View style={styles.foodNav}>
-        <Text style={styles.foodText}>Most popular</Text>
-        <TouchableOpacity>
-          <Text style={styles.foodButton}>View all</Text>
-        </TouchableOpacity>
+        <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Popular</Text> this week</Text>
+        <CustomButton label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
-      <FoodDemo {...demoFood} addToCart={() => addToCart()} />
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => String(item.id)}
+        data={Food}
+        renderItem={({ item }) => (
+          <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
+            <FoodDemo {...item} addToCart={() => addToCart()} />
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -36,19 +37,16 @@ const styles = StyleSheet.create({
   foodNav: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingHorizontal: 20
   },
   foodText: {
-    fontFamily: fonts.O_700,
-    fontSize: 20,
-    letterSpacing: 1
+    fontFamily: fonts.I_500,
+    fontSize: 16
   },
-  foodButton: {
-    color: '#79C37C',
-    fontFamily: fonts.O_600,
-    fontSize: 14
-  },
-  foodBox: {
-
+  foodTextAccent: {
+    color: '#29A40A',
+    fontFamily: fonts.I_500,
+    fontSize: 16
   }
 });
