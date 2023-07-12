@@ -26,14 +26,13 @@ export default CustomButton;
 const styles = StyleSheet.create({
   buttonBox: {
     alignItems: 'center',
-    backgroundColor: "#4CAF50",
-    borderRadius: 15,
+    backgroundColor: "#47CA4C",
+    borderRadius: 24,
     flex: 1,
     flexDirection: 'row',
     gap: 8,
     justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 20
   },
   buttonText: {
     color: "#fff",
