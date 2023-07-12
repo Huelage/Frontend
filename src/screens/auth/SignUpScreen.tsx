@@ -1,18 +1,13 @@
+import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/account';
+import { SignUpInfoInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
+import { fonts, shadowStyle } from '@utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
-import AuthNavigate from '../../components/account/AuthNavigate';
-import CustomTextInput from '../../components/account/CustomTextInput';
-import Hero from '../../components/account/Hero';
-import SocialLogin from '../../components/account/SocialLogin';
-import SubmitButton from '../../components/account/SubmitButton';
-import { shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
-import { SignUpInfoInterface } from '../../utils/interfaces';
 
 const SignUpScreen = () => {
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();

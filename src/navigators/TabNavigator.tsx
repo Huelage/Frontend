@@ -1,12 +1,8 @@
+import { TabBar, TabHeader } from '@components/navigation';
+import { TabParamList } from '@interfaces';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FavouriteScreen, HomeScreen, MenuScreen, ProfileScreen } from '@screens/core';
 import React from 'react';
-import FavouriteScreen from '../screens/core/FavouriteScreen';
-import HomeScreen from '../screens/core/HomeScreen';
-import MenuScreen from '../screens/core/MenuScreen';
-import ProfileScreen from '../screens/core/ProfileScreen';
-import { TabParamList } from '../utils/interfaces';
-import TabBar from '../components/navigation/TabBar';
-import TabHeader from '../components/navigation/TabHeader';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

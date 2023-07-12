@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
+import { RestaurantInterface } from '@interfaces';
+import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
-import { RestaurantInterface } from '../../utils/interfaces';
 
 interface RestaurantProps extends RestaurantInterface {
   addToCart: () => void;

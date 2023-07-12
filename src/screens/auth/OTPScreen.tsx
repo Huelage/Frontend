@@ -1,9 +1,8 @@
+import { fonts, shadowStyle } from '@utils';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
 
 const CELL_COUNT = 4;
 

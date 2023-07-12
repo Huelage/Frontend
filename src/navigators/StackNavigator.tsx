@@ -1,10 +1,7 @@
+import { StackParamList } from '@interfaces';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoginScreen, OTPScreen, OnBoardScreen, SignUpScreen } from '@screens/auth';
 import React from 'react';
-import LoginScreen from '../screens/auth/LoginScreen';
-import OnBoardScreen from '../screens/auth/OnBoardScreen';
-import SignUpScreen from '../screens/auth/SignUpScreen';
-import { StackParamList } from '../utils/interfaces';
-import OTPScreen from '../screens/auth/OTPScreen';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 

@@ -1,7 +1,7 @@
+import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { fonts } from '../../utils/fontEnum';
 
 interface HeroProp {
   lead: string,

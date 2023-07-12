@@ -1,17 +1,17 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
+import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
-import { fonts } from '../../utils/fontEnum';
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const TabHeader = ({ navigation, route, options }: BottomTabHeaderProps) => {
   return (
     <>
       <StatusBar style="dark" />
       <View style={styles.container}>
-        <Image style={styles.headerImage} source={require('../../../assets/images/beejay_dp.png')} />
+        <Image style={styles.headerImage} source={require('@images/beejay_dp.png')} />
         <View style={styles.headerBox}>
           <View style={styles.headerTextBox}>
             <Text style={styles.headerText1}>Good morning</Text>

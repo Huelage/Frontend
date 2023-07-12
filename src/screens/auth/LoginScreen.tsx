@@ -1,19 +1,12 @@
+import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/account';
+import { LoginInfoInterface } from '@interfaces';
+import { fonts, shadowStyle } from '@utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
-import AuthNavigate from '../../components/account/AuthNavigate';
-import CustomTextInput from '../../components/account/CustomTextInput';
-import Hero from '../../components/account/Hero';
-import SocialLogin from '../../components/account/SocialLogin';
-import SubmitButton from '../../components/account/SubmitButton';
-import { shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
-import { LoginInfoInterface } from '../../utils/interfaces';
-import UserVendor from '../../components/account/UserVendor';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const LoginScreen = () => {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
@@ -111,7 +104,6 @@ const LoginScreen = () => {
           />
           <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
           <SubmitButton page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
-          {/* <SocialLogin page='SI' /> */}
           <AuthNavigate page='SI' />
         </View>
       </View>

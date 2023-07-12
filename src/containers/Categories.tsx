@@ -1,7 +1,7 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { CustomButton } from '@components/core/Home';
+import { fonts } from '@utils';
 import React from 'react';
-import { fonts } from '../utils/fontEnum';
-import CustomButton from '../components/core/CustomButton';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const Categories = () => {
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
@@ -11,12 +11,14 @@ const Categories = () => {
       <FlatList
         data={categories}
         horizontal
-        ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
         keyExtractor={category => category}
         renderItem={({ item }) => (
-          <CustomButton fontSize={18} label={item} height={50} onPress={() => console.log(item)} />
+          <View style={{ paddingLeft: 20 }}>
+            <CustomButton icon='md-close-outline' fontSize={14} label={item} height={36} inactive onPress={() => console.log(item)} />
+          </View>
         )}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
     </View>
   );
@@ -29,8 +31,8 @@ const styles = StyleSheet.create({
     gap: 10
   },
   categoriesText: {
-    fontFamily: fonts.O_700,
+    fontFamily: fonts.I_700,
     fontSize: 20,
-    letterSpacing: 1
+    paddingHorizontal: 20
   },
 });

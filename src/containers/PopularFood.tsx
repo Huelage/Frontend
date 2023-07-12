@@ -1,9 +1,8 @@
+import Food from '@api/mockFoodData';
+import { CustomButton, FoodCard } from '@components/core/Home/';
+import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import Food from '../api/mockFoodData';
-import CustomButton from '../components/core/CustomButton';
-import FoodDemo from '../components/core/FoodDemo';
-import { fonts } from '../utils/fontEnum';
 
 const PopularFood = () => {
   const addToCart = () => console.log("hello");
@@ -20,7 +19,7 @@ const PopularFood = () => {
         data={Food}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
-            <FoodDemo {...item} addToCart={() => addToCart()} />
+            <FoodCard {...item} addToCart={() => addToCart()} />
           </View>
         )}
       />

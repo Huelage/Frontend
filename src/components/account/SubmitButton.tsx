@@ -1,7 +1,6 @@
 import React, { BaseSyntheticEvent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
+import { fonts, shadowStyle } from '../../utils';
 
 interface SubmitProps {
 	page: 'SU' | 'SI';

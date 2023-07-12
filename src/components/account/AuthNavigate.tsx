@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../../utils/interfaces';
-import { fonts } from '../../utils/fontEnum';
+import { NavigationProps } from '@interfaces';
+import { fonts } from '@utils';
 
 const AuthNavigate = ({ page }: { page: 'SU' | 'SI'; }) => {
   const { navigate } = useNavigation<NavigationProps>();

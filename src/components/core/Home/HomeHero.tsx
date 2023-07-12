@@ -1,7 +1,7 @@
+import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { fonts } from '../../utils/fontEnum';
 
 const HomeHero = () => {
   return (
@@ -14,7 +14,7 @@ const HomeHero = () => {
         <Text style={styles.promoDiscount}>30%</Text>
         <Text style={styles.promotext}>discount only valid for today</Text>
       </View>
-      <Image style={styles.promoImage} source={require('../../../assets/images/prawnImg.png')} />
+      <Image style={styles.promoImage} source={require('@images/prawnImg.png')} />
     </View>
   );
 };

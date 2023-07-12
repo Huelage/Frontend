@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TextInput, View, Image } from 'react-native';
-import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { fonts } from '../../utils/fontEnum';
+import { fonts } from '@utils';
+import React from 'react';
+import { Image, StyleSheet, TextInput, View } from 'react-native';
 
 const MainSearchBar = () => {
   return (
@@ -13,7 +13,7 @@ const MainSearchBar = () => {
         placeholderTextColor="#626262"
       />
       <View style={styles.homeSearchBoxFilter}>
-        <Image style={styles.homeSearchBoxFilterIcon} source={require('../../../assets/icons/home-group.png')} />
+        <Image style={styles.homeSearchBoxFilterIcon} source={require('@icons/home-group.png')} />
       </View>
     </View>
   );

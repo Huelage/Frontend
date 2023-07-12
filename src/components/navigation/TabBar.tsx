@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { fonts } from '../../utils/fontEnum';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { fonts } from '@utils';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   return (
@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
   tabText: {
     color: "rgba(0, 0, 0, .3)",
     fontSize: 14,
-    fontFamily: fonts.O_400
+    fontFamily: fonts.I_400
   },
   tabTextActive: {
     color: "#4CAF50",
     fontSize: 14,
-    fontFamily: fonts.O_600
+    fontFamily: fonts.I_600
   }
 });

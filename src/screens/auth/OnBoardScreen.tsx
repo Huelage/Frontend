@@ -1,7 +1,7 @@
+import { fonts } from '@utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
-import { fonts } from '../../utils/fontEnum';
 
 const OnBoardScreen = () => {
 	return (
@@ -12,7 +12,7 @@ const OnBoardScreen = () => {
 			locations={[0.74, 1]}
 			style={styles.container}
 		>
-			<Image style={styles.logoImage} source={require('../../../assets/images/onboardLogo.png')} />
+			<Image style={styles.logoImage} source={require('@images/onboardLogo.png')} />
 			<Text style={styles.welcomeText}>OnBoardScreen</Text>
 		</LinearGradient>
 	);
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 		borderRadius: 125,
 	},
 	welcomeText: {
-		fontFamily: fonts.C_400,
+		fontFamily: fonts.I_400,
 		letterSpacing: 1.5,
 		color: 'white',
 		fontSize: 30

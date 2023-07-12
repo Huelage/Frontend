@@ -1,9 +1,8 @@
+import Restaurants from '@api/mockRestaurants';
+import { CustomButton, RestaurantCard } from '@components/core/Home';
+import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import Restaurants from '../api/mockRestaurants';
-import CustomButton from '../components/core/CustomButton';
-import RestaurantDemo from '../components/core/RestaurantDemo';
-import { fonts } from '../utils/fontEnum';
 
 const PopularRestaurant = () => {
   const addToCart = () => console.log("hello");
@@ -20,7 +19,7 @@ const PopularRestaurant = () => {
         data={Restaurants}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
-            <RestaurantDemo {...item} addToCart={() => addToCart()} />
+            <RestaurantCard {...item} addToCart={() => addToCart()} />
           </View>
         )}
       />

@@ -1,11 +1,10 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
+import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { outline, shadowStyle } from '../../utils';
-import { fonts } from '../../utils/fontEnum';
-import { FoodInterface } from '../../utils/interfaces';
 
 interface FoodProps extends FoodInterface {
   addToCart: () => void;

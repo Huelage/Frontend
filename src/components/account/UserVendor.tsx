@@ -1,6 +1,6 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { fonts } from '@utils';
 import React from 'react';
-import { fonts } from '../../utils/fontEnum';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface UserVendorProps {
   isVendor: boolean;

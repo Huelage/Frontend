@@ -1,7 +1,6 @@
+import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { fonts } from '../../utils/fontEnum';
-import { shadowStyle } from '../../utils';
 
 const SocialLogin = ({ page }: { page: 'SU' | 'SI'; }) => {
   return (
