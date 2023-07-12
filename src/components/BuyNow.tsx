@@ -14,9 +14,10 @@ export default BuyNow;
 const styles = StyleSheet.create({
   loginWrap: {
     backgroundColor: "#4CAF50",
-    width: "70%",
+    width: "63%",
     height: 75,
-    bottom: -280,
+    top: "22%",
+    left: "13%",
     borderRadius: 20,
     padding: 18,
     alignItems: "center",

@@ -2,6 +2,9 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { fonts } from "../utils/fontEnum";
 import BuyNow from "../components/BuyNow";
+import SizeSelect from "../components/SizeSelect";
+import QuantitySelect from "../components/QuantitySelect";
+import Ratings from "../components/Ratings";
 
 const CartScreen = () => {
   return (
@@ -12,15 +15,16 @@ const CartScreen = () => {
         source={require("../../assets/images/food.png")}
         style={styles.thaiFoodTomYum}
       />
-      <View style={styles.Frame}>
-        <Text style={styles.rating}>4.3</Text>
-      </View>
+      <Ratings />
+      <QuantitySelect />
       <View style={styles.log}>
         <Text style={styles.ppe}>Shrimp Soup</Text>
         <Text style={styles.pre}>N 2,400.00</Text>
       </View>
-      <Text style={styles.wrapText}>About</Text>
+      <SizeSelect />
+
       <View style={styles.logg}>
+        <Text style={styles.wrapText}>About</Text>
         <Text style={styles.wrapText2}>
           {" "}
           Lorem ipsum dolor sit amet, consectetur {"\n"}
@@ -98,57 +102,50 @@ const styles = StyleSheet.create({
     top: 0,
     width: 259,
   },
-  Frame: {
-    backgroundColor: "#47c94c",
-    display: "flex",
-    height: 40,
-    width: 85,
-    borderRadius: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 11,
-    right: "33%",
-  },
-  rating: {
-    color: "#ffffff",
-    fontFamily: fonts.I_700,
-    fontSize: 16,
-    fontWeight: "700",
-  },
+
   log: {
     width: "100%",
     height: 69,
     paddingHorizontal: 100,
+    marginBottom: "2%",
+    top: "12%",
+    position: "relative",
+    display: "flex",
+    flex: 0,
+    alignItems: "stretch",
   },
   ppe: {
     color: "#000000",
     fontFamily: fonts.I_700,
-    fontSize: 50,
+    fontSize: 60,
     fontWeight: "700",
+    width: "100%",
     top: 0,
+    right: "5%",
   },
   pre: {
     color: "#000000",
     fontFamily: fonts.I_700,
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: "700",
     bottom: "60%",
     left: "85%",
+    top: -50,
   },
   logg: {
     display: "flex",
-    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     width: "80%",
+    top: "18%",
   },
   wrapText: {
     color: "#000000",
     fontFamily: fonts.I_700,
     fontSize: 35,
     fontWeight: "700",
-    right: "30%",
+    right: "40%",
     marginBottom: 10,
-    top: 0,
   },
   wrapText2: {
     fontFamily: fonts.I_400,
@@ -157,5 +154,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontStyle: "italic",
     color: "#616161",
+    textAlign: "justify",
+    lineHeight: 35,
   },
 });
