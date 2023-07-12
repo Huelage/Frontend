@@ -4,3 +4,8 @@ export const shadowStyle = {
   shadowOpacity: .5,
   shadowRadius: 5
 };
+
+export const outline = {
+  borderColor: 'black',
+  borderWidth: 2
+};

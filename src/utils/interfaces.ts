@@ -38,5 +38,16 @@ export interface FoodInterface {
   price: number;
   desc: string;
   imgUrl: string;
+  isFavourite: boolean;
+  rating: number;
+  cals: number;
   location: string;
+}
+
+export interface RestaurantInterface {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  imgUrl: string;
 }

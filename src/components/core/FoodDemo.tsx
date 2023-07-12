@@ -3,7 +3,7 @@ import { CheckBox } from '@rneui/themed';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { shadowStyle } from '../../utils';
+import { outline, shadowStyle } from '../../utils';
 import { fonts } from '../../utils/fontEnum';
 import { FoodInterface } from '../../utils/interfaces';
 
@@ -11,7 +11,7 @@ interface FoodProps extends FoodInterface {
   addToCart: () => void;
 }
 
-const FoodDemo = ({ imgUrl, name, price, rating, cals, addToCart }: FoodProps) => {
+const FoodDemo = ({ imgUrl, name, price, rating, cals, isFavourite, addToCart }: FoodProps) => {
   console.log(imgUrl);
   return (
     <View style={styles.container}>
@@ -20,13 +20,14 @@ const FoodDemo = ({ imgUrl, name, price, rating, cals, addToCart }: FoodProps) =
           <Ionicons name="star" size={24} color="#47CA4C" />
           <Text style={styles.foodRating}>{rating}</Text>
         </View>
-        <Image style={styles.foodImage} source={require('../../../assets/images/prawnImg.png')} />
+        <Image style={styles.foodImage} source={{ uri: imgUrl }} resizeMode='contain' />
         <CheckBox
-          checked={true}
+          checked={isFavourite}
           onPress={() => { }}
           checkedIcon="heart"
           uncheckedIcon="heart-o"
           checkedColor="red"
+          uncheckedColor='black'
           containerStyle={{ backgroundColor: '#F0FFF0', padding: 0, margin: 0 }}
         />
       </View>
@@ -66,11 +67,13 @@ const styles = StyleSheet.create({
     marginBottom: 35
   },
   foodImage: {
+    flex: 1,
     position: 'absolute',
-    left: 40,
+    borderRadius: 65,
+    left: 48,
     top: -hp("10%"),
-    height: 150,
-    width: 150,
+    height: 130,
+    width: 130,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: .3,
     shadowRadius: 5,
