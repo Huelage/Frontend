@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
 import { fonts } from "../utils/fontEnum";
 import BuyNow from "../components/BuyNow";
-import SizeSelect from "../components/SizeSelect";
+import Icon from "react-native-vector-icons/FontAwesome";
 import QuantitySelect from "../components/QuantitySelect";
 import Ratings from "../components/Ratings";
+import React, { useState } from "react";
 
 const CartScreen = () => {
+  const [isHearted, setIsHearted] = useState(false);
+
+  const handleHeartPress = () => {
+    setIsHearted(!isHearted);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.semiCircle}></View>
@@ -17,11 +22,6 @@ const CartScreen = () => {
       />
       <Ratings />
       <QuantitySelect />
-      <View style={styles.log}>
-        <Text style={styles.ppe}>Shrimp Soup</Text>
-        <Text style={styles.pre}>N 2,400.00</Text>
-      </View>
-      <SizeSelect />
 
       <View style={styles.logg}>
         <Text style={styles.wrapText}>About</Text>
@@ -35,6 +35,20 @@ const CartScreen = () => {
         </Text>
       </View>
       <BuyNow />
+      <View style={styles.licon}>
+        <Icon name="shopping-cart" size={40} color="#BCB5B5" />
+      </View>
+      <View style={styles.love}>
+        <View>
+          <TouchableOpacity onPress={handleHeartPress}>
+            <Icon
+              name={isHearted ? "heart" : "heart-o"}
+              size={40}
+              color="red"
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -103,35 +117,6 @@ const styles = StyleSheet.create({
     width: 259,
   },
 
-  log: {
-    width: "100%",
-    height: 69,
-    paddingHorizontal: 100,
-    marginBottom: "2%",
-    top: "12%",
-    position: "relative",
-    display: "flex",
-    flex: 0,
-    alignItems: "stretch",
-  },
-  ppe: {
-    color: "#000000",
-    fontFamily: fonts.I_700,
-    fontSize: 60,
-    fontWeight: "700",
-    width: "100%",
-    top: 0,
-    right: "5%",
-  },
-  pre: {
-    color: "#000000",
-    fontFamily: fonts.I_700,
-    fontSize: 28,
-    fontWeight: "700",
-    bottom: "60%",
-    left: "85%",
-    top: -50,
-  },
   logg: {
     display: "flex",
     justifyContent: "center",
@@ -156,5 +141,18 @@ const styles = StyleSheet.create({
     color: "#616161",
     textAlign: "justify",
     lineHeight: 35,
+  },
+  licon: {
+    top: "16%",
+    right: "30%",
+    borderColor: "#000000",
+    width: "10%",
+    height: 50,
+    borderRadius: 20,
+  },
+  love: {
+    bottom: "68%",
+    left: "40%",
+    marginBottom: -50,
   },
 });
