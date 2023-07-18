@@ -3,3 +3,4 @@ export { default as FoodCard } from './FoodCard';
 export { default as HomeHero } from './HomeHero';
 export { default as MainSearchBar } from './MainSearchBar';
 export { default as RestaurantCard } from './RestaurantCard';
+export { default as CategoryCard } from './CategoryCard';

@@ -4,42 +4,47 @@ import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface FoodProps extends FoodInterface {
   addToCart: () => void;
+  onClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FoodDemo = ({ imgUrl, name, price, rating, cals, isFavourite, addToCart }: FoodProps) => {
-  console.log(imgUrl);
+const FoodDemo = ({ imgUrl, name, price, rating, cals, isFavourite, addToCart, onClick }: FoodProps) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.foodIntro}>
-        <View style={styles.foodRatingBox}>
-          <Ionicons name="star" size={24} color="#47CA4C" />
-          <Text style={styles.foodRating}>{rating}</Text>
+    <TouchableWithoutFeedback onPress={() => onClick(true)}>
+      <View style={styles.container}>
+        <View style={styles.foodIntro}>
+          <View style={styles.foodRatingBox}>
+            <Ionicons name="star" size={24} color="#47CA4C" />
+            <Text style={styles.foodRating}>{rating}</Text>
+          </View>
+          <View style={styles.foodImageContainer}>
+            <Image style={styles.foodImage} source={{ uri: imgUrl }} resizeMode='contain' />
+          </View>
+          <CheckBox
+            checked={isFavourite}
+            onPress={() => { }}
+            checkedIcon="heart"
+            uncheckedIcon="heart-o"
+            checkedColor="red"
+            uncheckedColor='black'
+            containerStyle={{ backgroundColor: '#F0FFF0', padding: 0, margin: 0 }}
+          />
         </View>
-        <Image style={styles.foodImage} source={{ uri: imgUrl }} resizeMode='contain' />
-        <CheckBox
-          checked={isFavourite}
-          onPress={() => { }}
-          checkedIcon="heart"
-          uncheckedIcon="heart-o"
-          checkedColor="red"
-          uncheckedColor='black'
-          containerStyle={{ backgroundColor: '#F0FFF0', padding: 0, margin: 0 }}
-        />
+        <Text style={styles.foodName}>{name}</Text>
+        <View style={styles.foodCalories}>
+          <MaterialCommunityIcons name="fire" size={22} color="#47CA4C" />
+          <Text style={styles.foodCaloriesText}>{cals} KCal</Text>
+        </View>
+        <Text style={styles.foodPrice}>
+          <MaterialCommunityIcons name="currency-ngn" size={12} color="black" />
+          {price}
+        </Text>
       </View>
-      <Text style={styles.foodName}>{name}</Text>
-      <View style={styles.foodCalories}>
-        <MaterialCommunityIcons name="fire" size={22} color="#47CA4C" />
-        <Text style={styles.foodCaloriesText}>{cals} KCal</Text>
-      </View>
-      <Text style={styles.foodPrice}>
-        <MaterialCommunityIcons name="currency-ngn" size={12} color="black" />
-        {price}
-      </Text>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -65,18 +70,22 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 35
   },
-  foodImage: {
+  foodImageContainer: {
     flex: 1,
     position: 'absolute',
+    backgroundColor: 'transparent',
     borderRadius: 65,
     left: 48,
     top: -hp("10%"),
-    height: 130,
-    width: 130,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: .3,
     shadowRadius: 5,
     zIndex: 2
+  },
+  foodImage: {
+    borderRadius: 65,
+    height: 130,
+    width: 130,
   },
   foodCalories: {
     alignItems: 'center',
