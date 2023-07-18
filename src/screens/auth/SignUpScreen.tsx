@@ -11,7 +11,7 @@ import Svg, { Path } from 'react-native-svg';
 
 const SignUpScreen = () => {
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
-  const [isVendor, setIsVendor] = useState<boolean>(true);
+  const [isVendor, setIsVendor] = useState<boolean>(false);
   const onSubmit = (data: SignUpInfoInterface) => console.log(data);
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);

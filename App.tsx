@@ -34,7 +34,7 @@ const App = () => {
     Inter_700Bold,
     InterTight_700Bold_Italic
   });
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   if (!fontsLoaded) return null;
   return (

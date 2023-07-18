@@ -19,7 +19,8 @@ module.exports = function (api) {
           "@interfaces": "./src/utils/interfaces.ts"
         },
         "extensions": [".tsx", ".ts", ".json", ".png", ".jpg", ".jpeg"]
-      }]
+      }],
+      'react-native-reanimated/plugin'
     ]
   };
 };
