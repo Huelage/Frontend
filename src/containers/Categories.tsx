@@ -1,12 +1,14 @@
 import { CustomButton } from '@components/core/Home';
+import CustomCarousel from '@components/core/Home/CustomCarousel';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const Categories = () => {
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
   return (
-    <View style={styles.categories}>
+    <GestureHandlerRootView style={styles.categories}>
       <Text style={styles.categoriesText}>Categories</Text>
       <FlatList
         data={categories}
@@ -20,7 +22,8 @@ const Categories = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-    </View>
+      <CustomCarousel />
+    </GestureHandlerRootView>
   );
 };
 
@@ -28,11 +31,12 @@ export default Categories;
 
 const styles = StyleSheet.create({
   categories: {
-    gap: 10
+    gap: 5
   },
   categoriesText: {
     fontFamily: fonts.I_700,
     fontSize: 20,
+    paddingBottom: 5,
     paddingHorizontal: 20
   },
 });
