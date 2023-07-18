@@ -89,7 +89,7 @@ const LoginScreen = () => {
           />
         </View>
         <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
-        <SubmitButton page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
+        <SubmitButton label='LOG IN' onSubmit={handleSubmit(onSubmit, onError)} />
         <AuthNavigate page='SI' />
       </View>
     </View>

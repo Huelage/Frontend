@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="OTP" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="OnBoard" component={OnBoardScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SignUp" component={SignUpScreen} />

@@ -145,7 +145,7 @@ const SignUpScreen = () => {
           )}
         </View>
         <View style={styles.heroSubmitBox}>
-          <SubmitButton page='SU' onSubmit={handleSubmit(onSubmit, onError)} />
+          <SubmitButton label='CREATE ACCOUNT' onSubmit={handleSubmit(onSubmit, onError)} />
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' />
         </View>

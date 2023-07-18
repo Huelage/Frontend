@@ -3,15 +3,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { fonts, shadowStyle } from '../../utils';
 
 interface SubmitProps {
-	page: 'SU' | 'SI';
-	onSubmit: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
+	label: string;
+	onSubmit: ((e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>) | (() => void);
 }
 
-const SubmitButton = ({ page, onSubmit }: SubmitProps) => {
+const SubmitButton = ({ label, onSubmit }: SubmitProps) => {
 	return (
 		<TouchableOpacity onPress={onSubmit}>
 			<View style={styles.loginButton}>
-				<Text style={styles.loginText}>{page == 'SU' ? "CREATE ACCOUNT" : "LOG IN"}</Text>
+				<Text style={styles.loginText}>{label}</Text>
 			</View>
 		</TouchableOpacity>
 	);
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		height: 50,
 		justifyContent: 'center',
+		width: '100%',
 		...shadowStyle
 	},
 	loginText: {
