@@ -20,6 +20,7 @@ const CustomTextInput = ({ label, isPass, ...inputProps }: CustomTextInputProps)
           style={styles.textInput}
           placeholder={label}
           placeholderTextColor="#BCB5B5"
+          selectionColor="#47CA4C"
           {...inputProps}
         />
         {isPass && (
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     borderColor: "#47CA4C",
     borderRadius: 10,
     borderWidth: 2,
-    height: 55,
+    height: 48,
     paddingHorizontal: 15,
   },
   textInput: {

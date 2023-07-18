@@ -2,7 +2,7 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export interface LoginInfoInterface {
-  vendorId?: number,
+  vendorId?: string,
   email?: string,
   password: string;
 }
@@ -10,6 +10,7 @@ export interface LoginInfoInterface {
 export interface SignUpInfoInterface {
   fullname: string,
   email: string,
+  phonenumber: string,
   businessname?: string,
   password: string;
 }

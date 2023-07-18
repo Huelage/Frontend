@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
 
 const LoginScreen = () => {
@@ -18,30 +18,14 @@ const LoginScreen = () => {
     console.log(errors);
   };
   return (
-    <LinearGradient
-      colors={["#4CAF50", "#91D56C"]}
-      start={{ x: 0.09, y: 0.73 }}
-      end={{ x: 1, y: 0.12 }}
-      locations={[0.74, 1]}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Hero lead="Welcome Back!" accent="Login to continue" page='SI' />
-      <View style={styles.heroTwo}>
-        <Svg
-          height={89}
-          width={wp("102%")}
-          viewBox='0 0 1440 320'
-        >
-          <Path
-            fill="#4CAF50"
-            d="M0,160L80,133.3C160,107,320,53,480,32C640,11,800,21,960,74.7C1120,128,1280,224,1360,272L1440,320L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-          />
-        </Svg>
-        <View style={styles.heroTwoInputBox}>
-          <Text style={styles.heroTwoIntro}>
-            Sign in to <Text style={styles.heroTwoIntroAccent}>Huelage</Text>
-          </Text>
-          <UserVendor isVendor={isVendor} onPress={setIsVendor} />
+      <View style={styles.heroTwoInputBox}>
+        <Text style={styles.heroTwoIntro}>
+          Sign in to <Text style={styles.heroTwoIntroAccent}>Huelage</Text>
+        </Text>
+        <UserVendor isVendor={isVendor} onPress={setIsVendor} />
+        <View style={styles.heroTwoInputs}>
           {isVendor ? (
             <Controller
               control={control}
@@ -51,12 +35,13 @@ const LoginScreen = () => {
                   autoCorrect={false}
                   isPass={false}
                   label='Vendor ID'
+                  keyboardType='number-pad'
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
                 />
               )}
-              name="email"
+              name="vendorId"
               rules={{
                 required: "Vendor ID is required",
               }}
@@ -102,12 +87,12 @@ const LoginScreen = () => {
             name="password"
             rules={{ required: "Password is required" }}
           />
-          <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
-          <SubmitButton page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
-          <AuthNavigate page='SI' />
         </View>
+        <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
+        <SubmitButton page='SI' onSubmit={handleSubmit(onSubmit, onError)} />
+        <AuthNavigate page='SI' />
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -117,14 +102,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  heroTwo: {
+  heroTwoInputBox: {
     backgroundColor: '#fff',
     flex: 1,
+    gap: 15,
+    paddingHorizontal: wp("8%") + 8,
+    paddingVertical: hp("4%")
   },
-  heroTwoInputBox: {
-    flex: 1,
-    gap: 25,
-    marginHorizontal: wp("8%") + 8,
+  heroTwoInputs: {
+    gap: 20
   },
   heroTwoIntro: {
     fontFamily: fonts.I_700,

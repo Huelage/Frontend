@@ -2,41 +2,23 @@ import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '
 import { SignUpInfoInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import Svg, { Path } from 'react-native-svg';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
-  const [isVendor, setIsVendor] = useState<boolean>(false);
+  const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit = (data: SignUpInfoInterface) => console.log(data);
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);
   };
   return (
-    <LinearGradient
-      colors={["#4CAF50", "#91D56C"]}
-      start={{ x: 0.23, y: 0.82 }}
-      end={{ x: 0.99, y: 0.1 }}
-      locations={[0.82, 1]}
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <View style={styles.hero}>
-        <Svg
-          height={89}
-          width={wp("102%")}
-          viewBox='0 0 1440 320'
-        >
-          <Path
-            fill="#4CAF50"
-            d="M0,64L80,90.7C160,117,320,171,480,208C640,245,800,267,960,245.3C1120,224,1280,160,1360,128L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-          />
-        </Svg>
-        <View style={styles.heroInputBox}>
+      <View style={styles.heroInputBox}>
+        <View style={styles.heroInputs}>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -80,6 +62,25 @@ const SignUpScreen = () => {
                 value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
                 message: "Email is invalid"
               }
+            }}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <CustomTextInput
+                autoCapitalize='words'
+                autoCorrect={false}
+                isPass={false}
+                keyboardType='number-pad'
+                label={isVendor ? "Vendor's Phone number" : "Phone number"}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="phonenumber"
+            rules={{
+              required: "Phone number is required"
             }}
           />
           {isVendor && (
@@ -139,14 +140,17 @@ const SignUpScreen = () => {
               checkedColor="#084506"
               title="I accept all terms and condition"
               textStyle={styles.termsText}
+              containerStyle={styles.termsContainer}
             />
           )}
+        </View>
+        <View style={styles.heroSubmitBox}>
           <SubmitButton page='SU' onSubmit={handleSubmit(onSubmit, onError)} />
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' />
         </View>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -161,9 +165,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   heroInputBox: {
+    backgroundColor: '#fff',
     flex: 1,
     gap: 25,
-    marginHorizontal: wp("8%") + 8,
+    paddingHorizontal: wp("8%") + 8,
+    paddingVertical: hp("4%")
+  },
+  heroInputs: {
+    gap: 20
+  },
+  heroSubmitBox: {
+    gap: 25
   },
   heroLoginButton: {
     alignItems: 'center',
@@ -182,6 +194,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     fontFamily: fonts.I_300,
     fontSize: 18
+  },
+  termsContainer: {
+    padding: 0,
+    margin: 0
   },
   termsText: {
     color: '#000',
