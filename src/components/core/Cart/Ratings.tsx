@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { fonts } from "../utils/fontEnum";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { Ionicons } from '@expo/vector-icons';
+import { fonts } from "@utils";
+import { StyleSheet, Text, View } from "react-native";
 
 const Ratings = () => {
   return (
     <View style={styles.Frame}>
       <Text style={styles.rating}>4.3</Text>
       <View style={styles.ame}>
-        <Icon name="star" size={28} color="#FFD700" />
+        <Ionicons name="star" size={28} color="#FFD700" />
       </View>
     </View>
   );

@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { fonts } from "@utils";
 import React from "react";
-import { fonts } from "../../../utils/fontEnum";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const BuyNow = () => {
   return (

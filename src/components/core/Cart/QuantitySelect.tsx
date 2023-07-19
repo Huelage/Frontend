@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import { fonts } from "../utils/fontEnum";
+import { fonts } from "@utils";
 import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const QuantitySelect = () => {
   const [count, setCount] = useState(1);

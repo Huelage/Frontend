@@ -1,8 +1,8 @@
+import { BuyNow, QuantitySelect, Ratings } from '@components/core/Cart';
 import { fonts } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { QuantitySelect, Ratings, BuyNow } from '@components/core/Cart';
 
 const CartScreen = () => {
   const [isHearted, setIsHearted] = useState(false);
