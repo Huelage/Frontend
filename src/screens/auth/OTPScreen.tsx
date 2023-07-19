@@ -1,13 +1,13 @@
 import { SubmitButton } from '@components/account';
-import { fonts, outline, shadowStyle } from '@utils';
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationProps } from '@interfaces';
+import { useNavigation } from '@react-navigation/native';
+import { fonts, shadowStyle } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '@interfaces';
 
 const CELL_COUNT = 4;
 

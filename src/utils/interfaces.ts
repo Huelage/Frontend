@@ -1,4 +1,5 @@
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { RouteProp } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export interface LoginInfoInterface {
@@ -18,11 +19,14 @@ export interface SignUpInfoInterface {
 export type StackParamList = {
   OnBoard: undefined,
   Login: undefined,
-  SignUp: undefined;
+  SignUp: { isVendor: boolean; };
   OTP: undefined;
+  Cart: undefined;
+  WelcomePage: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
+export type SignupRouteProps = RouteProp<StackParamList, 'SignUp'>;
 
 export type TabParamList = {
   Home: undefined,

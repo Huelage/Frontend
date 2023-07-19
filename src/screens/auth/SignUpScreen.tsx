@@ -1,15 +1,16 @@
 import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/account';
-import { SignUpInfoInterface } from '@interfaces';
+import { SignUpInfoInterface, SignupRouteProps } from '@interfaces';
+import { useRoute } from '@react-navigation/core';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
+  const { params: { isVendor } } = useRoute<SignupRouteProps>();
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
-  const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit = (data: SignUpInfoInterface) => console.log(data);
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);
@@ -147,7 +148,7 @@ const SignUpScreen = () => {
         <View style={styles.heroSubmitBox}>
           <SubmitButton label='CREATE ACCOUNT' onSubmit={handleSubmit(onSubmit, onError)} />
           {!isVendor && <SocialLogin page='SU' />}
-          <AuthNavigate page='SU' />
+          <AuthNavigate page='SU' isVendor={isVendor} />
         </View>
       </View>
     </View>

@@ -1,12 +1,10 @@
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/account';
 import { LoginInfoInterface } from '@interfaces';
 import { fonts, shadowStyle } from '@utils';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import Svg, { Path } from 'react-native-svg';
 
 const LoginScreen = () => {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
@@ -90,7 +88,7 @@ const LoginScreen = () => {
         </View>
         <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
         <SubmitButton label='LOG IN' onSubmit={handleSubmit(onSubmit, onError)} />
-        <AuthNavigate page='SI' />
+        <AuthNavigate page='SI' isVendor={isVendor} />
       </View>
     </View>
   );
