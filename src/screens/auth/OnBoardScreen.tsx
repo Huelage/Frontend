@@ -1,10 +1,9 @@
 import { NavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { shadowStyle } from "@utils";
+import { fonts, shadowStyle } from "@utils";
 import React from "react";
-import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { fonts } from "../../utils/fontEnum";
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<NavigationProps>();
@@ -20,7 +19,7 @@ const OnBoardScreen = () => {
             <Text style={styles.loginText}>LOG IN</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate("WelcomePage")}>
+        <TouchableOpacity onPress={() => navigate("SignupSelect")}>
           <View style={[styles.baseButton, styles.signupButton]}>
             <Text style={styles.signupText}>SIGN UP</Text>
           </View>

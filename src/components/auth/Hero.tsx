@@ -13,7 +13,7 @@ const Hero = ({ lead, accent, page }: HeroProp) => {
   return (
     <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={styles.heroOne}>
       <View style={styles.heroOneLogo}>
-        <Image style={styles.logoImage} source={require('../../../assets/images/rectangle.png')} />
+        <Image style={styles.logoImage} source={require('@images/rectangle.png')} />
       </View>
       <Text style={styles.heroOneLeadText}>{lead}</Text>
       <Text style={heroOneAccentText}>{accent}</Text>

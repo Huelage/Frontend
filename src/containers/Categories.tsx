@@ -1,5 +1,4 @@
-import { CustomButton } from '@components/core/Home';
-import CustomCarousel from '@components/core/Home/CustomCarousel';
+import { CustomButton, CustomCarousel } from '@components/core/Home';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';

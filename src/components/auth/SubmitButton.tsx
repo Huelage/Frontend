@@ -1,6 +1,6 @@
+import { fonts, shadowStyle } from '@utils';
 import React, { BaseSyntheticEvent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { fonts, shadowStyle } from '../../utils';
 
 interface SubmitProps {
 	label: string;

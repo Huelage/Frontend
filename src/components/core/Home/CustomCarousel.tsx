@@ -1,11 +1,10 @@
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import { CategoryCard } from '.';
 import Food from '@api/mockCategoryData';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { outline } from '@utils';
+import React, { useRef, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CategoryCard } from '.';
 
 const CustomCarousel = () => {
   const carouselRef = useRef<ICarouselInstance>(null);

@@ -22,7 +22,7 @@ export type StackParamList = {
   SignUp: { isVendor: boolean; };
   OTP: undefined;
   Cart: undefined;
-  WelcomePage: undefined;
+  SignupSelect: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;

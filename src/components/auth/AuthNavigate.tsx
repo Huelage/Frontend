@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '@interfaces';
+import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface AuthNavigateProps {
   page: 'SU' | 'SI',

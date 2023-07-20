@@ -1,10 +1,10 @@
-import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { fonts, outline, withAnchorPoint } from '@utils';
+import { RatingCard } from '@components/core/Detail';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { RatingCard } from '../Detail';
 
 interface CategoryCardInterface {
   idx: number;

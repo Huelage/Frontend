@@ -1,7 +1,7 @@
 import Food from '@api/mockFoodData';
 import { ItemAmountCard } from '@components/core/Detail';
 import { CustomButton, FoodCard } from '@components/core/Home/';
-import CustomModal from '@components/misc/CustomModal';
+import { CustomModal } from '@components/misc';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';

@@ -9,7 +9,7 @@ const SocialLogin = ({ page }: { page: 'SU' | 'SI'; }) => {
         <Text style={styles.decoText}>or</Text>
       </View>
       <View style={styles.socialLogin}>
-        <Image style={styles.socialIcon} source={require('../../../assets/icons/googleIcon.png')} />
+        <Image style={styles.socialIcon} source={require('@icons/googleIcon.png')} />
         <Text style={styles.socialText}>SIGN {page == 'SU' ? "UP" : "IN"} WITH GOOGLE</Text>
       </View>
     </>

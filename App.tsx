@@ -1,3 +1,4 @@
+import { store } from '@api/app/store';
 import {
   InterTight_200ExtraLight_Italic,
   InterTight_300Light_Italic,
@@ -34,11 +35,11 @@ const App = () => {
     Inter_700Bold,
     InterTight_700Bold_Italic
   });
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   if (!fontsLoaded) return null;
   return (
-    <Provider store={ }>
+    <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
           {isSignedIn ? <TabNavigator /> : <StackNavigator />}
