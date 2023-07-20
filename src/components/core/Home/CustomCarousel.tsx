@@ -69,14 +69,11 @@ const CustomCarousel = () => {
       <FlatList
         data={Array.from({ length: Food.length }, (_, i) => i)}
         horizontal
-        renderItem={({ item }) => {
-          console.log(item);
-          return (
-            <TouchableOpacity onPress={() => goToIdx(item)}>
-              <View style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
-            </TouchableOpacity>
-          );
-        }}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => goToIdx(item)}>
+            <View style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
+          </TouchableOpacity>
+        )}
         contentContainerStyle={styles.indicatorBox}
       />
     </>

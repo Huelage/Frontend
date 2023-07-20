@@ -1,4 +1,4 @@
-import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/account';
+import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/auth';
 import { NavigationProps, SignUpInfoInterface, SignupRouteProps } from '@interfaces';
 import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';

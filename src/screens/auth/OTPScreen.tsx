@@ -1,4 +1,4 @@
-import { SubmitButton } from '@components/account';
+import { SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';

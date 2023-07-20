@@ -11,6 +11,7 @@ interface ButtonProps {
   inactive?: boolean;
   onPress: () => void;
 }
+
 const CustomButton = ({ label, icon, height, fontSize, inactive, onPress }: ButtonProps) => {
   return (
     <TouchableOpacity style={{ height }} onPress={onPress}>
