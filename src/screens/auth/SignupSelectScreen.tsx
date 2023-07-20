@@ -1,10 +1,9 @@
 import { NavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/core";
-import { shadowStyle } from "@utils";
+import { fonts, shadowStyle } from "@utils";
 import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { fonts } from "../../utils/fontEnum";
 
 const SignupSelectScreen = () => {
   const { navigate } = useNavigation<NavigationProps>();

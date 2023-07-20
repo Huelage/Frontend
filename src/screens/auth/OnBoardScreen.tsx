@@ -2,7 +2,7 @@ import { NavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { shadowStyle } from "@utils";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { fonts } from "../../utils/fontEnum";
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   logoImage: {
     height: 100,
     width: 100,
-    borderRadius: 50,
+    borderRadius: 50
   },
   logoText: {
     fontFamily: fonts.I_700,

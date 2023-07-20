@@ -1,6 +1,7 @@
 import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/account';
-import { SignUpInfoInterface, SignupRouteProps } from '@interfaces';
+import { NavigationProps, SignUpInfoInterface, SignupRouteProps } from '@interfaces';
 import { useRoute } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
@@ -10,8 +11,9 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
+  const { navigate } = useNavigation<NavigationProps>();
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
-  const onSubmit = (data: SignUpInfoInterface) => console.log(data);
+  const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);
   };
@@ -37,7 +39,7 @@ const SignUpScreen = () => {
             rules={{
               required: "Name is required",
               pattern: {
-                value: /^[\w.+-]{3,}$/,
+                value: /^[\w.]{3,}$/,
                 message: "Name has to be atleast 3 characters"
               }
             }}

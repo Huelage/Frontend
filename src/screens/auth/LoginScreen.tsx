@@ -1,5 +1,6 @@
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/account';
-import { LoginInfoInterface } from '@interfaces';
+import { LoginInfoInterface, NavigationProps } from '@interfaces';
+import { useNavigation } from '@react-navigation/native';
 import { fonts, shadowStyle } from '@utils';
 import React, { useState } from 'react';
 import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
@@ -7,6 +8,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const LoginScreen = () => {
+  const { navigate } = useNavigation<NavigationProps>();
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
   const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
