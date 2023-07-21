@@ -1,4 +1,4 @@
-import Food from '@api/mockCategoryData';
+import { mockCategories } from '@api/mock';
 import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -51,7 +51,7 @@ const CustomCarousel = () => {
           },
         }}
         autoPlayInterval={10000}
-        data={Food}
+        data={mockCategories}
         onScrollBegin={onScrollBegin}
         onProgressChange={onProgressChange}
         onSnapToItem={idx => setItemIdx(idx)}
@@ -66,7 +66,7 @@ const CustomCarousel = () => {
         )}
       />
       <FlatList
-        data={Array.from({ length: Food.length }, (_, i) => i)}
+        data={Array.from({ length: mockCategories.length }, (_, i) => i)}
         horizontal
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => goToIdx(item)}>
