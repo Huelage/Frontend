@@ -25,7 +25,13 @@ export type StackParamList = {
   SignupSelect: undefined;
 };
 
+export type AuthStackParamList = {
+  MainTabs: undefined,
+  Cart: undefined;
+};
+
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
+export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 export type SignupRouteProps = RouteProp<StackParamList, 'SignUp'>;
 
 export type TabParamList = {

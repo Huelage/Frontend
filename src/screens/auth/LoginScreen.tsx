@@ -1,3 +1,4 @@
+import { useAppDispatch } from '@api/app/appHooks';
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/auth';
 import { LoginInfoInterface, NavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +9,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const LoginScreen = () => {
+  const dispatch = useAppDispatch();
   const { navigate } = useNavigation<NavigationProps>();
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
   const [isVendor, setIsVendor] = useState<boolean>(true);
