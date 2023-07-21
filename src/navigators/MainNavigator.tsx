@@ -1,6 +1,7 @@
 import { useAppSelector } from '@api/app/appHooks';
 import { isAuthenticated } from '@api/slices/globalSlice';
-import { StackNavigator, TabNavigator } from '@navigators';
+import StackNavigator from './StackNavigator';
+import TabNavigator from './TabNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
