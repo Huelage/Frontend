@@ -14,9 +14,7 @@ import {
   Inter_700Bold,
   useFonts
 } from '@expo-google-fonts/dev';
-import { StackNavigator, TabNavigator } from '@navigators';
-import { NavigationContainer } from "@react-navigation/native";
-import { useState } from 'react';
+import { MainNavigator } from '@navigators';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
@@ -35,15 +33,12 @@ const App = () => {
     Inter_700Bold,
     InterTight_700Bold_Italic
   });
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
 
   if (!fontsLoaded) return null;
   return (
     <Provider store={store}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          {isSignedIn ? <TabNavigator /> : <StackNavigator />}
-        </NavigationContainer >
+        <MainNavigator />
       </SafeAreaProvider>
     </Provider>
   );
