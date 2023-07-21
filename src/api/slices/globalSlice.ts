@@ -6,7 +6,7 @@ const initialState: globalStateInterface = {
   isAuthenticated: false
 };
 
-const userSlice = createSlice({
+const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
@@ -19,8 +19,8 @@ const userSlice = createSlice({
 // Dispatches
 export const {
   setIsAuthenticated
-} = userSlice.actions;
+} = globalSlice.actions;
 // Selectors
 export const isAuthenticated = (state: RootState) => state.global.isAuthenticated;
 // Reducer
-export default userSlice.reducer;
+export default globalSlice.reducer;
