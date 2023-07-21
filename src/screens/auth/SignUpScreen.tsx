@@ -1,5 +1,5 @@
 import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/auth';
-import { NavigationProps, SignUpInfoInterface, SignupRouteProps } from '@interfaces';
+import { AuthNavigationProps, SignUpInfoInterface, SignupRouteProps } from '@interfaces';
 import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
@@ -11,7 +11,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
-  const { navigate } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<AuthNavigationProps>();
   const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
   const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {

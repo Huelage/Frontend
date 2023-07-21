@@ -1,4 +1,4 @@
-import { NavigationProps } from '@interfaces';
+import { AuthNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
 import React from 'react';
@@ -10,7 +10,7 @@ interface AuthNavigateProps {
 }
 
 const AuthNavigate = ({ page, isVendor }: AuthNavigateProps) => {
-  const { navigate } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<AuthNavigationProps>();
   const handleNavigate = () => {
     if (page == 'SU') {
       navigate('Login');

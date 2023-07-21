@@ -2,14 +2,14 @@ import { useAppSelector } from '@api/app/appHooks';
 import { isAuthenticated } from '@api/slices/globalSlice';
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import AuthStackNavigator from './AuthStackNavigator';
 import StackNavigator from './StackNavigator';
+import AuthStackNavigator from './AuthStackNavigator';
 
 const MainNavigator = () => {
   const isSignedIn = useAppSelector(isAuthenticated);
   return (
     <NavigationContainer>
-      {isSignedIn ? <AuthStackNavigator /> : <StackNavigator />}
+      {isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
     </NavigationContainer>
   );
 };

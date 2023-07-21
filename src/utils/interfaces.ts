@@ -16,23 +16,22 @@ export interface SignUpInfoInterface {
   password: string;
 }
 
-export type StackParamList = {
+export type AuthStackParamList = {
   OnBoard: undefined,
   Login: undefined,
   SignUp: { isVendor: boolean; };
   OTP: undefined;
-  Cart: undefined;
   SignupSelect: undefined;
 };
 
-export type AuthStackParamList = {
+export type StackParamList = {
   MainTabs: undefined,
   Cart: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
-export type SignupRouteProps = RouteProp<StackParamList, 'SignUp'>;
+export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
 
 export type TabParamList = {
   Home: undefined,

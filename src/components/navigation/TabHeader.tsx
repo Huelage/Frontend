@@ -1,8 +1,6 @@
 import { Feather } from '@expo/vector-icons';
-import { AuthNavigationProps } from '@interfaces';
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
+import { NavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
@@ -10,7 +8,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const TabHeader = () => {
-  const { navigate } = useNavigation<AuthNavigationProps>();
+  const { navigate } = useNavigation<NavigationProps>();
   return (
     <>
       <StatusBar style="dark" />

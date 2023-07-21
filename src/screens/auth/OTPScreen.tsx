@@ -1,6 +1,6 @@
 import { SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationProps } from '@interfaces';
+import { AuthNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, shadowStyle } from '@utils';
 import { StatusBar } from 'expo-status-bar';
@@ -12,7 +12,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 const CELL_COUNT = 4;
 
 const OTPScreen = () => {
-  const { goBack } = useNavigation<NavigationProps>();
+  const { goBack } = useNavigation<AuthNavigationProps>();
   const [value, setValue] = useState<string>("");
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const [seconds, setSeconds] = useState<number>(59);
