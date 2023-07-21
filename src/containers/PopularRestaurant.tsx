@@ -1,4 +1,4 @@
-import Restaurants from '@api/mockRestaurants';
+import { mockRestaurants } from '@api/mock';
 import { CustomButton, RestaurantCard } from '@components/core/Home';
 import { fonts } from '@utils';
 import React from 'react';
@@ -16,7 +16,7 @@ const PopularRestaurant = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => String(item.id)}
-        data={Restaurants}
+        data={mockRestaurants}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
             <RestaurantCard {...item} addToCart={() => addToCart()} />

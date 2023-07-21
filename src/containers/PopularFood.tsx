@@ -1,4 +1,4 @@
-import Food from '@api/mockFoodData';
+import { mockFoods } from '@api/mock';
 import { ItemAmountCard } from '@components/core/Detail';
 import { CustomButton, FoodCard } from '@components/core/Home/';
 import { CustomModal } from '@components/misc';
@@ -19,7 +19,7 @@ const PopularFood = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => String(item.id)}
-        data={Food}
+        data={mockFoods}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
             <FoodCard {...item} onClick={setShowModal} addToCart={() => addToCart()} />

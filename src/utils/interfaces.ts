@@ -56,3 +56,7 @@ export interface RestaurantInterface {
   rating: number;
   imgUrl: string;
 }
+
+export interface globalStateInterface {
+  isAuthenticated: boolean;
+}
