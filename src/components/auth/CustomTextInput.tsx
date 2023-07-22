@@ -16,7 +16,7 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
   const toggleShowText = () => setShowText(show => !show);
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, error && styles.inputContainerError]}>
         <View style={styles.input}>
           <TextInput
             secureTextEntry={!showText}
@@ -53,7 +53,7 @@ export default CustomTextInput;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 2
+    gap: 3
   },
   inputContainer: {
     borderColor: "#47CA4C",
@@ -61,6 +61,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 48,
     paddingHorizontal: 15,
+  },
+  inputContainerError: {
+    borderColor: "#d24343",
   },
   input: {
     alignItems: 'center',

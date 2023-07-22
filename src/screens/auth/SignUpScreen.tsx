@@ -127,7 +127,7 @@ const SignUpScreen = () => {
               required: 'Password is required',
               pattern: {
                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,24}$/,
-                message: "password not strong enough"
+                message: "• 8 to 24 characters.\n• Must include uppercase and lowercase letters, a number and a special character.\n• Allowed special characters: !@#$%^&*"
               }
             }}
           />
@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
   },
   termsContainer: {
     padding: 0,
-    margin: 0
+    margin: 0,
+    marginBottom: 10
   },
   termsText: {
     color: '#000',
