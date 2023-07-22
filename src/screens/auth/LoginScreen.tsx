@@ -31,6 +31,7 @@ const LoginScreen = () => {
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
+                  error={errors.vendorId}
                   isPass={false}
                   label='Vendor ID'
                   keyboardType='number-pad'
@@ -51,6 +52,7 @@ const LoginScreen = () => {
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
+                  error={errors.email}
                   isPass={false}
                   keyboardType='email-address'
                   label='Email address'
@@ -75,6 +77,7 @@ const LoginScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.password}
                 isPass={true}
                 label='Password'
                 onBlur={onBlur}

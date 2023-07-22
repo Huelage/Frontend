@@ -28,6 +28,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
+                error={errors.fullname}
                 isPass={false}
                 label={isVendor ? "Vendor's name" : "Full name"}
                 onBlur={onBlur}
@@ -38,10 +39,7 @@ const SignUpScreen = () => {
             name="fullname"
             rules={{
               required: "Name is required",
-              pattern: {
-                value: /^[\w.]{3,}$/,
-                message: "Name has to be atleast 3 characters"
-              }
+              minLength: { value: 3, message: "Name has to be atleast 3 characters" }
             }}
           />
           <Controller
@@ -50,6 +48,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.email}
                 isPass={false}
                 keyboardType='email-address'
                 label={isVendor ? "Vendor's email" : "Email address"}
@@ -73,6 +72,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
+                error={errors.phonenumber}
                 isPass={false}
                 keyboardType='number-pad'
                 label={isVendor ? "Vendor's Phone number" : "Phone number"}
@@ -93,6 +93,7 @@ const SignUpScreen = () => {
                 <CustomTextInput
                   autoCapitalize='words'
                   autoCorrect={false}
+                  error={errors.businessname}
                   isPass={false}
                   label="Business name"
                   onBlur={onBlur}
@@ -103,10 +104,7 @@ const SignUpScreen = () => {
               name="businessname"
               rules={{
                 required: "Business name is required",
-                pattern: {
-                  value: /^[\w.+-]{3,}$/,
-                  message: "Business name has to be atleast 3 characters"
-                }
+                minLength: { value: 3, message: "Business name has to be atleast 3 charaters" }
               }}
             />
           )}
@@ -116,6 +114,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.password}
                 isPass={true}
                 label='Create password'
                 onBlur={onBlur}
