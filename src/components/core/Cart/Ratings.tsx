@@ -1,5 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
-import { fonts } from "@utils";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts, shadowStyle } from "@utils";
 import { StyleSheet, Text, View } from "react-native";
 
 const Ratings = () => {
@@ -24,17 +24,8 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     paddingHorizontal: 11,
     alignItems: "stretch",
-    right: "33%",
-    top: "16.5%",
-    shadowColor: "000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
 
-    elevation: 7,
+    ...shadowStyle,
   },
   rating: {
     color: "#ffffff",

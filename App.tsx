@@ -12,13 +12,18 @@ import {
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-  useFonts
-} from '@expo-google-fonts/dev';
-import { StackNavigator, TabNavigator } from '@navigators';
+  useFonts,
+} from "@expo-google-fonts/dev";
+import { StackNavigator, TabNavigator } from "@navigators";
 import { NavigationContainer } from "@react-navigation/native";
+<<<<<<< Updated upstream
 import { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
+=======
+import { useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+>>>>>>> Stashed changes
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -33,12 +38,13 @@ const App = () => {
     Inter_600SemiBold,
     InterTight_600SemiBold_Italic,
     Inter_700Bold,
-    InterTight_700Bold_Italic
+    InterTight_700Bold_Italic,
   });
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(true);
 
   if (!fontsLoaded) return null;
   return (
+<<<<<<< Updated upstream
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
@@ -46,6 +52,13 @@ const App = () => {
         </NavigationContainer >
       </SafeAreaProvider>
     </Provider>
+=======
+    <SafeAreaProvider>
+      <NavigationContainer>
+        {isSignedIn ? <TabNavigator /> : <StackNavigator />}
+      </NavigationContainer>
+    </SafeAreaProvider>
+>>>>>>> Stashed changes
   );
 };
 
