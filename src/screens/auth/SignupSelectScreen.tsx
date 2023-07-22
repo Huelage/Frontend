@@ -1,4 +1,4 @@
-import { NavigationProps } from "@interfaces";
+import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/core";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
@@ -6,7 +6,7 @@ import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const SignupSelectScreen = () => {
-  const { navigate } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<AuthNavigationProps>();
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.containerBg} source={require('@images/SignupSelectBg.png')} resizeMode="cover">

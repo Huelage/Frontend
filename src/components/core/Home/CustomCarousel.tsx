@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { CategoryCard } from '.';
+import CategoryCard from './CategoryCard';
 
 const CustomCarousel = () => {
   const carouselRef = useRef<ICarouselInstance>(null);

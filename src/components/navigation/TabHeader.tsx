@@ -1,12 +1,14 @@
 import { Feather } from '@expo/vector-icons';
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
+import { NavigationProps } from '@interfaces';
+import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const TabHeader = ({ navigation, route, options }: BottomTabHeaderProps) => {
+const TabHeader = () => {
+  const { navigate } = useNavigation<NavigationProps>();
   return (
     <>
       <StatusBar style="dark" />
@@ -17,7 +19,9 @@ const TabHeader = ({ navigation, route, options }: BottomTabHeaderProps) => {
             <Text style={styles.headerText1}>Good morning</Text>
             <Text style={styles.headerText2}>John Jane Doe</Text>
           </View>
-          <Feather name="menu" size={32} color="black" />
+          <TouchableOpacity onPress={() => navigate("Cart")}>
+            <Feather name="menu" size={32} color="black" />
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -38,7 +42,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   headerBox: {
-    alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between'
