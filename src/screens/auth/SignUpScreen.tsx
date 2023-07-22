@@ -6,7 +6,7 @@ import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
@@ -20,7 +20,7 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <View style={styles.heroInputBox}>
+      <ScrollView style={styles.heroInputBox}>
         <View style={styles.heroInputs}>
           <Controller
             control={control}
@@ -151,7 +151,7 @@ const SignUpScreen = () => {
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' isVendor={isVendor} />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
