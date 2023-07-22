@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const LoginScreen = () => {
-  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
+  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: 'onChange' });
   const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
     console.log(data);

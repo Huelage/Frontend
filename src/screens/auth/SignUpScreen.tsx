@@ -12,7 +12,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
+  const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
   const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
   const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
     console.log(errors);
