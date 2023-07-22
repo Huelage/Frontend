@@ -23,7 +23,7 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
             style={styles.textInput}
             placeholder={label}
             placeholderTextColor="#BCB5B5"
-            selectionColor="#47CA4C"
+            selectionColor={error ? "#d24343" : "#47CA4C"}
             {...inputProps}
           />
           {isPass && (
