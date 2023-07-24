@@ -5,22 +5,19 @@ import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
-import { Controller, SubmitErrorHandler, useForm } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const { setValue, handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>();
+  const { handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
   const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
-  const onError: SubmitErrorHandler<SignUpInfoInterface> = (errors, e) => {
-    console.log(errors);
-  };
   return (
     <View style={styles.container}>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <View style={styles.heroInputBox}>
+      <ScrollView style={styles.heroInputBox}>
         <View style={styles.heroInputs}>
           <Controller
             control={control}
@@ -28,6 +25,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
+                error={errors.fullname}
                 isPass={false}
                 label={isVendor ? "Vendor's name" : "Full name"}
                 onBlur={onBlur}
@@ -38,10 +36,7 @@ const SignUpScreen = () => {
             name="fullname"
             rules={{
               required: "Name is required",
-              pattern: {
-                value: /^[\w.]{3,}$/,
-                message: "Name has to be atleast 3 characters"
-              }
+              minLength: { value: 3, message: "Name should be a minimum of 3 characters" }
             }}
           />
           <Controller
@@ -50,6 +45,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.email}
                 isPass={false}
                 keyboardType='email-address'
                 label={isVendor ? "Vendor's email" : "Email address"}
@@ -73,6 +69,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
+                error={errors.phonenumber}
                 isPass={false}
                 keyboardType='number-pad'
                 label={isVendor ? "Vendor's Phone number" : "Phone number"}
@@ -93,6 +90,7 @@ const SignUpScreen = () => {
                 <CustomTextInput
                   autoCapitalize='words'
                   autoCorrect={false}
+                  error={errors.businessname}
                   isPass={false}
                   label="Business name"
                   onBlur={onBlur}
@@ -103,10 +101,7 @@ const SignUpScreen = () => {
               name="businessname"
               rules={{
                 required: "Business name is required",
-                pattern: {
-                  value: /^[\w.+-]{3,}$/,
-                  message: "Business name has to be atleast 3 characters"
-                }
+                minLength: { value: 3, message: "Business name should be a minimum of 3 charaters" }
               }}
             />
           )}
@@ -116,6 +111,7 @@ const SignUpScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.password}
                 isPass={true}
                 label='Create password'
                 onBlur={onBlur}
@@ -127,8 +123,8 @@ const SignUpScreen = () => {
             rules={{
               required: 'Password is required',
               pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,24}$/,
-                message: "password not strong enough"
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,24}$/,
+                message: "• 6 to 24 characters.\n• Must include uppercase and lowercase letters, a number and a special character.\n• Allowed special characters: !@#$%^&*"
               }
             }}
           />
@@ -148,11 +144,11 @@ const SignUpScreen = () => {
           )}
         </View>
         <View style={styles.heroSubmitBox}>
-          <SubmitButton label='CREATE ACCOUNT' onSubmit={handleSubmit(onSubmit, onError)} />
+          <SubmitButton label='CREATE ACCOUNT' onSubmit={handleSubmit(onSubmit)} />
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' isVendor={isVendor} />
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -178,7 +174,8 @@ const styles = StyleSheet.create({
     gap: 20
   },
   heroSubmitBox: {
-    gap: 25
+    gap: 25,
+    marginTop: 15
   },
   heroLoginButton: {
     alignItems: 'center',

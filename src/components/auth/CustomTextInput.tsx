@@ -1,40 +1,50 @@
 import { Ionicons } from '@expo/vector-icons';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
+import { FieldError } from 'react-hook-form';
+import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;
   isPass: boolean;
+  error?: FieldError;
 }
 
-const CustomTextInput = ({ label, isPass, ...inputProps }: CustomTextInputProps) => {
+const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInputProps) => {
   const [showText, setShowText] = useState<boolean>(!isPass);
 
   const toggleShowText = () => setShowText(show => !show);
   return (
-    <View style={styles.inputContainer}>
-      <View style={styles.input}>
-        <TextInput
-          secureTextEntry={!showText}
-          style={styles.textInput}
-          placeholder={label}
-          placeholderTextColor="#BCB5B5"
-          selectionColor="#47CA4C"
-          {...inputProps}
-        />
-        {isPass && (
-          showText ? (
-            <TouchableOpacity onPress={toggleShowText}>
-              <Ionicons style={styles.textIcon} name="eye-off" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={toggleShowText}>
-              <Ionicons style={styles.textIcon} name="eye" />
-            </TouchableOpacity>
-          )
-        )}
+    <View style={styles.container}>
+      <View style={[styles.inputContainer, error && styles.inputContainerError]}>
+        <View style={styles.input}>
+          <TextInput
+            secureTextEntry={!showText}
+            style={styles.textInput}
+            placeholder={label}
+            placeholderTextColor="#BCB5B5"
+            selectionColor={error ? "#d24343" : "#47CA4C"}
+            {...inputProps}
+          />
+          {isPass && (
+            showText ? (
+              <TouchableOpacity onPress={toggleShowText}>
+                <Ionicons style={styles.textIcon} name="eye-off" />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={toggleShowText}>
+                <Ionicons style={styles.textIcon} name="eye" />
+              </TouchableOpacity>
+            )
+          )}
+        </View>
       </View>
+      {error && <View style={styles.errorBox}>
+        <Text style={styles.errorText}>
+          <Ionicons name="alert-circle-outline" size={16} color="white" />&nbsp;
+          {error.message}
+        </Text>
+      </View>}
     </View>
   );
 };
@@ -42,6 +52,19 @@ const CustomTextInput = ({ label, isPass, ...inputProps }: CustomTextInputProps)
 export default CustomTextInput;
 
 const styles = StyleSheet.create({
+  container: {
+    gap: 3
+  },
+  inputContainer: {
+    borderColor: "#47CA4C",
+    borderRadius: 10,
+    borderWidth: 2,
+    height: 48,
+    paddingHorizontal: 15,
+  },
+  inputContainerError: {
+    borderColor: "#d24343",
+  },
   input: {
     alignItems: 'center',
     alignSelf: 'center',
@@ -50,12 +73,15 @@ const styles = StyleSheet.create({
     gap: 10,
     width: "100%"
   },
-  inputContainer: {
-    borderColor: "#47CA4C",
+  errorBox: {
+    backgroundColor: 'black',
     borderRadius: 10,
-    borderWidth: 2,
-    height: 48,
-    paddingHorizontal: 15,
+    padding: 10
+  },
+  errorText: {
+    color: 'white',
+    fontFamily: fonts.I_500,
+    fontSize: 14
   },
   textInput: {
     flex: 1,

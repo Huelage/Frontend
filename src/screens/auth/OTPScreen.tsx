@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@api/app/appHooks';
+import { setIsAuthenticated } from '@api/slices/globalSlice';
 import { SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthNavigationProps } from '@interfaces';
@@ -12,17 +14,22 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 const CELL_COUNT = 4;
 
 const OTPScreen = () => {
-  const { goBack } = useNavigation<AuthNavigationProps>();
+  const dispatch = useAppDispatch();
   const [value, setValue] = useState<string>("");
-  const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const [seconds, setSeconds] = useState<number>(59);
-  const timerRef = useRef<number>(seconds);
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const { goBack } = useNavigation<AuthNavigationProps>();
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const timerRef = useRef<number>(seconds);
 
   const resendCode = () => {
     setIsTimerActive(true);
     timerRef.current = 59;
+  };
+  const verifyOTP = () => {
+    console.log(value);
+    dispatch(setIsAuthenticated(true));
   };
 
   useEffect(() => {
@@ -37,6 +44,7 @@ const OTPScreen = () => {
     }, 1000);
     return () => clearInterval(timerId);
   }, [isTimerActive]);
+  useEffect(() => { ref.current?.focus(); }, []);
   return (
     <>
       <StatusBar style='dark' />
@@ -77,7 +85,7 @@ const OTPScreen = () => {
               <Text style={[styles.resendText, styles.resendTimer]}>Resend Code</Text>
             </TouchableOpacity>
           )}
-          <SubmitButton label='Verify' onSubmit={() => console.log("submitted")} />
+          <SubmitButton label='Verify' onSubmit={verifyOTP} />
         </View>
       </View>
     </>
@@ -120,7 +128,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   resendTimer: {
-    color: "#47CA4C"
+    color: "#47CA4C",
+    fontFamily: fonts.I_600
   },
   inputRoot: {
     alignItems: 'center',

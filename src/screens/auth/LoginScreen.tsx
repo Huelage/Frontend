@@ -1,20 +1,22 @@
+import { useAppDispatch } from '@api/app/appHooks';
+import { setIsAuthenticated } from '@api/slices/globalSlice';
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/auth';
 import { LoginInfoInterface } from '@interfaces';
 import { fonts, shadowStyle } from '@utils';
-import React, { useState } from 'react';
-import { Controller, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const LoginScreen = () => {
-  const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>();
+  const dispatch = useAppDispatch();
+  const { handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: 'onChange' });
   const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
-    console.log(data);
+    reset();
+    dispatch(setIsAuthenticated(true));
   };
-  const onError: SubmitErrorHandler<LoginInfoInterface> = (errors, e) => {
-    console.log(errors);
-  };
+  useEffect(() => { reset(); }, [isVendor]);
   return (
     <View style={styles.container}>
       <Hero lead="Welcome Back!" accent="Login to continue" page='SI' />
@@ -31,6 +33,7 @@ const LoginScreen = () => {
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
+                  error={errors.vendorId}
                   isPass={false}
                   label='Vendor ID'
                   keyboardType='number-pad'
@@ -51,6 +54,7 @@ const LoginScreen = () => {
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
+                  error={errors.email}
                   isPass={false}
                   keyboardType='email-address'
                   label='Email address'
@@ -75,6 +79,7 @@ const LoginScreen = () => {
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
+                error={errors.password}
                 isPass={true}
                 label='Password'
                 onBlur={onBlur}
@@ -87,7 +92,7 @@ const LoginScreen = () => {
           />
         </View>
         <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
-        <SubmitButton label='LOG IN' onSubmit={handleSubmit(onSubmit, onError)} />
+        <SubmitButton label='LOG IN' onSubmit={handleSubmit(onSubmit)} />
         <AuthNavigate page='SI' isVendor={isVendor} />
       </View>
     </View>
