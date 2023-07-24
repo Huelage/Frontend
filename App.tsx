@@ -1,4 +1,4 @@
-import { store } from '@api/app/store';
+import { store } from "@api/app/store";
 import {
   InterTight_200ExtraLight_Italic,
   InterTight_300Light_Italic,
@@ -16,15 +16,9 @@ import {
 } from "@expo-google-fonts/dev";
 import { StackNavigator, TabNavigator } from "@navigators";
 import { NavigationContainer } from "@react-navigation/native";
-<<<<<<< Updated upstream
-import { useState } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider } from 'react-redux';
-=======
 import { useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
->>>>>>> Stashed changes
-
+import { Provider } from "react-redux";
 const App = () => {
   const [fontsLoaded] = useFonts({
     Inter_200ExtraLight,
@@ -44,21 +38,13 @@ const App = () => {
 
   if (!fontsLoaded) return null;
   return (
-<<<<<<< Updated upstream
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
           {isSignedIn ? <TabNavigator /> : <StackNavigator />}
-        </NavigationContainer >
+        </NavigationContainer>
       </SafeAreaProvider>
     </Provider>
-=======
-    <SafeAreaProvider>
-      <NavigationContainer>
-        {isSignedIn ? <TabNavigator /> : <StackNavigator />}
-      </NavigationContainer>
-    </SafeAreaProvider>
->>>>>>> Stashed changes
   );
 };
 

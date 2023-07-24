@@ -3,15 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-<<<<<<< Updated upstream
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-=======
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import { fonts } from "../../utils/fontEnum";
->>>>>>> Stashed changes
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<NavigationProps>();
@@ -34,9 +29,6 @@ const OnBoardScreen = () => {
           <View style={[styles.baseButton, styles.signupButton]}>
             <Text style={styles.signupText}>SIGN UP</Text>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate("WelcomePage")}>
-          <Text>home</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -62,7 +54,7 @@ const styles = StyleSheet.create({
   logoImage: {
     height: 100,
     width: 100,
-    borderRadius: 50
+    borderRadius: 50,
   },
   logoText: {
     fontFamily: fonts.I_700,

@@ -86,7 +86,9 @@ export default QuantitySelect;
 const styles = StyleSheet.create({
   quantityWrap: {
     gap: 30,
-    marginTop: wp("45%"),
+    marginTop: wp("59%"),
+    marginBottom: wp("8%"),
+    paddingHorizontal: wp("10%"),
   },
   button: {
     height: 40,
@@ -137,12 +139,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   butt: {
-    flex: 0.3,
     height: 50,
-    width: "30%",
+    width: wp("15%"),
     marginTop: 10,
-    marginHorizontal: 25,
-    paddingHorizontal: 20,
+    marginLeft: wp("15%"),
+
     alignItems: "center",
     shadowColor: "000",
     shadowOffset: {
@@ -191,7 +192,7 @@ const styles = StyleSheet.create({
     height: 69,
     justifyContent: "space-between",
     gap: 60,
-    paddingHorizontal: wp("20%"),
+    paddingHorizontal: wp("10%"),
     marginBottom: "2%",
     alignItems: "center",
     flexDirection: "row",
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontWeight: "700",
     width: "100%",
-    textAlign: "right",
+    marginRight: wp("10%"),
   },
   price: {
     color: "#000000",

@@ -6,7 +6,7 @@ const Ratings = () => {
   return (
     <View style={styles.Frame}>
       <Text style={styles.rating}>4.3</Text>
-      <View style={styles.ame}>
+      <View style={styles.ratingIcon}>
         <Ionicons name="star" size={28} color="#FFD700" />
       </View>
     </View>
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#47c94c",
     display: "flex",
     height: 43,
+    marginLeft: 10,
     width: "15%",
     borderRadius: 10,
     paddingVertical: 9,
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "right",
   },
-  ame: {
+  ratingIcon: {
     bottom: "100%",
   },
 });

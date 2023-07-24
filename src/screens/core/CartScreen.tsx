@@ -50,7 +50,7 @@ const CartScreen = () => {
       </View>
 
       <View style={styles.buyWrap}>
-        <TouchableOpacity style={styles.licon}>
+        <TouchableOpacity style={styles.iconWrap}>
           <Icon name="shopping-cart" size={40} color="#BCB5B5" />
         </TouchableOpacity>
         <BuyNow />
@@ -126,19 +126,19 @@ const styles = StyleSheet.create({
     color: "#616161",
     textAlign: "justify",
     lineHeight: 35,
+    marginBottom: 30,
   },
-  licon: {
-    right: "30%",
+  iconWrap: {
     borderColor: "#000000",
     width: "10%",
-    height: 50,
+    marginBottom: 0,
     borderRadius: 20,
+    margin: 45,
   },
   buyWrap: {
+    width: wp("50%"),
+    marginRight: wp("25%"),
     flexDirection: "row",
-    width: "100%",
-
-    gap: 5,
   },
   love: {
     alignItems: "flex-end",
