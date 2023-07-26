@@ -4,28 +4,28 @@ const restuarants = [
   {
     id: 1,
     name: "Hard Rock Cafe",
-    location: "Landmark village, water coporation road, Oniru, VI, Lagos",
+    location: "Landmark village water coporation road, Oniru, VI, Lagos",
     rating: 5,
     imgUrl: Image.resolveAssetSource(require('@images/addRockCafe.jpeg')).uri
   },
   {
     id: 2,
     name: "Shiro Restaurant",
-    location: "Block XVI 3 & 4 Victoria Island Oniru Estate, Eti- Osa Lagos",
+    location: "Block XVI, 3 & 4 Victoria Island Oniru Estate, Eti- Osa Lagos",
     rating: 4.7,
     imgUrl: Image.resolveAssetSource(require('@images/shiroRestaurant.png')).uri
   },
   {
     id: 3,
     name: "Ayo's Pizza",
-    location: "Shop 10, jaja complex, unilag, akoka, Lagos",
+    location: "Shop 10 jaja complex, unilag, akoka, Lagos",
     rating: 4,
     imgUrl: Image.resolveAssetSource(require('@images/ayoPizza.png')).uri
   },
   {
     id: 4,
     name: "Cafe Royal",
-    location: "CCMQ+76H, Etim Iyanga Cres, Victoria Island Lagos",
+    location: "CCMQ+76H Etim Iyanga Cres, Victoria Island Lagos",
     rating: 4.9,
     imgUrl: Image.resolveAssetSource(require('@images/cafeRoyal.png')).uri
   },
@@ -46,7 +46,7 @@ const restuarants = [
   {
     id: 7,
     name: "Papii's Maestro",
-    location: "Landmark village, water coporation road, Oniru, VI, Lagos",
+    location: "Landmark village water coporation road, Oniru, VI, Lagos",
     rating: 4.1,
     imgUrl: Image.resolveAssetSource(require('@images/papiisMaestro.png')).uri
   },
