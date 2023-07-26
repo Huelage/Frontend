@@ -9,10 +9,9 @@ interface ModalProps {
   isVisible: boolean;
   children: React.ReactNode;
   close: React.Dispatch<React.SetStateAction<boolean>>;
-  [x: string]: any;
 }
 
-const CustomModal = ({ isVisible, children, close, ...props }: ModalProps) => {
+const CustomModal = ({ isVisible, children, close }: ModalProps) => {
   return (
     <RNModal
       isVisible={isVisible}
@@ -44,16 +43,5 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     justifyContent: 'center',
     width: wp('100%'),
-  },
-  childrenContainer: {
-
-  },
-  blurView: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'transparent'
   }
 });
