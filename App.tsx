@@ -1,4 +1,4 @@
-import { store } from '@api/app/store';
+import { store } from "@api/app/store";
 import {
   InterTight_200ExtraLight_Italic,
   InterTight_300Light_Italic,
@@ -31,7 +31,7 @@ const App = () => {
     Inter_600SemiBold,
     InterTight_600SemiBold_Italic,
     Inter_700Bold,
-    InterTight_700Bold_Italic
+    InterTight_700Bold_Italic,
   });
 
   if (!fontsLoaded) return null;
