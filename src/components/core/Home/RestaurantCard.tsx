@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0FFF0',
     borderRadius: 15,
     gap: 5,
+    marginLeft: 20,
     minHeight: hp("30%"),
     width: wp("60%"),
     ...shadowStyle

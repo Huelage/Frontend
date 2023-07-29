@@ -19,9 +19,7 @@ const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: Food
             <Ionicons name="star" size={24} color="#47CA4C" />
             <Text style={styles.foodRating}>{rating}</Text>
           </View>
-          <View style={styles.foodImageContainer}>
-            <Image style={styles.foodImage} source={{ uri: imgUrl }} resizeMode='contain' />
-          </View>
+          <Image style={styles.foodImage} source={{ uri: imgUrl }} resizeMode='contain' />
           <CheckBox
             checked={isFavourite}
             onPress={() => { }}
@@ -61,6 +59,7 @@ const styles = StyleSheet.create({
     gap: 5,
     width: wp("60%"),
     marginTop: 80,
+    marginLeft: 20,
     ...shadowStyle
   },
   foodIntro: {
@@ -71,22 +70,17 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 35
   },
-  foodImageContainer: {
-    flex: 1,
+  foodImage: {
     position: 'absolute',
-    backgroundColor: 'transparent',
-    borderRadius: 65,
     left: 48,
     top: -hp("10%"),
+    borderRadius: 65,
+    height: 130,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: .3,
     shadowRadius: 5,
-    zIndex: 2
-  },
-  foodImage: {
-    borderRadius: 65,
-    height: 130,
     width: 130,
+    zIndex: 2
   },
   foodCalories: {
     alignItems: 'center',

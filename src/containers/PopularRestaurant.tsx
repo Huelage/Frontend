@@ -18,10 +18,9 @@ const PopularRestaurant = () => {
         keyExtractor={item => String(item.id)}
         data={mockRestaurants}
         renderItem={({ item }) => (
-          <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
-            <RestaurantCard {...item} addToCart={() => addToCart()} />
-          </View>
+          <RestaurantCard {...item} addToCart={() => addToCart()} />
         )}
+        contentContainerStyle={styles.foodList}
       />
     </View>
   );
@@ -38,6 +37,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20
+  },
+  foodList: {
+    paddingBottom: 16
   },
   foodText: {
     fontFamily: fonts.I_500,
