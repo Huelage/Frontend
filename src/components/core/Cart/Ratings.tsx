@@ -1,12 +1,12 @@
-import { Ionicons } from '@expo/vector-icons';
-import { fonts } from "@utils";
+import { Ionicons } from "@expo/vector-icons";
+import { fonts, shadowStyle } from "@utils";
 import { StyleSheet, Text, View } from "react-native";
 
 const Ratings = () => {
   return (
     <View style={styles.Frame}>
       <Text style={styles.rating}>4.3</Text>
-      <View style={styles.ame}>
+      <View style={styles.ratingIcon}>
         <Ionicons name="star" size={28} color="#FFD700" />
       </View>
     </View>
@@ -19,22 +19,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#47c94c",
     display: "flex",
     height: 43,
+    marginLeft: 10,
     width: "15%",
     borderRadius: 10,
     paddingVertical: 9,
     paddingHorizontal: 11,
     alignItems: "stretch",
-    right: "33%",
-    top: "16.5%",
-    shadowColor: "000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
 
-    elevation: 7,
+    ...shadowStyle,
   },
   rating: {
     color: "#ffffff",
@@ -43,7 +35,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "right",
   },
-  ame: {
+  ratingIcon: {
     bottom: "100%",
   },
 });

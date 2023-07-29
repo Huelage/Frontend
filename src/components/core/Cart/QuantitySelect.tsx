@@ -1,6 +1,10 @@
 import { fonts } from "@utils";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const QuantitySelect = () => {
   const [count, setCount] = useState(1);
@@ -19,7 +23,7 @@ const QuantitySelect = () => {
   };
 
   return (
-    <View>
+    <View style={styles.quantityWrap}>
       <View style={styles.Arrange}>
         <TouchableOpacity
           style={[styles.button, styles.decrementButton]}
@@ -27,6 +31,7 @@ const QuantitySelect = () => {
         >
           <Text style={styles.Value}>-</Text>
         </TouchableOpacity>
+        <Text style={styles.Count}>{count}</Text>
         <TouchableOpacity
           style={[styles.button, styles.incrementButton]}
           onPress={() => setCount(count + 1)}
@@ -34,9 +39,12 @@ const QuantitySelect = () => {
           <Text style={styles.Value}>+</Text>
         </TouchableOpacity>
 
-        <Text style={styles.Count}>{count}</Text>
         <Text>{count > 1}</Text>
         <Text>{count > 0}</Text>
+      </View>
+      <View style={styles.foodTextWrap}>
+        <Text style={styles.foodText}>Shrimp Soup</Text>
+        <Text style={styles.price}>N {getPrice()}</Text>
       </View>
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity
@@ -70,26 +78,25 @@ const QuantitySelect = () => {
           <Text style={styles.SizeText}>Large</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.log}>
-        <Text style={styles.ppe}>Shrimp Soup</Text>
-        <Text style={styles.pre}> N {getPrice()}</Text>
-      </View>
     </View>
   );
 };
 
 export default QuantitySelect;
 const styles = StyleSheet.create({
+  quantityWrap: {
+    gap: 30,
+    marginTop: wp("59%"),
+    marginBottom: wp("8%"),
+    paddingHorizontal: wp("10%"),
+  },
   button: {
-    flex: 0.1,
     height: 40,
     width: 85,
     margin: 10,
     borderRadius: 10,
     paddingVertical: 2,
     paddingHorizontal: 11,
-    left: "500%",
-    top: "27%",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "000",
@@ -113,10 +120,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: fonts.I_400,
     fontSize: 28,
-    top: "30%",
-    left: "175%",
-    padding: 1,
+    padding: 2,
     marginRight: "2%",
+    marginTop: 10,
   },
   Value: {
     color: "#ffffff",
@@ -129,19 +135,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     margin: 0,
-    position: "relative",
+    marginLeft: wp("50%"),
     justifyContent: "space-between",
-    top: "5%",
-    right: "2%",
   },
   butt: {
-    flex: 0.3,
     height: 50,
-    width: "30%",
+    width: wp("15%"),
     marginTop: 10,
-    top: "60%",
-    marginHorizontal: 25,
-    paddingHorizontal: 20,
+    marginLeft: wp("15%"),
+
     alignItems: "center",
     shadowColor: "000",
     shadowOffset: {
@@ -183,37 +185,30 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_700,
     fontSize: 20,
     fontWeight: "700",
-    left: 0,
   },
 
-  log: {
+  foodTextWrap: {
     width: "100%",
     height: 69,
-    paddingHorizontal: 100,
+    justifyContent: "space-between",
+    gap: 60,
+    paddingHorizontal: wp("10%"),
     marginBottom: "2%",
-    top: "55%",
-    position: "relative",
-    display: "flex",
-    flex: 0,
-    alignItems: "stretch",
-    right: "15%",
+    alignItems: "center",
+    flexDirection: "row",
   },
-  ppe: {
+  foodText: {
     color: "#000000",
     fontFamily: fonts.I_700,
     fontSize: 60,
     fontWeight: "700",
     width: "100%",
-    top: 0,
-    right: "5%",
+    marginRight: wp("10%"),
   },
-  pre: {
+  price: {
     color: "#000000",
     fontFamily: fonts.I_700,
     fontSize: 28,
     fontWeight: "700",
-    bottom: "60%",
-    left: "85%",
-    top: -50,
   },
 });

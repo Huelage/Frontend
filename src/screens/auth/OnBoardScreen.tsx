@@ -3,14 +3,20 @@ import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
-        <Image style={styles.logoImage} source={require("@images/onboard_logo.png")} />
+        <Image
+          style={styles.logoImage}
+          source={require("@images/onboard_logo.png")}
+        />
         <Text style={styles.logoText}>HUELAGE</Text>
       </View>
       <View style={styles.authWrapper}>
@@ -38,37 +44,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: wp("10%"),
-    paddingTop: hp("15%")
+    paddingTop: hp("15%"),
   },
   logoWrapper: {
     alignItems: "center",
     gap: 15,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   logoImage: {
     height: 100,
     width: 100,
-    borderRadius: 50
+    borderRadius: 50,
   },
   logoText: {
     fontFamily: fonts.I_700,
     fontSize: 30,
     fontWeight: "700",
-    color: "#fff"
+    color: "#fff",
   },
   authWrapper: {
     gap: 15,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginTop: hp("30%"),
-    width: '100%'
+    width: "100%",
   },
   baseButton: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 10,
     height: 50,
-    justifyContent: 'center',
-    width: '100%',
-    ...shadowStyle
+    justifyContent: "center",
+    width: "100%",
+    ...shadowStyle,
   },
   loginButton: {
     backgroundColor: "#fff",
@@ -76,16 +82,16 @@ const styles = StyleSheet.create({
   loginText: {
     color: "#4CAF50",
     fontFamily: fonts.I_600,
-    fontSize: 18
+    fontSize: 18,
   },
   signupButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     borderWidth: 2,
-    borderColor: '#fff'
+    borderColor: "#fff",
   },
   signupText: {
     color: "#fff",
     fontFamily: fonts.I_600,
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 });
