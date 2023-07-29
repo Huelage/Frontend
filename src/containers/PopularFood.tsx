@@ -1,14 +1,10 @@
 import { mockFoods } from '@api/mock';
-import { ItemAmountCard } from '@components/core/Detail';
 import { CustomButton, FoodCard } from '@components/core/Home/';
-import { CustomModal } from '@components/misc';
 import { fonts } from '@utils';
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const PopularFood = () => {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const addToCart = () => console.log("hello");
   return (
     <View style={styles.container}>
       <View style={styles.foodNav}>
@@ -22,16 +18,10 @@ const PopularFood = () => {
         data={mockFoods}
         renderItem={({ item }) => (
           <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
-            <FoodCard {...item} onClick={setShowModal} addToCart={() => addToCart()} />
+            <FoodCard {...item} />
           </View>
         )}
       />
-      <CustomModal isVisible={showModal} close={setShowModal}>
-        <View style={{ width: 300, height: 400, backgroundColor: "white", alignItems: 'center', justifyContent: 'center', gap: 20 }}>
-          <Text>Indomie</Text>
-          <ItemAmountCard />
-        </View>
-      </CustomModal>
     </View>
   );
 };

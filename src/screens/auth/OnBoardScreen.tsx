@@ -1,4 +1,4 @@
-import { NavigationProps } from "@interfaces";
+import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
@@ -9,7 +9,7 @@ import {
 } from "react-native-responsive-screen";
 
 const OnBoardScreen = () => {
-  const { navigate } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<AuthNavigationProps>();
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>

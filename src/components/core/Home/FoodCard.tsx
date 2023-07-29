@@ -1,20 +1,18 @@
+import { CustomModal } from '@components/misc';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { FoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import FoodModalContent from './FoodModalContent';
 
-interface FoodProps extends FoodInterface {
-  addToCart: () => void;
-  onClick: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FoodDemo = ({ imgUrl, name, price, rating, cals, isFavourite, addToCart, onClick }: FoodProps) => {
+const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: FoodInterface) => {
+  const [showModal, setShowModal] = useState<boolean>(false);
   return (
-    <TouchableWithoutFeedback onPress={() => onClick(true)}>
+    <TouchableWithoutFeedback onPress={() => setShowModal(true)}>
       <View style={styles.container}>
         <View style={styles.foodIntro}>
           <View style={styles.foodRatingBox}>
@@ -44,11 +42,14 @@ const FoodDemo = ({ imgUrl, name, price, rating, cals, isFavourite, addToCart, o
           {price}
         </Text>
       </View>
+      <CustomModal isVisible={showModal} close={setShowModal}>
+        <FoodModalContent imgUrl={imgUrl} name={name} desc={desc} />
+      </CustomModal>
     </TouchableWithoutFeedback>
   );
 };
 
-export default FoodDemo;
+export default FoodCard;
 
 const styles = StyleSheet.create({
   container: {

@@ -17,7 +17,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        header: (props) => <TabHeader {...props} />,
+        header: () => <TabHeader />,
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
