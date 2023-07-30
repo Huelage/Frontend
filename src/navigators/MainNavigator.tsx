@@ -4,13 +4,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import StackNavigator from './StackNavigator';
 import AuthStackNavigator from './AuthStackNavigator';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const MainNavigator = () => {
   const isSignedIn = useAppSelector(isAuthenticated);
   return (
-    <NavigationContainer>
-      {isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        {isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 
