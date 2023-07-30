@@ -6,7 +6,7 @@ const restuarants = [
     name: "Hard Rock Cafe",
     location: "Landmark village water coporation road, Oniru, VI, Lagos",
     rating: 5,
-    imgUrl: Image.resolveAssetSource(require('@images/addRockCafe.jpeg')).uri
+    imgUrl: Image.resolveAssetSource(require('@images/addRockCafe.png')).uri
   },
   {
     id: 2,
@@ -20,14 +20,14 @@ const restuarants = [
     name: "Ayo's Pizza",
     location: "Shop 10 jaja complex, unilag, akoka, Lagos",
     rating: 4,
-    imgUrl: Image.resolveAssetSource(require('@images/ayoPizza.png')).uri
+    imgUrl: Image.resolveAssetSource(require('@images/addRockCafe.png')).uri
   },
   {
     id: 4,
     name: "Cafe Royal",
     location: "CCMQ+76H Etim Iyanga Cres, Victoria Island Lagos",
     rating: 4.9,
-    imgUrl: Image.resolveAssetSource(require('@images/cafeRoyal.png')).uri
+    imgUrl: Image.resolveAssetSource(require('@images/shiroRestaurant.png')).uri
   },
   {
     id: 5,
@@ -41,7 +41,7 @@ const restuarants = [
     name: "Iya Moria",
     location: "no 1 dli avenue, opposite honors female hostel, Unilag",
     rating: 5,
-    imgUrl: Image.resolveAssetSource(require('@images/iyaMoria.png')).uri
+    imgUrl: Image.resolveAssetSource(require('@images/addRockCafe.png')).uri
   },
   {
     id: 7,
@@ -55,7 +55,7 @@ const restuarants = [
     name: "Salado",
     location: "Education faculty, university of lagos, akoka, yaba",
     rating: 5,
-    imgUrl: Image.resolveAssetSource(require('@images/salado.png')).uri
+    imgUrl: Image.resolveAssetSource(require('@images/shiroRestaurant.png')).uri
   },
 ];
 
