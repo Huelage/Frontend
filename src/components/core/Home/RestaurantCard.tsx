@@ -2,26 +2,44 @@ import { Ionicons } from '@expo/vector-icons';
 import { RestaurantInterface } from '@interfaces';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface RestaurantProps extends RestaurantInterface {
   addToCart: () => void;
 }
+type IconName = keyof typeof Ionicons.glyphMap;
+type IconProps = {
+  1: IconName;
+  0.5: IconName;
+  0: IconName;
+};
 
 const RestaurantDemo = ({ name, imgUrl, rating, location, addToCart }: RestaurantProps) => {
+  const rate = Math.floor(rating);
+  const ratemantissa = rating - rate;
+  const ratingArray = Array(rate).fill(1);
+  if (ratemantissa >= 0.5) ratingArray.push(0.5);
+  for (let i = ratingArray.length; i < 5; i++) ratingArray.push(0);
+  const iconName: IconProps = {
+    1: "ios-star",
+    0.5: "ios-star-half",
+    0: "ios-star-outline"
+  };
   return (
     <View style={styles.container}>
       <Image style={styles.resImage} source={{ uri: imgUrl }} />
       <View style={styles.detailsBox}>
         <Text style={styles.resName}>{name}</Text>
-        <View style={styles.resRatingBox}>
-          <Ionicons name="star" size={16} color="#F2DB06" />
-          <Ionicons name="star" size={16} color="#F2DB06" />
-          <Ionicons name="star" size={16} color="#F2DB06" />
-          <Ionicons name="star" size={16} color="#F2DB06" />
-          <Ionicons name="star" size={16} color="#F2DB06" />
-        </View>
+        <FlatList
+          data={ratingArray}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({ item }: { item: keyof IconProps; }) => (
+            <Ionicons name={iconName[item]} size={16} color="#F2DB06" />
+          )}
+          horizontal
+          style={styles.resRatingBox}
+        />
         <Text style={styles.resLocation}>{location}</Text>
       </View>
     </View>
