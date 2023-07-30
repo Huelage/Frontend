@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { RestaurantInterface } from '@interfaces';
-import { fonts, shadowStyle } from '@utils';
+import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
+import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface RestaurantProps extends RestaurantInterface {
   addToCart: () => void;
@@ -26,8 +27,14 @@ const RestaurantDemo = ({ name, imgUrl, rating, location, addToCart }: Restauran
     0.5: "ios-star-half",
     0: "ios-star-outline"
   };
+  const containerRect = rrect(rect(6, 6, (wp('60%') - 20), 210), 15, 15);
   return (
     <View style={styles.container}>
+      <Canvas style={styles.resBox}>
+        <Box box={containerRect} color="rgb(240, 255, 240)">
+          <BoxShadow dx={6} dy={6} blur={4} color="rgba(0, 0, 0, .4)" />
+        </Box>
+      </Canvas>
       <Image style={styles.resImage} source={{ uri: imgUrl }} />
       <View style={styles.detailsBox}>
         <Text style={styles.resName}>{name}</Text>
@@ -50,23 +57,27 @@ export default RestaurantDemo;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    backgroundColor: '#F0FFF0',
-    borderRadius: 15,
-    gap: 5,
-    marginLeft: 20,
-    minHeight: hp("30%"),
-    width: wp("60%"),
-    ...shadowStyle
+    marginLeft: 10,
+    width: wp("60%")
+  },
+  resBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: 230,
+    width: wp("60%")
   },
   resImage: {
     borderRadius: 15,
-    height: 130,
-    width: "100%"
+    height: 100,
+    left: 6,
+    width: wp('60%') - 20
   },
   detailsBox: {
     gap: 5,
-    padding: 10
+    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 22
   },
   resName: {
     fontFamily: fonts.I_700,
@@ -82,7 +93,7 @@ const styles = StyleSheet.create({
   resLocation: {
     color: '#38742A',
     fontFamily: fonts.I_500,
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center'
   }
 });
