@@ -10,7 +10,7 @@ const PopularRestaurant = () => {
     <View style={styles.container}>
       <View style={styles.foodNav}>
         <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Favorite</Text> Restaurants</Text>
-        <CustomButton label='View All' height={32} fontSize={13} onPress={() => { }} />
+        <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
         horizontal

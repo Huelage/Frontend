@@ -9,7 +9,7 @@ const PopularFood = () => {
     <View style={styles.container}>
       <View style={styles.foodNav}>
         <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Popular</Text> this week</Text>
-        <CustomButton label='View All' height={32} fontSize={13} onPress={() => { }} />
+        <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
         horizontal
