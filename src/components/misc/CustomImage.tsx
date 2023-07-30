@@ -28,6 +28,3 @@ const CustomImage = ({ imgUrl, imgSize, imgPad, imgFit, style, shadowBlur, shado
 };
 
 export default CustomImage;
-
-const styles = StyleSheet.create({
-});
