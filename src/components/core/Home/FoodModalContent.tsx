@@ -1,16 +1,21 @@
 import restuarants from '@api/mock/mockRestaurants';
+import { CustomImage } from '@components/misc';
 import { FoodInterface } from '@interfaces';
 import { fonts } from '@utils';
 import React from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
 
-const FoodModalContent = ({ imgUrl, name, desc }: Partial<FoodInterface>) => {
+interface ModalInterface extends Partial<FoodInterface> {
+  imgUrl: string;
+}
+
+const FoodModalContent = ({ imgUrl, name, desc }: ModalInterface) => {
   return (
     <View style={styles.container}>
       <View style={styles.foodImageBox}>
-        <Image source={{ uri: imgUrl }} style={styles.foodImage} />
+        <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={styles.foodName}>{name}</Text>
@@ -44,17 +49,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 100,
     justifyContent: 'center',
-    width: '100%',
+    width: '100%'
   },
   foodImage: {
-    width: wp("65%"),
-    height: wp("65%"),
-    borderRadius: 125,
-    marginTop: 50,
-    shadowColor: "rgba(76, 175, 80, 0.73)",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: .5,
-    shadowRadius: 9
+    flex: 1,
+    height: wp('65%'),
+    position: 'absolute',
+    top: -50,
+    width: wp('65%')
   },
   foodDetailsBox: {
     gap: 10,
