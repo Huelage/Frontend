@@ -1,5 +1,7 @@
 import { RatingCard } from '@components/core/Detail';
+import { CustomImage } from '@components/misc';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -18,6 +20,7 @@ interface CategoryCardInterface {
 const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
+  const containerRect = rrect(rect(6, 6, (wp('67%') - 20), (hp('40%') - 20)), 15, 15);
 
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -84,24 +87,30 @@ const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationVa
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.itemBox, cardStyle]}>
+        <Canvas style={styles.resBox}>
+          <Box box={containerRect} color="rgb(240, 255, 240)">
+            <BoxShadow dx={6} dy={6} blur={4} color="rgba(0, 0, 0, .4)" />
+          </Box>
+        </Canvas>
         <View style={styles.itemBoxImgPlaceholder} />
-        <Text style={styles.itemName}>{name}</Text>
-        <RatingCard rating={rating} />
-        <View style={styles.itemGetBox}>
+        <View style={styles.itemDetails}>
+          <Text style={styles.itemName}>{name}</Text>
+          <RatingCard rating={rating} />
           <Text style={styles.itemPrice}>
             <MaterialCommunityIcons name="currency-ngn" size={16} color="black" />
             {price?.toFixed(2)}
           </Text>
-          <TouchableOpacity style={styles.itemBuyIcon} onPress={addToCart}>
-            <Feather name="plus" size={26} color="white" />
-          </TouchableOpacity>
+          <View style={styles.itemGetBox}>
+            <Text style={styles.itemVendorName}>Korede's joint</Text>
+            <TouchableOpacity style={styles.itemBuyIcon} onPress={addToCart}>
+              <Feather name="plus" size={26} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
       </Animated.View>
-      <Animated.Image
-        source={{ uri: imgUrl }}
-        style={[styles.itemImage, blockStyle]}
-        resizeMode={"contain"}
-      />
+      <Animated.View style={[styles.itemImageContainer, blockStyle]}>
+        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+      </Animated.View>
     </Animated.View>
   );
 };
@@ -113,53 +122,62 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: hp('8%'),
+    marginTop: hp('10%'),
     marginBottom: 20
   },
   itemBox: {
-    backgroundColor: "#F0FFF0",
-    alignSelf: "center",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 20,
-    gap: 15,
     width: wp('67%'),
-    height: hp('35%'),
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.7,
-    shadowRadius: 15.32,
-    elevation: 16,
+    height: hp('40%'),
+  },
+  resBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: wp('67%'),
+    height: hp('40%')
   },
   itemBoxImgPlaceholder: {
     flex: 1
   },
+  itemImageContainer: {
+    alignItems: 'center',
+    borderRadius: 60,
+    justifyContent: 'center',
+    position: 'absolute',
+    width: hp('25%'),
+    zIndex: 9999
+  },
   itemImage: {
+    alignItems: 'center',
+    justifyContent: 'center',
     width: hp('25%'),
     borderRadius: hp('12.5%'),
-    backgroundColor: "transparent",
-    justifyContent: "center",
-    alignItems: "center",
     height: hp('25%'),
-    position: "absolute",
-    zIndex: 9999,
-    shadowColor: 'rgba(71, 202, 76, .5)',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: .5,
-    shadowRadius: 8
+  },
+  itemDetails: {
+    alignItems: 'center',
+    gap: 10,
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingBottom: 8,
+    width: '100%'
   },
   itemName: {
     fontFamily: fonts.I_700,
-    fontSize: 24,
+    fontSize: 22,
     textAlign: 'center',
     paddingHorizontal: 15
+  },
+  itemVendorName: {
+    fontFamily: fonts.I_600,
+    fontSize: 18
   },
   itemGetBox: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 15,
-    paddingTop: 5,
+    paddingTop: 0,
     width: '100%',
   },
   itemPrice: {
@@ -171,8 +189,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#47CA4C',
     borderRadius: 25,
-    height: 50,
+    height: 40,
     justifyContent: 'center',
-    width: 50
+    width: 40
   }
 });
