@@ -7,9 +7,9 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={{ gap: 15 }}>
+        <View style={{ gap: 10 }}>
           <MainSearchBar />
-          <Image style={styles.heroImage} source={require('@images/heroImg.png')} />
+          <Image style={styles.heroImage} source={require('@images/HomeHero.png')} />
           <PopularFood />
           <PopularRestaurant />
           <Categories />
