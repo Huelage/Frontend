@@ -1,6 +1,6 @@
 import { mockRestaurants } from '@api/mock';
 import { CustomButton, RestaurantCard } from '@components/core/Home';
-import { fonts } from '@utils';
+import { fonts, outline } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -8,8 +8,8 @@ const PopularRestaurant = () => {
   const addToCart = () => console.log("hello");
   return (
     <View style={styles.container}>
-      <View style={styles.foodNav}>
-        <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Favorite</Text> Restaurants</Text>
+      <View style={styles.resNav}>
+        <Text style={styles.resText}><Text style={styles.resTextAccent}>Favorite</Text> Restaurants</Text>
         <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
@@ -20,7 +20,6 @@ const PopularRestaurant = () => {
         renderItem={({ item }) => (
           <RestaurantCard {...item} addToCart={() => addToCart()} />
         )}
-        contentContainerStyle={styles.foodList}
       />
     </View>
   );
@@ -30,22 +29,23 @@ export default PopularRestaurant;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 20
+    gap: 15
   },
-  foodNav: {
+  resNav: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20
   },
-  foodList: {
-    paddingBottom: 16
+  resList: {
+    paddingBottom: 16,
+    ...outline
   },
-  foodText: {
+  resText: {
     fontFamily: fonts.I_500,
     fontSize: 16
   },
-  foodTextAccent: {
+  resTextAccent: {
     color: '#29A40A',
     fontFamily: fonts.I_500,
     fontSize: 16

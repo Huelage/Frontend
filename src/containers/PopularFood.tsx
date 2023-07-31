@@ -19,7 +19,6 @@ const PopularFood = () => {
         renderItem={({ item }) => (
           <FoodCard {...item} />
         )}
-        contentContainerStyle={styles.foodList}
       />
     </View>
   );
@@ -29,16 +28,13 @@ export default PopularFood;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 10
+    gap: 5
   },
   foodNav: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20
-  },
-  foodList: {
-    paddingBottom: 16
   },
   foodText: {
     fontFamily: fonts.I_500,
