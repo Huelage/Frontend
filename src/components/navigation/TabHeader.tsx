@@ -38,11 +38,11 @@ export default TabHeader;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    gap: 2,
+    gap: 4,
     justifyContent: 'center',
     paddingHorizontal: 20,
     paddingTop: hp("8%"),
-    paddingBottom: 10
+    paddingBottom: 5,
   },
   headerGreeting: {
     fontFamily: fonts.I_400,
