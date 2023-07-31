@@ -4,15 +4,17 @@ import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 const TabHeader = () => {
   const { navigate } = useNavigation<NavigationProps>();
+  const inset = useSafeAreaInsets();
   return (
     <>
       <StatusBar style="dark" />
-      <View style={styles.container}>
+      <View style={[styles.container, { paddingTop: inset.top }]}>
         <Text style={styles.headerGreeting}>Good morning</Text>
         <View style={styles.headerBox}>
           <View style={styles.headerDetail}>
@@ -38,11 +40,17 @@ export default TabHeader;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    gap: 4,
+    gap: 5,
     justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingTop: hp("8%"),
-    paddingBottom: 5,
+    paddingBottom: 5
+  },
+  foodBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: 155,
+    width: wp("100%"),
   },
   headerGreeting: {
     fontFamily: fonts.I_400,
