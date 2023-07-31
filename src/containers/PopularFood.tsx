@@ -9,7 +9,7 @@ const PopularFood = () => {
     <View style={styles.container}>
       <View style={styles.foodNav}>
         <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Popular</Text> this week</Text>
-        <CustomButton label='View All' height={32} fontSize={13} onPress={() => { }} />
+        <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
         horizontal
@@ -17,9 +17,7 @@ const PopularFood = () => {
         keyExtractor={item => String(item.id)}
         data={mockFoods}
         renderItem={({ item }) => (
-          <View style={{ paddingBottom: 16, paddingLeft: 20 }}>
-            <FoodCard {...item} />
-          </View>
+          <FoodCard {...item} />
         )}
       />
     </View>
@@ -30,7 +28,7 @@ export default PopularFood;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 10
+    gap: 5
   },
   foodNav: {
     alignItems: 'center',

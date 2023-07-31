@@ -7,7 +7,7 @@ const RatingCard = ({ rating }: { rating: number; }) => {
   return (
     <View style={styles.itemRateBox}>
       <Ionicons name="star" size={18} color="#FFC107" />
-      <Text style={styles.itemRating}>{rating}</Text>
+      <Text style={styles.itemRating}>{rating.toFixed(1)}</Text>
     </View>
   );
 };
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5,
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 5,
     paddingLeft: 10,
     paddingRight: 15
   },

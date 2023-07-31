@@ -9,6 +9,7 @@ import {
   CartScreen,
 } from "@screens/core";
 import React from "react";
+import { View } from "react-native";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -18,13 +19,13 @@ const TabNavigator = () => {
       initialRouteName="Home"
       screenOptions={{
         header: () => <TabHeader />,
+        tabBarBackground: () => <View style={{ backgroundColor: "#fff", flex: 1 }} />
       }}
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Menu" component={MenuScreen} />
-      <Tab.Screen name="Favourite" component={FavouriteScreen} />
-      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen name="Vendor" component={MenuScreen} />
+      <Tab.Screen name="MyOrder" component={FavouriteScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

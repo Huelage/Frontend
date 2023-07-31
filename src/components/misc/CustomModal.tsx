@@ -1,33 +1,30 @@
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
 import RNModal from 'react-native-modal';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface ModalProps {
   isVisible: boolean;
   children: React.ReactNode;
-  close: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CustomModal = ({ isVisible, children, close }: ModalProps) => {
+const CustomModal = ({ isVisible, children }: ModalProps) => {
   return (
     <RNModal
       isVisible={isVisible}
       animationIn="zoomIn"
       animationOut="zoomOut"
+      backdropOpacity={0}
       backdropTransitionInTiming={500}
       backdropTransitionOutTiming={500}
       style={styles.modal}
     >
-      <TouchableWithoutFeedback onPress={() => close(false)}>
-        <BlurView intensity={9.5} style={styles.modalContainer}>
-          <TouchableWithoutFeedback>
-            {children}
-          </TouchableWithoutFeedback>
-        </BlurView>
-      </TouchableWithoutFeedback>
+      <BlurView intensity={9.5} style={styles.modalContainer}>
+        <View style={styles.modalChildrenWrapper}>
+          {children}
+        </View>
+      </BlurView>
     </RNModal>
   );
 };
@@ -43,5 +40,12 @@ const styles = StyleSheet.create({
     height: hp('100%'),
     justifyContent: 'center',
     width: wp('100%'),
+  },
+  modalChildrenWrapper: {
+    alignItems: 'center',
+    height: hp('100%'),
+    justifyContent: 'center',
+    width: wp('100%'),
+    backgroundColor: 'rgba(0, 0, 0, .7)'
   }
 });
