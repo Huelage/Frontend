@@ -25,26 +25,26 @@ const styles = StyleSheet.create({
   homeSearchBox: {
     alignItems: 'center',
     backgroundColor: "#F3F3F3",
-    borderRadius: 24,
+    borderRadius: 10,
     flexDirection: 'row',
     gap: 6,
     justifyContent: 'center',
-    height: 55,
+    height: 44,
     marginHorizontal: 20,
     marginVertical: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 10
   },
   homeSearchBoxFilter: {
     alignItems: 'center',
     backgroundColor: "#29A40A",
     borderRadius: 5,
-    height: 35,
+    height: 30,
     justifyContent: 'center',
-    width: 35
+    width: 30
   },
   homeSearchBoxFilterIcon: {
-    height: 20,
-    width: 20
+    height: 18,
+    width: 18
   },
   homeSearchButton: {
     alignItems: 'center',
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     color: 'rgba(0, 0, 0, .7)',
     flex: 1,
     fontFamily: fonts.I_400,
-    fontSize: 16,
-    height: 45
+    fontSize: 14,
+    height: 30
   },
   homeSearchText: {
     color: "#4CAF50",
