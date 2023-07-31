@@ -1,20 +1,25 @@
 import restuarants from '@api/mock/mockRestaurants';
 import { CustomImage } from '@components/misc';
+import { Ionicons } from '@expo/vector-icons';
 import { FoodInterface } from '@interfaces';
 import { fonts } from '@utils';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
 
 interface ModalInterface extends Partial<FoodInterface> {
   imgUrl: string;
+  close: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FoodModalContent = ({ imgUrl, name, desc }: ModalInterface) => {
+const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
   return (
     <View style={styles.container}>
       <View style={styles.foodImageBox}>
+        <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)}>
+          <Ionicons name="close" size={30} color="white" />
+        </TouchableOpacity>
         <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
@@ -50,6 +55,11 @@ const styles = StyleSheet.create({
     height: 100,
     justifyContent: 'center',
     width: '100%'
+  },
+  closeIcon: {
+    position: 'absolute',
+    right: 10,
+    top: 10
   },
   foodImage: {
     flex: 1,

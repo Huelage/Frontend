@@ -52,8 +52,8 @@ const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: Food
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <CustomModal isVisible={showModal} close={setShowModal}>
-        <FoodModalContent imgUrl={imgUrl} name={name} desc={desc} />
+      <CustomModal isVisible={showModal}>
+        <FoodModalContent close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
       </CustomModal>
     </>
   );
@@ -63,8 +63,9 @@ export default FoodCard;
 
 const styles = StyleSheet.create({
   container: {
+    height: 155,
     marginLeft: 10,
-    marginTop: 65,
+    marginTop: 51,
     paddingBottom: 5,
     width: wp("60%")
   },
