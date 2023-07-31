@@ -35,8 +35,8 @@ export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
 
 export type TabParamList = {
   Home: undefined,
-  Menu: undefined,
-  Favourite: undefined,
+  Vendor: undefined,
+  MyOrder: undefined,
   Profile: undefined;
 };
 
