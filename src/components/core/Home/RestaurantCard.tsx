@@ -57,6 +57,7 @@ export default RestaurantDemo;
 
 const styles = StyleSheet.create({
   container: {
+    height: 230,
     marginLeft: 10,
     width: wp("60%")
   },

@@ -1,6 +1,6 @@
 import { mockRestaurants } from '@api/mock';
 import { CustomButton, RestaurantCard } from '@components/core/Home';
-import { fonts, outline } from '@utils';
+import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -36,10 +36,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20
-  },
-  resList: {
-    paddingBottom: 16,
-    ...outline
   },
   resText: {
     fontFamily: fonts.I_500,
