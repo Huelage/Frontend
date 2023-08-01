@@ -1,9 +1,9 @@
 export const shadowStyle = {
-  elevation: 5,
-  shadowColor: 'rgba(0, 0, 0, .5)',
-  shadowOffset: { width: 8, height: 5 },
-  shadowOpacity: .5,
-  shadowRadius: 5
+  elevation: 10,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 5 },
+  shadowOpacity: 0.34,
+  shadowRadius: 6.27
 };
 
 export const outline = {
