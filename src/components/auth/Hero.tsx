@@ -1,6 +1,7 @@
 import { fonts } from '@utils';
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface HeroProp {
@@ -13,7 +14,11 @@ const Hero = ({ lead, accent, page }: HeroProp) => {
   return (
     <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={styles.heroOne}>
       <View style={styles.heroOneLogo}>
-        <Image style={styles.logoImage} source={require('@images/rectangle.png')} />
+        <Animated.Image
+          sharedTransitionTag='huelageLogo'
+          style={styles.logoImage}
+          source={require('@images/rectangle.png')}
+        />
       </View>
       <Text style={styles.heroOneLeadText}>{lead}</Text>
       <Text style={heroOneAccentText}>{accent}</Text>
