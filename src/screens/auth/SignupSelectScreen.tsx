@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/core";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeIn, SlideInDown } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const SignupSelectScreen = () => {
@@ -10,29 +11,29 @@ const SignupSelectScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.containerBg} source={require('@images/SignupSelectBg.png')} resizeMode="cover">
-        <Image style={styles.logoImage} source={require("@images/onboard_logo.png")} />
+        <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} source={require("@images/onboard_logo.png")} />
         <Text style={styles.infoText}>Select account option</Text>
         <View style={styles.authSelectWrapper}>
-          <View style={styles.authSelect}>
-            <View style={styles.authSelectImageWrapper}>
+          <Animated.View entering={SlideInDown.delay(100).springify().damping(15)} style={styles.authSelect}>
+            <Animated.View entering={FadeIn.delay(500)} style={styles.authSelectImageWrapper}>
               <Image style={styles.authSelectImage} source={require("@images/Vendor.png")} resizeMode="contain" />
-            </View>
+            </Animated.View>
             <TouchableOpacity onPress={() => navigate("SignUp", { isVendor: true })}>
-              <View style={styles.authSelectButton}>
+              <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>Vendor</Text>
-              </View>
+              </Animated.View>
             </TouchableOpacity>
-          </View>
-          <View style={styles.authSelect}>
-            <View style={styles.authSelectImageWrapper}>
+          </Animated.View>
+          <Animated.View entering={SlideInDown.delay(300).springify().damping(15)} style={styles.authSelect}>
+            <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectImageWrapper}>
               <Image style={styles.authSelectImage} source={require("@images/User.png")} resizeMode="contain" />
-            </View>
+            </Animated.View>
             <TouchableOpacity onPress={() => navigate("SignUp", { isVendor: false })}>
-              <View style={styles.authSelectButton}>
+              <Animated.View entering={FadeIn.delay(700)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>User</Text>
-              </View>
+              </Animated.View>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
       </ImageBackground>
     </View>
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontFamily: fonts.I_700,
-    fontSize: 24,
+    fontSize: 22,
     color: "#fff",
   },
   authSelectWrapper: {
@@ -87,8 +88,8 @@ const styles = StyleSheet.create({
   },
   authSelectButton: {
     alignItems: 'center',
-    backgroundColor: '#47CA4C',
-    borderRadius: 20,
+    backgroundColor: '#4CAF50',
+    borderRadius: 10,
     paddingVertical: 10,
     ...shadowStyle
   },
