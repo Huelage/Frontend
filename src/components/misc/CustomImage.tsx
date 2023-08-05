@@ -1,6 +1,6 @@
 import { Canvas, Fit, Group, Image, Shadow, rect, rrect, useImage } from '@shopify/react-native-skia';
 import React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 interface ImageInterface {
   imgUrl: string;
