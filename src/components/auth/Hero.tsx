@@ -12,7 +12,7 @@ interface HeroProp {
 const Hero = ({ lead, accent, page }: HeroProp) => {
   const heroOneAccentText = page === 'SI' ? { ...styles.heroOneAccentText, marginLeft: 8 } : styles.heroOneAccentText;
   return (
-    <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={styles.heroOne}>
+    <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={[styles.heroOne]}>
       <View style={styles.heroOneLogo}>
         <Animated.Image
           sharedTransitionTag='huelageLogo'
@@ -30,27 +30,27 @@ export default Hero;
 
 const styles = StyleSheet.create({
   heroOne: {
-    paddingBottom: hp("4%"),
+    paddingBottom: 45,
     paddingTop: hp("6.5%"),
     paddingHorizontal: wp("8%")
   },
   heroOneLogo: {
     alignItems: 'flex-end',
-    marginBottom: hp("4%")
+    marginBottom: 25
   },
   heroOneLeadText: {
     color: '#fff',
-    fontSize: 40,
+    fontSize: 36,
     fontFamily: fonts.I_700
   },
   heroOneAccentText: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.I_400,
   },
   logoImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   }
 });

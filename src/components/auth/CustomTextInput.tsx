@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     borderColor: "#47CA4C",
     borderRadius: 10,
     borderWidth: 2,
-    height: 48,
-    paddingHorizontal: 15,
+    height: 40,
+    paddingHorizontal: 15
   },
   inputContainerError: {
     borderColor: "#d24343",
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontFamily: fonts.I_500,
-    fontSize: 18,
-    height: 40
+    fontSize: 16,
+    height: 30
   },
   textIcon: {
     color: "rgba(0, 0, 0, .5)",
