@@ -6,7 +6,8 @@ import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
@@ -14,10 +15,11 @@ const SignUpScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
   const { handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
   const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
+
   return (
     <View style={styles.container}>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <ScrollView style={styles.heroInputBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.heroInputBox}>
         <View style={styles.heroInputs}>
           <Controller
             control={control}
@@ -148,7 +150,7 @@ const SignUpScreen = () => {
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' isVendor={isVendor} />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -159,15 +161,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  hero: {
-    backgroundColor: '#fff',
-    flex: 1,
-  },
   heroInputBox: {
     backgroundColor: '#fff',
     flex: 1,
     gap: 25,
-    paddingHorizontal: wp("8%") + 8,
+    paddingHorizontal: wp("8%"),
     paddingVertical: hp("4%")
   },
   heroInputs: {
