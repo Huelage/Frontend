@@ -135,6 +135,7 @@ const SignUpScreen = () => {
                 label='Create password'
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => !isVendor && handleSubmit(onSubmit)()}
                 innerRef={ref}
                 value={value}
               />
