@@ -20,7 +20,7 @@ export type AuthStackParamList = {
   OnBoard: undefined,
   Login: undefined,
   SignUp: { isVendor: boolean; };
-  OTP: undefined;
+  OTP: { phoneno: string; };
   SignupSelect: undefined;
 };
 
@@ -32,6 +32,7 @@ export type StackParamList = {
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
+export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
 
 export type TabParamList = {
   Home: undefined,

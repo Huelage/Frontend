@@ -2,7 +2,7 @@ import { useAppDispatch } from '@api/app/appHooks';
 import { setIsAuthenticated } from '@api/slices/globalSlice';
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/auth';
 import { LoginInfoInterface } from '@interfaces';
-import { fonts, outline, shadowStyle } from '@utils';
+import { fonts, shadowStyle } from '@utils';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
