@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@api/app/appHooks';
+import { setIsAuthenticated } from '@api/slices/globalSlice';
 import { NavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
@@ -9,6 +11,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 const TabHeader = () => {
+  const dispatch = useAppDispatch();
   const { navigate } = useNavigation<NavigationProps>();
   const inset = useSafeAreaInsets();
   return (
@@ -18,7 +21,9 @@ const TabHeader = () => {
         <Text style={styles.headerGreeting}>Good morning</Text>
         <View style={styles.headerBox}>
           <View style={styles.headerDetail}>
-            <Image style={styles.headerImage} source={require('@images/beejay_dp.png')} />
+            <TouchableOpacity onPress={() => dispatch(setIsAuthenticated(false))}>
+              <Image style={styles.headerImage} source={require('@images/beejay_dp.png')} />
+            </TouchableOpacity>
             <Text style={styles.headerName}>John Jane Doe</Text>
           </View>
           <TouchableOpacity onPress={() => navigate("Cart")}>

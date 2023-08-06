@@ -10,6 +10,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalContent from './FoodModalContent';
 
+
 const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: FoodInterface) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(isFavourite);
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     height: 120,
     justifyContent: 'center',
-    left: 52,
+    left: (wp('60%') - 135) / 2,
     position: 'absolute',
     top: -hp("8%"),
     width: 120,

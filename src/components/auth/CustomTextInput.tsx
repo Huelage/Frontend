@@ -1,13 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
-import { FieldError } from 'react-hook-form';
+import { FieldError, RefCallBack } from 'react-hook-form';
 import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;
   isPass: boolean;
   error?: FieldError;
+  innerRef?: RefCallBack;
 }
 
 const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInputProps) => {
@@ -19,11 +20,13 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
       <View style={[styles.inputContainer, error && styles.inputContainerError]}>
         <View style={styles.input}>
           <TextInput
+            blurOnSubmit={false}
             secureTextEntry={!showText}
             style={styles.textInput}
             placeholder={label}
             placeholderTextColor="#BCB5B5"
             selectionColor={error ? "#d24343" : "#47CA4C"}
+            ref={inputProps.innerRef || undefined}
             {...inputProps}
           />
           {isPass && (
@@ -59,8 +62,8 @@ const styles = StyleSheet.create({
     borderColor: "#47CA4C",
     borderRadius: 10,
     borderWidth: 2,
-    height: 48,
-    paddingHorizontal: 15,
+    height: 40,
+    paddingHorizontal: 15
   },
   inputContainerError: {
     borderColor: "#d24343",
@@ -86,8 +89,8 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontFamily: fonts.I_500,
-    fontSize: 18,
-    height: 40
+    fontSize: 16,
+    height: 30
   },
   textIcon: {
     color: "rgba(0, 0, 0, .5)",
