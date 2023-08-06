@@ -2,25 +2,27 @@ import { useAppDispatch } from '@api/app/appHooks';
 import { setIsAuthenticated } from '@api/slices/globalSlice';
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/auth';
 import { LoginInfoInterface } from '@interfaces';
-import { fonts, shadowStyle } from '@utils';
+import { fonts, outline, shadowStyle } from '@utils';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { StyleSheet, Text, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const LoginScreen = () => {
   const dispatch = useAppDispatch();
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: 'onChange' });
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: 'onChange' });
   const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
     reset();
     dispatch(setIsAuthenticated(true));
   };
   useEffect(() => { reset(); }, [isVendor]);
+  useEffect(() => { setTimeout(() => isVendor ? setFocus('vendorId') : setFocus('email'), 0); }, []);
   return (
     <View style={styles.container}>
       <Hero lead="Welcome Back!" accent="Login to continue" page='SI' />
-      <View style={styles.heroTwoInputBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={{ gap: 15 }} style={styles.heroTwoInputBox}>
         <Text style={styles.heroTwoIntro}>
           Sign in to <Text style={styles.heroTwoIntroAccent}>Huelage</Text>
         </Text>
@@ -29,16 +31,19 @@ const LoginScreen = () => {
           {isVendor ? (
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, onBlur, value, ref } }) => (
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
                   error={errors.vendorId}
                   isPass={false}
+                  innerRef={ref}
                   label='Vendor ID'
                   keyboardType='number-pad'
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  onSubmitEditing={() => setFocus('password')}
+                  returnKeyType='next'
                   value={value}
                 />
               )}
@@ -50,16 +55,19 @@ const LoginScreen = () => {
           ) : (
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, onBlur, value, ref } }) => (
                 <CustomTextInput
                   autoCapitalize='none'
                   autoCorrect={false}
                   error={errors.email}
                   isPass={false}
+                  innerRef={ref}
                   keyboardType='email-address'
                   label='Email address'
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  onSubmitEditing={() => setFocus('password')}
+                  returnKeyType='next'
                   value={value}
                 />
               )}
@@ -75,15 +83,17 @@ const LoginScreen = () => {
           )}
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
                 error={errors.password}
                 isPass={true}
+                innerRef={ref}
                 label='Password'
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={handleSubmit(onSubmit)}
                 value={value}
               />
             )}
@@ -94,7 +104,7 @@ const LoginScreen = () => {
         <Text style={styles.heroTwoTextForgot}>Forgot Password?</Text>
         <SubmitButton label='LOG IN' onSubmit={handleSubmit(onSubmit)} />
         <AuthNavigate page='SI' isVendor={isVendor} />
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -107,8 +117,6 @@ const styles = StyleSheet.create({
   },
   heroTwoInputBox: {
     backgroundColor: '#fff',
-    flex: 1,
-    gap: 15,
     paddingHorizontal: wp("8%") + 8,
     paddingVertical: hp("4%")
   },

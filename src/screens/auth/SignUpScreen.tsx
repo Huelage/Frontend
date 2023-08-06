@@ -4,7 +4,7 @@ import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,8 +13,13 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
-  const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(true);
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
+  const onSubmit = (data: SignUpInfoInterface) => {
+    navigate('OTP');
+  };
+
+  useEffect(() => { setTimeout(() => setFocus('fullname'), 0); }, []);
 
   return (
     <View style={styles.container}>
@@ -23,7 +28,7 @@ const SignUpScreen = () => {
         <View style={styles.heroInputs}>
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
@@ -32,6 +37,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's name" : "Full name"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus('email')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -43,7 +51,7 @@ const SignUpScreen = () => {
           />
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
@@ -53,6 +61,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's email" : "Email address"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus('phonenumber')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -67,7 +78,7 @@ const SignUpScreen = () => {
           />
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
@@ -77,6 +88,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's Phone number" : "Phone number"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus(isVendor ? 'businessname' : 'password')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -88,7 +102,7 @@ const SignUpScreen = () => {
           {isVendor && (
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, onBlur, value, ref } }) => (
                 <CustomTextInput
                   autoCapitalize='words'
                   autoCorrect={false}
@@ -97,6 +111,9 @@ const SignUpScreen = () => {
                   label="Business name"
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  onSubmitEditing={() => setFocus('password')}
+                  returnKeyType='next'
+                  innerRef={ref}
                   value={value}
                 />
               )}
@@ -109,7 +126,7 @@ const SignUpScreen = () => {
           )}
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
@@ -118,6 +135,7 @@ const SignUpScreen = () => {
                 label='Create password'
                 onBlur={onBlur}
                 onChangeText={onChange}
+                innerRef={ref}
                 value={value}
               />
             )}
@@ -132,9 +150,9 @@ const SignUpScreen = () => {
           />
           {isVendor && (
             <CheckBox
-              checked={true}
+              checked={acceptTerms}
               center
-              onPress={() => { }}
+              onPress={() => setAcceptTerms(!acceptTerms)}
               iconType="material-community"
               checkedIcon="checkbox-marked"
               uncheckedIcon="checkbox-blank-outline"
