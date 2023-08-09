@@ -3,7 +3,7 @@ import { globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: globalStateInterface = {
-  isAuthenticated: false
+  isAuthenticated: true,
 };
 
 const globalSlice = createSlice({
@@ -12,15 +12,14 @@ const globalSlice = createSlice({
   reducers: {
     setIsAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
-    }
-  }
+    },
+  },
 });
 
 // Dispatches
-export const {
-  setIsAuthenticated
-} = globalSlice.actions;
+export const { setIsAuthenticated } = globalSlice.actions;
 // Selectors
-export const isAuthenticated = (state: RootState) => state.global.isAuthenticated;
+export const isAuthenticated = (state: RootState) =>
+  state.global.isAuthenticated;
 // Reducer
 export default globalSlice.reducer;

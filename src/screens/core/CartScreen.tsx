@@ -69,13 +69,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: hp("10%"),
   },
+
   semiCircle: {
     width: "100%",
-    height: 376,
+    height: hp("35%"),
     backgroundColor: "#4CAF50",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    padding: 15,
+    borderBottomLeftRadius: wp("10%"),
+    borderBottomRightRadius: wp("10%"),
+    padding: wp("3%"),
     transform: [{ scaleY: 1 }],
     position: "absolute",
     top: 0,
@@ -83,9 +84,9 @@ const styles = StyleSheet.create({
   },
 
   thaiFoodTomYum: {
-    height: 450,
+    height: hp("45%"),
     width: "100%",
-    marginTop: 50,
+    marginTop: hp("6%"),
     alignItems: "center",
     objectFit: "cover",
   },

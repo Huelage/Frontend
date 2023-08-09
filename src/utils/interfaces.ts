@@ -3,40 +3,41 @@ import { RouteProp } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export interface LoginInfoInterface {
-  vendorId?: string,
-  email?: string,
+  vendorId?: string;
+  email?: string;
   password: string;
 }
 
 export interface SignUpInfoInterface {
-  fullname: string,
-  email: string,
-  phonenumber: string,
-  businessname?: string,
+  fullname: string;
+  email: string;
+  phonenumber: string;
+  businessname?: string;
   password: string;
 }
 
 export type AuthStackParamList = {
-  OnBoard: undefined,
-  Login: undefined,
-  SignUp: { isVendor: boolean; };
+  OnBoard: undefined;
+  Login: undefined;
+  SignUp: { isVendor: boolean };
   OTP: undefined;
   SignupSelect: undefined;
 };
 
 export type StackParamList = {
-  MainTabs: undefined,
+  MainTabs: undefined;
   Cart: undefined;
+  CartScreen: undefined;
 };
 
 export type NavigationProps = NativeStackNavigationProp<StackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
-export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
+export type SignupRouteProps = RouteProp<AuthStackParamList, "SignUp">;
 
 export type TabParamList = {
-  Home: undefined,
-  Vendor: undefined,
-  MyOrder: undefined,
+  Home: undefined;
+  Vendor: undefined;
+  MyOrder: undefined;
   Profile: undefined;
 };
 
@@ -64,4 +65,12 @@ export interface RestaurantInterface {
 
 export interface globalStateInterface {
   isAuthenticated: boolean;
+}
+
+export interface CartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  imgUrl: string;
 }

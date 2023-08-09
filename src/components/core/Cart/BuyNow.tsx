@@ -1,11 +1,16 @@
 import { fonts } from "@utils";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
 const BuyNow = () => {
+  const navigation = useNavigation();
+  const goToCartScreen = () => {
+    navigation.navigate("CartScreen");
+  };
   return (
-    <TouchableOpacity style={styles.loginWrap}>
+    <TouchableOpacity style={styles.loginWrap} onPress={goToCartScreen}>
       <Text style={styles.login}>Buy Now</Text>
     </TouchableOpacity>
   );

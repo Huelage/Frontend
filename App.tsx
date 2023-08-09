@@ -12,11 +12,11 @@ import {
   Inter_500Medium,
   Inter_600SemiBold,
   Inter_700Bold,
-  useFonts
-} from '@expo-google-fonts/dev';
-import { MainNavigator } from '@navigators';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider } from 'react-redux';
+  useFonts,
+} from "@expo-google-fonts/dev";
+import { MainNavigator } from "@navigators";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
 
 const App = () => {
   const [fontsLoaded] = useFonts({
