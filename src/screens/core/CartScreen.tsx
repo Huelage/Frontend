@@ -3,6 +3,7 @@ import { fonts, shadowStyle } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -13,6 +14,10 @@ const CartScreen = () => {
 
   const handleHeartPress = () => {
     setIsHearted(!isHearted);
+  };
+  const navigation = useNavigation();
+  const goToCartScreen = () => {
+    navigation.navigate("CartScreen");
   };
   return (
     <View style={styles.container}>
@@ -51,7 +56,12 @@ const CartScreen = () => {
 
       <View style={styles.buyWrap}>
         <TouchableOpacity style={styles.iconWrap}>
-          <Icon name="shopping-cart" size={40} color="#BCB5B5" />
+          <Icon
+            name="shopping-cart"
+            size={40}
+            color="#BCB5B5"
+            onPress={goToCartScreen}
+          />
         </TouchableOpacity>
         <BuyNow />
       </View>

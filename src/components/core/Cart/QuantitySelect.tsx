@@ -1,5 +1,6 @@
 import { fonts } from "@utils";
 import React, { useState } from "react";
+import { mockFoods } from "@api/mock";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   heightPercentageToDP as hp,

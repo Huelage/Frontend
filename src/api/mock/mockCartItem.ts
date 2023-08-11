@@ -4,7 +4,7 @@ const data = [
   {
     id: 1,
     name: "River prawn spicy soap",
-    price: 2400,
+    price: 1000,
     imgUrl: Image.resolveAssetSource(require("@images/prawnImg.png")).uri,
     quantity: 1,
   },
