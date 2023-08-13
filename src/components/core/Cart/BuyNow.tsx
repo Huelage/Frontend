@@ -2,7 +2,10 @@ import { fonts } from "@utils";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 
 const BuyNow = () => {
   return (
@@ -17,13 +20,13 @@ const styles = StyleSheet.create({
   loginWrap: {
     backgroundColor: "#4CAF50",
     width: widthPercentageToDP("50%"),
-    height: 75,
+    height: heightPercentageToDP("8%"),
     borderRadius: 20,
     padding: 18,
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 30,
     marginTop: 30,
-    marginLeft: widthPercentageToDP("15%"),
+    justifyContent: "center",
     shadowColor: "000",
     shadowOffset: {
       width: 0,

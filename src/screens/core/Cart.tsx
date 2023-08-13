@@ -1,8 +1,9 @@
 import { fonts, shadowStyle } from "@utils";
+import { Promo } from "@components/core/Cart";
 import { mockCartItem } from "@api/mock";
 import React, { useState } from "react";
 import { CartItem } from "@interfaces";
-import { CustomImage } from "@components/misc";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   Image,
   StyleSheet,
@@ -21,6 +22,8 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItem);
 
   const handleQuantityChange = (itemId: number, newQuantity: number) => {
+    newQuantity = Math.max(0, newQuantity);
+
     setCartItems((prevCartItems) =>
       prevCartItems.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
@@ -33,7 +36,7 @@ const Cart = () => {
     0
   );
 
-  const deliveryFee = 200;
+  const deliveryFee = total > 0 ? 200 : 0;
   const newTotal = total + deliveryFee;
 
   const renderCartItem = ({ item }: { item: CartItem }) => {
@@ -43,7 +46,7 @@ const Cart = () => {
           style={{
             width: "30%",
             height: "100%",
-            padding: 10,
+            padding: 16,
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -56,7 +59,7 @@ const Cart = () => {
         <View
           style={{
             flex: 1,
-            height: "100%",
+            height: hp("100%"),
             justifyContent: "space-between",
             flexDirection: "row",
             alignItems: "center",
@@ -64,7 +67,14 @@ const Cart = () => {
         >
           <View>
             <Text style={styles.TextStyle}>{item.name}</Text>
-            <Text style={styles.price}>N {item.price}</Text>
+            <Text style={styles.price}>
+              <MaterialCommunityIcons
+                name="currency-ngn"
+                size={20}
+                color="black"
+              />{" "}
+              {item.price}
+            </Text>
           </View>
           <View style={styles.quantityWrap}>
             <View style={styles.quantityContainer}>
@@ -91,7 +101,12 @@ const Cart = () => {
             <View style={styles.priceContainer}>
               <Text style={styles.newPrice}>
                 {" "}
-                ${item.price * item.quantity}
+                <MaterialCommunityIcons
+                  name="currency-ngn"
+                  size={20}
+                  color="black"
+                />
+                {item.price * item.quantity}
               </Text>
             </View>
           </View>
@@ -101,26 +116,67 @@ const Cart = () => {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.cartText}> Cart</Text>
+      <View style={styles.cartIcon}>
+        <TouchableOpacity>
+          <MaterialCommunityIcons
+            name="chevron-left"
+            size={30}
+            color="#000000"
+            onPress={() => console.log("Chevron left pressed")}
+          />
+        </TouchableOpacity>
+
+        <Text style={styles.cartText}> Cart</Text>
+        <TouchableOpacity>
+          <MaterialCommunityIcons name="close" size={30} color="#000000" />
+        </TouchableOpacity>
+      </View>
+
       <FlatList
         data={cartItems}
         keyExtractor={(item) => String(item.id)}
         renderItem={renderCartItem}
+        style={styles.cartList}
       />
+      <Promo />
       <View style={styles.totalContainer}>
         <View style={styles.totalWrap}>
           <Text style={styles.totalText}>Subtotal</Text>
-          <Text style={styles.totalText}> ${total}</Text>
+          <Text style={styles.totalText}>
+            {" "}
+            <MaterialCommunityIcons
+              name="currency-ngn"
+              size={20}
+              color="black"
+            />
+            {total}
+          </Text>
         </View>
         <View style={styles.horizontalLine} />
         <View style={styles.totalWrap}>
           <Text style={styles.totalText}>Delivery</Text>
-          <Text style={styles.totalText}> ${deliveryFee}</Text>
+          <Text style={styles.totalText}>
+            {" "}
+            <MaterialCommunityIcons
+              name="currency-ngn"
+              size={20}
+              color="black"
+            />
+            {deliveryFee}
+          </Text>
         </View>
         <View style={styles.horizontalLine} />
         <View style={styles.totalWrap}>
           <Text style={styles.newTotalText}>Total</Text>
-          <Text style={styles.newTotalText}> ${newTotal}</Text>
+          <Text style={styles.newTotalText}>
+            {" "}
+            <MaterialCommunityIcons
+              name="currency-ngn"
+              size={22}
+              color="black"
+            />
+            {newTotal}
+          </Text>
         </View>
         <Confirm />
       </View>
@@ -132,53 +188,50 @@ export default Cart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+
     width: wp("100%"),
     height: hp("100%"),
-    marginTop: 20,
+    marginTop: 2,
   },
   cartText: {
-    fontSize: 24,
+    fontSize: wp("7%"),
     fontFamily: fonts.I_500,
     letterSpacing: 1,
-    paddingTop: 20,
+    paddingTop: 10,
     textAlign: "center",
-    marginBottom: 15,
-    marginTop: 10,
+    marginBottom: 20,
+    marginTop: 20,
     fontWeight: "700",
   },
   TextStyle: {
     marginTop: 5,
-    fontSize: 25,
+    fontSize: wp("5%"),
     maxWidth: "100%",
     color: "#000000",
     fontWeight: "700",
     letterSpacing: 1,
   },
   cartItemContainer: {
-    flex: 1,
-    marginBottom: 20,
-    width: "100%",
-    height: "100%",
-    marginVertical: 26,
+    marginBottom: 10,
+    width: wp("100%"),
+    height: hp("10%"),
     alignItems: "center",
     flexDirection: "row",
     backgroundColor: "#effff0",
     borderRadius: 20,
     position: "relative",
-    zIndex: 2,
+    justifyContent: "space-between",
   },
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   totalContainer: {
-    marginTop: 10,
-    paddingTop: 10,
+    paddingTop: 15,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    height: hp("30%"),
+    height: hp("35%"),
     width: wp("100%"),
     backgroundColor: "#effff0",
     borderRadius: 20,
@@ -200,28 +253,28 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#47CA4C",
     borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    paddingVertical: 5,
+    paddingHorizontal: 7,
   },
 
   buttonText: {
     color: "#ffffff",
     fontWeight: "bold",
     fontFamily: fonts.I_600,
-    fontSize: 20,
+    fontSize: 15,
   },
   price: {
-    fontSize: 20,
-    marginBottom: 10,
-    marginTop: 5,
+    fontSize: wp("4%"),
+    marginBottom: 1,
+    marginTop: 10,
   },
   newPrice: {
-    fontSize: 20,
-    marginLeft: 15,
+    fontSize: wp("4%"),
+    marginLeft: 10,
   },
   priceContainer: {
     justifyContent: "flex-end",
-    marginTop: 10,
+    marginTop: 7,
   },
   totalWrap: {
     flexDirection: "row",
@@ -241,5 +294,17 @@ const styles = StyleSheet.create({
   },
   quantityWrap: {
     flexDirection: "column",
+  },
+  cartIcon: {
+    width: "100%",
+    flexDirection: "row",
+    padding: 5,
+    paddingHorizontal: 10,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  cartList: {
+    flexGrow: 0,
+    height: hp("50%"),
   },
 });

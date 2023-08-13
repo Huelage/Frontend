@@ -1,9 +1,11 @@
-import { fonts } from "@utils";
+import { fonts, shadowStyle } from "@utils";
 import React, { useState } from "react";
 import { mockFoods } from "@api/mock";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   heightPercentageToDP as hp,
+  widthPercentageToDP,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
@@ -45,9 +47,25 @@ const QuantitySelect = () => {
       </View>
       <View style={styles.foodTextWrap}>
         <Text style={styles.foodText}>Shrimp Soup</Text>
-        <Text style={styles.price}>N {getPrice()}</Text>
+        <Text style={styles.price}>
+          {" "}
+          <MaterialCommunityIcons
+            name="currency-ngn"
+            size={20}
+            color="black"
+          />{" "}
+          {getPrice()}
+        </Text>
       </View>
-      <View style={{ flexDirection: "row" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: widthPercentageToDP("100%"),
+          paddingHorizontal: 50,
+        }}
+      >
         <TouchableOpacity
           style={[
             styles.butt,
@@ -86,29 +104,18 @@ const QuantitySelect = () => {
 export default QuantitySelect;
 const styles = StyleSheet.create({
   quantityWrap: {
-    gap: wp("5%"),
-    marginTop: hp("39%"),
+    flex: 1,
+    gap: wp("8%"),
+    marginTop: hp("34%"),
     marginBottom: wp("5%"),
-    paddingHorizontal: wp("10%"),
+    paddingHorizontal: wp("7%"),
+    flexDirection: "column",
   },
   button: {
-    height: hp("3%"),
-    width: wp("12%"),
-    margin: wp("1.5%"),
-    borderRadius: wp("2.5%"),
-    paddingVertical: wp("0.5%"),
-    paddingHorizontal: wp("3%"),
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "000",
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-
-    elevation: 5,
+    backgroundColor: "#47CA4C",
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   incrementButton: {
     backgroundColor: "#47c94c",
@@ -120,30 +127,32 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontWeight: "600",
     fontFamily: fonts.I_400,
-    fontSize: hp("2.5%"),
-    padding: 2,
-    marginRight: "2%",
-    marginTop: 10,
+    fontSize: hp("2%"),
   },
   Value: {
     color: "#ffffff",
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: "700",
-    paddingBottom: 5,
     textAlign: "center",
   },
   Arrange: {
+    marginLeft: wp("70%"),
+    height: hp("4.5%"),
+
+    paddingLeft: 18,
+    alignItems: "center",
+    backgroundColor: "#F0FFF0",
+    borderRadius: 10,
     flexDirection: "row",
-    padding: 10,
-    margin: 0,
-    marginLeft: wp("50%"),
-    justifyContent: "space-between",
+    gap: 10,
+    justifyContent: "center",
+    marginHorizontal: 55,
+    ...shadowStyle,
   },
   butt: {
-    height: 50,
-    width: wp("15%"),
+    height: 30,
+    width: wp("20%"),
     marginTop: 10,
-    marginLeft: wp("15%"),
 
     alignItems: "center",
     shadowColor: "000",
@@ -159,20 +168,20 @@ const styles = StyleSheet.create({
   smallButton: {
     backgroundColor: "#616161",
     borderRadius: 20,
-    height: 40,
-    padding: 5,
+    height: 30,
+    padding: 3,
   },
   mediumButton: {
     backgroundColor: "#616161",
     borderRadius: 20,
-    height: 40,
-    padding: 5,
+    height: 30,
+    padding: 3,
   },
   largeButton: {
     backgroundColor: "#616161",
     borderRadius: 20,
-    height: 40,
-    padding: 5,
+    height: 30,
+    padding: 3,
   },
   smallButtonSelected: {
     backgroundColor: "#4CAF50",
@@ -189,11 +198,11 @@ const styles = StyleSheet.create({
   },
 
   foodTextWrap: {
-    width: "100%",
-    height: 69,
+    width: "80%",
+    height: 59,
     justifyContent: "space-between",
-    gap: 60,
-    paddingHorizontal: wp("10%"),
+    gap: 50,
+    paddingHorizontal: wp("7%"),
     marginBottom: "2%",
     alignItems: "center",
     flexDirection: "row",
@@ -201,15 +210,17 @@ const styles = StyleSheet.create({
   foodText: {
     color: "#000000",
     fontFamily: fonts.I_700,
-    fontSize: 60,
+    fontSize: 35,
     fontWeight: "700",
     width: "100%",
     marginRight: wp("10%"),
+    padding: 10,
+    paddingBottom: 15,
   },
   price: {
     color: "#000000",
     fontFamily: fonts.I_700,
-    fontSize: 28,
+    fontSize: 18,
     fontWeight: "700",
   },
 });
