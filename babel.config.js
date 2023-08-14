@@ -16,6 +16,7 @@ module.exports = function (api) {
           "@navigators": "./src/navigators",
           "@screens": "./src/screens",
           "@utils": "./src/utils",
+          "@hooks": "./src/hooks",
           "@interfaces": "./src/utils/interfaces.ts"
         },
         "extensions": [".tsx", ".ts", ".json", ".png", ".jpg", ".jpeg"]
