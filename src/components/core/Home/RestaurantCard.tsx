@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { RestaurantInterface } from '@interfaces';
 import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
@@ -16,7 +17,8 @@ type IconProps = {
   0: IconName;
 };
 
-const RestaurantDemo = ({ name, imgUrl, rating, location, addToCart }: RestaurantProps) => {
+const RestaurantCard = ({ name, imgUrl, rating, location, addToCart }: RestaurantProps) => {
+  const { color } = useAppTheme();
   const rate = Math.floor(rating);
   const ratemantissa = rating - rate;
   const ratingArray = Array(rate).fill(1);
@@ -31,13 +33,13 @@ const RestaurantDemo = ({ name, imgUrl, rating, location, addToCart }: Restauran
   return (
     <View style={styles.container}>
       <Canvas style={styles.resBox}>
-        <Box box={containerRect} color="rgb(240, 255, 240)">
-          <BoxShadow dx={6} dy={6} blur={4} color="rgba(0, 0, 0, .4)" />
+        <Box box={containerRect} color={color.cardBg}>
+          <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
         </Box>
       </Canvas>
       <Image style={styles.resImage} source={{ uri: imgUrl }} />
       <View style={styles.detailsBox}>
-        <Text style={styles.resName}>{name}</Text>
+        <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
         <FlatList
           data={ratingArray}
           keyExtractor={(_, index) => index.toString()}
@@ -47,13 +49,13 @@ const RestaurantDemo = ({ name, imgUrl, rating, location, addToCart }: Restauran
           horizontal
           style={styles.resRatingBox}
         />
-        <Text style={styles.resLocation}>{location}</Text>
+        <Text style={[styles.resLocation, { color: color.mainGreen }]}>{location}</Text>
       </View>
     </View>
   );
 };
 
-export default RestaurantDemo;
+export default RestaurantCard;
 
 const styles = StyleSheet.create({
   container: {
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
   },
   resName: {
     fontFamily: fonts.I_700,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center'
   },
   resRatingBox: {
