@@ -1,13 +1,15 @@
 import { CustomButton, CustomCarousel } from '@components/core/Home';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const Categories = () => {
+  const { color } = useAppTheme();
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
   return (
     <View style={styles.categories}>
-      <Text style={styles.categoriesText}>Categories</Text>
+      <Text style={[styles.categoriesText, { color: color.mainText }]}>Categories</Text>
       <FlatList
         data={categories}
         horizontal

@@ -1,15 +1,19 @@
 import { mockRestaurants } from '@api/mock';
 import { CustomButton, RestaurantCard } from '@components/core/Home';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const PopularRestaurant = () => {
   const addToCart = () => console.log("hello");
+  const { color } = useAppTheme();
   return (
     <View style={styles.container}>
       <View style={styles.resNav}>
-        <Text style={styles.resText}><Text style={styles.resTextAccent}>Favorite</Text> Restaurants</Text>
+        <Text style={[styles.resText, { color: color.mainText }]}>
+          <Text style={{ color: color.mainGreen }}>Favorite</Text> Restaurants
+        </Text>
         <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
@@ -38,11 +42,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   resText: {
-    fontFamily: fonts.I_500,
-    fontSize: 16
-  },
-  resTextAccent: {
-    color: '#29A40A',
     fontFamily: fonts.I_500,
     fontSize: 16
   }
