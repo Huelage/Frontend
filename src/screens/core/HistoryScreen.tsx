@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const MenuScreen = () => {
+const HistoryScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>MenuScreen</Text>
+      <Text>HistoryScreen</Text>
     </View>
   );
 };
 
-export default MenuScreen;
+export default HistoryScreen;
 
 const styles = StyleSheet.create({
   container: {
