@@ -2,6 +2,7 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+// AUTH INTERFACES
 export interface LoginInfoInterface {
   vendorId?: string,
   email?: string,
@@ -16,6 +17,7 @@ export interface SignUpInfoInterface {
   password: string;
 }
 
+// NAVIGATION INTERFACES
 export type AuthStackParamList = {
   OnBoard: undefined,
   Login: undefined,
@@ -29,20 +31,27 @@ export type StackParamList = {
   Cart: undefined;
 };
 
-export type NavigationProps = NativeStackNavigationProp<StackParamList>;
-export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
-export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
-export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
-
-export type TabParamList = {
+export type UserTabParamList = {
   Home: undefined,
   Vendors: undefined,
   History: undefined,
   Profile: undefined;
 };
 
-export type TabProps = BottomTabNavigationProp<TabParamList>;
+// SCREEN INTERFACES
+export type NavigationProps = NativeStackNavigationProp<StackParamList>;
+export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
+export type TabProps = BottomTabNavigationProp<UserTabParamList>;
+export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
+export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
 
+// REDUX INTERFACES
+export interface globalStateInterface {
+  isAuthenticated: boolean;
+  theme: "light" | "dark";
+}
+
+// USER SCREEN INTERFACES
 export interface FoodInterface {
   id: number;
   name: string;
@@ -61,9 +70,4 @@ export interface RestaurantInterface {
   location: string;
   rating: number;
   imgUrl: string;
-}
-
-export interface globalStateInterface {
-  isAuthenticated: boolean;
-  theme: "light" | "dark";
 }

@@ -1,11 +1,11 @@
 import { TabBar, TabHeader } from "@components/navigation";
-import { TabParamList } from "@interfaces";
+import { UserTabParamList } from "@interfaces";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { HistoryScreen, HomeScreen, ProfileScreen, VendorScreen } from "@screens/core";
 import React from "react";
 import { View } from "react-native";
 
-const Tab = createBottomTabNavigator<TabParamList>();
+const Tab = createBottomTabNavigator<UserTabParamList>();
 
 const TabNavigator = () => {
   return (
