@@ -24,8 +24,8 @@ const TabNavigator = () => {
       tabBar={(props) => <TabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Vendor" component={MenuScreen} />
-      <Tab.Screen name="MyOrder" component={FavouriteScreen} />
+      <Tab.Screen name="Vendors" component={MenuScreen} />
+      <Tab.Screen name="History" component={FavouriteScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

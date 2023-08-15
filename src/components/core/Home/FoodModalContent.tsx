@@ -7,6 +7,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
+import { useAppTheme } from '@hooks';
 
 interface ModalInterface extends Partial<FoodInterface> {
   imgUrl: string;
@@ -14,8 +15,9 @@ interface ModalInterface extends Partial<FoodInterface> {
 }
 
 const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
+  const { color } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: color.modalBg }]}>
       <View style={styles.foodImageBox}>
         <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)}>
           <Ionicons name="close" size={30} color="white" />
@@ -23,10 +25,10 @@ const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
         <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
-        <Text style={styles.foodName}>{name}</Text>
+        <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
         <Text style={styles.foodDesc}>{desc}</Text>
       </View>
-      <Text style={styles.foodBuyFromTitle}>Buy From</Text>
+      <Text style={[styles.foodBuyFromTitle, { color: color.mainText }]}>Available at</Text>
       <FlatList
         data={restuarants}
         renderItem={({ item }) => (
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   foodDesc: {
-    color: 'rgba(0, 0, 0, 0.75)',
+    color: '#626262',
     fontFamily: fonts.I_500I,
     fontSize: 13,
     textAlign: 'center'

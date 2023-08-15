@@ -36,8 +36,8 @@ export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
 
 export type TabParamList = {
   Home: undefined,
-  Vendor: undefined,
-  MyOrder: undefined,
+  Vendors: undefined,
+  History: undefined,
   Profile: undefined;
 };
 
@@ -65,4 +65,5 @@ export interface RestaurantInterface {
 
 export interface globalStateInterface {
   isAuthenticated: boolean;
+  theme: "light" | "dark";
 }

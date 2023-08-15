@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -13,11 +14,12 @@ interface ButtonProps {
 }
 
 const CustomButton = ({ label, icon, height, fontSize, inactive, onPress }: ButtonProps) => {
+  const { color } = useAppTheme();
   return (
     <TouchableOpacity style={{ height }} onPress={onPress}>
       <View style={[styles.buttonBox, inactive && styles.buttonInactive]}>
-        <Text style={[styles.buttonText, { fontSize }, inactive && styles.buttonTextInactive]}>{label}</Text>
-        {icon && <Ionicons name={icon} size={20} color={inactive ? "#626262" : "white"} />}
+        <Text style={[styles.buttonText, { fontSize }, inactive && { color: color.mainText }]}>{label}</Text>
+        {icon && <Ionicons name={icon} size={20} color={inactive ? color.mainText : "white"} />}
       </View>
     </TouchableOpacity>
   );
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20
   },
   buttonInactive: {
-    backgroundColor: 'rgba(188, 181, 181, 0.38)'
+    backgroundColor: 'rgba(188, 181, 181, 0.25)'
   },
   buttonText: {
     color: "#fff",

@@ -10,3 +10,28 @@ export const outline = {
   borderColor: 'black',
   borderWidth: 2
 };
+
+export const colors = {
+  dark: {
+    accentText: "#fff",
+    cardBg: "#141414",
+    main: "#000",
+    mainBg: "#181818",
+    mainText: "#fff",
+    mainGreen: "#5BCF5F",
+    modalBg: "#0D0D0D",
+    searchBg: "#4F4F4F",
+    searchText: "#fff"
+  },
+  light: {
+    accentText: "#626262",
+    cardBg: "#F0FFF0",
+    main: "#fff",
+    mainBg: "#fff",
+    mainText: "#000",
+    mainGreen: "#4CAF50",
+    modalBg: "#fff",
+    searchBg: "#F3F3F3",
+    searchText: "#626262"
+  }
+};

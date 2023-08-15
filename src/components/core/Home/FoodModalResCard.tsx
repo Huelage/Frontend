@@ -1,14 +1,16 @@
 import restuarants from '@api/mock/mockRestaurants';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const FoodModalResCard = ({ resId }: { resId: number; }) => {
+  const { color } = useAppTheme();
   const restaurant = restuarants.find(res => res.id === resId);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: color.cardBg }]}>
       <Image style={styles.image} source={{ uri: restaurant?.imgUrl }} />
-      <Text style={styles.name}>{restaurant?.name}</Text>
+      <Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
       <TouchableOpacity style={styles.buttonBox}>
         <Text style={styles.button}>Select</Text>
       </TouchableOpacity>
