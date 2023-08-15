@@ -50,7 +50,6 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
               <Path fill={isFocused ? color.mainGreen : color.mainText} d={iconPathD} />
             </Svg>
             <Text style={[styles.tabLabel, { color: isFocused ? color.mainGreen : color.mainText }]}>{label}</Text>
-            {/* <View style={[styles.tabLine, isFocused && { backgroundColor: color.mainGreen }]} /> */}
           </TouchableOpacity>
         );
       })}
