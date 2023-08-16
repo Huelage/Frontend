@@ -1,5 +1,5 @@
 import { MainSearchBar } from '@components/core/Home';
-import { Categories, PopularFood, PopularRestaurant } from '@containers';
+import { Categories, PopularFood, PopularRestaurant } from '@containers/User';
 import { useAppTheme } from '@hooks';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
