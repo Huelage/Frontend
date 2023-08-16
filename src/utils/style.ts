@@ -1,6 +1,5 @@
 export const shadowStyle = {
   elevation: 10,
-  shadowColor: "#000",
   shadowOffset: { width: 0, height: 5 },
   shadowOpacity: 0.34,
   shadowRadius: 6.27
@@ -15,6 +14,8 @@ export const colors = {
   dark: {
     accentText: "#fff",
     cardBg: "#141414",
+    chartBg: "#333333",
+    filterBg: "#181818",
     main: "#000",
     mainBg: "#181818",
     mainText: "#fff",
@@ -26,6 +27,8 @@ export const colors = {
   light: {
     accentText: "#626262",
     cardBg: "#F0FFF0",
+    chartBg: "#D9D9D9",
+    filterBg: "#F3F3F3",
     main: "#fff",
     mainBg: "#fff",
     mainText: "#000",
