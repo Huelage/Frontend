@@ -17,6 +17,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/native";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItem);
@@ -30,7 +31,13 @@ const Cart = () => {
       )
     );
   };
-
+  const navigation = useNavigation();
+  const prev = () => {
+    navigation.navigate("Cart");
+  };
+  const exit = () => {
+    navigation.navigate("mainTabs");
+  };
   const total = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
@@ -122,13 +129,18 @@ const Cart = () => {
             name="chevron-left"
             size={30}
             color="#000000"
-            onPress={() => console.log("Chevron left pressed")}
+            onPress={prev}
           />
         </TouchableOpacity>
 
         <Text style={styles.cartText}> Cart</Text>
         <TouchableOpacity>
-          <MaterialCommunityIcons name="close" size={30} color="#000000" />
+          <MaterialCommunityIcons
+            name="close"
+            size={30}
+            color="#000000"
+            onPress={exit}
+          />
         </TouchableOpacity>
       </View>
 
@@ -225,6 +237,7 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginRight: 5,
   },
   totalContainer: {
     paddingTop: 15,
@@ -270,7 +283,7 @@ const styles = StyleSheet.create({
   },
   newPrice: {
     fontSize: wp("4%"),
-    marginLeft: 10,
+    marginLeft: 8,
   },
   priceContainer: {
     justifyContent: "flex-end",
@@ -305,6 +318,7 @@ const styles = StyleSheet.create({
   },
   cartList: {
     flexGrow: 0,
-    height: hp("50%"),
+    height: hp("100%"),
+    width: wp("100%"),
   },
 });

@@ -3,7 +3,7 @@ import { globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: globalStateInterface = {
-  isAuthenticated: true,
+  isAuthenticated: false,
 };
 
 const globalSlice = createSlice({
