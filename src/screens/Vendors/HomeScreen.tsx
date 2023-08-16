@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { OrderOverview, OrderSummary } from '@containers/Vendor';
 import { useAppTheme } from '@hooks';
-import { OrderOverview } from '@components/vendor/Home';
-import { OrderSummary } from '@containers/Vendor';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 const HomeScreen = () => {
   const { color } = useAppTheme();
@@ -10,6 +9,7 @@ const HomeScreen = () => {
     <View style={[styles.container, { backgroundColor: color.mainBg }]}>
       <OrderOverview />
       <OrderSummary />
+
     </View>
   );
 };
