@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@api/app/appHooks';
-import { setIsAuthenticated } from '@api/slices/globalSlice';
+import { setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
 import { AuthNavigate, CustomTextInput, Hero, SubmitButton, UserVendor } from '@components/auth';
 import { LoginInfoInterface } from '@interfaces';
 import { fonts, shadowStyle } from '@utils';
@@ -15,7 +15,8 @@ const LoginScreen = () => {
   const [isVendor, setIsVendor] = useState<boolean>(true);
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
     reset();
-    dispatch(setIsAuthenticated(true));
+    dispatch(setVendorStatus(isVendor));
+    dispatch(setAuthStatus(true));
   };
   useEffect(() => { reset(); }, [isVendor]);
   useEffect(() => { setTimeout(() => isVendor ? setFocus('vendorId') : setFocus('email'), 0); }, []);

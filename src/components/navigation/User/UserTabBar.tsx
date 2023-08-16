@@ -6,7 +6,7 @@ import { Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Path, Svg } from 'react-native-svg';
 
-const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+const UserTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
   return (
@@ -57,7 +57,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   );
 };
 
-export default TabBar;
+export default UserTabBar;
 
 const styles = StyleSheet.create({
   tabBg: {

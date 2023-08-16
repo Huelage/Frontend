@@ -1,17 +1,15 @@
-import { StackParamList } from '@interfaces';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { CartScreen } from '@screens/core';
+import { useAppSelector } from '@api/app/appHooks';
+import { getVendorStatus } from '@api/slices/globalSlice';
 import React from 'react';
-import TabNavigator from './TabNavigator';
-
-const Stack = createNativeStackNavigator<StackParamList>();
+import UserStackNavigator from './UserStackNavigator';
+import VendorStackNavigator from './VendorStackNavigator';
 
 const StackNavigator = () => {
+  const isVendor = useAppSelector(getVendorStatus);
   return (
-    <Stack.Navigator initialRouteName='MainTabs' screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="MainTabs" component={TabNavigator} />
-      <Stack.Screen name="Cart" component={CartScreen} />
-    </Stack.Navigator>
+    <>
+      {isVendor ? <VendorStackNavigator /> : <UserStackNavigator />}
+    </>
   );
 };
 

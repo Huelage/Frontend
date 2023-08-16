@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@api/app/appHooks';
-import { setIsAuthenticated, switchTheme } from '@api/slices/globalSlice';
+import { setAuthStatus, switchTheme } from '@api/slices/globalSlice';
 import { useAppTheme } from '@hooks';
-import { NavigationProps } from '@interfaces';
+import { UserNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
@@ -11,9 +11,9 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
-const TabHeader = () => {
+const UserTabHeader = () => {
   const dispatch = useAppDispatch();
-  const { navigate } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<UserNavigationProps>();
   const inset = useSafeAreaInsets();
   const { color, theme } = useAppTheme();
   const imgLight = Image.resolveAssetSource(require('@icons/toggle_light.png')).uri;
@@ -26,7 +26,7 @@ const TabHeader = () => {
         <Text style={[styles.headerGreeting, { color: color.mainText }]}>Good morning</Text>
         <View style={styles.headerBox}>
           <View style={styles.headerDetail}>
-            <TouchableOpacity onPress={() => dispatch(setIsAuthenticated(false))}>
+            <TouchableOpacity onPress={() => dispatch(setAuthStatus(false))}>
               <Image style={styles.headerImage} source={require('@images/beejay_dp.png')} />
             </TouchableOpacity>
             <Text style={[styles.headerName, { color: color.mainText }]}>John Jane Doe</Text>
@@ -47,7 +47,7 @@ const TabHeader = () => {
   );
 };
 
-export default TabHeader;
+export default UserTabHeader;
 
 const styles = StyleSheet.create({
   container: {
