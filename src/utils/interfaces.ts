@@ -22,13 +22,18 @@ export type AuthStackParamList = {
   OnBoard: undefined,
   Login: undefined,
   SignUp: { isVendor: boolean; };
-  OTP: { phoneno: string; };
+  OTP: { phoneno: string; vendorStatus: boolean; };
   SignupSelect: undefined;
 };
 
-export type StackParamList = {
+export type UserStackParamList = {
   MainTabs: undefined,
   Cart: undefined;
+};
+
+export type VendorStackParamList = {
+  MainTabs: undefined,
+  Notifications: undefined;
 };
 
 export type UserTabParamList = {
@@ -38,16 +43,26 @@ export type UserTabParamList = {
   Profile: undefined;
 };
 
+export type VendorTabParamList = {
+  Home: undefined,
+  Orders: undefined,
+  Menu: undefined,
+  Account: undefined;
+};
+
 // SCREEN INTERFACES
-export type NavigationProps = NativeStackNavigationProp<StackParamList>;
+export type UserNavigationProps = NativeStackNavigationProp<UserStackParamList>;
+export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
-export type TabProps = BottomTabNavigationProp<UserTabParamList>;
+export type UserTabProps = BottomTabNavigationProp<UserTabParamList>;
+export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
 export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
 export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
 
 // REDUX INTERFACES
 export interface globalStateInterface {
   isAuthenticated: boolean;
+  isVendor: boolean;
   theme: "light" | "dark";
 }
 
