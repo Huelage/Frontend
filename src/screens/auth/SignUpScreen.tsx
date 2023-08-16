@@ -16,7 +16,8 @@ const SignUpScreen = () => {
   const [acceptTerms, setAcceptTerms] = useState<boolean>(true);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
   const onSubmit = (data: SignUpInfoInterface) => {
-    navigate('OTP', { phoneno: data.phonenumber });
+    reset();
+    navigate('OTP', { phoneno: data.phonenumber, vendorStatus: isVendor });
   };
 
   useEffect(() => { setTimeout(() => setFocus('fullname'), 0); }, []);
