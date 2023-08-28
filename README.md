@@ -52,12 +52,20 @@ npm start
 ```
 huelage-frontend
 │── assets (images, icons, fonts)
+│── patches (patches for react-native)
 ├── src
+│   │── api (API related files and redux slices)
 │   │── components (reusable components)
 │   │── containers (view components that aren't screens)
+│   │── hooks (custom hooks)
+│   │── navigators (navigation configuration)
 │   │── screens (main app screens)
 │   └── utils (helper functions)
 │── App.tsx (app entry point)
+│── app.json (app configuration)
+│── babel.config.js (babel configuration)
+│── tsconfig.json (typescript configuration)
+│── .gitignore
 └── package.json (dependencies)
 ```
 
