@@ -11,36 +11,44 @@ import {
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const logoText = "HUELAGE".split('');
-
+  const progress = useSharedValue(0);
+  const degrees = useSharedValue(360);
+  const animatedOpacity = useAnimatedStyle(() => ({
+    opacity: progress.value
+  }));
+  const animatedRotate = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${degrees.value}deg` }]
+  }));
+  useEffect(() => {
+    degrees.value = withDelay(0, withTiming(0, { duration: 2200, easing: Easing.bezier(0.65, 0, 0.35, 1) }));
+    progress.value = withDelay(300,
+      withSequence(
+        withTiming(1, { duration: 700, easing: Easing.bezier(1, 0, 0.2, 1) }),
+        withTiming(0, { duration: 100, easing: Easing.bezier(1, 0, 0.2, 1) }),
+        withTiming(1, { duration: 250, easing: Easing.bezier(1, 0, 0.2, 1) }),
+        withTiming(0, { duration: 100, easing: Easing.bezier(1, 0, 0.2, 1) }),
+        withTiming(1, { duration: 500, easing: Easing.bezier(1, 0, 0.2, 1) }),
+      )
+    );
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
         <Animated.Image
-          entering={SlideInDown.duration(300).springify()}
           sharedTransitionTag="huelageLogo"
-          style={styles.logoImage}
+          style={[styles.logoImage, animatedOpacity, animatedRotate]}
           source={require("@images/onboard_logo.png")}
         />
-        <View style={{ flexDirection: 'row', gap: 3 }}>
-          {logoText.map((item, index) => (
-            <Animated.Text
-              key={index.toString()}
-              entering={SlideInDown.delay(600 + 300 * index).springify()}
-              style={styles.logoText}>
-              {item}
-            </Animated.Text>
-          ))}
-        </View>
+        <Animated.Text style={[styles.logoText, animatedOpacity]}>HUELAGE</Animated.Text>
       </View>
       <View style={styles.authWrapper}>
         <TouchableOpacity onPress={() => navigate("Login")}>
-          <Animated.View entering={SlideInDown.delay(2900).springify().damping(20)} style={[styles.baseButton, styles.loginButton]}>
+          <Animated.View entering={SlideInDown.delay(2200).springify().damping(20)} style={[styles.baseButton, styles.loginButton]}>
             <Text style={styles.loginText}>LOG IN</Text>
           </Animated.View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigate("SignupSelect")}>
-          <Animated.View entering={SlideInDown.delay(3200).springify().damping(20)} style={[styles.baseButton, styles.signupButton]}>
+          <Animated.View entering={SlideInDown.delay(2500).springify().damping(20)} style={[styles.baseButton, styles.signupButton]}>
             <Text style={styles.signupText}>SIGN UP</Text>
           </Animated.View>
         </TouchableOpacity>
