@@ -22,22 +22,16 @@ const OrderSummary = () => {
           <FontAwesome name="angle-down" size={18} color={color.mainText} />
         </TouchableOpacity>
       </View>
-      <FlatList
-        contentContainerStyle={styles.overviewBox}
-        data={summary}
-        keyExtractor={item => item.label}
-        renderItem={({ item }) => (
-          <OverviewElement value={item.value} label={item.label} iconColor={item.iconColor} />
-        )}
-      />
-      <FlatList
-        contentContainerStyle={{ gap: 10 }}
-        data={summary}
-        keyExtractor={item => item.label}
-        renderItem={({ item, index }) => (
-          <OrderChartElement idx={index} iconColor={item.iconColor} value={item.value} label={item.label} total={total} />
-        )}
-      />
+      <View style={styles.overviewBox}>
+        {summary.map((item, idx) => (
+          <OverviewElement key={idx} value={item.value} label={item.label} iconColor={item.iconColor} />
+        ))}
+      </View>
+      <View style={{ gap: 10 }}>
+        {summary.map((item, idx) => (
+          <OrderChartElement key={idx} idx={idx} iconColor={item.iconColor} value={item.value} label={item.label} total={total} />
+        ))}
+      </View>
     </View>
   );
 };
