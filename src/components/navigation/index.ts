@@ -1,2 +1,5 @@
-export { default as TabBar } from './TabBar';
-export { default as TabHeader } from './TabHeader';
+export { default as OrderBar } from './Vendor/OrderBar';
+export { default as UserTabBar } from './User/UserTabBar';
+export { default as UserTabHeader } from './User/UserTabHeader';
+export { default as VendorTabBar } from './Vendor/VendorTabBar';
+export { default as VendorTabHeader } from './Vendor/VendorTabHeader';

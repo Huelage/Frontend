@@ -1,6 +1,7 @@
 import { RatingCard } from '@components/core/Detail';
 import { CustomImage } from '@components/misc';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
@@ -18,6 +19,7 @@ interface CategoryCardInterface {
   animationValue: Animated.SharedValue<number>;
 }
 const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
+  const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
   const containerRect = rrect(rect(6, 6, (wp('67%') - 20), (hp('40%') - 20)), 15, 15);
@@ -88,20 +90,20 @@ const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationVa
     <Animated.View style={styles.container}>
       <Animated.View style={[styles.itemBox, cardStyle]}>
         <Canvas style={styles.resBox}>
-          <Box box={containerRect} color="rgb(240, 255, 240)">
-            <BoxShadow dx={6} dy={6} blur={4} color="rgba(0, 0, 0, .4)" />
+          <Box box={containerRect} color={color.cardBg}>
+            <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
           </Box>
         </Canvas>
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
-          <Text style={styles.itemName}>{name}</Text>
+          <Text style={[styles.itemName, { color: color.mainText }]}>{name}</Text>
           <RatingCard rating={rating} />
-          <Text style={styles.itemPrice}>
-            <MaterialCommunityIcons name="currency-ngn" size={16} color="black" />
+          <Text style={[styles.itemPrice, { color: color.mainText }]}>
+            <MaterialCommunityIcons name="currency-ngn" size={16} color={color.mainText} />
             {price?.toFixed(2)}
           </Text>
           <View style={styles.itemGetBox}>
-            <Text style={styles.itemVendorName}>Korede's joint</Text>
+            <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
             <TouchableOpacity style={styles.itemBuyIcon} onPress={addToCart}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>

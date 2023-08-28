@@ -1,14 +1,18 @@
 import { mockFoods } from '@api/mock';
 import { CustomButton, FoodCard } from '@components/core/Home/';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const PopularFood = () => {
+  const { color } = useAppTheme();
   return (
     <View style={styles.container}>
       <View style={styles.foodNav}>
-        <Text style={styles.foodText}><Text style={styles.foodTextAccent}>Popular</Text> this week</Text>
+        <Text style={[styles.foodText, { color: color.mainText }]}>
+          <Text style={[styles.foodTextAccent, { color: color.mainGreen }]}>Popular</Text> this week
+        </Text>
         <CustomButton inactive label='View All' height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList

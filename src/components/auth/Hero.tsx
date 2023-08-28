@@ -1,6 +1,7 @@
 import { fonts } from '@utils';
 import React from 'react';
-import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface HeroProp {
@@ -11,9 +12,13 @@ interface HeroProp {
 const Hero = ({ lead, accent, page }: HeroProp) => {
   const heroOneAccentText = page === 'SI' ? { ...styles.heroOneAccentText, marginLeft: 8 } : styles.heroOneAccentText;
   return (
-    <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={styles.heroOne}>
+    <ImageBackground resizeMode='cover' source={require('@images/authHeroBg.png')} style={[styles.heroOne]}>
       <View style={styles.heroOneLogo}>
-        <Image style={styles.logoImage} source={require('@images/rectangle.png')} />
+        <Animated.Image
+          sharedTransitionTag='huelageLogo'
+          style={styles.logoImage}
+          source={require('@images/rectangle.png')}
+        />
       </View>
       <Text style={styles.heroOneLeadText}>{lead}</Text>
       <Text style={heroOneAccentText}>{accent}</Text>
@@ -25,27 +30,27 @@ export default Hero;
 
 const styles = StyleSheet.create({
   heroOne: {
-    paddingBottom: hp("4%"),
+    paddingBottom: 45,
     paddingTop: hp("6.5%"),
     paddingHorizontal: wp("8%")
   },
   heroOneLogo: {
     alignItems: 'flex-end',
-    marginBottom: hp("4%")
+    marginBottom: 25
   },
   heroOneLeadText: {
     color: '#fff',
-    fontSize: 40,
+    fontSize: 36,
     fontFamily: fonts.I_700
   },
   heroOneAccentText: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.I_400,
   },
   logoImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   }
 });

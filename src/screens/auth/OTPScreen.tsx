@@ -1,9 +1,9 @@
 import { useAppDispatch } from '@api/app/appHooks';
-import { setIsAuthenticated } from '@api/slices/globalSlice';
+import { setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
 import { SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
-import { AuthNavigationProps } from '@interfaces';
-import { useNavigation } from '@react-navigation/native';
+import { AuthNavigationProps, OTPRouteProps } from '@interfaces';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { fonts, shadowStyle } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,6 +15,7 @@ const CELL_COUNT = 4;
 
 const OTPScreen = () => {
   const dispatch = useAppDispatch();
+  const { params: { phoneno, vendorStatus } } = useRoute<OTPRouteProps>();
   const [value, setValue] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
@@ -22,14 +23,15 @@ const OTPScreen = () => {
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const timerRef = useRef<number>(seconds);
+  const formattedNumber = `+234 ${phoneno.slice(1, 3)}******${phoneno.slice(-2)}`;
 
   const resendCode = () => {
     setIsTimerActive(true);
     timerRef.current = 59;
   };
   const verifyOTP = () => {
-    console.log(value);
-    dispatch(setIsAuthenticated(true));
+    dispatch(setAuthStatus(true));
+    dispatch(setVendorStatus(vendorStatus));
   };
 
   useEffect(() => {
@@ -56,7 +58,7 @@ const OTPScreen = () => {
           <Text style={styles.introText}>OTP Code Verification</Text>
         </View>
         <View style={styles.mainBox}>
-          <Text style={styles.infoText}>Code has been sent to +234 81*******67</Text>
+          <Text style={styles.infoText}>Code has been sent to {formattedNumber}</Text>
           <CodeField
             ref={ref}
             {...props}
@@ -140,14 +142,16 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   inputCell: {
+    alignItems: 'center',
     borderColor: '#93b1a4',
     borderRadius: 11,
     borderWidth: 2,
     fontSize: 28,
     height: 65,
-    width: 65,
-    padding: 10,
-    textAlign: 'center'
+    justifyContent: 'center',
+    paddingVertical: 14,
+    textAlign: 'center',
+    width: 65
   },
   activeInputCell: {
     borderColor: '#47CA4C',

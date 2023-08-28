@@ -2,7 +2,9 @@ import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import Animated, { SlideInDown } from "react-native-reanimated";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -10,25 +12,38 @@ import {
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
+  const logoText = "HUELAGE".split('');
+
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
-        <Image
+        <Animated.Image
+          entering={SlideInDown.duration(300).springify()}
+          sharedTransitionTag="huelageLogo"
           style={styles.logoImage}
           source={require("@images/onboard_logo.png")}
         />
-        <Text style={styles.logoText}>HUELAGE</Text>
+        <View style={{ flexDirection: 'row', gap: 3 }}>
+          {logoText.map((item, index) => (
+            <Animated.Text
+              key={index.toString()}
+              entering={SlideInDown.delay(600 + 300 * index).springify()}
+              style={styles.logoText}>
+              {item}
+            </Animated.Text>
+          ))}
+        </View>
       </View>
       <View style={styles.authWrapper}>
         <TouchableOpacity onPress={() => navigate("Login")}>
-          <View style={[styles.baseButton, styles.loginButton]}>
+          <Animated.View entering={SlideInDown.delay(2900).springify().damping(20)} style={[styles.baseButton, styles.loginButton]}>
             <Text style={styles.loginText}>LOG IN</Text>
-          </View>
+          </Animated.View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigate("SignupSelect")}>
-          <View style={[styles.baseButton, styles.signupButton]}>
+          <Animated.View entering={SlideInDown.delay(3200).springify().damping(20)} style={[styles.baseButton, styles.signupButton]}>
             <Text style={styles.signupText}>SIGN UP</Text>
-          </View>
+          </Animated.View>
         </TouchableOpacity>
       </View>
     </View>
@@ -44,12 +59,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: wp("10%"),
-    paddingTop: hp("15%"),
+    paddingTop: hp("15%")
   },
   logoWrapper: {
     alignItems: "center",
     gap: 15,
     justifyContent: "center",
+    width: '100%',
+    height: 200
   },
   logoImage: {
     height: 100,
@@ -61,6 +78,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "700",
     color: "#fff",
+    textShadowColor: 'rgba(0, 0, 0, .3)',
+    textShadowOffset: { width: 2, height: 5 },
+    textShadowRadius: 5
   },
   authWrapper: {
     gap: 15,

@@ -33,10 +33,10 @@ const Cart = () => {
   };
   const navigation = useNavigation();
   const prev = () => {
-    navigation.navigate("Cart");
+    // navigation.navigate("Cart");
   };
   const exit = () => {
-    navigation.navigate("mainTabs");
+    //navigation.navigate("mainTabs");
   };
   const total = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,

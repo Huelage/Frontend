@@ -4,24 +4,32 @@ import { useRoute } from '@react-navigation/core';
 import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
   const { params: { isVendor } } = useRoute<SignupRouteProps>();
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const { handleSubmit, control, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
-  const onSubmit = (data: SignUpInfoInterface) => navigate('OTP');
+  const [acceptTerms, setAcceptTerms] = useState<boolean>(true);
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
+  const onSubmit = (data: SignUpInfoInterface) => {
+    reset();
+    navigate('OTP', { phoneno: data.phonenumber, vendorStatus: isVendor });
+  };
+
+  useEffect(() => { setTimeout(() => setFocus('fullname'), 0); }, []);
+
   return (
     <View style={styles.container}>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <ScrollView style={styles.heroInputBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.heroInputBox}>
         <View style={styles.heroInputs}>
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
@@ -30,6 +38,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's name" : "Full name"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus('email')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -41,7 +52,7 @@ const SignUpScreen = () => {
           />
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
@@ -51,6 +62,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's email" : "Email address"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus('phonenumber')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -65,7 +79,7 @@ const SignUpScreen = () => {
           />
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='words'
                 autoCorrect={false}
@@ -75,6 +89,9 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's Phone number" : "Phone number"}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => setFocus(isVendor ? 'businessname' : 'password')}
+                innerRef={ref}
+                returnKeyType='next'
                 value={value}
               />
             )}
@@ -86,7 +103,7 @@ const SignUpScreen = () => {
           {isVendor && (
             <Controller
               control={control}
-              render={({ field: { onChange, onBlur, value } }) => (
+              render={({ field: { onChange, onBlur, value, ref } }) => (
                 <CustomTextInput
                   autoCapitalize='words'
                   autoCorrect={false}
@@ -95,6 +112,9 @@ const SignUpScreen = () => {
                   label="Business name"
                   onBlur={onBlur}
                   onChangeText={onChange}
+                  onSubmitEditing={() => setFocus('password')}
+                  returnKeyType='next'
+                  innerRef={ref}
                   value={value}
                 />
               )}
@@ -107,7 +127,7 @@ const SignUpScreen = () => {
           )}
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, onBlur, value, ref } }) => (
               <CustomTextInput
                 autoCapitalize='none'
                 autoCorrect={false}
@@ -116,6 +136,8 @@ const SignUpScreen = () => {
                 label='Create password'
                 onBlur={onBlur}
                 onChangeText={onChange}
+                onSubmitEditing={() => !isVendor && handleSubmit(onSubmit)()}
+                innerRef={ref}
                 value={value}
               />
             )}
@@ -130,9 +152,9 @@ const SignUpScreen = () => {
           />
           {isVendor && (
             <CheckBox
-              checked={true}
+              checked={acceptTerms}
               center
-              onPress={() => { }}
+              onPress={() => setAcceptTerms(!acceptTerms)}
               iconType="material-community"
               checkedIcon="checkbox-marked"
               uncheckedIcon="checkbox-blank-outline"
@@ -148,7 +170,7 @@ const SignUpScreen = () => {
           {!isVendor && <SocialLogin page='SU' />}
           <AuthNavigate page='SU' isVendor={isVendor} />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -159,15 +181,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  hero: {
-    backgroundColor: '#fff',
-    flex: 1,
-  },
   heroInputBox: {
     backgroundColor: '#fff',
     flex: 1,
     gap: 25,
-    paddingHorizontal: wp("8%") + 8,
+    paddingHorizontal: wp("8%"),
     paddingVertical: hp("4%")
   },
   heroInputs: {

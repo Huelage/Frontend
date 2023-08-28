@@ -36,7 +36,6 @@ const CustomCarousel = () => {
     }
   };
 
-
   return (
     <>
       <Carousel
