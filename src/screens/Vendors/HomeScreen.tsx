@@ -1,15 +1,19 @@
-import { OrderOverview, OrderSummary } from '@containers/Vendor';
+import { OrderOverview, OrderSummary, ReviewList } from '@containers/Vendor';
 import { useAppTheme } from '@hooks';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 const HomeScreen = () => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]}>
-      <OrderOverview />
-      <OrderSummary />
-
+    <View style={{ backgroundColor: color.mainBg }}>
+      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true}>
+        <View style={styles.container}>
+          <OrderOverview />
+          <OrderSummary />
+          <ReviewList />
+        </View>
+      </ScrollView>
     </View>
   );
 };
