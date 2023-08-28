@@ -1,10 +1,9 @@
 import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
-import Animated, { SlideInDown } from "react-native-reanimated";
+import Animated, { Easing, SlideInDown, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from "react-native-reanimated";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
