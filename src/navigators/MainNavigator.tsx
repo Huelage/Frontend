@@ -15,7 +15,7 @@ const MainNavigator = () => {
   const nativeTheme = useColorScheme();
   useEffect(() => {
     dispatch(switchTheme(nativeTheme || "light"));
-  }, []);
+  }, [nativeTheme]);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
