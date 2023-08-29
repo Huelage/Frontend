@@ -33,7 +33,7 @@ const Cart = () => {
   };
   const navigation = useNavigation();
   const prev = () => {
-    // navigation.navigate("Cart");
+    navigation.navigate("Cart");
   };
   const exit = () => {
     //navigation.navigate("mainTabs");
@@ -77,7 +77,7 @@ const Cart = () => {
             <Text style={styles.price}>
               <MaterialCommunityIcons
                 name="currency-ngn"
-                size={20}
+                size={13}
                 color="black"
               />{" "}
               {item.price}
@@ -110,7 +110,7 @@ const Cart = () => {
                 {" "}
                 <MaterialCommunityIcons
                   name="currency-ngn"
-                  size={20}
+                  size={12}
                   color="black"
                 />
                 {item.price * item.quantity}
