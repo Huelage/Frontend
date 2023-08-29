@@ -1,13 +1,19 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { OrderOverview, OrderSummary, ReviewList } from '@containers/Vendor';
 import { useAppTheme } from '@hooks';
-import { OrderOverview } from '@components/vendor/Home';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 const HomeScreen = () => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]}>
-      <OrderOverview />
+    <View style={{ backgroundColor: color.mainBg }}>
+      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true}>
+        <View style={styles.container}>
+          <OrderOverview />
+          <OrderSummary />
+          <ReviewList />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -17,7 +23,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 10,
+    gap: 30,
     padding: 20
   }
 });

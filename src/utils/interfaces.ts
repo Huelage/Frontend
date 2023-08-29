@@ -73,3 +73,13 @@ export interface CartItem {
   price: number;
   imgUrl: string;
 }
+
+// Entity Interfaces
+export interface ReviewInterface {
+  id: number;
+  name: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  message: string;
+}
