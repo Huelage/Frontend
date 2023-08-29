@@ -5,7 +5,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const initialState: globalStateInterface = {
   isAuthenticated: false,
   isVendor: false,
-  theme: "light"
+  theme: "light",
 };
 
 const globalSlice = createSlice({
@@ -20,16 +20,13 @@ const globalSlice = createSlice({
     },
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
-    }
-  }
+    },
+  },
 });
 
 // Dispatches
-export const {
-  setAuthStatus,
-  setVendorStatus,
-  switchTheme
-} = globalSlice.actions;
+export const { setAuthStatus, setVendorStatus, switchTheme } =
+  globalSlice.actions;
 // Selectors
 export const getAuthStatus = (state: RootState) => state.global.isAuthenticated;
 export const getTheme = (state: RootState) => state.global.theme;

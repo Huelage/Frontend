@@ -1,32 +1,30 @@
 import { fonts } from "@utils";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import {
   heightPercentageToDP,
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 
-const BuyNow = () => {
+const Confirm = () => {
   return (
-    <TouchableOpacity style={styles.loginWrap}>
-      <Text style={styles.login}>Buy Now</Text>
+    <TouchableOpacity style={styles.ConfirmWrap}>
+      <Text style={styles.Confirm}>Confirm</Text>
     </TouchableOpacity>
   );
 };
-export default BuyNow;
+export default Confirm;
 
 const styles = StyleSheet.create({
-  loginWrap: {
+  ConfirmWrap: {
     backgroundColor: "#4CAF50",
-    width: widthPercentageToDP("50%"),
+    width: widthPercentageToDP("80%"),
     height: heightPercentageToDP("8%"),
     borderRadius: 20,
     padding: 18,
     alignItems: "center",
-    marginBottom: 30,
+    marginBottom: 20,
     marginTop: 30,
-    justifyContent: "center",
     shadowColor: "000",
     shadowOffset: {
       width: 0,
@@ -37,11 +35,10 @@ const styles = StyleSheet.create({
 
     elevation: 7,
   },
-  login: {
+  Confirm: {
     color: "#ffffff",
     fontFamily: fonts.I_600,
     fontSize: 25,
     fontWeight: "600",
-    left: 0,
   },
 });

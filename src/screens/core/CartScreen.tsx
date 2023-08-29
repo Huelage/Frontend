@@ -3,6 +3,8 @@ import { fonts, shadowStyle } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -13,6 +15,10 @@ const CartScreen = () => {
 
   const handleHeartPress = () => {
     setIsHearted(!isHearted);
+  };
+  const navigation = useNavigation();
+  const goToCartScreen = () => {
+    navigation.navigate("CartScreen");
   };
   return (
     <View style={styles.container}>
@@ -51,7 +57,12 @@ const CartScreen = () => {
 
       <View style={styles.buyWrap}>
         <TouchableOpacity style={styles.iconWrap}>
-          <Icon name="shopping-cart" size={40} color="#BCB5B5" />
+          <Icon
+            name="shopping-cart"
+            size={40}
+            color="#BCB5B5"
+            onPress={goToCartScreen}
+          />
         </TouchableOpacity>
         <BuyNow />
       </View>
@@ -69,13 +80,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: hp("10%"),
   },
+
   semiCircle: {
     width: "100%",
-    height: 376,
+    height: hp("35%"),
     backgroundColor: "#4CAF50",
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
-    padding: 15,
+    borderBottomLeftRadius: wp("10%"),
+    borderBottomRightRadius: wp("10%"),
+    padding: wp("6%"),
     transform: [{ scaleY: 1 }],
     position: "absolute",
     top: 0,
@@ -83,9 +95,9 @@ const styles = StyleSheet.create({
   },
 
   thaiFoodTomYum: {
-    height: 450,
+    height: hp("30%"),
     width: "100%",
-    marginTop: 50,
+    marginTop: hp("6%"),
     alignItems: "center",
     objectFit: "cover",
   },
@@ -93,51 +105,52 @@ const styles = StyleSheet.create({
   textWrapper: {
     color: "#ffffff",
     fontFamily: fonts.I_400,
-    fontSize: 26,
+    fontSize: wp("2%"),
     fontWeight: "700",
     left: 0,
     letterSpacing: 0,
-    position: "absolute",
+
     textAlign: "center",
     top: 0,
-    width: 259,
+    width: wp("35%"),
   },
 
   logg: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "80%",
+    width: wp("80%"),
   },
   wrapText: {
     color: "#000000",
     fontFamily: fonts.I_700,
-    fontSize: 35,
+    fontSize: wp("8%"),
     fontWeight: "700",
     right: "40%",
-    marginBottom: 10,
+    marginBottom: wp("2%"),
   },
   wrapText2: {
     fontFamily: fonts.I_400,
-    width: 500,
-    fontSize: 25,
-    fontWeight: "500",
+    width: wp("90%"),
+    fontSize: wp("5%"),
+    fontWeight: "600",
     fontStyle: "italic",
     color: "#616161",
     textAlign: "justify",
-    lineHeight: 35,
-    marginBottom: 30,
+    lineHeight: wp("5%"),
+    marginBottom: wp("7%"),
   },
   iconWrap: {
     borderColor: "#000000",
-    width: "10%",
+    width: wp("10%"),
     marginBottom: 0,
-    borderRadius: 20,
-    margin: 45,
+    borderRadius: wp("5%"),
+    marginTop: wp("10%"),
   },
   buyWrap: {
-    width: wp("50%"),
-    marginRight: wp("25%"),
+    width: wp("90%"),
+    justifyContent: "space-between",
+
     flexDirection: "row",
   },
   love: {

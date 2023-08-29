@@ -1,12 +1,16 @@
-import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { getAuthStatus, switchTheme } from '@api/slices/globalSlice';
-import { useAppTheme } from '@hooks';
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import AuthStackNavigator from './AuthStackNavigator';
-import StackNavigator from './StackNavigator';
-import { useColorScheme } from 'react-native';
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { getAuthStatus, switchTheme } from "@api/slices/globalSlice";
+import { useAppTheme } from "@hooks";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AuthStackNavigator from "./AuthStackNavigator";
+import StackNavigator from "./StackNavigator";
+import { useColorScheme } from "react-native";
 
 const MainNavigator = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +22,7 @@ const MainNavigator = () => {
   }, [nativeTheme]);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer theme={theme === 'dark' ? DarkTheme : DefaultTheme}>
+      <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
         {isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
       </NavigationContainer>
     </GestureHandlerRootView>
