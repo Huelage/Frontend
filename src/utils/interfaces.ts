@@ -1,50 +1,72 @@
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import * as BioAuth from 'expo-local-authentication';
 
 // AUTH INTERFACES
 export interface LoginInfoInterface {
-  vendorId?: string;
-  email?: string;
+  vendorId?: string,
+  email?: string,
   password: string;
 }
 
 export interface SignUpInfoInterface {
-  fullname: string;
-  email: string;
-  phonenumber: string;
-  businessname?: string;
+  fullname: string,
+  email: string,
+  phonenumber: string,
+  businessname?: string,
   password: string;
 }
 
 // NAVIGATION INTERFACES
 export type AuthStackParamList = {
-  OnBoard: undefined;
-  Login: undefined;
-  SignUp: { isVendor: boolean };
-  OTP: { phoneno: string; vendorStatus: boolean };
+  OnBoard: undefined,
+  Login: undefined,
+  SignUp: { isVendor: boolean; };
+  OTP: { phoneno: string; vendorStatus: boolean; };
   SignupSelect: undefined;
 };
 
 export type UserStackParamList = {
-  MainTabs: undefined;
+  MainTabs: undefined,
   Cart: undefined;
-  CartScreen: undefined;
 };
 
 export type VendorStackParamList = {
-  MainTabs: undefined;
+  MainTabs: undefined,
   Notifications: undefined;
 };
 
 export type UserTabParamList = {
-  Home: undefined;
-  Vendors: undefined;
-  History: undefined;
+  Home: undefined,
+  Vendors: undefined,
+  History: undefined,
   Profile: undefined;
 };
 
-export type TabProps = BottomTabNavigationProp<UserTabParamList>;
+export type VendorTabParamList = {
+  Home: undefined,
+  Orders: undefined,
+  Menu: undefined,
+  Account: undefined;
+};
+
+// SCREEN INTERFACES
+export type UserNavigationProps = NativeStackNavigationProp<UserStackParamList>;
+export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamList>;
+export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
+export type UserTabProps = BottomTabNavigationProp<UserTabParamList>;
+export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
+export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
+export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
+
+// REDUX INTERFACES
+export interface globalStateInterface {
+  isAuthenticated: boolean;
+  isVendor: boolean;
+  themeType: "system" | "manual";
+  theme: "light" | "dark";
+}
 
 // USER SCREEN INTERFACES
 export interface FoodInterface {
@@ -66,12 +88,12 @@ export interface RestaurantInterface {
   rating: number;
   imgUrl: string;
 }
-export interface CartItem {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  imgUrl: string;
+
+// MISCELLANEOUS INTERFACES
+export interface BiometricsInterface {
+  hasBiometrics: boolean,
+  isEnrolled: boolean,
+  biometricType: BioAuth.AuthenticationType[];
 }
 
 // Entity Interfaces

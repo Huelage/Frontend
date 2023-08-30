@@ -14,13 +14,7 @@ const PopularRestaurant = () => {
         <Text style={[styles.resText, { color: color.mainText }]}>
           <Text style={{ color: color.mainGreen }}>Favorite</Text> Restaurants
         </Text>
-        <CustomButton
-          inactive
-          label="View All"
-          height={32}
-          fontSize={13}
-          onPress={() => {}}
-        />
+        <CustomButton inactive label="View All" height={32} fontSize={13} onPress={() => { }} />
       </View>
       <FlatList
         horizontal
@@ -39,16 +33,16 @@ export default PopularRestaurant;
 
 const styles = StyleSheet.create({
   container: {
-    gap: 15,
+    gap: 15
   },
   resNav: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   resText: {
     fontFamily: fonts.I_500,
-    fontSize: 16,
+    fontSize: 16
   },
 });
