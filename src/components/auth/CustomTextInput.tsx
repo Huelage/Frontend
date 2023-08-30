@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { FieldError, RefCallBack } from 'react-hook-form';
@@ -13,6 +14,7 @@ interface CustomTextInputProps extends TextInputProps {
 
 const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInputProps) => {
   const [showText, setShowText] = useState<boolean>(!isPass);
+  const { color } = useAppTheme();
 
   const toggleShowText = () => setShowText(show => !show);
   return (
@@ -22,7 +24,7 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
           <TextInput
             blurOnSubmit={false}
             secureTextEntry={!showText}
-            style={styles.textInput}
+            style={[styles.textInput, { color: color.mainText }]}
             placeholder={label}
             placeholderTextColor="#BCB5B5"
             selectionColor={error ? "#d24343" : "#47CA4C"}
@@ -32,11 +34,11 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
           {isPass && (
             showText ? (
               <TouchableOpacity onPress={toggleShowText}>
-                <Ionicons style={styles.textIcon} name="eye-off" />
+                <Ionicons size={24} color={color.mainText} name="eye-off" style={{ opacity: .7 }} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity onPress={toggleShowText}>
-                <Ionicons style={styles.textIcon} name="eye" />
+                <Ionicons size={24} color={color.mainText} name="eye" style={{ opacity: .7 }} />
               </TouchableOpacity>
             )
           )}
@@ -91,9 +93,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_500,
     fontSize: 16,
     height: 30
-  },
-  textIcon: {
-    color: "rgba(0, 0, 0, .5)",
-    fontSize: 24
   }
 });
