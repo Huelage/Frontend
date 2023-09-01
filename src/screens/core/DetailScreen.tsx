@@ -18,7 +18,7 @@ const CartScreen = () => {
   };
   const navigation = useNavigation();
   const goToCartScreen = () => {
-    navigation.navigate("CartScreen");
+    navigation.navigate("Detail");
   };
   return (
     <View style={styles.container}>
