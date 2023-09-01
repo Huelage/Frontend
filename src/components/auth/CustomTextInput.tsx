@@ -14,7 +14,7 @@ interface CustomTextInputProps extends TextInputProps {
 
 const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInputProps) => {
   const [showText, setShowText] = useState<boolean>(!isPass);
-  const { color } = useAppTheme();
+  const { color, theme } = useAppTheme();
 
   const toggleShowText = () => setShowText(show => !show);
   return (
@@ -44,7 +44,7 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
           )}
         </View>
       </View>
-      {error && <View style={styles.errorBox}>
+      {error && <View style={[styles.errorBox, { backgroundColor: theme === "dark" ? "#181818" : "#000" }]}>
         <Text style={styles.errorText}>
           <Ionicons name="alert-circle-outline" size={16} color="white" />&nbsp;
           {error.message}
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15
   },
   inputContainerError: {
-    borderColor: "#d24343",
+    borderColor: "#d24343"
   },
   input: {
     alignItems: 'center',
@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
   errorBox: {
     backgroundColor: 'black',
     borderRadius: 10,
-    padding: 10
+    padding: 10,
+    zIndex: 10
   },
   errorText: {
     color: 'white',
