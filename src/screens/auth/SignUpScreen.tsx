@@ -1,6 +1,7 @@
+import { useAppSelector } from '@api/app/appHooks';
+import { getVendorStatus } from '@api/slices/globalSlice';
 import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton } from '@components/auth';
-import { AuthNavigationProps, SignUpInfoInterface, SignupRouteProps } from '@interfaces';
-import { useRoute } from '@react-navigation/core';
+import { AuthNavigationProps, SignUpInfoInterface } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { CheckBox } from '@rneui/themed';
 import { fonts, shadowStyle } from '@utils';
@@ -11,13 +12,13 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const SignUpScreen = () => {
-  const { params: { isVendor } } = useRoute<SignupRouteProps>();
+  const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(true);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: 'onChange' });
   const onSubmit = (data: SignUpInfoInterface) => {
     reset();
-    navigate('OTP', { phoneno: data.phonenumber, vendorStatus: isVendor });
+    navigate('OTP', { phoneno: data.phonenumber });
   };
 
   useEffect(() => { setTimeout(() => setFocus('fullname'), 0); }, []);
@@ -168,7 +169,7 @@ const SignUpScreen = () => {
         <View style={styles.heroSubmitBox}>
           <SubmitButton label='CREATE ACCOUNT' onSubmit={handleSubmit(onSubmit)} />
           {!isVendor && <SocialLogin page='SU' />}
-          <AuthNavigate page='SU' isVendor={isVendor} />
+          <AuthNavigate page='SU' />
         </View>
       </KeyboardAwareScrollView>
     </View>

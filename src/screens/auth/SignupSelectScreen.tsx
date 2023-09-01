@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { useAppDispatch } from "@api/app/appHooks";
 import { setVendorStatus } from "@api/slices/globalSlice";
 import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/core";
