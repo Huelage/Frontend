@@ -36,7 +36,7 @@ const OnBoardScreen = () => {
       <View style={styles.logoWrapper}>
         <Animated.Image
           sharedTransitionTag="huelageLogo"
-          style={[styles.logoImage, animatedOpacity, animatedRotate]}
+          style={[styles.logoImage, animatedRotate]}
           source={require("@images/onboard_logo.png")}
         />
         <Animated.Text style={[styles.logoText, animatedOpacity]}>HUELAGE</Animated.Text>
