@@ -1,3 +1,5 @@
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { setVendorStatus } from "@api/slices/globalSlice";
 import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/core";
 import { fonts, shadowStyle } from "@utils";
@@ -7,7 +9,12 @@ import Animated, { FadeIn, SlideInDown } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const SignupSelectScreen = () => {
+  const dispatch = useAppDispatch();
   const { navigate } = useNavigation<AuthNavigationProps>();
+  const handleSelect = (isVendor: boolean) => {
+    dispatch(setVendorStatus(isVendor));
+    navigate("SignUp");
+  };
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.containerBg} source={require('@images/SignupSelectBg.png')} resizeMode="cover">
@@ -18,7 +25,7 @@ const SignupSelectScreen = () => {
             <Animated.View entering={FadeIn.delay(500)} style={styles.authSelectImageWrapper}>
               <Image style={styles.authSelectImage} source={require("@images/Vendor.png")} resizeMode="contain" />
             </Animated.View>
-            <TouchableOpacity onPress={() => navigate("SignUp", { isVendor: true })}>
+            <TouchableOpacity onPress={() => handleSelect(true)}>
               <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>Vendor</Text>
               </Animated.View>
@@ -28,7 +35,7 @@ const SignupSelectScreen = () => {
             <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectImageWrapper}>
               <Image style={styles.authSelectImage} source={require("@images/User.png")} resizeMode="contain" />
             </Animated.View>
-            <TouchableOpacity onPress={() => navigate("SignUp", { isVendor: false })}>
+            <TouchableOpacity onPress={() => handleSelect(false)}>
               <Animated.View entering={FadeIn.delay(700)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>User</Text>
               </Animated.View>
