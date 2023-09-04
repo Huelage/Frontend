@@ -22,14 +22,15 @@ export interface SignUpInfoInterface {
 export type AuthStackParamList = {
   OnBoard: undefined,
   Login: undefined,
-  SignUp: { isVendor: boolean; };
-  OTP: { phoneno: string; vendorStatus: boolean; };
+  SignUp: undefined;
+  OTP: { phoneno: string; };
   SignupSelect: undefined;
 };
 
 export type UserStackParamList = {
   MainTabs: undefined,
   Cart: undefined;
+  Detail: undefined;
 };
 
 export type VendorStackParamList = {
@@ -57,7 +58,6 @@ export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamLi
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 export type UserTabProps = BottomTabNavigationProp<UserTabParamList>;
 export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
-export type SignupRouteProps = RouteProp<AuthStackParamList, 'SignUp'>;
 export type OTPRouteProps = RouteProp<AuthStackParamList, 'OTP'>;
 
 // REDUX INTERFACES

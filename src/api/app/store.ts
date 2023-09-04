@@ -1,12 +1,11 @@
 import globalReducer from "@api/slices/globalSlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { CustomSecureStore } from "@utils";
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import createSecureStore from 'redux-persist-expo-securestore';
 
-const storage = createSecureStore();
 const persistConfig = {
   key: 'root',
-  storage
+  storage: CustomSecureStore
 };
 
 const rootReducers = combineReducers({

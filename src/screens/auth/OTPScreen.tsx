@@ -1,5 +1,5 @@
-import { useAppDispatch } from '@api/app/appHooks';
-import { setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
+import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
+import { getVendorStatus, setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
 import { SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthNavigationProps, OTPRouteProps } from '@interfaces';
@@ -15,7 +15,7 @@ const CELL_COUNT = 4;
 
 const OTPScreen = () => {
   const dispatch = useAppDispatch();
-  const { params: { phoneno, vendorStatus } } = useRoute<OTPRouteProps>();
+  const { params: { phoneno } } = useRoute<OTPRouteProps>();
   const [value, setValue] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
@@ -31,7 +31,6 @@ const OTPScreen = () => {
   };
   const verifyOTP = () => {
     dispatch(setAuthStatus(true));
-    dispatch(setVendorStatus(vendorStatus));
   };
 
   useEffect(() => {

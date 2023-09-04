@@ -1,3 +1,4 @@
+import { useAppTheme } from '@hooks';
 import { AuthNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
@@ -6,25 +7,25 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 interface AuthNavigateProps {
   page: 'SU' | 'SI',
-  isVendor: boolean;
 }
 
-const AuthNavigate = ({ page, isVendor }: AuthNavigateProps) => {
+const AuthNavigate = ({ page }: AuthNavigateProps) => {
+  const { color } = useAppTheme();
   const { navigate } = useNavigation<AuthNavigationProps>();
   const handleNavigate = () => {
     if (page == 'SU') {
       navigate('Login');
     } else {
-      navigate('SignUp', { isVendor });
+      navigate('SignUp');
     }
   };
   return (
     <View style={styles.accountBox}>
-      <Text style={styles.accountRedirect}>
+      <Text style={[styles.accountRedirect, { color: color.mainText }]}>
         {page == 'SU' ? "Already a member" : "Don't have an account"}?
       </Text>
       <TouchableOpacity onPress={handleNavigate}>
-        <Text style={styles.accountAccent}>{page == 'SU' ? "Login" : "Sign Up"}</Text>
+        <Text style={[styles.accountAccent, { color: color.mainGreen }]}>{page == 'SU' ? "Login" : "Sign Up"}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -41,11 +42,10 @@ const styles = StyleSheet.create({
   },
   accountRedirect: {
     fontFamily: fonts.I_400,
-    fontSize: 16,
+    fontSize: 15,
     textAlign: 'center'
   },
   accountAccent: {
-    color: "#4CAF50",
     fontFamily: fonts.I_700,
     fontSize: 17
   }

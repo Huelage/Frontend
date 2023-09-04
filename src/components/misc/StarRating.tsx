@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 type IconProps = {
@@ -26,15 +26,11 @@ const StarRating = ({ color, gap, rating }: RatingProps) => {
     0: "ios-star-outline"
   };
   return (
-    <FlatList
-      data={ratingArray}
-      keyExtractor={(_, index) => index.toString()}
-      renderItem={({ item }: { item: keyof IconProps; }) => (
-        <Ionicons name={iconName[item]} size={16} color={color || "#F2DB06"} />
-      )}
-      horizontal
-      contentContainerStyle={[styles.container, { gap: gap || 3 }]}
-    />
+    <View style={[styles.container, { gap: gap || 3 }]}>
+      {ratingArray.map((item: keyof IconProps, idx) => (
+        <Ionicons key={idx} name={iconName[item]} size={16} color={color || "#F2DB06"} />
+      ))}
+    </View>
   );
 };
 

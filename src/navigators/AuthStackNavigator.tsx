@@ -10,7 +10,7 @@ const AuthStackNavigator = () => {
     <Stack.Navigator initialRouteName="OnBoard" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="OnBoard" component={OnBoardScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="SignUp" component={SignUpScreen} initialParams={{ isVendor: false }} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="OTP" component={OTPScreen} />
       <Stack.Screen name="SignupSelect" component={SignupSelectScreen} />
     </Stack.Navigator>

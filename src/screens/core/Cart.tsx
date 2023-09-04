@@ -46,7 +46,7 @@ const Cart = () => {
   const deliveryFee = total > 0 ? 200 : 0;
   const newTotal = total + deliveryFee;
 
-  const renderCartItem = ({ item }: { item: CartItem }) => {
+  const renderCartItem = ({ item }: { item: CartItem; }) => {
     return (
       <View style={styles.cartItemContainer}>
         <View
@@ -124,7 +124,7 @@ const Cart = () => {
   return (
     <View style={styles.container}>
       <View style={styles.cartIcon}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <MaterialCommunityIcons
             name="chevron-left"
             size={30}
