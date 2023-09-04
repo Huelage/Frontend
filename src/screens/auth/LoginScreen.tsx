@@ -4,11 +4,11 @@ import { AuthNavigate, CustomTextInput, SubmitButton, UserVendor } from '@compon
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { BiometricsInterface, LoginInfoInterface } from '@interfaces';
-import { BiometricType, fonts, getBiometrics } from '@utils';
+import { BiometricType, enableBiometrics, fonts, getBiometrics, loginWithBiometrics } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,11 +20,28 @@ const LoginScreen = () => {
   const isVendor = useAppSelector(getVendorStatus);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: 'onChange' });
-  let bioDetail = null;
-  if (bioSpecs?.hasBiometrics && bioSpecs?.isEnrolled)
+  let bioDetail: typeof BiometricType[keyof typeof BiometricType] | null = null;
+  if (bioSpecs?.hasBiometrics && !bioSpecs?.isEnrolled)
     bioDetail = BiometricType[bioSpecs.biometricType[0]];
 
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
+    if (!bioDetail) {
+      Alert.alert(
+        "Enable Biometric Login?",
+        "Enjoy quicker, secure access with biometric authentication. Enable it now?",
+        [
+          {
+            text: "Enable",
+            onPress: enableBiometrics,
+          },
+          {
+            text: "Not now",
+            onPress: () => console.log("Cancel Pressed"),
+          }
+        ]
+      );
+      return;
+    }
     reset();
     dispatch(setAuthStatus(true));
   };
@@ -34,9 +51,9 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => setFocus('password'), 0);
+    setTimeout(() => setFocus(!bioDetail ? isVendor ? "vendorId" : "email" : "password"), 0);
     setBio();
-  }, []);
+  }, [isVendor]);
   return (
     <>
       <StatusBar style="auto" />
@@ -49,7 +66,7 @@ const LoginScreen = () => {
           />
           <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
         </View>
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainer} onTouchStart={() => Keyboard.dismiss()}>
           <UserVendor />
           <View style={{ gap: 20 }}>
             {!bioDetail && (isVendor ? (
@@ -132,7 +149,10 @@ const LoginScreen = () => {
               <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
               <View style={styles.biometricBox}>
                 <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
-                <TouchableOpacity style={[styles.biometricButton, { borderColor: color.mainGreen }]}>
+                <TouchableOpacity
+                  onPress={loginWithBiometrics}
+                  style={[styles.biometricButton, { borderColor: color.mainGreen }]}
+                >
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>
               </View>
