@@ -30,7 +30,7 @@ const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
       </View>
       <Text style={[styles.foodBuyFromTitle, { color: color.mainText }]}>Available at</Text>
       <FlatList
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id}
         data={restuarants}
         renderItem={({ item }) => (
           <FoodModalResCard resId={item.id} />
