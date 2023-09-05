@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 
 const reviews = [
 	{
-		id: 1,
+		id: "1",
 		name: "Ella Mia",
 		avatar: Image.resolveAssetSource(require('@images/beejay_dp.png')).uri,
 		rating: 5,
@@ -10,7 +10,7 @@ const reviews = [
 		message: "The food from this restaurant is amazing. I would definitely order again."
 	},
 	{
-		id: 2,
+		id: "2",
 		name: "Luna Eva",
 		avatar: "",
 		rating: 4,
@@ -18,7 +18,7 @@ const reviews = [
 		message: "The have the spiciest jollof rice I have ever tasted and the barbecued chicken is to die for. I love it."
 	},
 	{
-		id: 3,
+		id: "3",
 		name: "Tosin Ola",
 		avatar: "",
 		rating: 3,
