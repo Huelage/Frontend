@@ -16,7 +16,7 @@ const ReviewList = () => {
       </View>
       <FlatList
         data={mockReviews}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <ReviewElement {...item} />
         )}

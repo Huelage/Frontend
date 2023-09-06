@@ -67,6 +67,7 @@ const CustomCarousel = () => {
       <FlatList
         data={Array.from({ length: mockCategories.length }, (_, i) => i)}
         horizontal
+        keyExtractor={item => item.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => goToIdx(item)}>
             <View style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
