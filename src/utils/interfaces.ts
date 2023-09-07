@@ -71,11 +71,23 @@ export interface globalStateInterface {
   isVendor: boolean;
   themeType: "system" | "manual";
   theme: "light" | "dark";
+  cart: CartInterface[];
+}
+
+export interface CartInterface {
+  id: string;
+  item_id: string;
+  quantity: number;
+  extras?: CartExtraInterface[];
+}
+
+interface CartExtraInterface extends FoodSideInterface {
+  quantity: number;
 }
 
 // USER SCREEN INTERFACES
 export interface FoodInterface {
-  id: number;
+  id: string;
   name: string;
   price: number;
   desc: string;
@@ -87,7 +99,7 @@ export interface FoodInterface {
 }
 
 export interface RestaurantInterface {
-  id: number;
+  id: string;
   name: string;
   location: string;
   rating: number;
@@ -103,10 +115,41 @@ export interface BiometricsInterface {
 
 // Entity Interfaces
 export interface ReviewInterface {
-  id: number;
+  id: string;
   name: string;
   avatar: string;
   rating: number;
   date: string;
   message: string;
+}
+
+export interface UserBaseFoodInterface {
+  id: string;
+  name: string;
+  description: string;
+  img_url: string;
+  category: string;
+  availability: "available" | "temporarily unavailable" | "unavailable";
+  sides?: FoodSideInterface[];
+}
+interface FoodPriceInterface extends UserBaseFoodInterface {
+  pricing_method: "price" | "fixed";
+  min_price: number;
+}
+interface FoodPortionInterface extends UserBaseFoodInterface {
+  pricing_method: "portion";
+  portion_price: number;
+}
+interface FoodPackageInterface extends UserBaseFoodInterface {
+  pricing_method: "package";
+  package_sizes: { name: string; price: number }[];
+}
+
+export type UserFoodInterface =
+  | FoodPriceInterface
+  | FoodPortionInterface
+  | FoodPackageInterface;
+export interface FoodSideInterface {
+  name: string;
+  price: number;
 }

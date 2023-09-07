@@ -4,7 +4,7 @@ import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const VendorResCard = ({ resId }: { resId: number; }) => {
+const VendorResCard = ({ resId }: { resId: string; }) => {
 	const { color } = useAppTheme();
 	const restaurant = restuarants.find(res => res.id === resId);
 	return (

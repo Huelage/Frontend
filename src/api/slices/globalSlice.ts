@@ -1,6 +1,7 @@
 import { RootState } from "@api/app/store";
 import { globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
   isAuthenticated: false,
@@ -22,12 +23,39 @@ const globalSlice = createSlice({
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
     },
+    addToCart: (state, action: PayloadAction<CartInterface>) => {
+      const idx = state.cart.findIndex((item) => item.id === action.payload.id);
+      if (idx !== -1) {
+        state.cart[idx].quantity += action.payload.quantity;
+        return;
+      }
+      state.cart.push({ ...action.payload, id: uuid.v4().toString() });
+    },
+    removeFromCart: (state, action: PayloadAction<string>) => {
+      state.cart = state.cart.filter((item) => item.id !== action.payload);
+    },
+    updateCart: (state, action: PayloadAction<CartInterface>) => {
+      const index = state.cart.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.cart[index] = action.payload;
+    },
+    clearCart: (state) => {
+      state.cart = [];
+    },
   },
 });
 
 // Dispatches
-export const { setAuthStatus, setVendorStatus, switchTheme } =
-  globalSlice.actions;
+export const {
+  addToCart,
+  clearCart,
+  removeFromCart,
+  updateCart,
+  setAuthStatus,
+  setVendorStatus,
+  switchTheme,
+} = globalSlice.actions;
 // Selectors
 export const getAuthStatus = (state: RootState) => state.global.isAuthenticated;
 export const getTheme = (state: RootState) => state.global.theme;

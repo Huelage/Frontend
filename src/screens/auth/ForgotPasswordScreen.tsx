@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { AuthNavigationProps } from "@interfaces";
+import { useAppTheme } from "@hooks";
 import {
+  Alert,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { SubmitButton } from "@components/auth";
+import { SubmitButton, CustomTextInput } from "@components/auth";
+import { Controller, useForm } from "react-hook-form";
 import { fonts, shadowStyle } from "@utils";
 import { StatusBar } from "expo-status-bar";
+import { LoginInfoInterface } from "@interfaces";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -22,7 +25,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
   const { navigate } = useNavigation<AuthNavigationProps>();
-
+  const { color } = useAppTheme();
+  const dispatch = useAppDispatch();
+  const {
+    control,
+    formState: { errors },
+  } = useForm<LoginInfoInterface>({ mode: "onChange" });
   const resetPassword = () => {
     // Implement your logic to send a password reset email to the provided email address.
   };
@@ -46,11 +54,31 @@ const ForgotPasswordScreen = () => {
             Please enter your registered Email address to receive a verification
             code.
           </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Email Address"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <CustomTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                error={errors.email}
+                isPass={false}
+                innerRef={ref}
+                keyboardType="email-address"
+                label="Email address"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                returnKeyType="next"
+                value={value}
+              />
+            )}
+            name="email"
+            rules={{
+              required: "Email is required",
+              pattern: {
+                value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
+                message: "Email is invalid",
+              },
+            }}
           />
           <SubmitButton label="Reset Password" onSubmit={resetPassword} />
         </View>

@@ -14,7 +14,7 @@ const VendorScreen = () => {
         data={restuarants}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={<MainSearchBar />}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <View style={{ paddingHorizontal: 20 }}>
             <VendorResCard resId={item.id} />
