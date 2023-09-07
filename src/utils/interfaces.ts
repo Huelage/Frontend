@@ -29,6 +29,7 @@ export type AuthStackParamList = {
   OTP: { phoneno: string };
   SignupSelect: undefined;
   ForgotPassword: undefined;
+  ChangePassword: undefined;
 };
 
 export type UserStackParamList = {

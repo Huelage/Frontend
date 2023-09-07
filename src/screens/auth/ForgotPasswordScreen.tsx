@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SubmitButton, CustomTextInput } from "@components/auth";
 import { Controller, useForm } from "react-hook-form";
-import { fonts, shadowStyle } from "@utils";
+import { fonts } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import { LoginInfoInterface } from "@interfaces";
 import {
@@ -24,6 +24,10 @@ const ForgotPasswordScreen = () => {
   const resetPassword = () => {
     // Implement the logic to send a password reset email to the provided email address.
   };
+
+  function fontSize(arg0: number) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <>
@@ -70,7 +74,11 @@ const ForgotPasswordScreen = () => {
               },
             }}
           />
+
           <SubmitButton label="Reset Password" onSubmit={resetPassword} />
+          <TouchableOpacity onPress={() => navigate("ChangePassword")}>
+            <Text style={styles.infoText}>CPS</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -107,7 +115,7 @@ const styles = StyleSheet.create({
   },
   mainBox: {
     flex: 1,
-    gap: 10,
+    gap: 20,
     marginTop: hp("15%"),
   },
 

@@ -7,6 +7,7 @@ import {
   SignUpScreen,
   SignupSelectScreen,
   ForgotPasswordScreen,
+  ChangePasswordScreen,
 } from "@screens/auth";
 import React from "react";
 
@@ -24,6 +25,7 @@ const AuthStackNavigator = () => {
       <Stack.Screen name="OTP" component={OTPScreen} />
       <Stack.Screen name="SignupSelect" component={SignupSelectScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
     </Stack.Navigator>
   );
 };
