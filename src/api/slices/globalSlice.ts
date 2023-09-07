@@ -1,13 +1,14 @@
 import { RootState } from "@api/app/store";
-import { globalStateInterface } from "@interfaces";
+import { CartInterface, globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
-  isAuthenticated: false,
-  isVendor: false,
+  isAuthenticated: true,
+  isVendor: true,
   themeType: "system",
   theme: "light",
+  cart: [],
 };
 
 const globalSlice = createSlice({

@@ -1,14 +1,6 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { AuthNavigationProps } from "@interfaces";
-import { useAppTheme } from "@hooks";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SubmitButton, CustomTextInput } from "@components/auth";
 import { Controller, useForm } from "react-hook-form";
@@ -23,21 +15,19 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ForgotPasswordScreen = () => {
-  const [email, setEmail] = useState("");
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const { color } = useAppTheme();
-  const dispatch = useAppDispatch();
+
   const {
     control,
     formState: { errors },
   } = useForm<LoginInfoInterface>({ mode: "onChange" });
   const resetPassword = () => {
-    // Implement your logic to send a password reset email to the provided email address.
+    // Implement the logic to send a password reset email to the provided email address.
   };
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="auto" />
       <View style={styles.container}>
         <View style={styles.introContainer}>
           <TouchableOpacity onPress={() => navigate("Login")}>
