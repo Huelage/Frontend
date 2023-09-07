@@ -4,8 +4,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
-  isAuthenticated: true,
-  isVendor: true,
+  isAuthenticated: false,
+  isVendor: false,
   themeType: "system",
   theme: "light",
   cart: [],
