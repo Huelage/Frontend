@@ -26,11 +26,8 @@ const globalSlice = createSlice({
 });
 
 // Dispatches
-export const {
-  setAuthStatus,
-  setVendorStatus,
-  switchTheme
-} = globalSlice.actions;
+export const { setAuthStatus, setVendorStatus, switchTheme } =
+  globalSlice.actions;
 // Selectors
 export const getAuthStatus = (state: RootState) => state.global.isAuthenticated;
 export const getTheme = (state: RootState) => state.global.theme;
