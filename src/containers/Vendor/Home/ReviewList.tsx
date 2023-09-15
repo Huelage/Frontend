@@ -9,7 +9,7 @@ import { ReviewElement } from '@components/vendor/Home';
 const ReviewList = () => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='review list'>
       <View style={styles.header}>
         <Text style={[styles.title, { color: color.mainText }]}>Ratings and Reviews</Text>
         <Ionicons name="md-arrow-forward-sharp" size={20} color={color.mainText} />
@@ -20,6 +20,7 @@ const ReviewList = () => {
         renderItem={({ item }) => (
           <ReviewElement {...item} />
         )}
+        testID='review elements'
         scrollEnabled={false}
         contentContainerStyle={styles.reviewBox}
       />
