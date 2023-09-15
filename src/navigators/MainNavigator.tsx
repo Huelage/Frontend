@@ -11,8 +11,13 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AuthStackNavigator from "./AuthStackNavigator";
 import StackNavigator from "./StackNavigator";
 import { useColorScheme } from "react-native";
+import { SkRRect } from "@shopify/react-native-skia";
 
-const MainNavigator = () => {
+interface NavigatorProps {
+  testRect?: SkRRect; /* This is for unit testing purposes only */
+}
+
+const MainNavigator = ({ testRect }: NavigatorProps) => {
   const dispatch = useAppDispatch();
   const isSignedIn = useAppSelector(getAuthStatus);
   const { theme } = useAppTheme();
@@ -23,7 +28,7 @@ const MainNavigator = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
-        {isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
+        {isSignedIn ? <StackNavigator testRect={testRect} /> : <AuthStackNavigator />}
       </NavigationContainer>
     </GestureHandlerRootView>
   );

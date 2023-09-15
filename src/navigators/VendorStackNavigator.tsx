@@ -2,9 +2,10 @@ import { VendorStackParamList } from '@interfaces';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import VendorTabNavigator from './VendorTabNavigator';
-import { NotificationScreen } from '@screens/Vendors';
+import { NotificationScreen } from '@screens/Vendor';
 
 const Stack = createNativeStackNavigator<VendorStackParamList>();
+
 
 const VendorStackNavigator = () => {
   return (
