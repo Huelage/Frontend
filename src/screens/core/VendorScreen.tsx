@@ -8,13 +8,15 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const VendorScreen = () => {
   const { color } = useAppTheme();
+  const handleSearch = (val: string) => { console.log(val); };
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]}>
+    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID='vendor screen'>
       <FlatList
         data={restuarants}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<MainSearchBar />}
+        ListHeaderComponent={<MainSearchBar searchFunc={handleSearch} />}
         keyExtractor={item => item.id}
+        testID='vendors list'
         renderItem={({ item }) => (
           <View style={{ paddingHorizontal: 20 }}>
             <VendorResCard resId={item.id} />
