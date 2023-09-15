@@ -1,4 +1,4 @@
-import restuarants from '@api/mock/mockRestaurants';
+import { mockRestaurants } from '@api/mock';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
@@ -6,10 +6,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const VendorResCard = ({ resId }: { resId: string; }) => {
 	const { color } = useAppTheme();
-	const restaurant = restuarants.find(res => res.id === resId);
+	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
-		<View style={[styles.container, { backgroundColor: color.cardBg }]}>
-			<Image style={styles.image} source={{ uri: restaurant?.imgUrl }} />
+		<View style={[styles.container, { backgroundColor: color.cardBg }]} testID='vendor res card'>
+			<Image testID='restaurant image' style={styles.image} source={{ uri: restaurant?.imgUrl }} />
 			<View style={styles.details}>
 				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
 				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{restaurant?.location}</Text>
