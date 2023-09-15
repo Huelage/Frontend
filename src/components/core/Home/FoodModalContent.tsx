@@ -8,21 +8,23 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
 import { useAppTheme } from '@hooks';
+import { SkRRect } from '@shopify/react-native-skia';
 
 interface ModalInterface extends Partial<FoodInterface> {
   imgUrl: string;
   close: React.Dispatch<React.SetStateAction<boolean>>;
+  testRect?: SkRRect; /* for unit testing only */
 }
 
-const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
+const FoodModalContent = ({ imgUrl, name, desc, close, testRect }: ModalInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: color.modalBg }]}>
+    <View style={[styles.container, { backgroundColor: color.modalBg }]} testID='food modal content'>
       <View style={styles.foodImageBox}>
         <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)}>
           <Ionicons name="close" size={30} color="white" />
         </TouchableOpacity>
-        <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
+        <CustomImage testRect={testRect} imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
@@ -35,6 +37,7 @@ const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
         renderItem={({ item }) => (
           <FoodModalResCard resId={item.id} />
         )}
+        testID='available at list'
         contentContainerStyle={styles.foodBuyFromSection}
       />
     </View>

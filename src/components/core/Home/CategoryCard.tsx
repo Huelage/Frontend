@@ -2,7 +2,7 @@ import { RatingCard } from '@components/core/Detail';
 import { CustomImage } from '@components/misc';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
+import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -17,12 +17,13 @@ interface CategoryCardInterface {
   imgUrl: string;
   addToCart: () => void;
   animationValue: Animated.SharedValue<number>;
+  testRect?: SkRRect; /* for testing only */
 }
-const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
+const CategoryCard = ({ testRect, idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
-  const containerRect = rrect(rect(6, 6, (wp('67%') - 20), (hp('40%') - 20)), 15, 15);
+  const containerRect = testRect || rrect(rect(6, 6, (wp('67%') - 20), (hp('40%') - 20)), 15, 15);
 
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -87,7 +88,7 @@ const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationVa
   }, [idx]);
 
   return (
-    <Animated.View style={styles.container}>
+    <Animated.View style={styles.container} testID='category card'>
       <Animated.View style={[styles.itemBox, cardStyle]}>
         <Canvas style={styles.resBox}>
           <Box box={containerRect} color={color.cardBg}>
@@ -98,20 +99,17 @@ const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationVa
         <View style={styles.itemDetails}>
           <Text style={[styles.itemName, { color: color.mainText }]}>{name}</Text>
           <RatingCard rating={rating} />
-          <Text style={[styles.itemPrice, { color: color.mainText }]}>
-            <MaterialCommunityIcons name="currency-ngn" size={16} color={color.mainText} />
-            {price?.toFixed(2)}
-          </Text>
+          <Text style={[styles.itemPrice, { color: color.mainText }]}>₦ {price?.toFixed(2)}</Text>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
-            <TouchableOpacity style={styles.itemBuyIcon} onPress={addToCart}>
+            <TouchableOpacity testID='addToCart' style={styles.itemBuyIcon} onPress={addToCart}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
           </View>
         </View>
       </Animated.View>
-      <Animated.View style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+      <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
+        <CustomImage testRect={testRect} imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );

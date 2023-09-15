@@ -3,23 +3,25 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { FoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
-import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
+import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalContent from './FoodModalContent';
 
+interface FoodCardInterface extends FoodInterface {
+  testRect?: SkRRect; /* for testing only */
+}
 
-const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: FoodInterface) => {
+const FoodCard = ({ testRect, imgUrl, name, price, rating, cals, isFavourite, desc }: FoodCardInterface) => {
   const { color } = useAppTheme();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(isFavourite);
-  const containerRect = rrect(rect(6, 6, (wp('60%') - 20), 135), 10, 10);
+  const containerRect = testRect || rrect(rect(6, 6, (wp('60%') - 20), 135), 10, 10);
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.container} testID='food card'>
         <Canvas style={styles.foodBox}>
           <Box box={containerRect} color={color.cardBg}>
             <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
@@ -31,32 +33,32 @@ const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: Food
               <Ionicons name="star" size={14} color="#47CA4C" />
               <Text style={[styles.foodRating, { color: color.mainText }]}>{rating.toFixed(1)}</Text>
             </View>
-            <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
+            <CustomImage testRect={testRect} imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
             <CheckBox
               checked={isFav}
               onPress={() => setIsFav(!isFav)}
               checkedIcon="heart"
+              testID='favourite toggle'
               uncheckedIcon="heart-o"
               checkedColor="red"
               uncheckedColor={color.mainText}
               containerStyle={{ backgroundColor: color.cardBg, padding: 0, margin: 0 }}
             />
           </View>
-          <TouchableWithoutFeedback onPress={() => setShowModal(true)}>
-            <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
-            <View style={styles.foodCalories}>
-              <MaterialCommunityIcons name="fire" size={22} color="#47CA4C" />
-              <Text style={[styles.foodCaloriesText, { color: color.mainText }]}>{cals} KCal</Text>
+          <TouchableWithoutFeedback testID='toggle modal' onPress={() => setShowModal(true)}>
+            <View>
+              <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
+              <View style={styles.foodCalories}>
+                <MaterialCommunityIcons name="fire" size={22} color="#47CA4C" />
+                <Text style={[styles.foodCaloriesText, { color: color.mainText }]}>{cals} KCal</Text>
+              </View>
+              <Text style={[styles.foodPrice, { color: color.mainText }]}>₦{price}</Text>
             </View>
-            <Text style={[styles.foodPrice, { color: color.mainText }]}>
-              <MaterialCommunityIcons name="currency-ngn" size={12} color={color.mainText} />
-              {price}
-            </Text>
           </TouchableWithoutFeedback>
         </View>
       </View>
       <CustomModal isVisible={showModal}>
-        <FoodModalContent close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
+        <FoodModalContent testRect={testRect} close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
       </CustomModal>
     </>
   );

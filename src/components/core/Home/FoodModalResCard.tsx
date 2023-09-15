@@ -8,8 +8,8 @@ const FoodModalResCard = ({ resId }: { resId: string; }) => {
   const { color } = useAppTheme();
   const restaurant = restuarants.find(res => res.id === resId);
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]}>
-      <Image style={styles.image} source={{ uri: restaurant?.imgUrl }} />
+    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID='food modal res card'>
+      <Image testID="restaurant image" style={styles.image} source={{ uri: restaurant?.imgUrl }} />
       <Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
       <TouchableOpacity style={styles.buttonBox}>
         <Text style={styles.button}>Select</Text>

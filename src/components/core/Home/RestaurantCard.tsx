@@ -1,27 +1,27 @@
 import { StarRating } from '@components/misc';
 import { useAppTheme } from '@hooks';
 import { RestaurantInterface } from '@interfaces';
-import { Box, BoxShadow, Canvas, rect, rrect } from '@shopify/react-native-skia';
+import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface RestaurantProps extends RestaurantInterface {
-  addToCart: () => void;
+  testRect?: SkRRect; /* for testing only */
 }
 
-const RestaurantCard = ({ name, imgUrl, rating, location, addToCart }: RestaurantProps) => {
+const RestaurantCard = ({ name, imgUrl, rating, location, testRect }: RestaurantProps) => {
   const { color } = useAppTheme();
-  const containerRect = rrect(rect(6, 6, (wp('60%') - 20), 210), 15, 15);
+  const containerRect = testRect || rrect(rect(6, 6, (wp('60%') - 20), 210), 15, 15);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='restaurant card'>
       <Canvas style={styles.resBox}>
         <Box box={containerRect} color={color.cardBg}>
           <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
         </Box>
       </Canvas>
-      <Image style={styles.resImage} source={{ uri: imgUrl }} />
+      <Image testID='restuarant image' style={styles.resImage} source={{ uri: imgUrl }} />
       <View style={styles.detailsBox}>
         <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
         <StarRating rating={rating} />

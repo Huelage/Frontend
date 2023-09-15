@@ -1,7 +1,6 @@
 import { mockCategories } from '@api/mock';
 import React, { useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CategoryCard from './CategoryCard';
@@ -51,6 +50,7 @@ const CustomCarousel = () => {
         }}
         autoPlayInterval={10000}
         data={mockCategories}
+        testID='carousel'
         onScrollBegin={onScrollBegin}
         onProgressChange={onProgressChange}
         onSnapToItem={idx => setItemIdx(idx)}
@@ -70,7 +70,7 @@ const CustomCarousel = () => {
         keyExtractor={item => item.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => goToIdx(item)}>
-            <View style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
+            <View testID='carousel indicator' style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
           </TouchableOpacity>
         )}
         contentContainerStyle={styles.indicatorBox}
