@@ -1,7 +1,7 @@
 import { RootState } from "@api/app/store";
 import { CartInterface, globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
   isAuthenticated: false,
@@ -36,10 +36,10 @@ const globalSlice = createSlice({
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
     updateCart: (state, action: PayloadAction<CartInterface>) => {
-      const index = state.cart.findIndex((item) => item.id === action.payload.id);
+      const index = state.cart.findIndex(item => item.id === action.payload.id);
       state.cart[index] = action.payload;
     },
-    clearCart: (state) => { state.cart = []; }
+    clearCart: state => { state.cart = []; },
   },
 });
 

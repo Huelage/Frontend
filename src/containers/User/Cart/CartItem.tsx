@@ -1,10 +1,10 @@
-import food from '@api/mock/mockFoodData';
-import { QuantityController } from '@components/core/Cart';
-import { useAppTheme } from '@hooks';
-import { CartInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import food from "@api/mock/mockFoodData";
+import { QuantityController } from "@components/core/Cart";
+import { useAppTheme } from "@hooks";
+import { CartInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 const CartItem = ({ item_id, quantity, extras }: CartInterface) => {
   const { color } = useAppTheme();
@@ -41,37 +41,37 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 20,
     paddingHorizontal: 8,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   itemImage: {
     borderRadius: 40,
     height: 80,
-    width: 80
+    width: 80,
   },
   detailBox: {
     flex: 1,
-    gap: 1
+    gap: 1,
   },
   itemName: {
     fontFamily: fonts.I_700,
-    fontSize: 16
+    fontSize: 16,
   },
   itemExtras: {
     color: "#626262",
     fontFamily: fonts.I_400,
-    fontSize: 14
+    fontSize: 14,
   },
   itemPrice: {
     fontFamily: fonts.I_600,
-    fontSize: 15
+    fontSize: 15,
   },
   quatityBox: {
-    alignItems: 'center',
-    gap: 10
+    alignItems: "center",
+    gap: 10,
   },
   totalPrice: {
     color: "#626262",
     fontFamily: fonts.I_600,
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });
