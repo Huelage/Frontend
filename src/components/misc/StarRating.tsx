@@ -26,9 +26,9 @@ const StarRating = ({ color, gap, rating }: RatingProps) => {
     0: "ios-star-outline"
   };
   return (
-    <View style={[styles.container, { gap: gap || 3 }]}>
+    <View style={[styles.container, { gap: gap || 3 }]} testID='star rating'>
       {ratingArray.map((item: keyof IconProps, idx) => (
-        <Ionicons key={idx} name={iconName[item]} size={16} color={color || "#F2DB06"} />
+        <Ionicons testID={iconName[item]} key={idx} name={iconName[item]} size={16} color={color || "#F2DB06"} />
       ))}
     </View>
   );
