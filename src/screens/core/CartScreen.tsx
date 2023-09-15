@@ -9,14 +9,14 @@ import React from "react";
 import { FlatList, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const Cart = () => {
+const CartScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
   const { goBack } = useNavigation<UserNavigationProps>();
   return (
-    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={() => Keyboard.dismiss()}>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={() => Keyboard.dismiss()} testID="cart screen">
       <View style={styles.headerBox}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Cart</Text>
@@ -26,6 +26,7 @@ const Cart = () => {
           data={mockCartItems}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
+          testID="cart items list"
           renderItem={({ item }) => (
             <CartItem {...item} />
           )}
@@ -37,7 +38,7 @@ const Cart = () => {
     </View>
   );
 };
-export default Cart;
+export default CartScreen;
 
 const styles = StyleSheet.create({
   container: {
