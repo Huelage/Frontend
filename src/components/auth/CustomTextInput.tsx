@@ -18,7 +18,7 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
 
   const toggleShowText = () => setShowText(show => !show);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='custom text input'>
       <View style={[styles.inputContainer, error && styles.inputContainerError]}>
         <View style={styles.input}>
           <TextInput
@@ -33,11 +33,11 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
           />
           {isPass && (
             showText ? (
-              <TouchableOpacity onPress={toggleShowText}>
+              <TouchableOpacity testID='pass-visibility toggle' onPress={toggleShowText}>
                 <Ionicons size={24} color={color.mainText} name="eye-off" style={{ opacity: .7 }} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={toggleShowText}>
+              <TouchableOpacity testID='pass-visibility toggle' onPress={toggleShowText}>
                 <Ionicons size={24} color={color.mainText} name="eye" style={{ opacity: .7 }} />
               </TouchableOpacity>
             )

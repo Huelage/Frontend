@@ -9,7 +9,7 @@ interface SubmitProps {
 
 const SubmitButton = ({ label, onSubmit }: SubmitProps) => {
 	return (
-		<TouchableOpacity onPress={onSubmit}>
+		<TouchableOpacity onPress={onSubmit} testID='submit button'>
 			<View style={styles.loginButton}>
 				<Text style={styles.loginText}>{label}</Text>
 			</View>
