@@ -10,18 +10,21 @@ const CartItem = ({ item_id, quantity, extras }: CartInterface) => {
   const { color } = useAppTheme();
   const [itemQuantity, setItemQuantity] = useState<number>(quantity);
   const item = food.find((item) => item.id === item_id);
+
+  const increase = () => setItemQuantity(itemQuantity + 1);
+  const decrease = () => { if (itemQuantity > 1) setItemQuantity(itemQuantity - 1); };
   if (!item) return null;
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]}>
-      <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} />
+    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID='cart item'>
+      <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID='cart item image' />
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1}>{item?.name}</Text>
-        <Text style={styles.itemExtras} numberOfLines={1}>{extras?.map(item => item.name).join(", ")}</Text>
-        <Text style={[styles.itemPrice, { color: color.mainText }]}>₦{item?.price}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item?.name}</Text>
+        <Text style={styles.itemExtras} numberOfLines={1} testID='cart item extras'>{extras?.map(item => item.name).join(", ")}</Text>
+        <Text style={[styles.itemPrice, { color: color.mainText }]} testID='cart item price'>₦{item?.price}</Text>
       </View>
       <View style={styles.quatityBox}>
-        <QuantityController quantity={itemQuantity} setQuantity={setItemQuantity} />
-        <Text style={styles.totalPrice}>₦{item.price * quantity}</Text>
+        <QuantityController quantity={itemQuantity} increase={increase} decrease={decrease} />
+        <Text style={styles.totalPrice} testID='cart item total'>₦{item.price * quantity}</Text>
       </View>
     </View>
   );
