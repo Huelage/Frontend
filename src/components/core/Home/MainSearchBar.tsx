@@ -4,18 +4,23 @@ import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, TextInput, View } from 'react-native';
 
-const MainSearchBar = () => {
+interface MainSearchBarInterface {
+  searchFunc: (val: string) => void;
+};
+
+const MainSearchBar = ({ searchFunc }: MainSearchBarInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.homeSearchBox, { backgroundColor: color.searchBg }]}>
-      <Ionicons name="search" size={24} color="#29A40A" />
+    <View style={[styles.homeSearchBox, { backgroundColor: color.searchBg }]} testID='main search bar'>
+      <Ionicons testID='search icon' name="search" size={24} color="#29A40A" />
       <TextInput
         style={[styles.homeSearchInput, { color: color.searchText }]}
         placeholder='Search dishes...'
+        onChangeText={searchFunc}
         placeholderTextColor={color.searchText}
       />
       <View style={styles.homeSearchBoxFilter}>
-        <Image style={styles.homeSearchBoxFilterIcon} source={require('@icons/home-group.png')} />
+        <Image testID='filter icon' style={styles.homeSearchBoxFilterIcon} source={require('@icons/home-group.png')} />
       </View>
     </View>
   );
