@@ -8,6 +8,7 @@ import { Path, Svg } from 'react-native-svg';
 
 const UserTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const insets = useSafeAreaInsets();
+
   const { color } = useAppTheme();
   return (
     <View style={[styles.tabBg, { backgroundColor: color.main, paddingBottom: (insets.bottom + (Platform.OS === 'ios' ? 0 : 15)) }]}>
@@ -45,6 +46,7 @@ const UserTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
             onLongPress={onLongPress}
             style={styles.tabButton}
             key={route.name}
+            testID='tabButton'
           >
             <Svg height={25} width={25} viewBox="0 0 30 30" fill="none" strokeWidth={1}>
               <Path fill={isFocused ? color.mainGreen : color.mainText} d={iconPathD} />

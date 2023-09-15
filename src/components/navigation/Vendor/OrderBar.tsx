@@ -2,8 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const OrderBar = () => {
@@ -26,12 +25,12 @@ const OrderBar = () => {
   return (
     <Animated.View style={[styles.container, { backgroundColor: color.mainBg }, animatedWidth]}>
       <View style={[styles.orderNoBox, { backgroundColor: color.mainGreen }]}>
-        <Text style={styles.orderNo}>{"30".padStart(2, "0")}</Text>
+        <Text testID='new orders' style={styles.orderNo}>{"30".padStart(2, "0")}</Text>
       </View>
-      <Animated.Text style={[styles.orderType, animatedDisplay, { color: color.mainText }]}>New Orders</Animated.Text>
+      <Animated.Text testID='order type' style={[styles.orderType, animatedDisplay, { color: color.mainText }]}>New Orders</Animated.Text>
       <View style={styles.orderAction}>
-        <Animated.Text style={[styles.orderActionText, animatedOpacity, { color: color.mainText }]}>Manage Orders</Animated.Text>
-        <TouchableOpacity style={styles.orderActionButton}>
+        <Animated.Text testID='order cta' style={[styles.orderActionText, animatedOpacity, { color: color.mainText }]}>Manage Orders</Animated.Text>
+        <TouchableOpacity testID='to orders' style={styles.orderActionButton}>
           <FontAwesome name="angle-right" size={16} color={color.mainText} style={{ left: 1 }} />
         </TouchableOpacity>
       </View>

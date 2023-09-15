@@ -44,6 +44,7 @@ const VendorTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
             onPress={onPress}
             onLongPress={onLongPress}
             style={styles.tabButton}
+            testID='tabButton'
             key={route.name}
           >
             <Svg height={25} width={25} viewBox="0 0 30 30" fill="none" strokeWidth={1}>
