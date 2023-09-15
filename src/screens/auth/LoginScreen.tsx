@@ -57,11 +57,12 @@ const LoginScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]}>
+      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen'>
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag='huelageLogo'
             style={styles.logoImage}
+            testID="logo image"
             source={require("@images/onboard_logo.png")}
           />
           <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
@@ -151,6 +152,7 @@ const LoginScreen = () => {
                 <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
                 <TouchableOpacity
                   onPress={loginWithBiometrics}
+                  testID='biometric button'
                   style={[styles.biometricButton, { borderColor: color.mainGreen }]}
                 >
                   <bioDetail.icon size={45} />

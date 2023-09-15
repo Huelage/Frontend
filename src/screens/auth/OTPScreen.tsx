@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
 import { getVendorStatus, setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
-import { SubmitButton } from '@components/auth';
+import { CustomPinInput, SubmitButton } from '@components/auth';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthNavigationProps, OTPRouteProps } from '@interfaces';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,10 +8,8 @@ import { fonts, shadowStyle } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const CELL_COUNT = 4;
 
 const OTPScreen = () => {
   const dispatch = useAppDispatch();
@@ -19,9 +17,7 @@ const OTPScreen = () => {
   const [value, setValue] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const timerRef = useRef<number>(seconds);
   const formattedNumber = `+234 ${phoneno.slice(1, 3)}******${phoneno.slice(-2)}`;
 
@@ -32,6 +28,7 @@ const OTPScreen = () => {
   const verifyOTP = () => {
     dispatch(setAuthStatus(true));
   };
+  const onChange = (val: string) => setValue(val);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -45,37 +42,19 @@ const OTPScreen = () => {
     }, 1000);
     return () => clearInterval(timerId);
   }, [isTimerActive]);
-  useEffect(() => { ref.current?.focus(); }, []);
   return (
     <>
       <StatusBar style='dark' />
-      <View style={styles.container}>
+      <View style={styles.container} testID='otp screen'>
         <View style={styles.introContainer}>
-          <TouchableOpacity onPress={goBack}>
+          <TouchableOpacity onPress={goBack} testID='back button'>
             <Ionicons name="ios-arrow-back" size={34} color="black" />
           </TouchableOpacity>
           <Text style={styles.introText}>OTP Code Verification</Text>
         </View>
         <View style={styles.mainBox}>
           <Text style={styles.infoText}>Code has been sent to {formattedNumber}</Text>
-          <CodeField
-            ref={ref}
-            {...props}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.inputRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <Text
-                key={index}
-                style={[styles.inputCell, isFocused && styles.activeInputCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
+          <CustomPinInput value={value} onChange={onChange} onSubmit={verifyOTP} />
           {seconds ? (
             <Text style={styles.resendText}>
               Resend code in&nbsp;

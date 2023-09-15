@@ -24,7 +24,7 @@ const SignUpScreen = () => {
   useEffect(() => { setTimeout(() => setFocus('fullname'), 0); }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='sign up screen'>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.heroInputBox}>
         <View style={styles.heroInputs}>
