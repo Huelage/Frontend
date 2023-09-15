@@ -2,13 +2,14 @@ import { BuyNow, QuantitySelect, Ratings } from "@components/core/Cart";
 import { fonts, shadowStyle } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { UserNavigationProps } from "@interfaces";
 
 const CartScreen = () => {
   const [isHearted, setIsHearted] = useState(false);
@@ -16,7 +17,7 @@ const CartScreen = () => {
   const handleHeartPress = () => {
     setIsHearted(!isHearted);
   };
-  const navigation = useNavigation();
+  const navigation = useNavigation<UserNavigationProps>();
   const goToCartScreen = () => {
     navigation.navigate("Detail");
   };
@@ -26,7 +27,7 @@ const CartScreen = () => {
         <View style={styles.love}>
           <View>
             <TouchableOpacity onPress={handleHeartPress}>
-              <Icon
+              <FontAwesome
                 name={isHearted ? "heart" : "heart-o"}
                 size={40}
                 color="red"
@@ -57,7 +58,7 @@ const CartScreen = () => {
 
       <View style={styles.buyWrap}>
         <TouchableOpacity style={styles.iconWrap}>
-          <Icon
+          <FontAwesome
             name="shopping-cart"
             size={40}
             color="#BCB5B5"
