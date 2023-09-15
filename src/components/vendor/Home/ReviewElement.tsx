@@ -11,13 +11,13 @@ const ReviewElement = ({ name, avatar, rating, date, message }: ReviewInterface)
 	const colors = ['#92828D', '#95BF74', '#2A1A1F', '#F1A208', '#FE7F2D'];
 	const backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} testID='review element'>
 			<View style={styles.header}>
 				<View style={styles.userBox}>
 					<View style={[styles.avatarBox, { backgroundColor }]}>
-						<Text style={styles.avatarText}>{name[0].toUpperCase()}</Text>
+						<Text testID='backup avatar' style={styles.avatarText}>{name[0].toUpperCase()}</Text>
 						{avatar && (
-							<Image style={styles.avatar} source={{ uri: avatar }} />
+							<Image testID='reviewer image' style={styles.avatar} source={{ uri: avatar }} />
 						)}
 					</View>
 					<Text style={[styles.userName, { color: color.mainText }]}>{name}</Text>

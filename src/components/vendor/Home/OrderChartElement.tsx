@@ -30,10 +30,10 @@ const OrderChartElement = ({ iconColor, idx, label, total, value }: ChartProps) 
     }));
   }, [value]);
   return (
-    <View style={styles.container}>
-      <View style={styles.barChartContainer}>
+    <View style={styles.container} testID='order chart element'>
+      <View testID='chart bar' style={styles.barChartContainer}>
         <View style={[styles.barChartBg, { backgroundColor: color.chartBg }]} />
-        <Animated.View style={[styles.barChart, animatedWidth, { backgroundColor: iconColor }]} />
+        <Animated.View testID='bar progress' style={[styles.barChart, animatedWidth, { backgroundColor: iconColor }]} />
       </View>
       <View style={styles.barChartLabel}>
         <Text style={[styles.barChartValue, { color: color.mainText }]}>{percentage}%</Text>
