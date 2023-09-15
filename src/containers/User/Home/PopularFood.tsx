@@ -1,14 +1,19 @@
 import { mockFoods } from '@api/mock';
 import { CustomButton, FoodCard } from '@components/core/Home/';
 import { useAppTheme } from '@hooks';
+import { SkRRect } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-const PopularFood = () => {
+interface PopularFoodInterface {
+  testRect?: SkRRect; /* This is for unit testing purposes only */
+}
+
+const PopularFood = ({ testRect }: PopularFoodInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='popular food'>
       <View style={styles.foodNav}>
         <Text style={[styles.foodText, { color: color.mainText }]}>
           <Text style={[styles.foodTextAccent, { color: color.mainGreen }]}>Popular</Text> this week
@@ -20,8 +25,9 @@ const PopularFood = () => {
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.id}
         data={mockFoods}
+        testID='popular food list'
         renderItem={({ item }) => (
-          <FoodCard {...item} />
+          <FoodCard {...item} testRect={testRect} />
         )}
       />
     </View>
