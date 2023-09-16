@@ -273,7 +273,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
           ]
         }
       >
-        History
+        My Orders
       </Text>
     </View>
     <View
@@ -864,7 +864,7 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
           ]
         }
       >
-        History
+        My Orders
       </Text>
     </View>
     <View
