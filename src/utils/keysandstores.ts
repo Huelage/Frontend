@@ -13,6 +13,6 @@ export const CustomSecureStore = {
   },
 };
 
-const replacer = (key: string, replaceCharacter: string) => {
+export const replacer = (key: string, replaceCharacter: string) => {
   return key.replace(/[^a-z0-9.\-_]/gi, replaceCharacter);
 };

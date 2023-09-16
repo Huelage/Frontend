@@ -16,14 +16,14 @@ const SignupSelectScreen = () => {
     navigate("SignUp");
   };
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="signup select screen">
       <ImageBackground style={styles.containerBg} source={require('@images/SignupSelectBg.png')} resizeMode="cover">
-        <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} source={require("@images/onboard_logo.png")} />
+        <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} source={require("@images/onboard_logo.png")} testID="logo image" />
         <Text style={styles.infoText}>Select account option</Text>
         <View style={styles.authSelectWrapper}>
-          <Animated.View entering={SlideInDown.delay(100).springify().damping(15)} style={styles.authSelect}>
+          <Animated.View entering={SlideInDown.delay(100).springify().damping(15)} style={styles.authSelect} testID="vendor select box">
             <Animated.View entering={FadeIn.delay(500)} style={styles.authSelectImageWrapper}>
-              <Image style={styles.authSelectImage} source={require("@images/Vendor.png")} resizeMode="contain" />
+              <Image testID="select box image" style={styles.authSelectImage} source={require("@images/Vendor.png")} resizeMode="contain" />
             </Animated.View>
             <TouchableOpacity onPress={() => handleSelect(true)}>
               <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectButton}>
@@ -31,9 +31,9 @@ const SignupSelectScreen = () => {
               </Animated.View>
             </TouchableOpacity>
           </Animated.View>
-          <Animated.View entering={SlideInDown.delay(300).springify().damping(15)} style={styles.authSelect}>
+          <Animated.View entering={SlideInDown.delay(300).springify().damping(15)} style={styles.authSelect} testID="user select box">
             <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectImageWrapper}>
-              <Image style={styles.authSelectImage} source={require("@images/User.png")} resizeMode="contain" />
+              <Image testID="select box image" style={styles.authSelectImage} source={require("@images/User.png")} resizeMode="contain" />
             </Animated.View>
             <TouchableOpacity onPress={() => handleSelect(false)}>
               <Animated.View entering={FadeIn.delay(700)} style={styles.authSelectButton}>

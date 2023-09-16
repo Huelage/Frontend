@@ -1,13 +1,7 @@
 import * as BioAuth from 'expo-local-authentication';
 import { Platform } from 'react-native';
 import { FaceId, FingerPrint, Iris } from './svgs';
-// import { RSA } from 'react-native-rsa-expo';
 import * as SecureStore from 'expo-secure-store';
-
-interface authenticateInterface {
-  prompt?: string;
-  cancel?: string;
-}
 
 export const getBiometrics = async () => {
   const hasBiometrics = await BioAuth.hasHardwareAsync();

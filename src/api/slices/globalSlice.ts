@@ -36,14 +36,10 @@ const globalSlice = createSlice({
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
     updateCart: (state, action: PayloadAction<CartInterface>) => {
-      const index = state.cart.findIndex(
-        (item) => item.id === action.payload.id
-      );
+      const index = state.cart.findIndex(item => item.id === action.payload.id);
       state.cart[index] = action.payload;
     },
-    clearCart: (state) => {
-      state.cart = [];
-    },
+    clearCart: state => { state.cart = []; },
   },
 });
 
@@ -55,11 +51,12 @@ export const {
   updateCart,
   setAuthStatus,
   setVendorStatus,
-  switchTheme,
+  switchTheme
 } = globalSlice.actions;
 // Selectors
 export const getAuthStatus = (state: RootState) => state.global.isAuthenticated;
 export const getTheme = (state: RootState) => state.global.theme;
 export const getVendorStatus = (state: RootState) => state.global.isVendor;
+export const getCart = (state: RootState) => state.global.cart;
 // Reducer
 export default globalSlice.reducer;

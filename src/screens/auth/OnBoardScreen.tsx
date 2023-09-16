@@ -32,11 +32,12 @@ const OnBoardScreen = () => {
     );
   }, []);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="onboard screen">
       <View style={styles.logoWrapper}>
         <Animated.Image
           sharedTransitionTag="huelageLogo"
           style={[styles.logoImage, animatedRotate]}
+          testID="logo image"
           source={require("@images/onboard_logo.png")}
         />
         <Animated.Text style={[styles.logoText, animatedOpacity]}>HUELAGE</Animated.Text>

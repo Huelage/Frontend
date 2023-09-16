@@ -17,8 +17,11 @@ export interface SignUpInfoInterface {
   businessname?: string;
   password: string;
 }
-export interface ForgotPasswordInfoInterface {
-  email: string;
+export interface ResetPasswordInterface {
+  email?: string;
+  password?: string;
+  oldPassword?: string;
+  confirmPassword?: string;
 }
 
 // NAVIGATION INTERFACES
@@ -26,10 +29,11 @@ export type AuthStackParamList = {
   OnBoard: undefined;
   Login: undefined;
   SignUp: undefined;
-  OTP: { phoneno: string };
+  OTP: { phoneno: string; };
   SignupSelect: undefined;
   ForgotPassword: undefined;
-  ChangePassword: undefined;
+  SetPassword: undefined;
+  VerifyEmail: undefined;
 };
 
 export type UserStackParamList = {
@@ -59,8 +63,7 @@ export type VendorTabParamList = {
 
 // SCREEN INTERFACES
 export type UserNavigationProps = NativeStackNavigationProp<UserStackParamList>;
-export type VendorNavigationProps =
-  NativeStackNavigationProp<VendorStackParamList>;
+export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 export type UserTabProps = BottomTabNavigationProp<UserTabParamList>;
 export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
@@ -143,13 +146,10 @@ interface FoodPortionInterface extends UserBaseFoodInterface {
 }
 interface FoodPackageInterface extends UserBaseFoodInterface {
   pricing_method: "package";
-  package_sizes: { name: string; price: number }[];
+  package_sizes: { name: string; price: number; }[];
 }
 
-export type UserFoodInterface =
-  | FoodPriceInterface
-  | FoodPortionInterface
-  | FoodPackageInterface;
+export type UserFoodInterface = FoodPriceInterface | FoodPortionInterface | FoodPackageInterface;
 export interface FoodSideInterface {
   name: string;
   price: number;

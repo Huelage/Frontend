@@ -8,7 +8,7 @@ const Categories = () => {
   const { color } = useAppTheme();
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
   return (
-    <View style={styles.categories}>
+    <View style={styles.categories} testID='categories'>
       <Text style={[styles.categoriesText, { color: color.mainText }]}>Categories</Text>
       <FlatList
         data={categories}
@@ -19,6 +19,7 @@ const Categories = () => {
             <CustomButton icon='md-close-outline' fontSize={14} label={item} height={36} inactive onPress={() => console.log(item)} />
           </View>
         )}
+        testID='category icon list'
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />

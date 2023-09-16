@@ -6,17 +6,17 @@ import { fonts, shadowStyle } from '@utils';
 
 interface ControllerInterface {
   quantity: number;
-  setQuantity: React.Dispatch<React.SetStateAction<number>>;
+  increase: () => void;
+  decrease: () => void;
 }
 
-const QuantityController = ({ quantity, setQuantity }: ControllerInterface) => {
+const QuantityController = ({ quantity, increase, decrease }: ControllerInterface) => {
   const { color } = useAppTheme();
-  const increase = () => setQuantity(quantity + 1);
-  const decrease = () => { if (quantity > 1) setQuantity(quantity - 1); };
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]}>
+    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID='quantity controller'>
       <TouchableOpacity
         onPress={decrease}
+        testID='decrease quantity'
         style={[styles.buttonBox, { backgroundColor: color.mainGreen }]}
       >
         <AntDesign name="minus" size={12} color="white" />
@@ -24,6 +24,7 @@ const QuantityController = ({ quantity, setQuantity }: ControllerInterface) => {
       <Text style={[styles.quantity, { color: color.mainText }]}>{quantity}</Text>
       <TouchableOpacity
         onPress={increase}
+        testID='increase quantity'
         style={[styles.buttonBox, { backgroundColor: color.mainGreen }]}
       >
         <AntDesign name="plus" size={12} color="white" />

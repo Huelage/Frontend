@@ -1,53 +1,44 @@
-import React, { useState } from "react";
-import { AuthNavigationProps } from "@interfaces";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { SubmitButton, CustomTextInput } from "@components/auth";
-import { Controller, useForm } from "react-hook-form";
+import { CustomTextInput, SubmitButton } from "@components/auth";
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from "@hooks";
+import { AuthNavigationProps, ResetPasswordInterface } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import { StatusBar } from "expo-status-bar";
-import { LoginInfoInterface } from "@interfaces";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ForgotPasswordScreen = () => {
-  const { navigate } = useNavigation<AuthNavigationProps>();
-
-  const {
-    control,
-    formState: { errors },
-  } = useForm<LoginInfoInterface>({ mode: "onChange" });
-  const resetPassword = () => {
-    // Implement the logic to send a password reset email to the provided email address.
+  const insets = useSafeAreaInsets();
+  const { color } = useAppTheme();
+  const { navigate, goBack } = useNavigation<AuthNavigationProps>();
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
+  const onSubmit = (data: ResetPasswordInterface) => {
+    reset();
+    navigate("VerifyEmail");
   };
 
-  function fontSize(arg0: number) {
-    throw new Error("Function not implemented.");
-  }
-
+  useEffect(() => {
+    setTimeout(() => setFocus("email"), 0);
+  }, []);
   return (
     <>
       <StatusBar style="auto" />
-      <View style={styles.container}>
-        <View style={styles.introContainer}>
-          <TouchableOpacity onPress={() => navigate("Login")}>
-            <Ionicons name="ios-arrow-back" size={34} color="black" />
+      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={() => Keyboard.dismiss()} testID="forgot password screen">
+        <View style={styles.headerBox}>
+          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
+            <AntDesign name="arrowleft" size={26} color={color.mainText} />
           </TouchableOpacity>
-          <Text style={styles.introText}>Forgot Password</Text>
+          <Text style={[styles.headerText, { color: color.mainText }]}>Forgot Password</Text>
         </View>
-
         <View style={styles.mainBox}>
-          <View style={styles.iconWrap}>
-            <MaterialCommunityIcons name="lock-reset" size={60} color="white" />
-          </View>
-          <Text style={styles.infoText}>
-            Please enter your registered Email address to receive a verification
-            code.
-          </Text>
+          <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
+            <MaterialCommunityIcons name="lock-reset" size={100} color="white" />
+          </Animated.View>
+          <Text style={[styles.infoText, { color: color.mainText }]}>Please enter your registered Email address to receive a verification code.</Text>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value, ref } }) => (
@@ -61,7 +52,8 @@ const ForgotPasswordScreen = () => {
                 label="Email address"
                 onBlur={onBlur}
                 onChangeText={onChange}
-                returnKeyType="next"
+                onSubmitEditing={handleSubmit(onSubmit)}
+                returnKeyType="send"
                 value={value}
               />
             )}
@@ -74,11 +66,7 @@ const ForgotPasswordScreen = () => {
               },
             }}
           />
-
-          <SubmitButton label="Reset Password" onSubmit={resetPassword} />
-          <TouchableOpacity onPress={() => navigate("ChangePassword")}>
-            <Text style={styles.infoText}>CPS</Text>
-          </TouchableOpacity>
+          <SubmitButton label="Send code" onSubmit={handleSubmit(onSubmit)} />
         </View>
       </View>
     </>
@@ -90,48 +78,39 @@ export default ForgotPasswordScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: wp("8%"),
-    marginTop: hp("8%"),
   },
-  introContainer: {
+  headerBox: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
+    paddingHorizontal: 10
   },
-  introText: {
-    flex: 1,
-    fontFamily: fonts.I_700,
-    fontSize: 20,
-    textAlign: "center",
+  backButton: {
+    position: "absolute",
+    left: 20
   },
-  iconWrap: {
-    backgroundColor: "#4caf50",
-    borderRadius: 50,
-    height: 100,
-    width: 100,
-    alignItems: "center",
-    padding: 20,
-    alignSelf: "center",
+  headerText: {
+    fontFamily: fonts.I_600,
+    fontSize: 20
   },
   mainBox: {
     flex: 1,
-    gap: 20,
-    marginTop: hp("15%"),
-  },
-
-  infoText: {
-    fontFamily: fonts.I_600,
-    fontSize: 16,
-    textAlign: "center",
-  },
-  input: {
-    fontFamily: fonts.I_500,
-    fontSize: 16,
-    borderColor: "#93b1a4",
-    borderRadius: 11,
-    borderWidth: 2,
-    height: 65,
+    gap: 30,
     paddingHorizontal: 20,
-    marginBottom: 20,
+    paddingTop: 70
   },
+  iconWrap: {
+    alignItems: "center",
+    alignSelf: "center",
+    borderRadius: 100,
+    height: 160,
+    justifyContent: "center",
+    marginBottom: 30,
+    width: 160
+  },
+  infoText: {
+    fontFamily: fonts.I_500,
+    fontSize: 14,
+    textAlign: "center",
+  }
 });

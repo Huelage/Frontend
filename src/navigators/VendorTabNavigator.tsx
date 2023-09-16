@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { VendorTabParamList } from '@interfaces';
-import { AccountScreen, HomeScreen, MenuScreen, OrderScreen } from '@screens/Vendors';
+import { AccountScreen, HomeScreen, MenuScreen, OrderScreen } from '@screens/Vendor';
 import { VendorTabBar, VendorTabHeader } from '@components/navigation';
 import { useAppTheme } from '@hooks';
 

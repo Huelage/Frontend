@@ -1,40 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { AuthNavigationProps } from "@interfaces";
 import { getVendorStatus, setAuthStatus } from "@api/slices/globalSlice";
-import {
-  AuthNavigate,
-  CustomTextInput,
-  SubmitButton,
-  UserVendor,
-} from "@components/auth";
+import { AuthNavigate, CustomTextInput, SubmitButton, UserVendor, } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { BiometricsInterface, LoginInfoInterface } from "@interfaces";
-import {
-  BiometricType,
-  enableBiometrics,
-  fonts,
-  getBiometrics,
-  loginWithBiometrics,
-} from "@utils";
+import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { BiometricType, enableBiometrics, fonts, getBiometrics, loginWithBiometrics, } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import {
-  Alert,
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
 import Animated from "react-native-reanimated";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
@@ -43,13 +21,7 @@ const LoginScreen = () => {
   const inset = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
-  const {
-    handleSubmit,
-    control,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<LoginInfoInterface>({ mode: "onChange" });
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
   let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null =
     null;
   if (bioSpecs?.hasBiometrics && !bioSpecs?.isEnrolled)
@@ -92,16 +64,12 @@ const LoginScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View
-        style={[
-          styles.container,
-          { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 },
-        ]}
-      >
+      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen'>
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag="huelageLogo"
             style={styles.logoImage}
+            testID="logo image"
             source={require("@images/onboard_logo.png")}
           />
           <Text style={[styles.welcomeText, { color: color.mainGreen }]}>
@@ -205,10 +173,8 @@ const LoginScreen = () => {
                 </Text>
                 <TouchableOpacity
                   onPress={loginWithBiometrics}
-                  style={[
-                    styles.biometricButton,
-                    { borderColor: color.mainGreen },
-                  ]}
+                  testID='biometric button'
+                  style={[styles.biometricButton, { borderColor: color.mainGreen }]}
                 >
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>

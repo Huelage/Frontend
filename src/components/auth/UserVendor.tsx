@@ -10,7 +10,7 @@ const UserVendor = () => {
   const isVendor = useAppSelector(getVendorStatus);
   const { color } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='user vendor'>
       <TouchableOpacity
         style={[styles.buttonBox, styles.box1, { borderColor: color.mainGreen }, isVendor && { backgroundColor: color.mainGreen }]}
         onPress={() => dispatch(setVendorStatus(true))}

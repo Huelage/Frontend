@@ -1,12 +1,6 @@
 import { useAppSelector } from "@api/app/appHooks";
 import { getVendorStatus } from "@api/slices/globalSlice";
-import {
-  AuthNavigate,
-  CustomTextInput,
-  Hero,
-  SocialLogin,
-  SubmitButton,
-} from "@components/auth";
+import { AuthNavigate, CustomTextInput, Hero, SocialLogin, SubmitButton, } from "@components/auth";
 import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "@rneui/themed";
@@ -15,22 +9,13 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
 
 const SignUpScreen = () => {
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(true);
-  const {
-    handleSubmit,
-    control,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<SignUpInfoInterface>({ mode: "onChange" });
+  const { handleSubmit, control, setFocus, reset, formState: { errors }, } = useForm<SignUpInfoInterface>({ mode: "onChange" });
   const onSubmit = (data: SignUpInfoInterface) => {
     reset();
     navigate("OTP", { phoneno: data.phonenumber });
@@ -41,14 +26,9 @@ const SignUpScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='sign up screen'>
       <Hero lead="Sign Up" accent="Please fill your details" page="SU" />
-      <KeyboardAwareScrollView
-        scrollEnabled
-        keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
-        extraScrollHeight={50}
-        style={styles.heroInputBox}
-      >
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.heroInputBox} >
         <View style={styles.heroInputs}>
           <Controller
             control={control}
@@ -115,18 +95,14 @@ const SignUpScreen = () => {
                 label={isVendor ? "Vendor's Phone number" : "Phone number"}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                onSubmitEditing={() =>
-                  setFocus(isVendor ? "businessname" : "password")
-                }
+                onSubmitEditing={() => setFocus(isVendor ? "businessname" : "password")}
                 innerRef={ref}
                 returnKeyType="next"
                 value={value}
               />
             )}
             name="phonenumber"
-            rules={{
-              required: "Phone number is required",
-            }}
+            rules={{ required: "Phone number is required" }}
           />
           {isVendor && (
             <Controller
@@ -199,10 +175,7 @@ const SignUpScreen = () => {
           )}
         </View>
         <View style={styles.heroSubmitBox}>
-          <SubmitButton
-            label="CREATE ACCOUNT"
-            onSubmit={handleSubmit(onSubmit)}
-          />
+          <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
           {!isVendor && <SocialLogin page="SU" />}
           <AuthNavigate page="SU" />
         </View>

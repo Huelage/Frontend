@@ -3,7 +3,7 @@ import { getTheme } from "@api/slices/globalSlice";
 
 const useAppTheme = () => {
   const theme = useAppSelector(getTheme);
-  const color = colors[theme];
+  const color = colors[theme] || colors.dark;
   return { color, theme };
 };
 

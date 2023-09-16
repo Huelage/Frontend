@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 const HomeScreen = () => {
   const { color } = useAppTheme();
   return (
-    <View style={{ backgroundColor: color.mainBg }}>
+    <View style={{ backgroundColor: color.mainBg }} testID='vendor home screen'>
       <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true}>
         <View style={styles.container}>
           <OrderOverview />

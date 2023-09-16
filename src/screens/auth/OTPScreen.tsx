@@ -1,27 +1,27 @@
-import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { getVendorStatus, setAuthStatus, setVendorStatus } from '@api/slices/globalSlice';
-import { SubmitButton } from '@components/auth';
-import { Ionicons } from '@expo/vector-icons';
+import { useAppDispatch } from '@api/app/appHooks';
+import { setAuthStatus } from '@api/slices/globalSlice';
+import { CustomPinInput, SubmitButton } from '@components/auth';
+import { AntDesign } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { AuthNavigationProps, OTPRouteProps } from '@interfaces';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts, shadowStyle } from '@utils';
+import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const CELL_COUNT = 4;
 
 const OTPScreen = () => {
+  const { color } = useAppTheme();
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
   const { params: { phoneno } } = useRoute<OTPRouteProps>();
   const [value, setValue] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({ value, setValue });
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const timerRef = useRef<number>(seconds);
   const formattedNumber = `+234 ${phoneno.slice(1, 3)}******${phoneno.slice(-2)}`;
 
@@ -30,8 +30,11 @@ const OTPScreen = () => {
     timerRef.current = 59;
   };
   const verifyOTP = () => {
-    dispatch(setAuthStatus(true));
+    if (/\d{4}/.test(value.trim())) {
+      dispatch(setAuthStatus(true));
+    }
   };
+  const onChange = (val: string) => setValue(val);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -45,45 +48,33 @@ const OTPScreen = () => {
     }, 1000);
     return () => clearInterval(timerId);
   }, [isTimerActive]);
-  useEffect(() => { ref.current?.focus(); }, []);
   return (
     <>
-      <StatusBar style='dark' />
-      <View style={styles.container}>
-        <View style={styles.introContainer}>
-          <TouchableOpacity onPress={goBack}>
-            <Ionicons name="ios-arrow-back" size={34} color="black" />
+      <StatusBar style='auto' />
+      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={() => Keyboard.dismiss()} testID="otp screen">
+        <View style={styles.headerBox}>
+          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="back button">
+            <AntDesign name="arrowleft" size={26} color={color.mainText} />
           </TouchableOpacity>
-          <Text style={styles.introText}>OTP Code Verification</Text>
+          <Text style={[styles.headerText, { color: color.mainText }]}>OTP Code Verification</Text>
         </View>
         <View style={styles.mainBox}>
-          <Text style={styles.infoText}>Code has been sent to {formattedNumber}</Text>
-          <CodeField
-            ref={ref}
-            {...props}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.inputRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({ index, symbol, isFocused }) => (
-              <Text
-                key={index}
-                style={[styles.inputCell, isFocused && styles.activeInputCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
+          <Animated.Image
+            sharedTransitionTag="huelageLogo"
+            style={styles.logoImage}
+            testID="logo image"
+            source={require("@images/onboard_logo.png")}
           />
+          <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
+          <CustomPinInput value={value} onChange={onChange} onSubmit={verifyOTP} />
           {seconds ? (
-            <Text style={styles.resendText}>
+            <Text style={[styles.resendText, { color: color.mainText }]}>
               Resend code in&nbsp;
-              <Text style={styles.resendTimer}>00:{seconds.toString().padStart(2, '0')}</Text>s
+              <Text style={[styles.resendTimer, { color: color.mainGreen }]}>00:{seconds.toString().padStart(2, '0')}</Text>s
             </Text>
           ) : (
             <TouchableOpacity onPress={resendCode}>
-              <Text style={[styles.resendText, styles.resendTimer]}>Resend Code</Text>
+              <Text style={[styles.resendText, styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
             </TouchableOpacity>
           )}
           <SubmitButton label='Verify' onSubmit={verifyOTP} />
@@ -97,25 +88,34 @@ export default OTPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal: wp("8%"),
-    marginTop: hp("8%")
+    flex: 1
   },
-  introContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
+  headerBox: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingHorizontal: 10
   },
-  introText: {
-    flex: 1,
-    fontFamily: fonts.I_700,
-    fontSize: 20,
-    textAlign: 'center'
+  backButton: {
+    position: "absolute",
+    left: 20
+  },
+  headerText: {
+    fontFamily: fonts.I_600,
+    fontSize: 20
   },
   mainBox: {
     flex: 1,
-    gap: 10,
-    marginTop: hp("20%"),
+    gap: 20,
+    paddingHorizontal: 20,
+    paddingTop: 70
+  },
+  logoImage: {
+    alignSelf: 'center',
+    borderRadius: 40,
+    height: 80,
+    marginBottom: 40,
+    width: 80,
   },
   infoText: {
     fontFamily: fonts.I_600,
@@ -129,31 +129,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   resendTimer: {
-    color: "#47CA4C",
     fontFamily: fonts.I_600
-  },
-  inputRoot: {
-    alignItems: 'center',
-    gap: 20,
-    justifyContent: 'center',
-    marginBottom: 20,
-    marginTop: 10,
-    width: '100%'
-  },
-  inputCell: {
-    alignItems: 'center',
-    borderColor: '#93b1a4',
-    borderRadius: 11,
-    borderWidth: 2,
-    fontSize: 28,
-    height: 65,
-    justifyContent: 'center',
-    paddingVertical: 14,
-    textAlign: 'center',
-    width: 65
-  },
-  activeInputCell: {
-    borderColor: '#47CA4C',
-    ...shadowStyle
-  },
+  }
 });

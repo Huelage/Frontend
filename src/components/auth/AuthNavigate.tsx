@@ -20,11 +20,11 @@ const AuthNavigate = ({ page }: AuthNavigateProps) => {
     }
   };
   return (
-    <View style={styles.accountBox}>
+    <View style={styles.accountBox} testID='auth navigate'>
       <Text style={[styles.accountRedirect, { color: color.mainText }]}>
         {page == 'SU' ? "Already a member" : "Don't have an account"}?
       </Text>
-      <TouchableOpacity onPress={handleNavigate}>
+      <TouchableOpacity accessibilityRole="button" onPress={handleNavigate}>
         <Text style={[styles.accountAccent, { color: color.mainGreen }]}>{page == 'SU' ? "Login" : "Sign Up"}</Text>
       </TouchableOpacity>
     </View>
