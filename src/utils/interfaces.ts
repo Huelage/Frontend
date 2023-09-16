@@ -17,8 +17,11 @@ export interface SignUpInfoInterface {
   businessname?: string;
   password: string;
 }
-export interface ForgotPasswordInfoInterface {
-  email: string;
+export interface ResetPasswordInterface {
+  email?: string;
+  password?: string;
+  oldPassword?: string;
+  confirmPassword?: string;
 }
 
 // NAVIGATION INTERFACES
@@ -29,7 +32,8 @@ export type AuthStackParamList = {
   OTP: { phoneno: string; };
   SignupSelect: undefined;
   ForgotPassword: undefined;
-  ChangePassword: undefined;
+  SetPassword: undefined;
+  VerifyEmail: undefined;
 };
 
 export type UserStackParamList = {

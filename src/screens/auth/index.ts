@@ -4,4 +4,5 @@ export { default as OnBoardScreen } from "./OnBoardScreen";
 export { default as SignUpScreen } from "./SignUpScreen";
 export { default as SignupSelectScreen } from "./SignupSelectScreen";
 export { default as ForgotPasswordScreen } from "./ForgotPasswordScreen";
-export { default as ChangePasswordScreen } from "./ChangePasswordScreen";
+export { default as SetPasswordScreen } from "./SetPasswordScreen";
+export { default as VerifyEmailScreen } from "./VerifyEmailScreen";

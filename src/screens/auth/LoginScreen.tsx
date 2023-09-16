@@ -21,13 +21,7 @@ const LoginScreen = () => {
   const inset = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
-  const {
-    handleSubmit,
-    control,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<LoginInfoInterface>({ mode: "onChange" });
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
   let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null =
     null;
   if (bioSpecs?.hasBiometrics && !bioSpecs?.isEnrolled)
