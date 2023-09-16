@@ -1,11 +1,41 @@
 import { useAppSelector } from "@api/app/appHooks";
 import { useRoute } from "@react-navigation/native";
-import { LoginScreen, OTPScreen, OnBoardScreen, SignupSelectScreen } from "@screens/auth";
+import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignupSelectScreen, VerifyEmailScreen } from "@screens/auth";
 import { render, screen, waitFor } from "@testing-library/react-native";
 import { getBiometrics } from "@utils";
 import { renderNavigator } from "../testhelpers";
 
 describe("When Testing Authentication Screens: ", () => {
+  describe("<ForgotPasswordScreen />: ", () => {
+    beforeEach(() => {
+      renderNavigator(<ForgotPasswordScreen />);
+    });
+    it("should render the ForgotPasswordScreen component", () => {
+      expect(screen.getByTestId("forgot password screen")).toBeOnTheScreen();
+    });
+    it("should render the screen title", () => {
+      expect(screen.getByText(/forgot password/i)).toBeOnTheScreen();
+    });
+    it("should render the back button", () => {
+      expect(screen.getByTestId("go back")).toBeOnTheScreen();
+    });
+    it("should render the screen main icon", () => {
+      expect(screen.getByTestId("screen icon")).toBeOnTheScreen();
+    });
+    it("should render the info text", () => {
+      expect(screen.getByText(/enter your registered email/i)).toBeOnTheScreen();
+    });
+    it("should render the CustomTextInput component", () => {
+      expect(screen.getByTestId("custom text input")).toBeOnTheScreen();
+    });
+    it("should render the email input", () => {
+      expect(screen.getByPlaceholderText("Email address")).toBeOnTheScreen();
+    });
+    it("should render the SubmitButton component", () => {
+      expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+    });
+  });
+
   describe("<LoginScreen />: ", () => {
     beforeEach(async () => {
       await waitFor(() => (
@@ -141,6 +171,53 @@ describe("When Testing Authentication Screens: ", () => {
   });
 
 
+  describe("<SetPasswordScreen />: ", () => {
+    beforeEach(() => {
+      renderNavigator(<SetPasswordScreen />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("set password screen")).toBeOnTheScreen();
+    });
+    it("should render the container title", () => {
+      expect(screen.getByText(/set password/i)).toBeOnTheScreen();
+    });
+    it("should render the back button", () => {
+      expect(screen.getByTestId("go back")).toBeOnTheScreen();
+    });
+    it("should render the screen main icon", () => {
+      expect(screen.getByTestId("screen icon")).toBeOnTheScreen();
+    });
+    it("should render the info text", () => {
+      expect(screen.getByText(/your new password must be/i)).toBeOnTheScreen();
+    });
+    it("should render 2 CustomTextInput components when user is not signed in", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(false);
+      renderNavigator(<SetPasswordScreen />);
+      expect(screen.getAllByTestId("custom text input")).toHaveLength(2);
+    });
+    it("should render 3 CustomTextInput components when user is signed in", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(true);
+      renderNavigator(<SetPasswordScreen />);
+      expect(screen.getAllByTestId("custom text input")).toHaveLength(3);
+    });
+    it("should render the new password and confirm password inputs", () => {
+      expect(screen.getByPlaceholderText("New password")).toBeOnTheScreen();
+      expect(screen.getByPlaceholderText("Confirm Password")).toBeOnTheScreen();
+    });
+    it("should render the old password input only when user is signed in", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(true);
+      renderNavigator(<SetPasswordScreen />);
+      expect(screen.getByPlaceholderText("Old password")).toBeOnTheScreen();
+      (useAppSelector as jest.Mock).mockReturnValue(false);
+      renderNavigator(<SetPasswordScreen />);
+      expect(screen.queryByPlaceholderText("Old password")).toBeNull();
+    });
+    it("should render the SubmitButton component", () => {
+      expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+    });
+  });
+
+
   describe("<SignupSelectScreen />: ", () => {
     beforeEach(() => {
       renderNavigator(<SignupSelectScreen />);
@@ -172,6 +249,37 @@ describe("When Testing Authentication Screens: ", () => {
     });
     it("should render the signup as user button", () => {
       expect(screen.getByText(/user/i)).toBeOnTheScreen();
+    });
+  });
+
+
+  describe("<VerifyEmailScreen />: ", () => {
+    beforeEach(() => {
+      renderNavigator(<VerifyEmailScreen />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("verify email screen")).toBeOnTheScreen();
+    });
+    it("should render the container title", () => {
+      expect(screen.getByText(/email verification/i)).toBeOnTheScreen();
+    });
+    it("should render the back button", () => {
+      expect(screen.getByTestId("go back")).toBeOnTheScreen();
+    });
+    it("should render the screen main icon", () => {
+      expect(screen.getByTestId("screen icon")).toBeOnTheScreen();
+    });
+    it("should render the info text", () => {
+      expect(screen.getByText(/enter the 4 digit code/i)).toBeOnTheScreen();
+    });
+    it("should render the CustomPinInput component", () => {
+      expect(screen.getByTestId("custom pin input")).toBeOnTheScreen();
+    });
+    it("should render the resend code timer", () => {
+      expect(screen.getByText(/didn't receive a code/i)).toBeOnTheScreen();
+    });
+    it("should render the SubmitButton component", () => {
+      expect(screen.getByTestId("submit button")).toBeOnTheScreen();
     });
   });
 });
