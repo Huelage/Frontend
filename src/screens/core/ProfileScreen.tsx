@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const ProfileScreen = () => {
   return (
-    <View>
+    <View testID='profile screen'>
       <Text>ProfileScreen</Text>
     </View>
   );
