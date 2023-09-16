@@ -19,7 +19,7 @@ describe("When Testing User Navigation Components: ", () => {
         >
           <Tab.Screen name="Home" component={TestComp} />
           <Tab.Screen name="Vendors" component={TestComp} />
-          <Tab.Screen name="History" component={TestComp} />
+          <Tab.Screen name="My Orders" component={TestComp} />
           <Tab.Screen name="Profile" component={TestComp} />
         </Tab.Navigator>
       );
@@ -33,7 +33,7 @@ describe("When Testing User Navigation Components: ", () => {
     it("should render the correct tab labels", () => {
       expect(screen.getByText("Home")).toBeOnTheScreen();
       expect(screen.getByText("Vendors")).toBeOnTheScreen();
-      expect(screen.getByText("History")).toBeOnTheScreen();
+      expect(screen.getByText("My Orders")).toBeOnTheScreen();
       expect(screen.getByText("Profile")).toBeOnTheScreen();
     });
   });
@@ -48,7 +48,7 @@ describe("When Testing User Navigation Components: ", () => {
         >
           <Tab.Screen name="Home" component={TestComp} />
           <Tab.Screen name="Vendors" component={TestComp} />
-          <Tab.Screen name="History" component={TestComp} />
+          <Tab.Screen name="My Orders" component={TestComp} />
           <Tab.Screen name="Profile" component={TestComp} />
         </Tab.Navigator>
       );
