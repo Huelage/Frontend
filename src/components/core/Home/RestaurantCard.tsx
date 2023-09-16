@@ -1,10 +1,11 @@
 import { StarRating } from '@components/misc';
 import { useAppTheme } from '@hooks';
-import { RestaurantInterface } from '@interfaces';
+import { RestaurantInterface, UserTabProps } from '@interfaces';
+import { useNavigation } from '@react-navigation/native';
 import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface RestaurantProps extends RestaurantInterface {
@@ -13,6 +14,7 @@ interface RestaurantProps extends RestaurantInterface {
 
 const RestaurantCard = ({ name, imgUrl, rating, location, testRect }: RestaurantProps) => {
   const { color } = useAppTheme();
+  const { navigate } = useNavigation<UserTabProps>();
   const containerRect = testRect || rrect(rect(6, 6, (wp('60%') - 20), 210), 15, 15);
   return (
     <View style={styles.container} testID='restaurant card'>
@@ -22,11 +24,13 @@ const RestaurantCard = ({ name, imgUrl, rating, location, testRect }: Restaurant
         </Box>
       </Canvas>
       <Image testID='restuarant image' style={styles.resImage} source={{ uri: imgUrl }} />
-      <View style={styles.detailsBox}>
-        <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
-        <StarRating rating={rating} />
-        <Text style={[styles.resLocation, { color: color.mainGreen }]}>{location}</Text>
-      </View>
+      <TouchableWithoutFeedback onPress={() => navigate("Vendors", { screen: "ItemDetail", params: { itemId: "43435" } })}>
+        <View style={styles.detailsBox}>
+          <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
+          <StarRating rating={rating} />
+          <Text style={[styles.resLocation, { color: color.mainGreen }]}>{location}</Text>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
