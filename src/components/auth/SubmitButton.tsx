@@ -1,3 +1,4 @@
+import { useAppTheme } from '@hooks';
 import { fonts, shadowStyle } from '@utils';
 import React, { BaseSyntheticEvent } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -8,9 +9,10 @@ interface SubmitProps {
 }
 
 const SubmitButton = ({ label, onSubmit }: SubmitProps) => {
+	const { color } = useAppTheme();
 	return (
 		<TouchableOpacity onPress={onSubmit} testID='submit button'>
-			<View style={styles.loginButton}>
+			<View style={[styles.loginButton, { backgroundColor: color.mainGreen }]}>
 				<Text style={styles.loginText}>{label}</Text>
 			</View>
 		</TouchableOpacity>
@@ -22,9 +24,8 @@ export default SubmitButton;
 const styles = StyleSheet.create({
 	loginButton: {
 		alignItems: 'center',
-		backgroundColor: "#4CAF50",
 		borderRadius: 10,
-		height: 50,
+		height: 45,
 		justifyContent: 'center',
 		width: '100%',
 		...shadowStyle
