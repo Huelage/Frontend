@@ -3,7 +3,7 @@ import React from 'react';
 
 const OrderScreen = () => {
   return (
-    <View>
+    <View testID='order screen'>
       <Text>OrderScreen</Text>
     </View>
   );

@@ -3,7 +3,7 @@ import React from 'react';
 
 const MenuScreen = () => {
   return (
-    <View>
+    <View testID='menu screen'>
       <Text>MenuScreen</Text>
     </View>
   );

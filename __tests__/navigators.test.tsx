@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { getAuthStatus, getVendorStatus } from "@api/slices/globalSlice";
-import { AuthStackNavigator, MainNavigator, StackNavigator, UserStackNavigator, UserTabNavigator, VendorStackNavigator, VendorTabNavigator } from "@navigators";
+import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
 import { renderNavigator, testRect } from "./testhelpers";
 
@@ -90,6 +90,48 @@ describe("When Testing the Navigators: ", () => {
     it("should render the vendor flow HomeScreen", () => {
       renderNavigator(<VendorTabNavigator />);
       expect(screen.getByTestId("vendor home screen")).toBeOnTheScreen();
+    });
+  });
+
+  describe("When Testing User Tab Stack Navigators: ", () => {
+    describe("<UserOrdersTabStack />: ", () => {
+      it("should render the MyOrdersScreen", () => {
+        renderNavigator(<UserOrdersTabStack />);
+        expect(screen.getByTestId("my orders screen")).toBeOnTheScreen();
+      });
+    });
+    describe("<UserProfileTabStack />: ", () => {
+      it("should render the ProfileScreen", () => {
+        renderNavigator(<UserProfileTabStack />);
+        expect(screen.getByTestId("profile screen")).toBeOnTheScreen();
+      });
+    });
+    describe("<UserVendorsTabStack />: ", () => {
+      it("should render the VendorScreen", () => {
+        renderNavigator(<UserVendorsTabStack />);
+        expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
+      });
+    });
+  });
+
+  describe("When Testing Vendor Tab Stack Navigators: ", () => {
+    describe("<VendorAccountTabStack />: ", () => {
+      it("should render the AccountScreen", () => {
+        renderNavigator(<VendorAccountTabStack />);
+        expect(screen.getByTestId("account screen")).toBeOnTheScreen();
+      });
+    });
+    describe("<VendorMenuTabScreen />: ", () => {
+      it("should render the MenuScreen", () => {
+        renderNavigator(<VendorMenuTabStack />);
+        expect(screen.getByTestId("menu screen")).toBeOnTheScreen();
+      });
+    });
+    describe("<VendorOrdersTabStack />: ", () => {
+      it("should render the OrderScreen", () => {
+        renderNavigator(<VendorOrdersTabStack />);
+        expect(screen.getByTestId("order screen")).toBeOnTheScreen();
+      });
     });
   });
 });
