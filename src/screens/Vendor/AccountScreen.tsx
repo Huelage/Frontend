@@ -3,7 +3,7 @@ import React from 'react';
 
 const AccountScreen = () => {
   return (
-    <View>
+    <View testID='account screen'>
       <Text>AccountScreen</Text>
     </View>
   );
