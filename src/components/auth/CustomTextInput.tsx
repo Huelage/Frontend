@@ -3,16 +3,18 @@ import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { FieldError, RefCallBack } from 'react-hook-form';
+import PhoneInput from "react-native-phone-input";
 import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;
-  isPass: boolean;
+  isPhone?: boolean;
+  isPass?: boolean;
   error?: FieldError;
   innerRef?: RefCallBack;
 }
 
-const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInputProps) => {
+const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: CustomTextInputProps) => {
   const [showText, setShowText] = useState<boolean>(!isPass);
   const { color, theme } = useAppTheme();
 
@@ -21,16 +23,37 @@ const CustomTextInput = ({ label, isPass, error, ...inputProps }: CustomTextInpu
     <View style={styles.container} testID='custom text input'>
       <View style={[styles.inputContainer, error && styles.inputContainerError]}>
         <View style={styles.input}>
-          <TextInput
-            blurOnSubmit={false}
-            secureTextEntry={!showText}
-            style={[styles.textInput, { color: color.mainText }]}
-            placeholder={label}
-            placeholderTextColor="#BCB5B5"
-            selectionColor={error ? "#d24343" : "#47CA4C"}
-            ref={inputProps.innerRef || undefined}
-            {...inputProps}
-          />
+          {isPhone ? (
+            <PhoneInput
+              autoFormat
+              initialCountry='ng'
+              onChangePhoneNumber={inputProps.onChangeText}
+              ref={inputProps.innerRef || undefined}
+              textProps={{
+                style: [styles.textInput, { color: color.mainText }],
+                placeholder: label, placeholderTextColor: "#BCB5B5",
+                selectionColor: error ? "#d24343" : "#47CA4C",
+                secureTextEntry: !showText,
+                autoCapitalize: inputProps.autoCapitalize || "none",
+                autoCorrect: inputProps.autoCorrect || false,
+                keyboardType: inputProps.keyboardType || "number-pad",
+                onSubmitEditing: inputProps.onSubmitEditing,
+                returnKeyType: inputProps.returnKeyType || "next",
+                testID: "phone input"
+              }}
+            />
+          ) : (
+            <TextInput
+              blurOnSubmit={false}
+              secureTextEntry={!showText}
+              style={[styles.textInput, { color: color.mainText }]}
+              placeholder={label}
+              placeholderTextColor="#BCB5B5"
+              selectionColor={error ? "#d24343" : "#47CA4C"}
+              ref={inputProps.innerRef || undefined}
+              {...inputProps}
+            />
+          )}
           {isPass && (
             showText ? (
               <TouchableOpacity testID='pass-visibility toggle' onPress={toggleShowText}>
@@ -91,7 +114,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontFamily: fonts.I_500,
+    fontFamily: fonts.I_400,
     fontSize: 16,
     height: 30
   }
