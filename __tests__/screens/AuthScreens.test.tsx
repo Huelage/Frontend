@@ -1,7 +1,7 @@
 import { useAppSelector } from "@api/app/appHooks";
 import { useRoute } from "@react-navigation/native";
-import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignupSelectScreen, VerifyEmailScreen } from "@screens/auth";
-import { render, screen, waitFor } from "@testing-library/react-native";
+import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignUpScreen, SignupSelectScreen, VerifyEmailScreen } from "@screens/auth";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { getBiometrics } from "@utils";
 import { renderNavigator } from "../testhelpers";
 
@@ -91,7 +91,7 @@ describe("When Testing Authentication Screens: ", () => {
 
     describe("When the users biometric is enrolled", () => {
       beforeEach(async () => {
-        (getBiometrics as jest.Mock).mockImplementation(() => Promise.resolve({ hasBiometrics: true, biometricType: [1], isEnrolled: false }));
+        (getBiometrics as jest.Mock).mockImplementation(() => Promise.resolve({ hasBiometrics: true, biometricType: [1], isEnrolled: true }));
         await waitFor(() => (
           render(<LoginScreen />)
         ));
@@ -144,7 +144,7 @@ describe("When Testing Authentication Screens: ", () => {
 
   describe("<OTPScreen />: ", () => {
     beforeEach(() => {
-      (useRoute as jest.Mock).mockReturnValue({ params: { phoneno: "8058731812" } });
+      (useRoute as jest.Mock).mockReturnValue({ params: { phoneno: "+234 8058731812" } });
       renderNavigator(<OTPScreen />);
     });
     it("should render the component", () => {
@@ -214,6 +214,83 @@ describe("When Testing Authentication Screens: ", () => {
     });
     it("should render the SubmitButton component", () => {
       expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+    });
+  });
+
+
+  describe("<SignUpScreen />: ", () => {
+    beforeEach(() => {
+      render(<SignUpScreen />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("signup screen")).toBeOnTheScreen();
+    });
+    it("should render the logo image", () => {
+      const logoImage = screen.getByTestId("logo image");
+      expect(logoImage).toBeOnTheScreen();
+      expect(logoImage.props.source).toBeDefined();
+    });
+    it("should render the sign up", () => {
+      expect(screen.getByTestId("welcome text")).toBeOnTheScreen();
+    });
+    it("should render the info text", () => {
+      expect(screen.getByText(/please fill in your details/i)).toBeOnTheScreen();
+    });
+    it("should render the CustomTextInput component", () => {
+      expect(screen.getAllByTestId("custom text input")).not.toBeNull();
+    });
+    it("should render the email input", () => {
+      expect(screen.getByPlaceholderText("Email address")).toBeOnTheScreen();
+    });
+    it("should render the phone input", () => {
+      expect(screen.getByTestId("phone input")).toBeOnTheScreen();
+    });
+    it("should render the password input", () => {
+      expect(screen.getByPlaceholderText("Create password")).toBeOnTheScreen();
+    });
+    it("should render the SubmitButton component", () => {
+      expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+    });
+    it("should render the AuthNavigate component", () => {
+      expect(screen.getByTestId("auth navigate")).toBeOnTheScreen();
+    });
+
+    describe("When the vendor status is true", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(true);
+        render(<SignUpScreen />);
+      });
+      it("should render the business name input", () => {
+        expect(screen.getByPlaceholderText("Business name")).toBeOnTheScreen();
+      });
+      it("should render the business address input", () => {
+        expect(screen.getByPlaceholderText("Business address")).toBeOnTheScreen();
+      });
+      it("should render the vendor name input", () => {
+        expect(screen.getByPlaceholderText("Vendor's name")).toBeOnTheScreen();
+      });
+      it("should render the terms and condition checkbox", () => {
+        expect(screen.getByTestId("terms and condition")).toBeOnTheScreen();
+      });
+      it("should allow user accept terms and condition", () => {
+        const tandt = screen.getByTestId("terms and condition");
+        expect(tandt.props.accessibilityState.checked).toBeFalsy();
+        act(() => fireEvent.press(tandt));
+        expect(tandt.props.accessibilityState.checked).toBeTruthy();
+      });
+    });
+
+    describe("When the vendor status is false", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(false);
+        render(<SignUpScreen />);
+      });
+      it("should render the first name input", () => {
+        expect(screen.getByPlaceholderText("First name")).toBeOnTheScreen();
+      });
+      it("should render the last name input", () => {
+        expect(screen.getByPlaceholderText("Last name")).toBeOnTheScreen();
+      });
     });
   });
 
