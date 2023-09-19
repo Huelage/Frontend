@@ -73,6 +73,10 @@ describe("When Testing Authentication Components: ", () => {
       fireEvent.press(toggleButton);
       expect(textInput.props.secureTextEntry).toBe(false);
     });
+    it("should render the phone input if isPhone is true", () => {
+      render(<CustomTextInput placeholder="test" label="test" isPhone={true} />);
+      expect(screen.getByTestId("phone input")).toBeOnTheScreen();
+    });
     it("should allow user to type in text input", () => {
       const onChangeText = jest.fn();
       render(<CustomTextInput onChangeText={onChangeText} placeholder="test" label="test" isPass={true} />);
@@ -90,6 +94,9 @@ describe("When Testing Authentication Components: ", () => {
   describe("<SocialLogin />: ", () => {
     beforeEach(() => {
       render(<SocialLogin page="SU" />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("social login")).toBeOnTheScreen();
     });
     it("should render the decorated 'or'", () => {
       const decoText = screen.getByText("or");

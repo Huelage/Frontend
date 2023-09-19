@@ -15,17 +15,19 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-na
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
-  const { navigate } = useNavigation<AuthNavigationProps>();
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const inset = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
+  const { navigate } = useNavigation<AuthNavigationProps>();
+  const [useSaved, setUseSaved] = useState<boolean>(true);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
   let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null =
     null;
-  if (bioSpecs?.hasBiometrics && !bioSpecs?.isEnrolled)
+  if (bioSpecs?.hasBiometrics && bioSpecs?.isEnrolled) {
     bioDetail = BiometricType[bioSpecs.biometricType[0]];
+  }
 
   const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
     if (!bioDetail) {
@@ -48,19 +50,17 @@ const LoginScreen = () => {
     reset();
     dispatch(setAuthStatus(true));
   };
-  const setBio = async () => {
-    const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
-    setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
-  };
 
   useEffect(() => {
-    setTimeout(
-      () =>
-        setFocus(!bioDetail ? (isVendor ? "vendorId" : "email") : "password"),
-      0
-    );
-    setBio();
-  }, [isVendor]);
+    (async () => {
+      const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
+      setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
+    })();
+  }, []);
+  useEffect(() => {
+    setTimeout(() => setFocus(!bioDetail || !useSaved ? (isVendor ? "vendorId" : "email") : "password"), 0);
+    reset();
+  }, [isVendor, useSaved, bioDetail]);
   return (
     <>
       <StatusBar style="auto" />
@@ -82,7 +82,7 @@ const LoginScreen = () => {
         >
           <UserVendor />
           <View style={{ gap: 20 }}>
-            {!bioDetail &&
+            {(!useSaved || !bioDetail) &&
               (isVendor ? (
                 <Controller
                   control={control}
@@ -162,11 +162,11 @@ const LoginScreen = () => {
             </TouchableOpacity>
             <SubmitButton label="LOG IN" onSubmit={handleSubmit(onSubmit)} />
           </View>
-          {bioDetail ? (
+          {bioDetail && useSaved ? (
             <View style={styles.footer}>
-              <Text style={[styles.switchText, { color: color.mainGreen }]}>
-                Switch account
-              </Text>
+              <TouchableOpacity onPress={() => setUseSaved(!useSaved)}>
+                <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
+              </TouchableOpacity>
               <View style={styles.biometricBox}>
                 <Text style={[styles.biometricText, { color: color.mainText }]}>
                   Login with {bioDetail?.type}
@@ -273,5 +273,5 @@ const styles = StyleSheet.create({
   contactText: {
     fontFamily: fonts.I_400,
     fontSize: 14,
-  },
+  }
 });

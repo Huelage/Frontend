@@ -3,4 +3,4 @@ import { ScrollView, View } from 'react-native';
 
 export default () => <View />;
 
-export const KeyboardAwareScrollView = () => <ScrollView />;
+export const KeyboardAwareScrollView = ({ children }: { children: React.ReactNode; }) => <ScrollView>{children}</ScrollView>;
