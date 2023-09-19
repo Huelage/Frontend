@@ -23,7 +23,10 @@ const OTPScreen = () => {
   const { goBack } = useNavigation<AuthNavigationProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const timerRef = useRef<number>(seconds);
-  const formattedNumber = `+234 ${phoneno.slice(1, 3)}******${phoneno.slice(-2)}`;
+  const numbers = phoneno.replace(/-\./g, " ").split(" ");
+  const countrycode = numbers[0];
+  const number = numbers.slice(1).join("");
+  const formattedNumber = `${countrycode} ${number.slice(0, 2)}******${number.slice(-2)}`;
 
   const resendCode = () => {
     setIsTimerActive(true);
