@@ -1,18 +1,20 @@
+import { useAppTheme } from '@hooks';
 import { fonts, shadowStyle } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 const SocialLogin = ({ page }: { page: 'SU' | 'SI'; }) => {
+  const { color } = useAppTheme();
   return (
-    <>
-      <View style={styles.decoBox}>
-        <Text style={styles.decoText}>or</Text>
+    <View testID='social login'>
+      <View style={[styles.decoBox, { borderColor: color.mainText }]}>
+        <Text style={[styles.decoText, { backgroundColor: color.defaultBg, color: color.mainText }]}>or</Text>
       </View>
-      <View style={styles.socialLogin}>
+      <View style={[styles.socialLogin, { backgroundColor: color.defaultBg, borderColor: color.mainGreen }]}>
         <Image testID='googleIcon' style={styles.socialIcon} source={require('@icons/googleIcon.png')} />
-        <Text style={styles.socialText}>SIGN {page == 'SU' ? "UP" : "IN"} WITH GOOGLE</Text>
+        <Text style={[styles.socialText, { color: color.mainGreen }]}>SIGN {page == 'SU' ? "UP" : "IN"} WITH GOOGLE</Text>
       </View>
-    </>
+    </View>
   );
 };
 
@@ -20,12 +22,15 @@ export default SocialLogin;
 
 const styles = StyleSheet.create({
   decoBox: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     marginHorizontal: 40,
-    borderColor: 'rgba(0, 0, 0, 0.50)'
+    marginVertical: 8,
+    marginBottom: 25,
+  },
+  decoBoxBorder: {
+    height: 1,
   },
   decoText: {
-    backgroundColor: '#fff',
     paddingHorizontal: 10,
     fontSize: 20,
     fontFamily: fonts.I_300I,
@@ -35,8 +40,6 @@ const styles = StyleSheet.create({
   },
   socialLogin: {
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderColor: "#4CAF50",
     borderWidth: 2,
     borderRadius: 10,
     flexDirection: "row",
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
     height: 30
   },
   socialText: {
-    color: "#4CAF50",
     fontFamily: fonts.I_600,
     fontSize: 18,
   }
