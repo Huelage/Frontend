@@ -1,4 +1,6 @@
 import { persistor, store } from "@api/app/store";
+import client from "@api/graphql";
+import { ApolloProvider } from "@apollo/client";
 import {
   InterTight_200ExtraLight_Italic,
   InterTight_300Light_Italic,
@@ -34,11 +36,14 @@ const App = () => {
     InterTight_700Bold_Italic,
   });
 
+
   if (!fontsLoaded) return null;
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <MainNavigator />
+        <ApolloProvider client={client}>
+          <MainNavigator />
+        </ApolloProvider>
       </PersistGate>
     </Provider>
   );
