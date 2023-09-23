@@ -12,14 +12,15 @@ export interface LoginInfoInterface {
 }
 
 export interface SignUpInfoInterface {
-  businessname?: string;
-  businessaddr?: string;
-  repname?: string;
-  firstname?: string;
-  lastname?: string;
+  businessName?: string;
+  businessAddress?: string;
+  repName?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  phonenumber: string;
+  phone: string;
   password: string;
+  confirmPassword: string;
 }
 export interface ResetPasswordInterface {
   email?: string;
