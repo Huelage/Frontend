@@ -132,11 +132,25 @@ export type VendorMenuTabItemDetailRouteProps = RouteProp<VendorMenuTabStackPara
 
 // REDUX INTERFACES
 export interface globalStateInterface {
-  isAuthenticated: boolean;
+  entity: entityInterface | null;
   isVendor: boolean;
   themeType: "system" | "manual";
   theme: "light" | "dark";
   cart: CartInterface[];
+  accessToken: string | null;
+}
+
+export interface entityInterface {
+  id: string;
+  walletId: string;
+  email: string;
+  phone: string;
+  imgUrl: string | null;
+  firstName?: string;
+  lastName?: string;
+  repName?: string;
+  businessName?: string;
+  businessAddress?: string;
 }
 
 export interface CartInterface {
