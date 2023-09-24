@@ -1,6 +1,7 @@
-export { fonts } from './fontEnum';
-export { shadowStyle, outline } from './style';
-export { withAnchorPoint } from './anchorPoints';
-export { getBiometrics, authenticate, enableBiometrics, loginWithBiometrics, BiometricType } from './biometrics';
-export { FingerPrint, FaceId, Iris, TotalCustomers, TotalMenu, TotalOrders } from './svgs';
-export { CustomSecureStore, replacer } from './keysandstores';
+export * from './biometrics';
+export * from './svgs';
+export * from './fontEnum';
+export * from './style';
+export * from './anchorPoints';
+export * from './keysandstores';
+export { default as showError } from './showError';
