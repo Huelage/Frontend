@@ -1,11 +1,13 @@
 import { useAppSelector } from "@api/app/appHooks";
+import { SIGNUP_USER, SIGNUP_VENDOR } from "@api/graphql";
 import { getVendorStatus } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
 import { AuthNavigate, CustomTextInput, SocialLogin, SubmitButton } from "@components/auth";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "@rneui/themed";
-import { fonts } from "@utils";
+import { fonts, setItem } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -19,17 +21,31 @@ const SignUpScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
+  const [sigup_user, { data: uData, loading: uLoading }] = useMutation(SIGNUP_USER);
+  const [signup_vendor, { data: vData, loading: vLoading }] = useMutation(SIGNUP_VENDOR);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
   const { handleSubmit, control, setFocus, reset, formState: { errors }, } = useForm<SignUpInfoInterface>({ mode: "onChange" });
-  const onSubmit: SubmitHandler<SignUpInfoInterface> = (data: SignUpInfoInterface) => {
+  const onSubmit: SubmitHandler<SignUpInfoInterface> = async (data: SignUpInfoInterface) => {
+    let input = { ...data, confirmPassword: data.password, phone: data.phone.replace(/[\s-.]/g, '') };
+    isVendor ? await signup_vendor({ variables: { input } }) : await sigup_user({ variables: { input } });
     reset();
-    navigate("OTP", { phoneno: data.phonenumber });
+    navigate("OTP", { phoneno: data.phone });
   };
-
   useEffect(() => {
-    setTimeout(() => setFocus(isVendor ? "businessname" : "firstname"), 0);
+    setTimeout(() => setFocus(isVendor ? "businessName" : "firstName"), 0);
   }, []);
+  useEffect(() => {
+    if (vData || uData) {
+      const res = isVendor ? vData.signUpVendor : uData.signUpUser
+      const entityId = isVendor ? res.vendorId : res.userId
+      const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;
+      (async () => {
+        await setItem("huelageEntityId", entityId)
+        await setItem("huelageEntityName", name);
+      })();
+    }
+  }, [uData, vData])
   return (
     <>
       <StatusBar style="auto" />
@@ -56,17 +72,17 @@ const SignUpScreen = () => {
                     <CustomTextInput
                       autoCapitalize="words"
                       autoCorrect={false}
-                      error={errors.businessname}
+                      error={errors.businessName}
                       label="Business name"
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("businessaddr")}
+                      onSubmitEditing={() => setFocus("businessAddress")}
                       innerRef={ref}
                       returnKeyType="next"
                       value={value}
                     />
                   )}
-                  name="businessname"
+                  name="businessName"
                   rules={{
                     required: "Business name is required",
                     minLength: {
@@ -81,17 +97,17 @@ const SignUpScreen = () => {
                     <CustomTextInput
                       autoCapitalize="words"
                       autoCorrect={false}
-                      error={errors.businessaddr}
+                      error={errors.businessAddress}
                       label="Business address"
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("repname")}
+                      onSubmitEditing={() => setFocus("repName")}
                       innerRef={ref}
                       returnKeyType="next"
                       value={value}
                     />
                   )}
-                  name="businessaddr"
+                  name="businessAddress"
                   rules={{
                     required: "Business address is required",
                     minLength: {
@@ -106,7 +122,7 @@ const SignUpScreen = () => {
                     <CustomTextInput
                       autoCapitalize="words"
                       autoCorrect={false}
-                      error={errors.repname}
+                      error={errors.repName}
                       label="Vendor's name"
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -116,7 +132,7 @@ const SignUpScreen = () => {
                       value={value}
                     />
                   )}
-                  name="repname"
+                  name="repName"
                   rules={{
                     required: "Vendor's name is required",
                     minLength: {
@@ -134,17 +150,17 @@ const SignUpScreen = () => {
                     <CustomTextInput
                       autoCapitalize="words"
                       autoCorrect={false}
-                      error={errors.firstname}
+                      error={errors.firstName}
                       label="First name"
                       onBlur={onBlur}
                       onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("lastname")}
+                      onSubmitEditing={() => setFocus("lastName")}
                       innerRef={ref}
                       returnKeyType="next"
                       value={value}
                     />
                   )}
-                  name="firstname"
+                  name="firstName"
                   rules={{
                     required: "First name is required",
                     minLength: {
@@ -159,7 +175,7 @@ const SignUpScreen = () => {
                     <CustomTextInput
                       autoCapitalize="words"
                       autoCorrect={false}
-                      error={errors.lastname}
+                      error={errors.lastName}
                       label="Last name"
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -169,7 +185,7 @@ const SignUpScreen = () => {
                       value={value}
                     />
                   )}
-                  name="lastname"
+                  name="lastName"
                   rules={{
                     required: "Last name is required",
                     minLength: {
@@ -191,7 +207,7 @@ const SignUpScreen = () => {
                   label="Email address"
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  onSubmitEditing={() => setFocus("phonenumber")}
+                  onSubmitEditing={() => setFocus("phone")}
                   innerRef={ref}
                   returnKeyType="next"
                   value={value}
@@ -212,7 +228,7 @@ const SignUpScreen = () => {
                 <CustomTextInput
                   autoCapitalize="none"
                   autoCorrect={false}
-                  error={errors.phonenumber}
+                  error={errors.phone}
                   isPhone
                   keyboardType="number-pad"
                   label="Phone number"
@@ -223,7 +239,7 @@ const SignUpScreen = () => {
                   returnKeyType="next"
                 />
               )}
-              name="phonenumber"
+              name="phone"
               rules={{
                 required: "Phone number is required",
                 pattern: {
@@ -274,7 +290,7 @@ const SignUpScreen = () => {
                 containerStyle={styles.termsContainer}
               />
             )}
-            <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
+            <SubmitButton label="CREATE ACCOUNT" isLoading={uLoading || vLoading} onSubmit={handleSubmit(onSubmit)} />
             {!isVendor && <SocialLogin page="SU" />}
           </View>
         </KeyboardAwareScrollView>
