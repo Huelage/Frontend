@@ -20,12 +20,12 @@ export const replacer = (key: string, replaceCharacter: string) => {
 export const getItem = async (key: string) => {
   let result = await SecureStore.getItemAsync(key);
   return result ? JSON.parse(result) : null;
-}
+};
 
 export const setItem = async (key: string, value: any) => {
   return await SecureStore.setItemAsync(key, JSON.stringify(value));
-}
+};
 
 export const removeItem = async (key: string) => {
   return await SecureStore.deleteItemAsync(key);
-}
+};
