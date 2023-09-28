@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@api/app/appHooks';
-import { setAuthStatus, switchTheme } from '@api/slices/globalSlice';
+import { clearCredentials, switchTheme } from '@api/slices/globalSlice';
 import { useAppTheme } from '@hooks';
 import { UserNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
@@ -26,7 +26,7 @@ const UserTabHeader = () => {
         <Text testID='greeting text' style={[styles.headerGreeting, { color: color.mainText }]}>Good morning</Text>
         <View style={styles.headerBox}>
           <View style={styles.headerDetail}>
-            <TouchableOpacity onPress={() => dispatch(setAuthStatus(false))}>
+            <TouchableOpacity onPress={() => dispatch(clearCredentials())}>
               <Image testID='user image' style={styles.headerImage} source={require('@images/beejay_dp.png')} />
             </TouchableOpacity>
             <Text testID='username' style={[styles.headerName, { color: color.mainText }]}>John Jane Doe</Text>

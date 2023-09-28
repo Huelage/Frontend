@@ -1,6 +1,6 @@
 import { AuthStackParamList } from "@interfaces";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LoginScreen, OTPScreen, OnBoardScreen, SignUpScreen, SignupSelectScreen, ForgotPasswordScreen, SetPasswordScreen, VerifyEmailScreen, } from "@screens/auth";
+import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignUpScreen, SignupSelectScreen, VerifyEmailScreen, } from "@screens/auth";
 import React from "react";
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();

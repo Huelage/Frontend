@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getAuthStatus, getVendorStatus } from "@api/slices/globalSlice";
+import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
 import { renderNavigator, testRect } from "./testhelpers";
@@ -27,7 +27,7 @@ describe("When Testing the Navigators: ", () => {
     describe("When user is signed in: ", () => {
       it("should render the vendor flow HomeScreen if user is a vendor", () => {
         (useAppSelector as jest.Mock).mockImplementation(selector => {
-          if (selector === getAuthStatus) return true;
+          if (selector === getEntity) return { id: "123231" };
           if (selector === getVendorStatus) return true;
         });
         const mockDispatch = jest.fn();
@@ -37,7 +37,7 @@ describe("When Testing the Navigators: ", () => {
       });
       it("should render the user flow HomeScreen if user is not a vendor", () => {
         (useAppSelector as jest.Mock).mockImplementation(selector => {
-          if (selector === getAuthStatus) return true;
+          if (selector === getEntity) return { id: "123231" };
           if (selector === getVendorStatus) return false;
         });
         const mockDispatch = jest.fn();

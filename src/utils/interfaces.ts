@@ -6,20 +6,21 @@ import * as BioAuth from "expo-local-authentication";
 
 // AUTH INTERFACES
 export interface LoginInfoInterface {
-  vendorId?: string;
+  vendorKey?: string;
   email?: string;
   password: string;
 }
 
 export interface SignUpInfoInterface {
-  businessname?: string;
-  businessaddr?: string;
-  repname?: string;
-  firstname?: string;
-  lastname?: string;
+  businessName?: string;
+  businessAddress?: string;
+  repName?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  phonenumber: string;
+  phone: string;
   password: string;
+  confirmPassword: string;
 }
 export interface ResetPasswordInterface {
   email?: string;
@@ -37,8 +38,8 @@ export type AuthStackParamList = {
   OTP: { phoneno: string; };
   SignupSelect: undefined;
   ForgotPassword: undefined;
-  SetPassword: undefined;
-  VerifyEmail: undefined;
+  SetPassword: { entityId: string; };
+  VerifyEmail: { email: string; };
 };
 export type UserStackParamList = {
   MainTabs: undefined;
@@ -121,6 +122,8 @@ export type VendorMenuTabProps = CompositeNavigationProp<NativeStackNavigationPr
 export type VendorAccountTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorAccountTabStackParamList>, VendorTabProps>;
 // // Screen Routes
 export type OTPRouteProps = RouteProp<AuthStackParamList, "OTP">;
+export type SetPasswordRouteProps = RouteProp<AuthStackParamList, "SetPassword">;
+export type VerifyEmailRouteProps = RouteProp<AuthStackParamList, "VerifyEmail">;
 export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "Vendor">;
 export type UserVendorsTabItemDetailRouteProps = RouteProp<UserVendorsTabStackParamList, "ItemDetail">;
 export type UserOrdersTabOrderDetailRouteProps = RouteProp<UserOrdersTabStackParamList, "OrderDetail">;
@@ -131,11 +134,25 @@ export type VendorMenuTabItemDetailRouteProps = RouteProp<VendorMenuTabStackPara
 
 // REDUX INTERFACES
 export interface globalStateInterface {
-  isAuthenticated: boolean;
+  entity: entityInterface | null;
   isVendor: boolean;
   themeType: "system" | "manual";
   theme: "light" | "dark";
   cart: CartInterface[];
+  accessToken: string | null;
+}
+
+export interface entityInterface {
+  id: string;
+  walletId: string;
+  email: string;
+  phone: string;
+  imgUrl: string | null;
+  firstName?: string;
+  lastName?: string;
+  repName?: string;
+  businessName?: string;
+  businessAddress?: string;
 }
 
 export interface CartInterface {

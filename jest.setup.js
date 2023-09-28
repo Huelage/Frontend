@@ -18,6 +18,8 @@ jest.mock('@api/app/appHooks', () => ({
 jest.mock('@utils', () => ({
   ...jest.requireActual('@utils'),
   getBiometrics: jest.fn(() => Promise.resolve({ hasBiometrics: true, biometricType: [1], isEnrolled: false })),
+  getItem: jest.fn(),
+  setItem: jest.fn()
 }));
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),

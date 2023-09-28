@@ -1,8 +1,10 @@
+import { REQUEST_EMAIL_VERIFICATION, VERIFY_EMAIL } from '@api/graphql';
+import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { AuthNavigationProps } from '@interfaces';
-import { useNavigation } from '@react-navigation/native';
+import { AuthNavigationProps, VerifyEmailRouteProps } from '@interfaces';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { fonts } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
@@ -15,18 +17,23 @@ const VerifyEmailScreen = () => {
   const insets = useSafeAreaInsets();
   const [otpcode, setOtpcode] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
+  const [verifyEmail, { data, loading }] = useMutation(VERIFY_EMAIL);
+  const [resendOtp] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const { navigate, goBack } = useNavigation<AuthNavigationProps>();
+  const { params: { email } } = useRoute<VerifyEmailRouteProps>();
   const timerRef = useRef<number>(seconds);
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (/\d{4}/.test(otpcode.trim())) {
-      navigate("SetPassword");
+      const input = { email, otp: parseInt(otpcode) };
+      await verifyEmail({ variables: { input } });
     }
   };
   const onChange = (code: string) => setOtpcode(code);
-  const resendCode = () => {
+  const resendCode = async () => {
     setIsTimerActive(true);
     timerRef.current = 59;
+    await resendOtp({ variables: { email } });
   };
 
   useEffect(() => {
@@ -41,6 +48,12 @@ const VerifyEmailScreen = () => {
     }, 1000);
     return () => clearInterval(timerId);
   }, [isTimerActive]);
+  useEffect(() => {
+    if (data) {
+      const entityId = data.verifyEmailOtp.entityId;
+      navigate("SetPassword", { entityId });
+    }
+  }, [data]);
   return (
     <>
       <StatusBar style="auto" />

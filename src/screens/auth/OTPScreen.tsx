@@ -1,24 +1,28 @@
-import { useAppDispatch } from '@api/app/appHooks';
-import { setAuthStatus } from '@api/slices/globalSlice';
+import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
+import { REFRESH_OTP, VERIFY_OTP } from '@api/graphql';
+import { getVendorStatus, setCredentials } from '@api/slices/globalSlice';
+import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
 import { AntDesign } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { AuthNavigationProps, OTPRouteProps } from '@interfaces';
+import { AuthNavigationProps, OTPRouteProps, entityInterface } from '@interfaces';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts } from '@utils';
+import { fonts, getItem, setItem } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
 const OTPScreen = () => {
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
+  const isVendor = useAppSelector(getVendorStatus);
   const { params: { phoneno } } = useRoute<OTPRouteProps>();
-  const [value, setValue] = useState<string>("");
+  const [verifyCode, { data, loading }] = useMutation(VERIFY_OTP);
+  const [refreshOTP] = useMutation(REFRESH_OTP);
+  const [phoneOtp, setPhoneOtp] = useState<string>("");
   const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
@@ -28,16 +32,21 @@ const OTPScreen = () => {
   const number = numbers.slice(1).join("");
   const formattedNumber = `${countrycode} ${number.slice(0, 2)}******${number.slice(-2)}`;
 
-  const resendCode = () => {
+  const resendCode = async () => {
     setIsTimerActive(true);
     timerRef.current = 59;
+    const entityId = await getItem("huelageEntityId");
+    const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") };
+    await refreshOTP({ variables: { input } });
   };
-  const verifyOTP = () => {
-    if (/\d{4}/.test(value.trim())) {
-      dispatch(setAuthStatus(true));
+
+  const verifyOTP = async () => {
+    if (/\d{4}/.test(phoneOtp.trim())) {
+      const input = { phone: phoneno.replace(/[\s\.-]/g, ""), otp: parseInt(phoneOtp) };
+      await verifyCode({ variables: { input } });
     }
   };
-  const onChange = (val: string) => setValue(val);
+  const onChange = (otp: string) => setPhoneOtp(otp);
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -51,6 +60,27 @@ const OTPScreen = () => {
     }, 1000);
     return () => clearInterval(timerId);
   }, [isTimerActive]);
+  useEffect(() => {
+    if (data) {
+      const res = data.verifyPhoneOtp;
+      let entity: entityInterface = {
+        id: res.entityId,
+        walletId: res.wallet.walletId,
+        email: res.email,
+        phone: res.phone,
+        imgUrl: res.imgUrl
+      };
+      if (isVendor) {
+        const { __typename, ...vendor } = res.vendor;
+        entity = { ...entity, ...vendor };
+      } else {
+        const { __typename, ...user } = res.user;
+        entity = { ...entity, ...user };
+      }
+      (async () => await setItem("huelageRefreshToken", res.refreshToken))();
+      dispatch(setCredentials({ entity, accessToken: res.accessToken }));
+    }
+  }, [data, loading]);
   return (
     <>
       <StatusBar style='auto' />
@@ -69,7 +99,7 @@ const OTPScreen = () => {
             source={require("@images/onboard_logo.png")}
           />
           <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
-          <CustomPinInput value={value} onChange={onChange} onSubmit={verifyOTP} />
+          <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
           {seconds ? (
             <Text style={[styles.resendText, { color: color.mainText }]}>
               Resend code in&nbsp;
@@ -80,7 +110,7 @@ const OTPScreen = () => {
               <Text style={[styles.resendText, styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
             </TouchableOpacity>
           )}
-          <SubmitButton label='Verify' onSubmit={verifyOTP} />
+          <SubmitButton label='Verify' isLoading={loading} onSubmit={verifyOTP} />
         </View>
       </View>
     </>
