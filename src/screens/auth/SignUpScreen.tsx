@@ -2,7 +2,7 @@ import { useAppSelector } from "@api/app/appHooks";
 import { SIGNUP_USER, SIGNUP_VENDOR } from "@api/graphql";
 import { getVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import { AuthNavigate, CustomTextInput, SocialLogin, SubmitButton } from "@components/auth";
+import { AuthNavigate, SignupInputs, SocialLogin, SubmitButton } from "@components/auth";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -10,7 +10,7 @@ import { CheckBox } from "@rneui/themed";
 import { fonts, setItem } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
@@ -37,15 +37,15 @@ const SignUpScreen = () => {
   }, []);
   useEffect(() => {
     if (vData || uData) {
-      const res = isVendor ? vData.signUpVendor : uData.signUpUser
-      const entityId = isVendor ? res.vendorId : res.userId
+      const res = isVendor ? vData.signUpVendor : uData.signUpUser;
+      const entityId = isVendor ? res.vendorId : res.userId;
       const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;
       (async () => {
-        await setItem("huelageEntityId", entityId)
+        await setItem("huelageEntityId", entityId);
         await setItem("huelageEntityName", name);
       })();
     }
-  }, [uData, vData])
+  }, [uData, vData]);
   return (
     <>
       <StatusBar style="auto" />
@@ -64,217 +64,7 @@ const SignUpScreen = () => {
         </View>
         <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer} onTouchStart={() => Keyboard.dismiss()}>
           <View style={styles.inputBox}>
-            {isVendor ? (
-              <>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      error={errors.businessName}
-                      label="Business name"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("businessAddress")}
-                      innerRef={ref}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="businessName"
-                  rules={{
-                    required: "Business name is required",
-                    minLength: {
-                      value: 3,
-                      message: "Business name should be a minimum of 3 charaters",
-                    },
-                  }}
-                />
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      error={errors.businessAddress}
-                      label="Business address"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("repName")}
-                      innerRef={ref}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="businessAddress"
-                  rules={{
-                    required: "Business address is required",
-                    minLength: {
-                      value: 3,
-                      message: "Business address should be a minimum of 3 charaters",
-                    },
-                  }}
-                />
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      error={errors.repName}
-                      label="Vendor's name"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("email")}
-                      innerRef={ref}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="repName"
-                  rules={{
-                    required: "Vendor's name is required",
-                    minLength: {
-                      value: 3,
-                      message: "Vendor's name should be a minimum of 3 charaters",
-                    },
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      error={errors.firstName}
-                      label="First name"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("lastName")}
-                      innerRef={ref}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="firstName"
-                  rules={{
-                    required: "First name is required",
-                    minLength: {
-                      value: 3,
-                      message: "First name should be a minimum of 3 characters",
-                    },
-                  }}
-                />
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="words"
-                      autoCorrect={false}
-                      error={errors.lastName}
-                      label="Last name"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("email")}
-                      innerRef={ref}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="lastName"
-                  rules={{
-                    required: "Last name is required",
-                    minLength: {
-                      value: 3,
-                      message: "Last name should be a minimum of 3 characters",
-                    },
-                  }}
-                />
-              </>
-            )}
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  error={errors.email}
-                  keyboardType="email-address"
-                  label="Email address"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onSubmitEditing={() => setFocus("phone")}
-                  innerRef={ref}
-                  returnKeyType="next"
-                  value={value}
-                />
-              )}
-              name="email"
-              rules={{
-                required: "Email is required",
-                pattern: {
-                  value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
-                  message: "Email is invalid",
-                },
-              }}
-            />
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  error={errors.phone}
-                  isPhone
-                  keyboardType="number-pad"
-                  label="Phone number"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onSubmitEditing={() => setFocus("password")}
-                  innerRef={ref}
-                  returnKeyType="next"
-                />
-              )}
-              name="phone"
-              rules={{
-                required: "Phone number is required",
-                pattern: {
-                  value: /^\+\d{1,}[\s-\.]\d{3}[\s-\.]\d{3}[\s-\.]\d{4}/,
-                  message: "Phone number is invalid"
-                }
-              }}
-            />
-            <Controller
-              control={control}
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  error={errors.password}
-                  isPass
-                  label="Create password"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onSubmitEditing={() => !isVendor && handleSubmit(onSubmit)()}
-                  innerRef={ref}
-                  value={value}
-                />
-              )}
-              name="password"
-              rules={{
-                required: "Password is required",
-                pattern: {
-                  value:
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{6,24}$/,
-                  message:
-                    "• 6 to 24 characters.\n• Must include uppercase and lowercase letters, a number and a special character.\n• Allowed special characters: !@#$%^&*",
-                },
-              }}
-            />
+            <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
             {isVendor && (
               <CheckBox
                 checked={acceptTerms}

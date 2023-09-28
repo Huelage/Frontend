@@ -7,13 +7,12 @@ import { AntDesign } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { AuthNavigationProps, OTPRouteProps, entityInterface } from '@interfaces';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts, getItem } from '@utils';
+import { fonts, getItem, setItem } from '@utils';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 
 const OTPScreen = () => {
   const { color } = useAppTheme();
@@ -37,13 +36,13 @@ const OTPScreen = () => {
     setIsTimerActive(true);
     timerRef.current = 59;
     const entityId = await getItem("huelageEntityId");
-    const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") }
-    await refreshOTP({ variables: { input } })
+    const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") };
+    await refreshOTP({ variables: { input } });
   };
 
   const verifyOTP = async () => {
     if (/\d{4}/.test(phoneOtp.trim())) {
-      const input = { phone: phoneno.replace(/[\s\.-]/g, ""), phoneOtp: parseInt(phoneOtp) };
+      const input = { phone: phoneno.replace(/[\s\.-]/g, ""), otp: parseInt(phoneOtp) };
       await verifyCode({ variables: { input } });
     }
   };
@@ -63,22 +62,23 @@ const OTPScreen = () => {
   }, [isTimerActive]);
   useEffect(() => {
     if (data) {
-      const res = data.verifyPhone;
+      const res = data.verifyPhoneOtp;
       let entity: entityInterface = {
         id: res.entityId,
         walletId: res.wallet.walletId,
         email: res.email,
         phone: res.phone,
         imgUrl: res.imgUrl
-      }
+      };
       if (isVendor) {
         const { __typename, ...vendor } = res.vendor;
-        entity = { ...entity, ...vendor }
+        entity = { ...entity, ...vendor };
       } else {
         const { __typename, ...user } = res.user;
         entity = { ...entity, ...user };
       }
-      dispatch(setCredentials({ entity, accessToken: res.accessToken }))
+      (async () => await setItem("huelageRefreshToken", res.refreshToken))();
+      dispatch(setCredentials({ entity, accessToken: res.accessToken }));
     }
   }, [data, loading]);
   return (
