@@ -6,7 +6,7 @@ import * as BioAuth from "expo-local-authentication";
 
 // AUTH INTERFACES
 export interface LoginInfoInterface {
-  vendorId?: string;
+  vendorKey?: string;
   email?: string;
   password: string;
 }
@@ -38,8 +38,8 @@ export type AuthStackParamList = {
   OTP: { phoneno: string; };
   SignupSelect: undefined;
   ForgotPassword: undefined;
-  SetPassword: undefined;
-  VerifyEmail: undefined;
+  SetPassword: { entityId: string; };
+  VerifyEmail: { email: string; };
 };
 export type UserStackParamList = {
   MainTabs: undefined;
@@ -122,6 +122,8 @@ export type VendorMenuTabProps = CompositeNavigationProp<NativeStackNavigationPr
 export type VendorAccountTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorAccountTabStackParamList>, VendorTabProps>;
 // // Screen Routes
 export type OTPRouteProps = RouteProp<AuthStackParamList, "OTP">;
+export type SetPasswordRouteProps = RouteProp<AuthStackParamList, "SetPassword">;
+export type VerifyEmailRouteProps = RouteProp<AuthStackParamList, "VerifyEmail">;
 export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "Vendor">;
 export type UserVendorsTabItemDetailRouteProps = RouteProp<UserVendorsTabStackParamList, "ItemDetail">;
 export type UserOrdersTabOrderDetailRouteProps = RouteProp<UserOrdersTabStackParamList, "OrderDetail">;
