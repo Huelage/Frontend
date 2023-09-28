@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { useAppTheme } from "@hooks";
 import {
   ProfileInfo,
   ProfileList,
   ProfileList2,
 } from "@components/core/Profile";
-import { fonts } from "@utils";
+import { StatusBar } from "expo-status-bar";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -16,18 +16,18 @@ const ProfileScreen = () => {
   const { color } = useAppTheme();
 
   return (
-    <ScrollView
-      style={[styles.container, { backgroundColor: color.mainBg }]}
-      testID="profile screen"
-    >
-      <View style={styles.mainBox}>
-        <ProfileInfo />
-
-        <ProfileList />
-      </View>
-      <View style={[styles.horizontalLine]}></View>
-      <ProfileList2 />
-    </ScrollView>
+    <>
+      <StatusBar style="auto" />
+      <ScrollView
+        style={[styles.container, { backgroundColor: color.mainBg }]}
+        testID="profile screen"
+      >
+        <View style={styles.mainBox}>
+          <ProfileInfo />
+        </View>
+        <View style={[styles.horizontalLine]}></View>
+      </ScrollView>
+    </>
   );
 };
 

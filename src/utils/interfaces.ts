@@ -1,6 +1,9 @@
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/core";
-import { CompositeNavigationProp, NavigatorScreenParams } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as BioAuth from "expo-local-authentication";
 
@@ -34,7 +37,7 @@ export type AuthStackParamList = {
   OnBoard: undefined;
   Login: undefined;
   SignUp: undefined;
-  OTP: { phoneno: string; };
+  OTP: { phoneno: string };
   SignupSelect: undefined;
   ForgotPassword: undefined;
   SetPassword: undefined;
@@ -67,18 +70,18 @@ export type VendorTabParamList = {
 // // User Tab Stacks
 export type UserVendorsTabStackParamList = {
   Main: undefined;
-  Vendor: { vendorId: string; };
-  ItemDetail: { itemId: string; };
+  Vendor: { vendorId: string };
+  ItemDetail: { itemId: string };
 };
 export type UserOrdersTabStackParamList = {
   Main: undefined;
-  OrderDetail: { orderId: string; };
-  TrackOrder: { orderId: string; };
+  OrderDetail: { orderId: string };
+  TrackOrder: { orderId: string };
 };
 export type UserProfileTabStackParamList = {
   Main: undefined;
   UserDetails: undefined;
-  Location: undefined;
+  Locations: undefined;
   Notification: undefined;
   Wallet: undefined;
   Referral: undefined;
@@ -86,17 +89,19 @@ export type UserProfileTabStackParamList = {
   FAQs: undefined;
   Help: undefined;
   About: undefined;
+  MyOrders: undefined;
+  ProfileDetails: undefined;
 };
 
 // // Vendor Tab Stacks
 export type VendorOrdersTabStackParamList = {
   Main: undefined;
-  OrderDetail: { orderId: string; };
-  TrackOrder: { orderId: string; };
+  OrderDetail: { orderId: string };
+  TrackOrder: { orderId: string };
 };
 export type VendorMenuTabStackParamList = {
   Main: undefined;
-  ItemDetail: { itemId: string; };
+  ItemDetail: { itemId: string };
   AddItem: undefined;
 };
 export type VendorAccountTabStackParamList = {
@@ -106,28 +111,71 @@ export type VendorAccountTabStackParamList = {
 // SCREEN INTERFACES
 // // Main Stacks
 export type UserNavigationProps = NativeStackNavigationProp<UserStackParamList>;
-export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamList>;
+export type VendorNavigationProps =
+  NativeStackNavigationProp<VendorStackParamList>;
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 // // Main Tabs
-export type UserTabProps = CompositeNavigationProp<BottomTabNavigationProp<UserTabParamList>, UserNavigationProps>;
+export type UserTabProps = CompositeNavigationProp<
+  BottomTabNavigationProp<UserTabParamList>,
+  UserNavigationProps
+>;
 export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
 // // User Tab Stacks
-export type UserVendorTabProps = CompositeNavigationProp<NativeStackNavigationProp<UserVendorsTabStackParamList>, UserTabProps>;
-export type UserOrdersTabProps = CompositeNavigationProp<NativeStackNavigationProp<UserOrdersTabStackParamList>, UserTabProps>;
-export type UserProfileTabProps = CompositeNavigationProp<NativeStackNavigationProp<UserProfileTabStackParamList>, UserTabProps>;
+export type UserVendorTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<UserVendorsTabStackParamList>,
+  UserTabProps
+>;
+export type UserOrdersTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<UserOrdersTabStackParamList>,
+  UserTabProps
+>;
+export type UserProfileTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<UserProfileTabStackParamList>,
+  UserTabProps
+>;
 // // Vendor Tab Stacks
-export type VendorOrdersTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorOrdersTabStackParamList>, VendorTabProps>;
-export type VendorMenuTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorMenuTabStackParamList>, VendorTabProps>;
-export type VendorAccountTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorAccountTabStackParamList>, VendorTabProps>;
+export type VendorOrdersTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<VendorOrdersTabStackParamList>,
+  VendorTabProps
+>;
+export type VendorMenuTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<VendorMenuTabStackParamList>,
+  VendorTabProps
+>;
+export type VendorAccountTabProps = CompositeNavigationProp<
+  NativeStackNavigationProp<VendorAccountTabStackParamList>,
+  VendorTabProps
+>;
 // // Screen Routes
 export type OTPRouteProps = RouteProp<AuthStackParamList, "OTP">;
-export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "Vendor">;
-export type UserVendorsTabItemDetailRouteProps = RouteProp<UserVendorsTabStackParamList, "ItemDetail">;
-export type UserOrdersTabOrderDetailRouteProps = RouteProp<UserOrdersTabStackParamList, "OrderDetail">;
-export type UserOrdersTabTrackOrderRouteProps = RouteProp<UserOrdersTabStackParamList, "TrackOrder">;
-export type VendorOrdersTabOrderDetailRouteProps = RouteProp<VendorOrdersTabStackParamList, "OrderDetail">;
-export type VendorOrdersTabTrackOrderRouteProps = RouteProp<VendorOrdersTabStackParamList, "TrackOrder">;
-export type VendorMenuTabItemDetailRouteProps = RouteProp<VendorMenuTabStackParamList, "ItemDetail">;
+export type UserVendorsTabVendorRouteProps = RouteProp<
+  UserVendorsTabStackParamList,
+  "Vendor"
+>;
+export type UserVendorsTabItemDetailRouteProps = RouteProp<
+  UserVendorsTabStackParamList,
+  "ItemDetail"
+>;
+export type UserOrdersTabOrderDetailRouteProps = RouteProp<
+  UserOrdersTabStackParamList,
+  "OrderDetail"
+>;
+export type UserOrdersTabTrackOrderRouteProps = RouteProp<
+  UserOrdersTabStackParamList,
+  "TrackOrder"
+>;
+export type VendorOrdersTabOrderDetailRouteProps = RouteProp<
+  VendorOrdersTabStackParamList,
+  "OrderDetail"
+>;
+export type VendorOrdersTabTrackOrderRouteProps = RouteProp<
+  VendorOrdersTabStackParamList,
+  "TrackOrder"
+>;
+export type VendorMenuTabItemDetailRouteProps = RouteProp<
+  VendorMenuTabStackParamList,
+  "ItemDetail"
+>;
 
 // REDUX INTERFACES
 export interface globalStateInterface {
@@ -206,10 +254,13 @@ interface FoodPortionInterface extends UserBaseFoodInterface {
 }
 interface FoodPackageInterface extends UserBaseFoodInterface {
   pricing_method: "package";
-  package_sizes: { name: string; price: number; }[];
+  package_sizes: { name: string; price: number }[];
 }
 
-export type UserFoodInterface = FoodPriceInterface | FoodPortionInterface | FoodPackageInterface;
+export type UserFoodInterface =
+  | FoodPriceInterface
+  | FoodPortionInterface
+  | FoodPackageInterface;
 export interface FoodSideInterface {
   name: string;
   price: number;

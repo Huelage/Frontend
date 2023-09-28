@@ -1,0 +1,10 @@
+export { default as AboutUs } from "./AboutUs";
+export { default as FAQs } from "./Faqs";
+export { default as Help } from "./Help";
+export { default as Location } from "./Locations";
+export { default as MyOrders } from "./MyOders";
+export { default as Notification } from "./Notification";
+export { default as ProfileDetails } from "./ProfileDetails";
+export { default as Referral } from "./Referral";
+export { default as Setting } from "./Settings";
+export { default as Wallet } from "./Wallet";

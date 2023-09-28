@@ -1,6 +1,11 @@
 import { useAppSelector } from "@api/app/appHooks";
 import { getVendorStatus } from "@api/slices/globalSlice";
-import { AuthNavigate, CustomTextInput, SocialLogin, SubmitButton } from "@components/auth";
+import {
+  AuthNavigate,
+  CustomTextInput,
+  SocialLogin,
+  SubmitButton,
+} from "@components/auth";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -12,7 +17,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SignUpScreen = () => {
@@ -21,8 +29,16 @@ const SignUpScreen = () => {
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
-  const { handleSubmit, control, setFocus, reset, formState: { errors }, } = useForm<SignUpInfoInterface>({ mode: "onChange" });
-  const onSubmit: SubmitHandler<SignUpInfoInterface> = (data: SignUpInfoInterface) => {
+  const {
+    handleSubmit,
+    control,
+    setFocus,
+    reset,
+    formState: { errors },
+  } = useForm<SignUpInfoInterface>({ mode: "onChange" });
+  const onSubmit: SubmitHandler<SignUpInfoInterface> = (
+    data: SignUpInfoInterface
+  ) => {
     reset();
     navigate("OTP", { phoneno: data.phonenumber });
   };
@@ -33,7 +49,16 @@ const SignUpScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} testID='signup screen'>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingTop: insets.top + hp("3%"),
+            paddingBottom: insets.bottom + 5,
+          },
+        ]}
+        testID="signup screen"
+      >
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag="huelageLogo"
@@ -42,11 +67,24 @@ const SignUpScreen = () => {
             source={require("@images/onboard_logo.png")}
           />
           <View>
-            <Text style={[styles.welcomeText, { color: color.mainGreen }]} testID="welcome text">Sign Up</Text>
-            <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
+            <Text
+              style={[styles.welcomeText, { color: color.mainGreen }]}
+              testID="welcome text"
+            >
+              Sign Up
+            </Text>
+            <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>
+              Please fill in your details
+            </Text>
           </View>
         </View>
-        <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer} onTouchStart={() => Keyboard.dismiss()}>
+        <KeyboardAwareScrollView
+          scrollEnabled
+          keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
+          extraScrollHeight={50}
+          style={styles.inputContainer}
+          onTouchStart={() => Keyboard.dismiss()}
+        >
           <View style={styles.inputBox}>
             {isVendor ? (
               <>
@@ -71,7 +109,8 @@ const SignUpScreen = () => {
                     required: "Business name is required",
                     minLength: {
                       value: 3,
-                      message: "Business name should be a minimum of 3 charaters",
+                      message:
+                        "Business name should be a minimum of 3 charaters",
                     },
                   }}
                 />
@@ -96,7 +135,8 @@ const SignUpScreen = () => {
                     required: "Business address is required",
                     minLength: {
                       value: 3,
-                      message: "Business address should be a minimum of 3 charaters",
+                      message:
+                        "Business address should be a minimum of 3 charaters",
                     },
                   }}
                 />
@@ -121,7 +161,8 @@ const SignUpScreen = () => {
                     required: "Vendor's name is required",
                     minLength: {
                       value: 3,
-                      message: "Vendor's name should be a minimum of 3 charaters",
+                      message:
+                        "Vendor's name should be a minimum of 3 charaters",
                     },
                   }}
                 />
@@ -228,8 +269,8 @@ const SignUpScreen = () => {
                 required: "Phone number is required",
                 pattern: {
                   value: /^\+\d{1,}[\s-\.]\d{3}[\s-\.]\d{3}[\s-\.]\d{4}/,
-                  message: "Phone number is invalid"
-                }
+                  message: "Phone number is invalid",
+                },
               }}
             />
             <Controller
@@ -274,7 +315,10 @@ const SignUpScreen = () => {
                 containerStyle={styles.termsContainer}
               />
             )}
-            <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
+            <SubmitButton
+              label="CREATE ACCOUNT"
+              onSubmit={handleSubmit(onSubmit)}
+            />
             {!isVendor && <SocialLogin page="SU" />}
           </View>
         </KeyboardAwareScrollView>
@@ -305,13 +349,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_700,
     fontSize: 25,
     letterSpacing: 0.5,
-    textAlign: 'center'
+    textAlign: "center",
   },
   welcomeInfoText: {
     fontFamily: fonts.I_400,
     fontSize: 18,
-    letterSpacing: .5,
-    textAlign: 'center'
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
   inputContainer: {
     flex: 1,
@@ -321,7 +365,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputBox: {
-    gap: 20
+    gap: 20,
   },
   termsContainer: {
     backgroundColor: "transparent",
@@ -332,5 +376,5 @@ const styles = StyleSheet.create({
     color: "#000",
     fontFamily: fonts.I_400I,
     fontSize: 14,
-  }
+  },
 });

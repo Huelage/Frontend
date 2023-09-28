@@ -6,13 +6,19 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { useNavigation } from "@react-navigation/native";
+import { UserProfileTabProps } from "@interfaces";
 
 const ProfileList = () => {
   const { color } = useAppTheme();
+  const { navigate } = useNavigation<UserProfileTabProps>();
   return (
     <View style={styles.container} testID="Profile List">
       <View style={styles.mainBox}>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("ProfileDetails")}
+        >
           <MaterialCommunityIcons
             name="account-circle-outline"
             size={30}
@@ -28,7 +34,10 @@ const ProfileList = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Locations")}
+        >
           <MaterialCommunityIcons
             name="map-marker-outline"
             size={30}
@@ -44,7 +53,10 @@ const ProfileList = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Notification")}
+        >
           <MaterialCommunityIcons
             name="bell-outline"
             size={30}
@@ -60,7 +72,10 @@ const ProfileList = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("MyOrders")}
+        >
           <MaterialCommunityIcons
             name="file-check-outline"
             size={30}
@@ -76,7 +91,10 @@ const ProfileList = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Wallet")}
+        >
           <MaterialCommunityIcons
             name="wallet-outline"
             size={30}
@@ -92,7 +110,10 @@ const ProfileList = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Referral")}
+        >
           <MaterialCommunityIcons
             name="account-group"
             size={30}

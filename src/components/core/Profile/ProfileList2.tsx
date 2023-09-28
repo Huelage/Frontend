@@ -6,13 +6,20 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { UserProfileTabProps } from "@interfaces";
+
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileList2 = () => {
   const { color } = useAppTheme();
+  const { navigate } = useNavigation<UserProfileTabProps>();
   return (
     <View style={styles.container} testID="Profile List">
       <View style={styles.mainBox}>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Setting")}
+        >
           <MaterialCommunityIcons
             name="cog-outline"
             size={30}
@@ -28,7 +35,10 @@ const ProfileList2 = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("FAQs")}
+        >
           <MaterialCommunityIcons
             name="frequently-asked-questions"
             size={30}
@@ -44,7 +54,10 @@ const ProfileList2 = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("Help")}
+        >
           <MaterialCommunityIcons
             name="help-circle-outline"
             size={30}
@@ -60,7 +73,10 @@ const ProfileList2 = () => {
             color={color.mainText}
           ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox}>
+        <TouchableOpacity
+          style={styles.innerBox}
+          onPress={() => navigate("About")}
+        >
           <MaterialCommunityIcons
             name="information-outline"
             size={30}
