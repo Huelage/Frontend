@@ -1,5 +1,5 @@
 import { persistor, store } from "@api/app/store";
-import client from "@api/graphql";
+import client from "@api/app/graphqlapi";
 import { ApolloProvider } from "@apollo/client";
 import {
   InterTight_200ExtraLight_Italic,
