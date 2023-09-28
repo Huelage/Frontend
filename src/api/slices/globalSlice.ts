@@ -16,7 +16,7 @@ const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ entity: entityInterface, accessToken: string }>) => {
+    setCredentials: (state, action: PayloadAction<{ entity: entityInterface, accessToken: string; }>) => {
       const { entity, accessToken } = action.payload;
       state.entity = entity;
       state.accessToken = accessToken;
