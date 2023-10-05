@@ -1,11 +1,12 @@
 import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
+import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
 import FoodModalContent from "@components/core/Home/FoodModalContent";
 import FoodModalResCard from "@components/core/Home/FoodModalResCard";
 import { VendorResCard } from "@components/core/Vendor";
+import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import { testRect } from "../testhelpers";
 
 const foodData = mockFoods[0];
 const resData = mockRestaurants[0];
@@ -54,6 +55,12 @@ describe("When Testing Core Cart Components: ", () => {
     it("should render the promo input", () => {
       expect(screen.getByTestId("promo input")).toBeOnTheScreen();
     });
+    it("should call the apply function when the promo input is submitted", () => {
+      const promoInput = screen.getByTestId("promo input");
+      fireEvent.changeText(promoInput, "test promo");
+      fireEvent(promoInput, "onSubmitEditing");
+      expect(apply).toBeCalledWith("test promo");
+    });
     it("should render the apply button", () => {
       expect(screen.getByText("Apply")).toBeOnTheScreen();
     });
@@ -81,8 +88,9 @@ describe("When Testing Core Cart Components: ", () => {
     it("should render the decrease button", () => {
       expect(screen.getByTestId("decrease quantity")).toBeOnTheScreen();
     });
-    it("should render the quantity text", () => {
-      expect(screen.getByText("1")).toBeOnTheScreen();
+    it("should render the quantity text with the current quantity value", () => {
+      const val = screen.getByTestId("quantity value");
+      expect(val.props.children).toEqual(1);
     });
     it("should allow user to increase quantity", () => {
       const increaseButton = screen.getByTestId("increase quantity");
@@ -97,11 +105,25 @@ describe("When Testing Core Cart Components: ", () => {
   });
 });
 
+describe("When Testing Core Detail Components: ", () => {
+  describe("<RatingCard />: ", () => {
+    beforeEach(() => {
+      render(<RatingCard rating={5} />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("rating card")).toBeOnTheScreen();
+    });
+    it("should render the rating", () => {
+      expect(screen.getByText(/5.0/i)).toBeOnTheScreen();
+    });
+  });
+});
+
 describe("When Testing Core Home Components: ", () => {
   describe("<CategoryCard />: ", () => {
     const category = { idx: 1, name: "test", rating: 5, price: 100, imgUrl: "test", addToCart: jest.fn(), animationValue: { value: 1 } };
     beforeEach(() => {
-      render(<CategoryCard {...category} testRect={testRect} />);
+      render(<CategoryCard {...category} />);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("category card")).toBeOnTheScreen();
@@ -139,6 +161,10 @@ describe("When Testing Core Home Components: ", () => {
     it("should render the button label", () => {
       expect(screen.getByText("test")).toBeOnTheScreen();
     });
+    it("should render the button icon", () => {
+      render(<CustomButton {...buttonProps} icon='add-circle' />);
+      expect(screen.getByTestId("button icon")).toBeOnTheScreen();
+    });
     it("should allow user to press the button", () => {
       const button = screen.getByText("test");
       fireEvent.press(button);
@@ -154,20 +180,26 @@ describe("When Testing Core Home Components: ", () => {
       expect(screen.getByTestId("carousel")).toBeOnTheScreen();
     });
     it("should render the carousel indicators", () => {
-      const indicators = screen.getAllByTestId("carousel indicator");
+      const indicators = screen.getAllByTestId(/carousel indicator/);
       expect(indicators).not.toBeNull();
+    });
+    it("should change indicator backgroud on scroll", () => {
+      const component = screen.getByTestId("carousel");
+      const indicator = screen.getByTestId("carousel indicator 1");
+      fireEvent(component, "onSnapToItem", 1);
+      expect(indicator.props.style).toContainEqual({ backgroundColor: "#47CA4C" });
     });
   });
 
   describe("<FoodCard />: ", () => {
     beforeEach(() => {
-      render(<FoodCard {...foodData} testRect={testRect} />);
+      render(<FoodCard {...foodData} />);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("food card")).toBeOnTheScreen();
     });
     it("should render the food name", () => {
-      expect(screen.getByText(foodData.name)).toBeOnTheScreen();
+      expect(screen.getAllByText(foodData.name)).not.toBeNull();
     });
     it("should render the food rating", () => {
       expect(screen.getByText(foodData.rating.toFixed(1))).toBeOnTheScreen();
@@ -186,15 +218,30 @@ describe("When Testing Core Home Components: ", () => {
       fireEvent.press(toggleButton);
       expect(toggleButton.props.accessibilityState.checked).toBe(!foodData.isFavourite);
     });
+    it("should toggle the modal on press", () => {
+      const modalButton = screen.getByTestId("toggle modal");
+      const modal = screen.getByTestId("custom modal");
+      expect(modal.props.isVisible).toBeFalsy();
+      fireEvent.press(modalButton);
+      expect(modal.props.isVisible).toBeTruthy();
+    });
   });
 
   describe("<FoodModalContent />: ", () => {
     const close = jest.fn();
     beforeEach(() => {
-      render(<FoodModalContent {...foodData} testRect={testRect} close={close} />);
+      render(<FoodModalContent {...foodData} close={close} />);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("food modal content")).toBeOnTheScreen();
+    });
+    it("should render the close button", () => {
+      expect(screen.getByTestId("close button")).toBeOnTheScreen();
+    });
+    it("should call close function on close button press", () => {
+      const closeButton = screen.getByTestId("close button");
+      fireEvent.press(closeButton);
+      expect(close).toBeCalledWith(false);
     });
     it("should render the food name", () => {
       expect(screen.getByText(foodData.name)).toBeOnTheScreen();
@@ -253,7 +300,7 @@ describe("When Testing Core Home Components: ", () => {
 
   describe("<RestaurantCard />: ", () => {
     beforeEach(() => {
-      render(<RestaurantCard {...resData} testRect={testRect} />);
+      render(<RestaurantCard {...resData} />);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("restaurant card")).toBeOnTheScreen();
@@ -266,6 +313,17 @@ describe("When Testing Core Home Components: ", () => {
     });
     it("should render restaurant location", () => {
       expect(screen.getByText(resData.location)).toBeOnTheScreen();
+    });
+    it("should call navigate when detail box is pressed", () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockImplementation(() => ({
+        navigate,
+        dispatch: jest.fn()
+      }));
+      render(<RestaurantCard {...resData} />);
+      const detailBox = screen.getByTestId("details box");
+      fireEvent.press(detailBox);
+      expect(navigate).toBeCalled();
     });
   });
 });

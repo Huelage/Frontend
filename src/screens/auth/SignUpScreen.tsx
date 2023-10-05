@@ -32,6 +32,8 @@ const SignUpScreen = () => {
     reset();
     navigate("OTP", { phoneno: data.phone });
   };
+  const dismissKeyboard = () => Keyboard.dismiss();
+
   useEffect(() => {
     setTimeout(() => setFocus(isVendor ? "businessName" : "firstName"), 0);
   }, []);
@@ -49,7 +51,7 @@ const SignUpScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} testID='signup screen'>
+      <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} onTouchStart={dismissKeyboard} testID='signup screen'>
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag="huelageLogo"
@@ -62,7 +64,7 @@ const SignUpScreen = () => {
             <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
           </View>
         </View>
-        <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer} onTouchStart={() => Keyboard.dismiss()}>
+        <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
           <View style={styles.inputBox}>
             <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
             {isVendor && (

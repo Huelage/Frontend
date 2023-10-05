@@ -6,7 +6,6 @@ interface ImageInterface {
   imgUrl: string;
   imgSize: number;
   imgPad: number;
-  testRect?: SkRRect; /* for testing only */
   imgFit?: Fit;
   shadowBlur?: number;
   shadowColor?: string;
@@ -15,9 +14,9 @@ interface ImageInterface {
   style: StyleProp<ViewStyle>;
 }
 
-const CustomImage = ({ testRect, imgUrl, imgSize, imgPad, imgFit, style, shadowBlur, shadowColor, shadowHeight, shadowWidth }: ImageInterface) => {
+const CustomImage = ({ imgUrl, imgSize, imgPad, imgFit, style, shadowBlur, shadowColor, shadowHeight, shadowWidth }: ImageInterface) => {
   const img = useImage(imgUrl);
-  const roundedRect = testRect || rrect(rect(imgPad, imgPad, imgSize, imgSize), 1000, 1000);
+  const roundedRect = { rect: { x: imgPad, y: imgPad, width: imgSize, height: imgSize }, rx: 1000, ry: 1000 };
   return (
     <Canvas style={style}>
       <Shadow dx={shadowWidth || 0} dy={shadowHeight || 6} blur={shadowBlur || 5} color={shadowColor || "rgba(0, 0, 0, .4)"} />

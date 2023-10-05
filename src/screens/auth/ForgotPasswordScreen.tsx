@@ -26,6 +26,7 @@ const ForgotPasswordScreen = () => {
     reset();
     await requestVerification({ variables: { email: data.email } });
   };
+  const dismissKeyboard = () => Keyboard.dismiss();
 
   useEffect(() => {
     setTimeout(() => setFocus("email"), 0);
@@ -39,7 +40,7 @@ const ForgotPasswordScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={() => Keyboard.dismiss()} testID="forgot password screen">
+      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="forgot password screen">
         <View style={styles.headerBox}>
           <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
             <AntDesign name="arrowleft" size={26} color={color.mainText} />

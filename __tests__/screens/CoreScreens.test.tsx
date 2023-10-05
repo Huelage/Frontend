@@ -1,9 +1,17 @@
-import { CartScreen, HomeScreen, VendorScreen } from "@screens/core";
-import { render, screen } from "@testing-library/react-native";
-import { renderNavigator, testRect } from "../testhelpers";
+import { CartScreen, DetailScreen, HomeScreen, VendorScreen } from "@screens/core";
+import { fireEvent, render, screen } from "@testing-library/react-native";
+import { renderNavigator } from "../testhelpers";
+import { Keyboard } from "react-native";
+import { useAppSelector } from "@api/app/appHooks";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
-  describe("<CartScren />: ", () => {
+  const testSearchFunc = () => {
+    const searchBar = screen.getByPlaceholderText(/search dishes/i);
+    fireEvent.changeText(searchBar, "test");
+    expect(console.log).toBeCalledWith("test");
+  };
+
+  describe("<CartScreen />: ", () => {
     beforeEach(() => {
       renderNavigator(<CartScreen />);
     });
@@ -25,11 +33,25 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     it("should render the cart overview using the CartOverview component", () => {
       expect(screen.getByTestId("cart overview")).toBeOnTheScreen();
     });
+    it("should call Keyboard.dimss() when the screen is touched", () => {
+      const dismissKeyboard = jest.spyOn(Keyboard, "dismiss");
+      renderNavigator(<CartScreen />);
+      const screenView = screen.getByTestId("cart screen");
+      fireEvent(screenView, "onTouchStart");
+      expect(dismissKeyboard).toBeCalledTimes(1);
+    });
+  });
+
+  describe("<DetailScreen />: ", () => {
+    it("should render the component correctly", () => {
+      render(<DetailScreen />);
+      expect(screen.getByTestId("detail screen")).toBeOnTheScreen();
+    });
   });
 
   describe("<HomeScreen />: ", () => {
     beforeEach(() => {
-      render(<HomeScreen testRect={testRect} />);
+      render(<HomeScreen />);
     });
     it("should render the component correctly", () => {
       expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
@@ -51,6 +73,13 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     it("should render the Categories container", () => {
       expect(screen.getByTestId("categories")).toBeOnTheScreen();
     });
+    it("should call the search function when the search bar is used", () => {
+      console.log = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValueOnce("dark");
+      render(<HomeScreen />);
+      testSearchFunc();
+      console.log = console.log.bind(console);
+    });
   });
 
   describe("<VendorScreen />: ", () => {
@@ -68,6 +97,12 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     });
     it("should render the vendors using the VendorResCard component", () => {
       expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
+    });
+    it("should call the search function when the search bar is used", () => {
+      console.log = jest.fn();
+      render(<VendorScreen />);
+      testSearchFunc();
+      console.log = console.log.bind(console);
     });
   });
 });

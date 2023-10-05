@@ -15,6 +15,7 @@ const CustomModal = ({ isVisible, children }: ModalProps) => {
       isVisible={isVisible}
       animationIn="zoomIn"
       animationOut="zoomOut"
+      testID='custom modal'
       backdropOpacity={0}
       backdropTransitionInTiming={500}
       backdropTransitionOutTiming={500}

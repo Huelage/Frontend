@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@api/app/appHooks";
 import { setVendorStatus } from "@api/slices/globalSlice";
 import { AuthNavigationProps } from "@interfaces";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React from "react";
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -25,7 +25,7 @@ const SignupSelectScreen = () => {
             <Animated.View entering={FadeIn.delay(500)} style={styles.authSelectImageWrapper}>
               <Image testID="select box image" style={styles.authSelectImage} source={require("@images/Vendor.png")} resizeMode="contain" />
             </Animated.View>
-            <TouchableOpacity onPress={() => handleSelect(true)}>
+            <TouchableOpacity onPress={() => handleSelect(true)} testID="signup vendor">
               <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>Vendor</Text>
               </Animated.View>
@@ -35,7 +35,7 @@ const SignupSelectScreen = () => {
             <Animated.View entering={FadeIn.delay(600)} style={styles.authSelectImageWrapper}>
               <Image testID="select box image" style={styles.authSelectImage} source={require("@images/User.png")} resizeMode="contain" />
             </Animated.View>
-            <TouchableOpacity onPress={() => handleSelect(false)}>
+            <TouchableOpacity onPress={() => handleSelect(false)} testID="signup user">
               <Animated.View entering={FadeIn.delay(700)} style={styles.authSelectButton}>
                 <Text style={styles.authSelectText}>User</Text>
               </Animated.View>

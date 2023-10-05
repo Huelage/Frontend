@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const RatingCard = ({ rating }: { rating: number; }) => {
   return (
-    <View style={styles.itemRateBox}>
+    <View style={styles.itemRateBox} testID='rating card'>
       <Ionicons name="star" size={18} color="#FFC107" />
       <Text style={styles.itemRating}>{rating.toFixed(1)}</Text>
     </View>
