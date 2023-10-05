@@ -5,9 +5,9 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-const OrderBar = () => {
+const OrderBar = ({ initVal }: { initVal?: number; }) => {
   const { color } = useAppTheme();
-  const progress = useSharedValue(20);
+  const progress = useSharedValue(initVal || 20);
   const animatedWidth = useAnimatedStyle(() => ({
     width: `${progress.value}%`,
   }));
@@ -23,7 +23,7 @@ const OrderBar = () => {
     progress.value = withTiming(100, { duration: 1000 });
   }, []);
   return (
-    <Animated.View style={[styles.container, { backgroundColor: color.mainBg }, animatedWidth]}>
+    <Animated.View style={[styles.container, { backgroundColor: color.mainBg }, animatedWidth]} testID='order bar'>
       <View style={[styles.orderNoBox, { backgroundColor: color.mainGreen }]}>
         <Text testID='new orders' style={styles.orderNo}>{"30".padStart(2, "0")}</Text>
       </View>

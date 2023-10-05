@@ -3,29 +3,25 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { FoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
-import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
+import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalContent from './FoodModalContent';
 
-interface FoodCardInterface extends FoodInterface {
-  testRect?: SkRRect; /* for testing only */
-}
 
-const FoodCard = ({ testRect, imgUrl, name, price, rating, cals, isFavourite, desc }: FoodCardInterface) => {
+const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: FoodInterface) => {
   const { color } = useAppTheme();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(isFavourite);
-  const containerRect = testRect || rrect(rect(6, 6, (wp('60%') - 20), 135), 10, 10);
   return (
     <>
       <View style={styles.container} testID='food card'>
         <Canvas style={styles.foodBox}>
-          <Box box={containerRect} color={color.cardBg}>
-            <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
-          </Box>
+          <RoundedRect x={6} y={6} width={wp('60%') - 20} height={135} r={10} color={color.cardBg}>
+            <Shadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
+          </RoundedRect>
         </Canvas>
         <View style={styles.foodDetails}>
           <View style={styles.foodIntro}>
@@ -33,7 +29,7 @@ const FoodCard = ({ testRect, imgUrl, name, price, rating, cals, isFavourite, de
               <Ionicons name="star" size={14} color="#47CA4C" />
               <Text style={[styles.foodRating, { color: color.mainText }]}>{rating.toFixed(1)}</Text>
             </View>
-            <CustomImage testRect={testRect} imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
+            <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
             <CheckBox
               checked={isFav}
               onPress={() => setIsFav(!isFav)}
@@ -58,7 +54,7 @@ const FoodCard = ({ testRect, imgUrl, name, price, rating, cals, isFavourite, de
         </View>
       </View>
       <CustomModal isVisible={showModal}>
-        <FoodModalContent testRect={testRect} close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
+        <FoodModalContent close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
       </CustomModal>
     </>
   );

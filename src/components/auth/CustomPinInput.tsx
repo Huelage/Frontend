@@ -31,7 +31,7 @@ const CustomPinInput = ({ value, onChange, onSubmit }: CustomPinInputInterface) 
       renderCell={({ index, symbol, isFocused }) => (
         <Text
           key={index}
-          testID='pin input'
+          testID={`pin input ${index}`}
           style={[styles.inputCell, isFocused && (styles.activeInputCell, { borderColor: color.mainGreen }), { color: color.mainText }]}
           onLayout={getCellOnLayoutHandler(index)}>
           {symbol || (isFocused ? <Cursor /> : null)}
