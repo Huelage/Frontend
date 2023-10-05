@@ -2,6 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "typeRoots": ["./node_modules/@types", "./types"],
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
@@ -15,7 +16,7 @@
       "@utils": ["src/utils"],
       "@hooks": ["src/hooks"],
       "@interfaces": ["src/utils/interfaces.ts"]
-    },
-    "esModuleInterop": true
+    }
+    // "esModuleInterop": true
   }
 }

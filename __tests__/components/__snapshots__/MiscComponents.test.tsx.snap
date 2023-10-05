@@ -1,12 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`When Testing Miscellaneous Components:  <CustomModal />:  should render correctly 1`] = `
-<Modal
-  hardwareAccelerated={false}
-  visible={true}
-/>
-`;
-
 exports[`When Testing Miscellaneous Components:  <StarRating />:  should render correctly 1`] = `
 <View
   style={

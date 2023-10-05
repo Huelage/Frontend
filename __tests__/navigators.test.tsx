@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
+import { getEntity, getTheme, getVendorStatus } from "@api/slices/globalSlice";
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
-import { renderNavigator, testRect } from "./testhelpers";
+import { renderNavigator } from "./testhelpers";
+import { useColorScheme } from "react-native";
 
 describe("When Testing the Navigators: ", () => {
   describe("<AuthStackNavigator />: ", () => {
@@ -29,6 +30,7 @@ describe("When Testing the Navigators: ", () => {
         (useAppSelector as jest.Mock).mockImplementation(selector => {
           if (selector === getEntity) return { id: "123231" };
           if (selector === getVendorStatus) return true;
+          if (selector === getTheme) return "dark";
         });
         const mockDispatch = jest.fn();
         (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
@@ -41,8 +43,9 @@ describe("When Testing the Navigators: ", () => {
           if (selector === getVendorStatus) return false;
         });
         const mockDispatch = jest.fn();
+        (useColorScheme as jest.Mock).mockReturnValue("dark");
         (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
-        render(<MainNavigator testRect={testRect} />);
+        render(<MainNavigator />);
         expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
       });
     });
@@ -60,21 +63,21 @@ describe("When Testing the Navigators: ", () => {
       (useAppSelector as jest.Mock).mockReturnValue(false);
       const mockDispatch = jest.fn();
       (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
-      renderNavigator(<StackNavigator testRect={testRect} />);
+      renderNavigator(<StackNavigator />);
       expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
     });
   });
 
   describe("<UserStackNavigator />", () => {
     it("should render the user flow HomeScreen", () => {
-      renderNavigator(<UserStackNavigator testRect={testRect} />);
+      renderNavigator(<UserStackNavigator />);
       expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
     });
   });
 
   describe("<UserTabNavigator />", () => {
     it("should render the user flow HomeScreen", () => {
-      renderNavigator(<UserTabNavigator testRect={testRect} />);
+      renderNavigator(<UserTabNavigator />);
       expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
     });
   });

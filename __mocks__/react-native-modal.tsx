@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
 import { Modal } from 'react-native';
+import { ModalProps } from 'react-native-modal';
 
-export default () => <Modal />;
-export const RNModal = ({ children }: { children: ReactNode; }) => <Modal testID='modal'>{children}</Modal>;
+export default (props: ModalProps) => <Modal {...props}>{props.children}</Modal>;
