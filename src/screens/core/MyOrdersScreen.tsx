@@ -13,6 +13,6 @@ export default MyOrdersScreen;
 
 const styles = StyleSheet.create({
   container: {
-
-  }
+    flex: 1,
+  },
 });
