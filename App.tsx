@@ -1,5 +1,5 @@
 import { persistor, store } from "@api/app/store";
-import client from "@api/graphql";
+import client from "@api/app/graphqlapi";
 import { ApolloProvider } from "@apollo/client";
 import {
   InterTight_200ExtraLight_Italic,
@@ -18,7 +18,8 @@ import {
 } from "@expo-google-fonts/dev";
 import { MainNavigator } from "@navigators";
 import { Provider } from "react-redux";
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from "redux-persist/integration/react";
+import FlashMessage from "react-native-flash-message";
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -36,13 +37,13 @@ const App = () => {
     InterTight_700Bold_Italic,
   });
 
-
   if (!fontsLoaded) return null;
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
           <MainNavigator />
+          <FlashMessage />
         </ApolloProvider>
       </PersistGate>
     </Provider>

@@ -1,3 +1,7 @@
+import { useAppDispatch } from "@api/app/appHooks";
+import { REQUEST_EMAIL_VERIFICATION } from "@api/graphql";
+import { setVendorStatus } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
 import { CustomTextInput, SubmitButton } from "@components/auth";
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from "@hooks";
@@ -12,18 +16,26 @@ import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ForgotPasswordScreen = () => {
-  const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
+  const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
   const { navigate, goBack } = useNavigation<AuthNavigationProps>();
+  const [requestVerification, { data, loading }] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
-  const onSubmit = (data: ResetPasswordInterface) => {
+  const onSubmit = async (data: ResetPasswordInterface) => {
     reset();
-    navigate("VerifyEmail");
+    await requestVerification({ variables: { email: data.email } });
   };
 
   useEffect(() => {
     setTimeout(() => setFocus("email"), 0);
   }, []);
+  useEffect(() => {
+    if (data) {
+      dispatch(setVendorStatus(data.requestEmailVerification.entityType === "VENDOR"));
+      navigate("VerifyEmail", { email: data.requestEmailVerification.email });
+    }
+  }, [data]);
   return (
     <>
       <StatusBar style="auto" />
@@ -66,7 +78,7 @@ const ForgotPasswordScreen = () => {
               },
             }}
           />
-          <SubmitButton label="Send code" onSubmit={handleSubmit(onSubmit)} />
+          <SubmitButton label="Send code" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
         </View>
       </View>
     </>

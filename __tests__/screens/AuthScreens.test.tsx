@@ -2,13 +2,14 @@ import { useAppSelector } from "@api/app/appHooks";
 import { useRoute } from "@react-navigation/native";
 import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignUpScreen, SignupSelectScreen, VerifyEmailScreen } from "@screens/auth";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { getBiometrics } from "@utils";
-import { renderNavigator } from "../testhelpers";
+import { getBiometrics, getItem } from "@utils";
+import { renderApollo, renderApolloNavigator, renderNavigator } from "../testhelpers";
 
 describe("When Testing Authentication Screens: ", () => {
   describe("<ForgotPasswordScreen />: ", () => {
     beforeEach(() => {
-      renderNavigator(<ForgotPasswordScreen />);
+      const mocks: any = [];
+      renderApolloNavigator(<ForgotPasswordScreen />, mocks);
     });
     it("should render the ForgotPasswordScreen component", () => {
       expect(screen.getByTestId("forgot password screen")).toBeOnTheScreen();
@@ -39,7 +40,7 @@ describe("When Testing Authentication Screens: ", () => {
   describe("<LoginScreen />: ", () => {
     beforeEach(async () => {
       await waitFor(() => (
-        render(<LoginScreen />)
+        renderApollo(<LoginScreen />, [])
       ));
     });
     it("should render the LoginScreen component", () => {
@@ -52,6 +53,9 @@ describe("When Testing Authentication Screens: ", () => {
     });
     it("should render the welcome text", () => {
       expect(screen.getByText("Welcome Back!")).toBeOnTheScreen();
+    });
+    it("should render the welcome info text", () => {
+      expect(screen.getByText(/login to continue/i)).toBeOnTheScreen();
     });
     it("should render the UserVendor component", () => {
       expect(screen.getByTestId("user vendor")).toBeOnTheScreen();
@@ -82,26 +86,43 @@ describe("When Testing Authentication Screens: ", () => {
       it("should render the vendor id input instead of the email input", async () => {
         (useAppSelector as jest.Mock).mockReturnValue(true);
         await waitFor(() => (
-          render(<LoginScreen />)
+          renderApollo(<LoginScreen />, [])
         ));
-        expect(screen.getByPlaceholderText("Vendor ID")).toBeOnTheScreen();
+        expect(screen.getByPlaceholderText("Vendor Key")).toBeOnTheScreen();
         expect(screen.queryByPlaceholderText("Email address")).toBeNull();
+      });
+    });
+
+    describe("When there is saved login details", () => {
+      beforeEach(async () => {
+        (getItem as jest.Mock).mockImplementation(() => Promise.resolve("test key"));
+        await waitFor(() => (
+          renderApollo(<LoginScreen />, [])
+        ));
+      });
+      it("should not render the email or vendor key inputs", () => {
+        expect(screen.queryByPlaceholderText("Email address")).toBeNull();
+        expect(screen.queryByPlaceholderText("Vendor ID")).toBeNull();
+      });
+      it("should render the saved name instead of the welcome info text", () => {
+        expect(screen.getByText(/test key/i)).toBeOnTheScreen();
+      });
+      it("should render the switch account text cta", () => {
+        expect(screen.getByText(/Switch/i)).toBeOnTheScreen();
       });
     });
 
     describe("When the users biometric is enrolled", () => {
       beforeEach(async () => {
         (getBiometrics as jest.Mock).mockImplementation(() => Promise.resolve({ hasBiometrics: true, biometricType: [1], isEnrolled: true }));
+        (getItem as jest.Mock).mockImplementation(() => Promise.resolve("test key"));
         await waitFor(() => (
-          render(<LoginScreen />)
+          renderApollo(<LoginScreen />, [])
         ));
       });
       it("should not render the email or vendor id inputs", () => {
         expect(screen.queryByPlaceholderText("Email address")).toBeNull();
         expect(screen.queryByPlaceholderText("Vendor ID")).toBeNull();
-      });
-      it("should render the switch account text cta", () => {
-        expect(screen.getByText(/Switch/i)).toBeOnTheScreen();
       });
       it("should render the biometric prompt text", () => {
         expect(screen.getByText(/Login with/i)).toBeOnTheScreen();
@@ -145,7 +166,7 @@ describe("When Testing Authentication Screens: ", () => {
   describe("<OTPScreen />: ", () => {
     beforeEach(() => {
       (useRoute as jest.Mock).mockReturnValue({ params: { phoneno: "+234 8058731812" } });
-      renderNavigator(<OTPScreen />);
+      renderApolloNavigator(<OTPScreen />, []);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("otp screen")).toBeOnTheScreen();
@@ -173,7 +194,7 @@ describe("When Testing Authentication Screens: ", () => {
 
   describe("<SetPasswordScreen />: ", () => {
     beforeEach(() => {
-      renderNavigator(<SetPasswordScreen />);
+      renderApolloNavigator(<SetPasswordScreen />, []);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("set password screen")).toBeOnTheScreen();
@@ -192,12 +213,12 @@ describe("When Testing Authentication Screens: ", () => {
     });
     it("should render 2 CustomTextInput components when user is not signed in", () => {
       (useAppSelector as jest.Mock).mockReturnValue(false);
-      renderNavigator(<SetPasswordScreen />);
+      renderApolloNavigator(<SetPasswordScreen />, []);
       expect(screen.getAllByTestId("custom text input")).toHaveLength(2);
     });
     it("should render 3 CustomTextInput components when user is signed in", () => {
       (useAppSelector as jest.Mock).mockReturnValue(true);
-      renderNavigator(<SetPasswordScreen />);
+      renderApolloNavigator(<SetPasswordScreen />, []);
       expect(screen.getAllByTestId("custom text input")).toHaveLength(3);
     });
     it("should render the new password and confirm password inputs", () => {
@@ -206,10 +227,10 @@ describe("When Testing Authentication Screens: ", () => {
     });
     it("should render the old password input only when user is signed in", () => {
       (useAppSelector as jest.Mock).mockReturnValue(true);
-      renderNavigator(<SetPasswordScreen />);
+      renderApolloNavigator(<SetPasswordScreen />, []);
       expect(screen.getByPlaceholderText("Old password")).toBeOnTheScreen();
       (useAppSelector as jest.Mock).mockReturnValue(false);
-      renderNavigator(<SetPasswordScreen />);
+      renderApolloNavigator(<SetPasswordScreen />, []);
       expect(screen.queryByPlaceholderText("Old password")).toBeNull();
     });
     it("should render the SubmitButton component", () => {
@@ -220,7 +241,8 @@ describe("When Testing Authentication Screens: ", () => {
 
   describe("<SignUpScreen />: ", () => {
     beforeEach(() => {
-      render(<SignUpScreen />);
+      const mocks: any = [];
+      renderApollo(<SignUpScreen />, mocks);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("signup screen")).toBeOnTheScreen();
@@ -258,7 +280,7 @@ describe("When Testing Authentication Screens: ", () => {
     describe("When the vendor status is true", () => {
       beforeEach(() => {
         (useAppSelector as jest.Mock).mockReturnValue(true);
-        render(<SignUpScreen />);
+        renderApollo(<SignUpScreen />, []);
       });
       it("should render the business name input", () => {
         expect(screen.getByPlaceholderText("Business name")).toBeOnTheScreen();
@@ -283,7 +305,7 @@ describe("When Testing Authentication Screens: ", () => {
     describe("When the vendor status is false", () => {
       beforeEach(() => {
         (useAppSelector as jest.Mock).mockReturnValue(false);
-        render(<SignUpScreen />);
+        renderApollo(<SignUpScreen />, []);
       });
       it("should render the first name input", () => {
         expect(screen.getByPlaceholderText("First name")).toBeOnTheScreen();
@@ -332,7 +354,7 @@ describe("When Testing Authentication Screens: ", () => {
 
   describe("<VerifyEmailScreen />: ", () => {
     beforeEach(() => {
-      renderNavigator(<VerifyEmailScreen />);
+      renderApolloNavigator(<VerifyEmailScreen />, []);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("verify email screen")).toBeOnTheScreen();

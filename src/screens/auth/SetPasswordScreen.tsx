@@ -1,11 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getAuthStatus, getVendorStatus, setAuthStatus } from "@api/slices/globalSlice";
+import { SET_PASSWORD } from "@api/graphql";
+import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
 import { CustomTextInput, SubmitButton } from "@components/auth";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { AuthNavigationProps, ResetPasswordInterface } from "@interfaces";
-import { useNavigation } from "@react-navigation/native";
-import { fonts } from "@utils";
+import { AuthNavigationProps, ResetPasswordInterface, SetPasswordRouteProps } from "@interfaces";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { fonts, setItem } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,19 +19,35 @@ const SetPasswordScreen = () => {
   const insets = useSafeAreaInsets();
   const dispatch = useAppDispatch();
   const { color } = useAppTheme();
-  const isSignedIn = useAppSelector(getAuthStatus);
-  const { goBack } = useNavigation<AuthNavigationProps>();
+  const isVendor = useAppSelector(getVendorStatus);
+  const { params: { entityId } } = useRoute<SetPasswordRouteProps>();
+  const isSignedIn = useAppSelector(getEntity);
+  const [setPassword, { data, loading }] = useMutation(SET_PASSWORD);
+  const { goBack, navigate } = useNavigation<AuthNavigationProps>();
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
-  const onSubmit = (data: ResetPasswordInterface) => {
+  const onSubmit = async (data: ResetPasswordInterface) => {
     reset();
     if (!isSignedIn) {
-      dispatch(setAuthStatus(true));
+      const input = { entityId, password: data.password };
+      await setPassword({ variables: { input } });
     }
   };
 
   useEffect(() => {
     setTimeout(() => setFocus(isSignedIn ? "oldPassword" : "password"), 0);
   }, []);
+  useEffect(() => {
+    if (data) {
+      const res = data.forgotPassword;
+      const entityId = res.entityId;
+      const name = isVendor ? res.vendor.businessName : `${res.user.firstName} ${res.user.lastName}`;
+      (async () => {
+        await setItem("huelageEntityId", entityId);
+        await setItem("huelageEntityName", name);
+      })();
+      navigate("Login");
+    }
+  }, [data]);
   return (
     <>
       <StatusBar style="auto" />
@@ -118,7 +136,7 @@ const SetPasswordScreen = () => {
               validate: value => value === watch("password") || "Passwords do not match"
             }}
           />
-          <SubmitButton label="Change Password" onSubmit={handleSubmit(onSubmit)} />
+          <SubmitButton label="Change Password" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
         </View>
       </View>
     </>

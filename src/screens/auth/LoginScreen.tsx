@@ -1,17 +1,48 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { LOGIN_USER, LOGIN_VENDOR } from "@api/graphql";
+import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
+import {
+  AuthNavigate,
+  LoginInputs,
+  SubmitButton,
 import { getVendorStatus, setAuthStatus } from "@api/slices/globalSlice";
 import { AuthNavigate, CustomTextInput, SubmitButton, UserVendor, } from "@components/auth";
+} from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface } from "@interfaces";
+import {
+  AuthNavigationProps,
+  BiometricsInterface,
+  LoginInfoInterface,
+  entityInterface,
+} from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { BiometricType, enableBiometrics, fonts, getBiometrics, loginWithBiometrics, } from "@utils";
+import {
+  BiometricType,
+  enableBiometrics,
+  fonts,
+  getBiometrics,
+  getItem,
+  loginWithBiometrics,
+  setItem,
+} from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  Alert,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Animated from "react-native-reanimated";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
@@ -20,51 +51,121 @@ const LoginScreen = () => {
   const inset = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
+  const [login_user, { data: uData, loading: uLoading }] =
+    useMutation(LOGIN_USER);
+  const [login_vendor, { data: vData, loading: vLoading }] =
+    useMutation(LOGIN_VENDOR);
   const [useSaved, setUseSaved] = useState<boolean>(true);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
-  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
+  const [savedDetails, setSavedDetails] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+  const {
+    handleSubmit,
+    control,
+    setFocus,
+    reset,
+    formState: { errors },
+  } = useForm<LoginInfoInterface>({ mode: "onChange" });
   let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null =
     null;
   if (bioSpecs?.hasBiometrics && bioSpecs?.isEnrolled) {
     bioDetail = BiometricType[bioSpecs.biometricType[0]];
   }
+  const loginwithsaved: boolean =
+    (!!savedDetails && useSaved) || (!!bioDetail && useSaved);
 
-  const onSubmit: SubmitHandler<LoginInfoInterface> = (data) => {
+  const onSubmit: SubmitHandler<LoginInfoInterface> = async (data) => {
+    let input;
+    if (savedDetails && useSaved) {
+      const entityId = await getItem("huelageEntityId");
+      input = { entityId, password: data.password };
+    } else {
+      input = data;
+    }
+    isVendor
+      ? await login_vendor({ variables: { input } })
+      : await login_user({ variables: { input } });
     if (!bioDetail) {
       Alert.alert(
         "Enable Biometric Login?",
         "Enjoy quicker, secure access with biometric authentication. Enable it now?",
         [
-          {
-            text: "Enable",
-            onPress: enableBiometrics,
-          },
-          {
-            text: "Not now",
-            onPress: () => console.log("Cancel Pressed"),
-          },
+          { text: "Enable", onPress: enableBiometrics },
+          { text: "Not now", onPress: () => {} },
         ]
       );
-      return;
     }
     reset();
-    dispatch(setAuthStatus(true));
   };
 
   useEffect(() => {
-    (async () => {
-      const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
-      setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
-    })();
+    const getData = async () => {
+      const id = await getItem("huelageEntityId");
+      const name = await getItem("huelageEntityName");
+      if (id && name) {
+        setSavedDetails({ id, name });
+        const { hasBiometrics, isEnrolled, biometricType } =
+          await getBiometrics();
+        setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
+      }
+    };
+    getData();
   }, []);
   useEffect(() => {
-    setTimeout(() => setFocus(!bioDetail || !useSaved ? (isVendor ? "vendorId" : "email") : "password"), 0);
+    setTimeout(
+      () =>
+        setFocus(
+          !loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"
+        ),
+      0
+    );
     reset();
-  }, [isVendor, useSaved, bioDetail]);
+  }, [isVendor, loginwithsaved]);
+  useEffect(() => {
+    if (uData || vData) {
+      const res = isVendor ? vData.signInVendor : uData.signInUser;
+      let entity: entityInterface = {
+        id: res.entity.entityId,
+        walletId: res.entity.wallet.walletId,
+        email: res.entity.email,
+        phone: res.entity.phone,
+        imgUrl: res.entity.imgUrl,
+      };
+      if (isVendor) {
+        entity.repName = res.repName;
+        entity.businessName = res.businessName;
+        entity.businessAddress = res.businessAddress;
+      } else {
+        entity.firstName = res.firstName;
+        entity.lastName = res.lastName;
+      }
+      const [accessToken, refreshToken] = [
+        res.entity.accessToken,
+        res.entity.refreshToken,
+      ];
+      const name = isVendor
+        ? res.businessName
+        : `${res.firstName} ${res.lastName}`;
+      (async () => {
+        await setItem("huelageRefreshToken", refreshToken);
+        await setItem("huelageEntityId", res.entity.entityId);
+        await setItem("huelageEntityName", name);
+      })();
+      dispatch(setCredentials({ entity, accessToken }));
+    }
+  }, [uData, vData]);
   return (
     <>
       <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen'>
+      <View
+        style={[
+          styles.container,
+          { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 },
+        ]}
+        testID="login screen"
+      >
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag="huelageLogo"
@@ -72,100 +173,46 @@ const LoginScreen = () => {
             testID="logo image"
             source={require("@images/onboard_logo.png")}
           />
-          <Text style={[styles.welcomeText, { color: color.mainGreen }]}>
-            Welcome Back!
-          </Text>
+          <View style={styles.welcomeBox}>
+            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>
+              Welcome Back!
+            </Text>
+            <Text style={[styles.welcomeName, { color: color.mainText }]}>
+              {loginwithsaved ? savedDetails?.name : "Login to continue"}
+            </Text>
+          </View>
         </View>
         <View
           style={styles.inputContainer}
           onTouchStart={() => Keyboard.dismiss()}
         >
           <UserVendor />
-          <View style={{ gap: 20 }}>
-            {(!useSaved || !bioDetail) &&
-              (isVendor ? (
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      error={errors.vendorId}
-                      isPass={false}
-                      innerRef={ref}
-                      label="Vendor ID"
-                      keyboardType="number-pad"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("password")}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="vendorId"
-                  rules={{
-                    required: "Vendor ID is required",
-                  }}
-                />
-              ) : (
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value, ref } }) => (
-                    <CustomTextInput
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      error={errors.email}
-                      isPass={false}
-                      innerRef={ref}
-                      keyboardType="email-address"
-                      label="Email address"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      onSubmitEditing={() => setFocus("password")}
-                      returnKeyType="next"
-                      value={value}
-                    />
-                  )}
-                  name="email"
-                  rules={{
-                    required: "Email is required",
-                    pattern: {
-                      value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
-                      message: "Email is invalid",
-                    },
-                  }}
-                />
-              ))}
-            <Controller
+          <View style={styles.inputs}>
+            <LoginInputs
+              isVendor={isVendor}
+              loginwithsaved={loginwithsaved}
               control={control}
-              render={({ field: { onChange, onBlur, value, ref } }) => (
-                <CustomTextInput
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  error={errors.password}
-                  isPass={true}
-                  innerRef={ref}
-                  label="Password"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  onSubmitEditing={handleSubmit(onSubmit)}
-                  value={value}
-                />
-              )}
-              name="password"
-              rules={{ required: "Password is required" }}
+              errors={errors}
+              setFocus={setFocus}
+              submit={handleSubmit(onSubmit)}
             />
             <TouchableOpacity onPress={() => navigate("ForgotPassword")}>
               <Text style={[styles.forgotText, { color: color.mainText }]}>
                 Forgot Password?
               </Text>
             </TouchableOpacity>
-            <SubmitButton label="LOG IN" onSubmit={handleSubmit(onSubmit)} />
+            <SubmitButton
+              label="LOG IN"
+              isLoading={uLoading || vLoading}
+              onSubmit={handleSubmit(onSubmit)}
+            />
           </View>
-          {bioDetail && useSaved ? (
+          {loginwithsaved && bioDetail ? (
             <View style={styles.footer}>
               <TouchableOpacity onPress={() => setUseSaved(!useSaved)}>
-                <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
+                <Text style={[styles.switchText, { color: color.mainGreen }]}>
+                  Switch account
+                </Text>
               </TouchableOpacity>
               <View style={styles.biometricBox}>
                 <Text style={[styles.biometricText, { color: color.mainText }]}>
@@ -173,15 +220,31 @@ const LoginScreen = () => {
                 </Text>
                 <TouchableOpacity
                   onPress={loginWithBiometrics}
-                  testID='biometric button'
-                  style={[styles.biometricButton, { borderColor: color.mainGreen }]}
+                  testID="biometric button"
+                  style={[
+                    styles.biometricButton,
+                    { borderColor: color.mainGreen },
+                  ]}
                 >
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>
               </View>
             </View>
           ) : (
-            <AuthNavigate page="SI" />
+            <>
+              {loginwithsaved && (
+                <View style={styles.footer}>
+                  <TouchableOpacity onPress={() => setUseSaved(!useSaved)}>
+                    <Text
+                      style={[styles.switchText, { color: color.mainGreen }]}
+                    >
+                      Switch account
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              <AuthNavigate page="SI" />
+            </>
           )}
         </View>
         <Text style={[styles.contactText, { color: color.mainText }]}>
@@ -220,17 +283,29 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
   },
+  welcomeBox: {
+    alignItems: "center",
+    gap: 5,
+  },
   welcomeText: {
     fontFamily: fonts.I_700,
     fontSize: 25,
     letterSpacing: 0.5,
   },
+  welcomeName: {
+    fontFamily: fonts.I_700,
+    fontSize: 18,
+    letterSpacing: 0.5,
+  },
   inputContainer: {
     flex: 1,
-    gap: 25,
+    gap: 20,
     paddingHorizontal: wp("8%") + 8,
-    paddingVertical: hp("4%"),
+    paddingVertical: hp("3%"),
     width: "100%",
+  },
+  inputs: {
+    gap: 20,
   },
   forgotText: {
     alignSelf: "flex-end",
@@ -273,5 +348,5 @@ const styles = StyleSheet.create({
   contactText: {
     fontFamily: fonts.I_400,
     fontSize: 14,
-  }
+  },
 });

@@ -24,8 +24,10 @@ const ProfileScreen = () => {
       >
         <View style={styles.mainBox}>
           <ProfileInfo />
+          <ProfileList />
         </View>
         <View style={[styles.horizontalLine]}></View>
+        <ProfileList2 />
       </ScrollView>
     </>
   );

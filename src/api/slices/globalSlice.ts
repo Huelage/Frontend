@@ -1,13 +1,14 @@
 import { RootState } from "@api/app/store";
-import { CartInterface, globalStateInterface } from "@interfaces";
+import { CartInterface, entityInterface, globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
-  isAuthenticated: false,
   isVendor: false,
+  entity: null,
+  accessToken: null,
   themeType: "system",
-  theme: "light",
+  theme: "dark",
   cart: [],
 };
 
@@ -15,8 +16,14 @@ const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
-    setAuthStatus: (state, action: PayloadAction<boolean>) => {
-      state.isAuthenticated = action.payload;
+    setCredentials: (state, action: PayloadAction<{ entity: entityInterface, accessToken: string; }>) => {
+      const { entity, accessToken } = action.payload;
+      state.entity = entity;
+      state.accessToken = accessToken;
+    },
+    clearCredentials: (state) => {
+      state.entity = null;
+      state.accessToken = null;
     },
     setVendorStatus: (state, action: PayloadAction<boolean>) => {
       state.isVendor = action.payload;
@@ -47,16 +54,17 @@ const globalSlice = createSlice({
 export const {
   addToCart,
   clearCart,
+  clearCredentials,
   removeFromCart,
   updateCart,
-  setAuthStatus,
+  setCredentials,
   setVendorStatus,
   switchTheme
 } = globalSlice.actions;
 // Selectors
-export const getAuthStatus = (state: RootState) => state.global.isAuthenticated;
 export const getTheme = (state: RootState) => state.global.theme;
 export const getVendorStatus = (state: RootState) => state.global.isVendor;
 export const getCart = (state: RootState) => state.global.cart;
+export const getEntity = (state: RootState) => state.global.entity;
 // Reducer
 export default globalSlice.reducer;
