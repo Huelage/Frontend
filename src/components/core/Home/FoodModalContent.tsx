@@ -2,19 +2,19 @@ import restuarants from '@api/mock/mockRestaurants';
 import { CustomImage } from '@components/misc';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { FoodInterface } from '@interfaces';
+import { UserFoodInterface } from '@interfaces';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
 
-interface ModalInterface extends Partial<FoodInterface> {
-  imgUrl: string;
+interface ModalInterface extends Partial<UserFoodInterface> {
+  img_url: string;
   close: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
+const FoodModalContent = ({ img_url, name, description, close }: ModalInterface) => {
   const { color } = useAppTheme();
   return (
     <View style={[styles.container, { backgroundColor: color.modalBg }]} testID='food modal content'>
@@ -22,11 +22,11 @@ const FoodModalContent = ({ imgUrl, name, desc, close }: ModalInterface) => {
         <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)} testID='close button'>
           <Ionicons name="close" size={30} color="white" />
         </TouchableOpacity>
-        <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
+        <CustomImage imgUrl={img_url} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
-        <Text style={styles.foodDesc}>{desc}</Text>
+        <Text style={styles.foodDesc}>{description}</Text>
       </View>
       <Text style={[styles.foodBuyFromTitle, { color: color.mainText }]}>Available at</Text>
       <FlatList
