@@ -1,3 +1,6 @@
+import { useAppDispatch } from '@api/app/appHooks';
+import { mockFoods } from '@api/mock';
+import { addItemToCart } from '@api/slices/globalSlice';
 import { CustomButton, CustomCarousel } from '@components/core/Home';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
@@ -6,7 +9,12 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const Categories = () => {
   const { color } = useAppTheme();
+  const dispatch = useAppDispatch();
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
+  const addToCart = (id: string) => {
+    const payload = { id: "", item_id: id, quantity: 1 };
+    dispatch(addItemToCart(payload));
+  };
   const handleCategory = (category: string) => console.log(category);
   return (
     <View style={styles.categories} testID='categories'>
@@ -24,7 +32,7 @@ const Categories = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-      <CustomCarousel />
+      <CustomCarousel items={mockFoods} addToCart={addToCart} />
     </View>
   );
 };

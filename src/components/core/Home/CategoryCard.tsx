@@ -1,7 +1,7 @@
-import { RatingCard } from '@components/core/Detail';
 import { CustomImage } from '@components/misc';
 import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
+import { UserFoodInterface } from '@interfaces';
 import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
@@ -9,19 +9,27 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-interface CategoryCardInterface {
+interface CategoryCardInterface extends UserFoodInterface {
   idx: number;
-  name: string;
-  rating: number;
-  price: number;
-  imgUrl: string;
-  addToCart: () => void;
   animationValue: Animated.SharedValue<number>;
+  addToCart: (id: string) => void;
 }
-const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
+const CategoryCard = ({ id, idx, name, pricing_method, price, package_sizes, img_url, animationValue, addToCart }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
+  if (pricing_method === 'package') {
+    price = package_sizes && package_sizes[0].price;
+  }
+  let p_method;
+  switch (pricing_method) {
+    case 'price':
+      p_method = 'Min Price';
+      break;
+    default:
+      p_method = 'Price';
+      break;
+  }
 
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -96,18 +104,25 @@ const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationVa
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
           <Text style={[styles.itemName, { color: color.mainText }]}>{name}</Text>
-          <RatingCard rating={rating} />
-          <Text style={[styles.itemPrice, { color: color.mainText }]}>₦ {price?.toFixed(2)}</Text>
+          <Text style={[styles.itemVendorName, { color: color.mainGreen }]}>Pricing Details</Text>
+          <View style={styles.priceBox}>
+            <Text style={[styles.itemPrice, { color: color.mainGreen }]}>Method: </Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>{pricing_method.toUpperCase()}</Text>
+          </View>
+          <View style={styles.priceBox}>
+            <Text style={[styles.itemPrice, { color: color.mainGreen }]}>{p_method}: </Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>₦ {price?.toFixed(2)}</Text>
+          </View>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
-            <TouchableOpacity testID='addToCart' style={styles.itemBuyIcon} onPress={addToCart}>
+            <TouchableOpacity testID={'addToCart'} style={styles.itemBuyIcon} onPress={() => addToCart(id)}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
           </View>
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+        <CustomImage imgUrl={img_url} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );
@@ -165,6 +180,13 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
     paddingHorizontal: 15
+  },
+  priceBox: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    width: "100%"
   },
   itemVendorName: {
     fontFamily: fonts.I_600,

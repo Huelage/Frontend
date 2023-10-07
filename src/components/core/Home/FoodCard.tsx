@@ -1,17 +1,16 @@
 import { CustomImage, CustomModal } from '@components/misc';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { FoodInterface } from '@interfaces';
+import { UserFoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
 import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalContent from './FoodModalContent';
 
 
-const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: FoodInterface) => {
+const FoodCard = ({ img_url, name, isFavourite, description }: UserFoodInterface) => {
   const { color } = useAppTheme();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(isFavourite);
@@ -25,11 +24,7 @@ const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: Food
         </Canvas>
         <View style={styles.foodDetails}>
           <View style={styles.foodIntro}>
-            <View style={styles.foodRatingBox}>
-              <Ionicons name="star" size={14} color="#47CA4C" />
-              <Text style={[styles.foodRating, { color: color.mainText }]}>{rating.toFixed(1)}</Text>
-            </View>
-            <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
+            <CustomImage imgUrl={img_url} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
             <CheckBox
               checked={isFav}
               onPress={() => setIsFav(!isFav)}
@@ -42,19 +37,15 @@ const FoodCard = ({ imgUrl, name, price, rating, cals, isFavourite, desc }: Food
             />
           </View>
           <TouchableWithoutFeedback testID='toggle modal' onPress={() => setShowModal(true)}>
-            <View>
+            <View style={styles.detailBox}>
               <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
-              <View style={styles.foodCalories}>
-                <MaterialCommunityIcons name="fire" size={22} color="#47CA4C" />
-                <Text style={[styles.foodCaloriesText, { color: color.mainText }]}>{cals} KCal</Text>
-              </View>
-              <Text style={[styles.foodPrice, { color: color.mainText }]}>₦{price}</Text>
+              <Text style={[styles.foodPrice, { color: color.mainText }]} numberOfLines={2}>{description}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
       </View>
       <CustomModal isVisible={showModal}>
-        <FoodModalContent close={setShowModal} imgUrl={imgUrl} name={name} desc={desc} />
+        <FoodModalContent close={setShowModal} img_url={img_url} name={name} description={description} />
       </CustomModal>
     </>
   );
@@ -85,9 +76,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flexDirection: 'row',
     gap: 5,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     width: '100%',
     marginBottom: 35
+  },
+  detailBox: {
+    alignItems: 'center',
+    gap: 5,
+    justifyContent: 'center',
+    paddingHorizontal: 10
   },
   foodImageContainer: {
     alignItems: 'center',
@@ -96,7 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     left: (wp('60%') - 140) / 2,
     position: 'absolute',
-    top: -hp("8%"),
+    top: -65,
     width: 120,
     zIndex: 2
   },
@@ -112,7 +109,7 @@ const styles = StyleSheet.create({
   },
   foodName: {
     fontFamily: fonts.I_700,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center'
   },
   foodPrice: {
