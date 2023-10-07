@@ -50,7 +50,7 @@ describe("When testing the individual reducers", () => {
     );
   });
   it("should add an item to the cart when the addToCart action is dispatched", () => {
-    const action = "global/addToCart";
+    const action = "global/addItemToCart";
     const payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual(
@@ -59,7 +59,7 @@ describe("When testing the individual reducers", () => {
   });
   it("should increase the quantity of an item in the cart when the addToCart action is dispatched with an item that already exists in the cart", () => {
     const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/addToCart";
+    const action = "global/addItemToCart";
     const payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual(

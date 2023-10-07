@@ -121,21 +121,29 @@ describe("When Testing Core Detail Components: ", () => {
 
 describe("When Testing Core Home Components: ", () => {
   describe("<CategoryCard />: ", () => {
-    const category = { idx: 1, name: "test", rating: 5, price: 100, imgUrl: "test", addToCart: jest.fn(), animationValue: { value: 1 } };
+    const category = { ...foodData, idx: 1, addToCart: jest.fn(), animationValue: { value: 1 } };
     beforeEach(() => {
       render(<CategoryCard {...category} />);
     });
     it("should render the component", () => {
-      expect(screen.getByTestId("category card")).toBeOnTheScreen();
+      expect(screen.getByTestId(/category card/i)).toBeOnTheScreen();
     });
     it("should render the category name", () => {
-      expect(screen.getByText("test")).toBeOnTheScreen();
+      expect(screen.getByText(foodData.name)).toBeOnTheScreen();
     });
-    it("should render the category rating", () => {
-      expect(screen.getByText(/5.0/i)).toBeOnTheScreen();
+    it("should render the category pricing box", () => {
+      expect(screen.getByText(/pricing details/i)).toBeOnTheScreen();
+    });
+    it("should render the category pricing method", () => {
+      expect(screen.getByText(/method:/i)).toBeOnTheScreen();
+      expect(screen.getByText(foodData.pricing_method.toUpperCase())).toBeOnTheScreen();
     });
     it("should render the category price", () => {
-      expect(screen.getByText(/100.00/i)).toBeOnTheScreen();
+      expect(screen.getByText(/price:/i)).toBeOnTheScreen();
+      expect(screen.getByText(`₦ ${foodData.price?.toFixed(2)}`)).toBeOnTheScreen();
+    });
+    it("should render the vendor name", () => {
+      expect(screen.getByText(/korede's joint/i)).toBeOnTheScreen();
     });
     it("should render the category image", () => {
       expect(screen.getByTestId("categoryImage")).toBeOnTheScreen();
@@ -173,8 +181,9 @@ describe("When Testing Core Home Components: ", () => {
   });
 
   describe("<CustomCarousel />: ", () => {
+    const items = [foodData];
     beforeEach(() => {
-      render(<CustomCarousel />);
+      render(<CustomCarousel items={items} addToCart={jest.fn()} />);
     });
     it("should render the carousel", () => {
       expect(screen.getByTestId("carousel")).toBeOnTheScreen();
@@ -198,17 +207,11 @@ describe("When Testing Core Home Components: ", () => {
     it("should render the component", () => {
       expect(screen.getByTestId("food card")).toBeOnTheScreen();
     });
-    it("should render the food name", () => {
+    it("should render the food item name", () => {
       expect(screen.getAllByText(foodData.name)).not.toBeNull();
     });
-    it("should render the food rating", () => {
-      expect(screen.getByText(foodData.rating.toFixed(1))).toBeOnTheScreen();
-    });
-    it("should render the food calories", () => {
-      expect(screen.getByText(`${foodData.cals} KCal`)).toBeOnTheScreen();
-    });
-    it("should render the food price", () => {
-      expect(screen.getByText(`₦${foodData.price}`)).toBeOnTheScreen();
+    it("should render the food item description", () => {
+      expect(screen.getAllByText(foodData.description)).not.toBeNull();
     });
     it("should render the favourite toggle button", () => {
       expect(screen.getByTestId("favourite toggle")).toBeOnTheScreen();
@@ -247,7 +250,7 @@ describe("When Testing Core Home Components: ", () => {
       expect(screen.getByText(foodData.name)).toBeOnTheScreen();
     });
     it("should render the food description", () => {
-      expect(screen.getByText(foodData.desc)).toBeOnTheScreen();
+      expect(screen.getByText(foodData.description)).toBeOnTheScreen();
     });
     it("should render the available at list", () => {
       const list = screen.getByTestId("available at list");
