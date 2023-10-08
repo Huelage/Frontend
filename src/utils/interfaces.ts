@@ -197,13 +197,13 @@ export interface UserFoodInterface {
   id: string;
   name: string;
   description: string;
-  img_url: string;
+  imgUrl: string;
   category: string;
   isFavourite: boolean;
-  pricing_method: "price" | "portion" | "fixed" | "package";
+  pricingMethod: "PRICE" | "PORTION" | "FIXED" | "PACKAGE";
   price?: number;
-  package_sizes?: { name: string; price: number; }[];
-  availability: "available" | "temporarily unavailable" | "unavailable";
+  packageSizes?: { name: string; price: number; }[];
+  availability: "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
   sides?: FoodSideInterface[];
 }
 

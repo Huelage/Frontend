@@ -10,11 +10,11 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FoodModalResCard from './FoodModalResCard';
 
 interface ModalInterface extends Partial<UserFoodInterface> {
-  img_url: string;
+  imgUrl: string;
   close: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FoodModalContent = ({ img_url, name, description, close }: ModalInterface) => {
+const FoodModalContent = ({ imgUrl, name, description, close }: ModalInterface) => {
   const { color } = useAppTheme();
   return (
     <View style={[styles.container, { backgroundColor: color.modalBg }]} testID='food modal content'>
@@ -22,7 +22,7 @@ const FoodModalContent = ({ img_url, name, description, close }: ModalInterface)
         <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)} testID='close button'>
           <Ionicons name="close" size={30} color="white" />
         </TouchableOpacity>
-        <CustomImage imgUrl={img_url} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
+        <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>

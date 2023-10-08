@@ -1,9 +1,8 @@
 import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
-import { CategoryCard, CustomButton, CustomCarousel, FoodCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
-import FoodModalContent from "@components/core/Home/FoodModalContent";
-import FoodModalResCard from "@components/core/Home/FoodModalResCard";
+import { CategoryCard, CustomButton, CustomCarousel, FoodCard, MainSearchBar, RestaurantCard, FoodModalContent, FoodModalResCard } from "@components/core/Home";
+import { DetailElement } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
@@ -136,7 +135,7 @@ describe("When Testing Core Home Components: ", () => {
     });
     it("should render the category pricing method", () => {
       expect(screen.getByText(/method:/i)).toBeOnTheScreen();
-      expect(screen.getByText(foodData.pricing_method.toUpperCase())).toBeOnTheScreen();
+      expect(screen.getByText(foodData.pricingMethod)).toBeOnTheScreen();
     });
     it("should render the category price", () => {
       expect(screen.getByText(/price:/i)).toBeOnTheScreen();
@@ -350,6 +349,31 @@ describe("When Testing Core Vendor Components: ", () => {
     });
     it("should render view button", () => {
       expect(screen.getByText("View")).toBeOnTheScreen();
+    });
+  });
+});
+
+describe("When Testing Core Profile Components: ", () => {
+  describe("<DetailElement />: ", () => {
+    beforeEach(() => {
+      render(<DetailElement label="test" value="test value" />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("detail element")).toBeOnTheScreen();
+    });
+    it("should render the label", () => {
+      expect(screen.getByText("test")).toBeOnTheScreen();
+    });
+    it("should render the value", () => {
+      expect(screen.getByText("test value")).toBeOnTheScreen();
+    });
+    it("should render the verified icon when the element is verifiable", () => {
+      render(<DetailElement label="test" value="test value" verifible isVerified />);
+      expect(screen.getByTestId("verified")).toBeOnTheScreen();
+    });
+    it("should render the unverified icon when the element is verifiable but the value is unverified", () => {
+      render(<DetailElement label="test" value="test value" verifible />);
+      expect(screen.getByTestId("unverified")).toBeOnTheScreen();
     });
   });
 });
