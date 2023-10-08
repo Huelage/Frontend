@@ -22,6 +22,7 @@ const CartScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Cart</Text>
       </View>
+      <View style={[styles.headerUnderline, { backgroundColor: color.mainGreen }]} />
       <View style={styles.cartBody}>
         <FlatList
           data={mockCartItems}
@@ -31,8 +32,8 @@ const CartScreen = () => {
           renderItem={({ item }) => (
             <CartItem {...item} />
           )}
-          contentContainerStyle={{ gap: 20 }}
-          style={{ flex: 1 }}
+          contentContainerStyle={styles.listContainerStyle}
+          style={styles.listStyle}
         />
         <CartOverview />
       </View>
@@ -52,6 +53,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 10
   },
+  headerUnderline: {
+    height: 2
+  },
   backButton: {
     position: "absolute",
     left: 10
@@ -63,5 +67,11 @@ const styles = StyleSheet.create({
   cartBody: {
     flex: 1,
     gap: 20
+  },
+  listContainerStyle: {
+    gap: 20
+  },
+  listStyle: {
+    flex: 1
   }
 });
