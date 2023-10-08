@@ -1,4 +1,4 @@
-import { CartScreen, DetailScreen, HomeScreen, VendorScreen } from "@screens/core";
+import { CartScreen, DetailScreen, HomeScreen, PersonalDetailScreen, VendorScreen } from "@screens/core";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { renderNavigator } from "../testhelpers";
 import { Keyboard } from "react-native";
@@ -82,27 +82,51 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     });
   });
 
-  describe("<VendorScreen />: ", () => {
-    beforeEach(() => {
-      render(<VendorScreen />);
+  describe("Vendor Screens: ", () => {
+    describe("<VendorScreen />: ", () => {
+      beforeEach(() => {
+        render(<VendorScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
+      });
+      it("should render the MainSearchBar component", () => {
+        expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
+      });
+      it("should render the vendors list", () => {
+        expect(screen.getByTestId("vendors list")).toBeOnTheScreen();
+      });
+      it("should render the vendors using the VendorResCard component", () => {
+        expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
+      });
+      it("should call the search function when the search bar is used", () => {
+        console.log = jest.fn();
+        render(<VendorScreen />);
+        testSearchFunc();
+        console.log = console.log.bind(console);
+      });
     });
-    it("should render the component correctly", () => {
-      expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
-    });
-    it("should render the MainSearchBar component", () => {
-      expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
-    });
-    it("should render the vendors list", () => {
-      expect(screen.getByTestId("vendors list")).toBeOnTheScreen();
-    });
-    it("should render the vendors using the VendorResCard component", () => {
-      expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
-    });
-    it("should call the search function when the search bar is used", () => {
-      console.log = jest.fn();
-      render(<VendorScreen />);
-      testSearchFunc();
-      console.log = console.log.bind(console);
+  });
+
+  describe("Profile Screens: ", () => {
+    describe("<PersonalDetailScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue({ id: 123 });
+        render(<PersonalDetailScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("personal detail screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Personal Details")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+      it("should render the detail elements", () => {
+        expect(screen.getAllByTestId("detail element")).not.toBeNull();
+        expect(screen.getAllByTestId("detail element")).toHaveLength(4);
+      });
     });
   });
 });
