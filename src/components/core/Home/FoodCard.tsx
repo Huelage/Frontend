@@ -10,7 +10,7 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalContent from './FoodModalContent';
 
 
-const FoodCard = ({ img_url, name, isFavourite, description }: UserFoodInterface) => {
+const FoodCard = ({ imgUrl, name, isFavourite, description }: UserFoodInterface) => {
   const { color } = useAppTheme();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(isFavourite);
@@ -24,7 +24,7 @@ const FoodCard = ({ img_url, name, isFavourite, description }: UserFoodInterface
         </Canvas>
         <View style={styles.foodDetails}>
           <View style={styles.foodIntro}>
-            <CustomImage imgUrl={img_url} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
+            <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />
             <CheckBox
               checked={isFav}
               onPress={() => setIsFav(!isFav)}
@@ -45,7 +45,7 @@ const FoodCard = ({ img_url, name, isFavourite, description }: UserFoodInterface
         </View>
       </View>
       <CustomModal isVisible={showModal}>
-        <FoodModalContent close={setShowModal} img_url={img_url} name={name} description={description} />
+        <FoodModalContent close={setShowModal} imgUrl={imgUrl} name={name} description={description} />
       </CustomModal>
     </>
   );

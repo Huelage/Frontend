@@ -14,16 +14,16 @@ interface CategoryCardInterface extends UserFoodInterface {
   animationValue: Animated.SharedValue<number>;
   addToCart: (id: string) => void;
 }
-const CategoryCard = ({ id, idx, name, pricing_method, price, package_sizes, img_url, animationValue, addToCart }: CategoryCardInterface) => {
+const CategoryCard = ({ id, idx, name, pricingMethod, price, packageSizes, imgUrl, animationValue, addToCart }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
-  if (pricing_method === 'package') {
-    price = package_sizes && package_sizes[0].price;
+  if (pricingMethod === 'PACKAGE') {
+    price = packageSizes && packageSizes[0].price;
   }
   let p_method;
-  switch (pricing_method) {
-    case 'price':
+  switch (pricingMethod) {
+    case 'PRICE':
       p_method = 'Min Price';
       break;
     default:
@@ -107,7 +107,7 @@ const CategoryCard = ({ id, idx, name, pricing_method, price, package_sizes, img
           <Text style={[styles.itemVendorName, { color: color.mainGreen }]}>Pricing Details</Text>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>Method: </Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]}>{pricing_method.toUpperCase()}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>{pricingMethod}</Text>
           </View>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>{p_method}: </Text>
@@ -122,7 +122,7 @@ const CategoryCard = ({ id, idx, name, pricing_method, price, package_sizes, img
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={img_url} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );
