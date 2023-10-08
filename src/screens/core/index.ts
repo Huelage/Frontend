@@ -1,6 +1,10 @@
-export { default as VendorScreen } from "./VendorScreen";
-export { default as HomeScreen } from "./HomeScreen";
-export { default as MyOrdersScreen } from "./MyOrdersScreen";
-export { default as ProfileScreen } from "./ProfileScreen";
-export { default as DetailScreen } from "./DetailScreen";
 export { default as CartScreen } from "./CartScreen";
+export { default as DetailScreen } from "./DetailScreen";
+export { default as HomeScreen } from "./HomeScreen";
+// Order Screens
+export { default as MyOrdersScreen } from "./Orders/MyOrdersScreen";
+// Profile Screens
+export { default as PersonalDetailScreen } from "./Profile/PersonalDetailScreen";
+export { default as ProfileScreen } from "./Profile/ProfileScreen";
+// Vendor Screens
+export { default as VendorScreen } from "./Vendors/VendorScreen";
