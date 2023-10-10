@@ -30,6 +30,8 @@ export const LOGIN_USER = gql(`
         wallet {
           walletId
         }
+        isPhoneVerified
+        isEmailVerified
         accessToken
         refreshToken
       }
@@ -50,6 +52,8 @@ export const LOGIN_VENDOR = gql(`
         wallet {
           walletId
         }
+        isPhoneVerified
+        isEmailVerified
         accessToken
         refreshToken
       }
@@ -70,6 +74,8 @@ export const VERIFY_OTP = gql(`
       email
       phone
       imgUrl
+      isPhoneVerified
+      isEmailVerified
       refreshToken
       accessToken
       user {
