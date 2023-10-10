@@ -211,3 +211,8 @@ export interface FoodSideInterface {
   name: string;
   price: number;
 }
+
+export interface LocationInterface {
+  id: string;
+  name: string;
+}
