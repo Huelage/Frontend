@@ -1,4 +1,4 @@
-import { CartScreen, DetailScreen, HomeScreen, PersonalDetailScreen, VendorScreen } from "@screens/core";
+import { CartScreen, DetailScreen, HomeScreen, LocationScreen, PersonalDetailScreen, VendorScreen } from "@screens/core";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { renderNavigator } from "../testhelpers";
 import { Keyboard } from "react-native";
@@ -109,6 +109,46 @@ describe("When Testing Core(User Flow) Screens: ", () => {
   });
 
   describe("Profile Screens: ", () => {
+    describe("<LocationScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue({ id: 123 });
+        render(<LocationScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("location screen")).toBeOnTheScreen();
+      });
+      it("should not render component if user is not logged in", () => {
+        (useAppSelector as jest.Mock).mockReturnValue(null);
+        render(<LocationScreen />);
+        expect(screen.queryByTestId("location screen")).toBeNull();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Locations")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+      it("should render the locationInput component", () => {
+        expect(screen.getByTestId("location input")).toBeOnTheScreen();
+      });
+      it("should render the location list", () => {
+        expect(screen.getByTestId("location list")).toBeOnTheScreen();
+      });
+      it("should render the location elements using the LocationElement component", () => {
+        expect(screen.getAllByTestId("location element")).not.toBeNull();
+      });
+      it("should call the removeLocation function when the remove button is pressed", () => {
+        console.log = jest.fn();
+        render(<LocationScreen />);
+        const removeButtons = screen.getAllByTestId("remove button");
+        removeButtons.forEach(button => {
+          fireEvent.press(button);
+          expect(console.log).toBeCalled();
+        });
+        console.log = console.log.bind(console);
+      });
+    });
+
     describe("<PersonalDetailScreen />: ", () => {
       beforeEach(() => {
         (useAppSelector as jest.Mock).mockReturnValue({ id: 123 });
