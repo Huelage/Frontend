@@ -27,7 +27,7 @@ const PersonalDetailScreen = () => {
       </View>
       <View style={[styles.headerUnderline, { backgroundColor: color.mainGreen }]} />
       <ScrollView>
-        <View style={styles.cartBody}>
+        <View style={styles.detailBody}>
           <DetailElement label="First Name" value={entity.firstName as string} />
           <DetailElement label="Last Name" value={entity.lastName as string} />
           <DetailElement label="Phone Number" value={entity.phone} verifible />
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_500,
     fontSize: 20
   },
-  cartBody: {
+  detailBody: {
     flex: 1,
     gap: 25,
     paddingHorizontal: 20,
