@@ -16,7 +16,9 @@ describe("When Testing Authentication Screens: ", () => {
     lastName: "Doe",
     email: "mail@mail.com",
     phone: "+2349058731812",
-    imgUrl: null
+    imgUrl: null,
+    isPhoneVerified: false,
+    isEmailVerified: true
   };
   const vendorState = {
     id: "123",
@@ -26,7 +28,9 @@ describe("When Testing Authentication Screens: ", () => {
     repName: "John Doe",
     email: "mail@mail.com",
     phone: "+2349058731812",
-    imgUrl: null
+    imgUrl: null,
+    isPhoneVerified: false,
+    isEmailVerified: true
   };
   describe("<ForgotPasswordScreen />: ", () => {
     beforeEach(() => {

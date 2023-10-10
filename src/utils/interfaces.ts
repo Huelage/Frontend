@@ -148,6 +148,8 @@ export interface entityInterface {
   email: string;
   phone: string;
   imgUrl: string | null;
+  isPhoneVerified: boolean,
+  isEmailVerified: boolean,
   firstName?: string;
   lastName?: string;
   repName?: string;

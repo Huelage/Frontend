@@ -122,6 +122,8 @@ export const MOCK_VERIFY_OTP = [
           email: "mail@mail.com",
           phone: "+2349058731812",
           imgUrl: null,
+          isPhoneVerified: false,
+          isEmailVerified: true,
           refreshToken: "123",
           accessToken: "123",
           user: { firstName: "John", lastName: "Doe" },
@@ -170,6 +172,8 @@ export const MOCK_LOGIN_USER = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -201,6 +205,8 @@ export const MOCK_LOGIN_USER_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -232,6 +238,8 @@ export const MOCK_LOGIN_VENDOR = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -264,6 +272,8 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
