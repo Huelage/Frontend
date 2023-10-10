@@ -2,7 +2,7 @@ import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, MainSearchBar, RestaurantCard, FoodModalContent, FoodModalResCard } from "@components/core/Home";
-import { DetailElement } from "@components/core/Profile";
+import { DetailElement, LocationElement, LocationInput } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
@@ -374,6 +374,40 @@ describe("When Testing Core Profile Components: ", () => {
     it("should render the unverified icon when the element is verifiable but the value is unverified", () => {
       render(<DetailElement label="test" value="test value" verifible />);
       expect(screen.getByTestId("unverified")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<LocationElement />: ", () => {
+    const location = { id: "1", name: "123rd main street" };
+    const removeLocation = jest.fn();
+    beforeEach(() => {
+      render(<LocationElement location={location} removeLocation={removeLocation} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("location element")).toBeOnTheScreen();
+    });
+    it("should render the location name", () => {
+      expect(screen.getByText(location.name)).toBeOnTheScreen();
+    });
+    it("should call the remove location function with the location id when the remove button is pressed", () => {
+      const removeButton = screen.getByTestId("remove button");
+      fireEvent.press(removeButton);
+      expect(removeLocation).toBeCalledWith(location.id);
+    });
+  });
+
+  describe("<LocationInput />: ", () => {
+    beforeEach(() => {
+      render(<LocationInput placeholder="test location" />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("location input")).toBeOnTheScreen();
+    });
+    it("should render the location icon", () => {
+      expect(screen.getByTestId("location icon")).toBeOnTheScreen();
+    });
+    it("should render the location input", () => {
+      expect(screen.getByPlaceholderText("test location")).toBeOnTheScreen();
     });
   });
 });

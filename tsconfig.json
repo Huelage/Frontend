@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "@images/*": ["assets/images/*"],
+      "@images/*": ["./assets/images/*"],
       "@icons/*": ["./assets/icons/*"],
       "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
