@@ -55,7 +55,9 @@ const OTPScreen = () => {
         walletId: res.wallet.walletId,
         email: res.email,
         phone: res.phone,
-        imgUrl: res.imgUrl
+        imgUrl: res.imgUrl,
+        isEmailVerified: res.isEmailVerified,
+        isPhoneVerified: res.isPhoneVerified
       };
       if (isVendor) {
         const { __typename, ...vendor } = res.vendor;

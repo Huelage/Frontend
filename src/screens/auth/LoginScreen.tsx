@@ -86,6 +86,8 @@ const LoginScreen = () => {
         email: res.entity.email,
         phone: res.entity.phone,
         imgUrl: res.entity.imgUrl,
+        isPhoneVerified: res.entity.isPhoneVerified,
+        isEmailVerified: res.entity.isEmailVerified
       };
       if (isVendor) {
         entity.repName = res.repName;
