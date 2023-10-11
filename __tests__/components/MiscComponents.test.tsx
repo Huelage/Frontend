@@ -4,13 +4,18 @@ import { Text } from "react-native";
 
 describe("When Testing Miscellaneous Components: ", () => {
   describe("<CustomModal />: ", () => {
-    it("should render correctly", () => {
+    beforeEach(() => {
       render(
-        <CustomModal isVisible={false}>
+        <CustomModal isVisible={true}>
           <Text>test modal content</Text>
         </CustomModal>
       );
-      expect(screen.toJSON()).toMatchSnapshot();
+    });
+    it("should render correctly", () => {
+      expect(screen.getByTestId("custom modal")).toBeOnTheScreen();
+    });
+    it("should render the children correctly", () => {
+      expect(screen.getByText("test modal content")).toBeOnTheScreen();
     });
   });
 

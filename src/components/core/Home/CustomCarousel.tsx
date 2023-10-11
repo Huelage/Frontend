@@ -70,7 +70,7 @@ const CustomCarousel = () => {
         keyExtractor={item => item.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => goToIdx(item)}>
-            <View testID='carousel indicator' style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
+            <View testID={`carousel indicator ${item}`} style={[styles.carouselIndicator, item === itemIdx && styles.carouselIndicatorActive]} />
           </TouchableOpacity>
         )}
         contentContainerStyle={styles.indicatorBox}

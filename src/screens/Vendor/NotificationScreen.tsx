@@ -3,7 +3,7 @@ import React from 'react';
 
 const NotificationScreen = () => {
   return (
-    <View>
+    <View testID='notification screen'>
       <Text>NotificationScreen</Text>
     </View>
   );

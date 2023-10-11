@@ -43,12 +43,12 @@ const OnBoardScreen = () => {
         <Animated.Text style={[styles.logoText, animatedOpacity]}>HUELAGE</Animated.Text>
       </View>
       <View style={styles.authWrapper}>
-        <TouchableOpacity onPress={() => navigate("Login")}>
+        <TouchableOpacity onPress={() => navigate("Login")} testID="login button">
           <Animated.View entering={SlideInDown.delay(2200).springify().damping(20)} style={[styles.baseButton, styles.loginButton]}>
             <Text style={styles.loginText}>LOG IN</Text>
           </Animated.View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigate("SignupSelect")}>
+        <TouchableOpacity onPress={() => navigate("SignupSelect")} testID="signup button">
           <Animated.View entering={SlideInDown.delay(2500).springify().damping(20)} style={[styles.baseButton, styles.signupButton]}>
             <Text style={styles.signupText}>SIGN UP</Text>
           </Animated.View>

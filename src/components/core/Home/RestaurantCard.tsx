@@ -2,29 +2,24 @@ import { StarRating } from '@components/misc';
 import { useAppTheme } from '@hooks';
 import { RestaurantInterface, UserTabProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
-import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
+import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-interface RestaurantProps extends RestaurantInterface {
-  testRect?: SkRRect; /* for testing only */
-}
-
-const RestaurantCard = ({ name, imgUrl, rating, location, testRect }: RestaurantProps) => {
+const RestaurantCard = ({ name, imgUrl, rating, location }: RestaurantInterface) => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<UserTabProps>();
-  const containerRect = testRect || rrect(rect(6, 6, (wp('60%') - 20), 210), 15, 15);
   return (
     <View style={styles.container} testID='restaurant card'>
       <Canvas style={styles.resBox}>
-        <Box box={containerRect} color={color.cardBg}>
-          <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
-        </Box>
+        <RoundedRect x={6} y={6} width={wp('60%') - 20} height={210} r={15} color={color.cardBg}>
+          <Shadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
+        </RoundedRect>
       </Canvas>
       <Image testID='restuarant image' style={styles.resImage} source={{ uri: imgUrl }} />
-      <TouchableWithoutFeedback onPress={() => navigate("Vendors", { screen: "ItemDetail", params: { itemId: "43435" } })}>
+      <TouchableWithoutFeedback onPress={() => navigate("Vendors", { screen: "ItemDetail", params: { itemId: "43435" } })} testID='details box'>
         <View style={styles.detailsBox}>
           <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
           <StarRating rating={rating} />

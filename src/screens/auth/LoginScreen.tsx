@@ -2,53 +2,25 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { LOGIN_USER, LOGIN_VENDOR } from "@api/graphql";
 import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import {
-  AuthNavigate,
-  LoginInputs,
-  SubmitButton,
-import { getVendorStatus, setAuthStatus } from "@api/slices/globalSlice";
-import { AuthNavigate, CustomTextInput, SubmitButton, UserVendor, } from "@components/auth";
-} from "@components/auth";
+import { AuthNavigate, SubmitButton, UserVendor, LoginInputs } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import {
-  AuthNavigationProps,
-  BiometricsInterface,
-  LoginInfoInterface,
-  entityInterface,
-} from "@interfaces";
+import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import {
-  BiometricType,
-  enableBiometrics,
-  fonts,
-  getBiometrics,
-  getItem,
-  loginWithBiometrics,
-  setItem,
-} from "@utils";
+import { getBiometricType, enableBiometrics, fonts, getBiometrics, getItem, loginWithBiometrics, setItem, } from "@utils";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Alert,
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const inset = useSafeAreaInsets();
+  const BiometricType = getBiometricType();
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [login_user, { data: uData, loading: uLoading }] =
@@ -57,24 +29,13 @@ const LoginScreen = () => {
     useMutation(LOGIN_VENDOR);
   const [useSaved, setUseSaved] = useState<boolean>(true);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
-  const [savedDetails, setSavedDetails] = useState<{
-    id: string;
-    name: string;
-  } | null>(null);
-  const {
-    handleSubmit,
-    control,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<LoginInfoInterface>({ mode: "onChange" });
-  let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null =
-    null;
+  const [savedDetails, setSavedDetails] = useState<{ id: string, name: string; } | null>(null);
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
+  let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null = null;
   if (bioSpecs?.hasBiometrics && bioSpecs?.isEnrolled) {
     bioDetail = BiometricType[bioSpecs.biometricType[0]];
   }
-  const loginwithsaved: boolean =
-    (!!savedDetails && useSaved) || (!!bioDetail && useSaved);
+  const loginwithsaved: boolean = !!savedDetails && useSaved;
 
   const onSubmit: SubmitHandler<LoginInfoInterface> = async (data) => {
     let input;
@@ -93,12 +54,16 @@ const LoginScreen = () => {
         "Enjoy quicker, secure access with biometric authentication. Enable it now?",
         [
           { text: "Enable", onPress: enableBiometrics },
-          { text: "Not now", onPress: () => {} },
+          { text: "Not now", onPress: () => { } },
         ]
       );
     }
     reset();
   };
+  const dismissKeyboard = () => Keyboard.dismiss();
+  const goToforgotPassword = () => navigate("ForgotPassword");
+  const submit = useCallback(() => handleSubmit(onSubmit)(), [handleSubmit, onSubmit]);
+  const changeUseSaved = () => setUseSaved(!useSaved);
 
   useEffect(() => {
     const getData = async () => {
@@ -159,13 +124,7 @@ const LoginScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <View
-        style={[
-          styles.container,
-          { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 },
-        ]}
-        testID="login screen"
-      >
+      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen' onTouchStart={dismissKeyboard}>
         <View style={styles.headerBox}>
           <Animated.Image
             sharedTransitionTag="huelageLogo"
@@ -182,37 +141,21 @@ const LoginScreen = () => {
             </Text>
           </View>
         </View>
-        <View
-          style={styles.inputContainer}
-          onTouchStart={() => Keyboard.dismiss()}
-        >
+        <View style={styles.inputContainer}>
           <UserVendor />
           <View style={styles.inputs}>
-            <LoginInputs
-              isVendor={isVendor}
-              loginwithsaved={loginwithsaved}
-              control={control}
-              errors={errors}
-              setFocus={setFocus}
-              submit={handleSubmit(onSubmit)}
-            />
-            <TouchableOpacity onPress={() => navigate("ForgotPassword")}>
+            <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
+            <TouchableOpacity onPress={goToforgotPassword}>
               <Text style={[styles.forgotText, { color: color.mainText }]}>
                 Forgot Password?
               </Text>
             </TouchableOpacity>
-            <SubmitButton
-              label="LOG IN"
-              isLoading={uLoading || vLoading}
-              onSubmit={handleSubmit(onSubmit)}
-            />
+            <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
           </View>
           {loginwithsaved && bioDetail ? (
             <View style={styles.footer}>
-              <TouchableOpacity onPress={() => setUseSaved(!useSaved)}>
-                <Text style={[styles.switchText, { color: color.mainGreen }]}>
-                  Switch account
-                </Text>
+              <TouchableOpacity onPress={changeUseSaved}>
+                <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
               </TouchableOpacity>
               <View style={styles.biometricBox}>
                 <Text style={[styles.biometricText, { color: color.mainText }]}>
@@ -234,12 +177,8 @@ const LoginScreen = () => {
             <>
               {loginwithsaved && (
                 <View style={styles.footer}>
-                  <TouchableOpacity onPress={() => setUseSaved(!useSaved)}>
-                    <Text
-                      style={[styles.switchText, { color: color.mainGreen }]}
-                    >
-                      Switch account
-                    </Text>
+                  <TouchableOpacity onPress={changeUseSaved}>
+                    <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
                   </TouchableOpacity>
                 </View>
               )}

@@ -32,7 +32,7 @@ const globalSlice = createSlice({
       state.theme = action.payload;
     },
     addToCart: (state, action: PayloadAction<CartInterface>) => {
-      const idx = state.cart.findIndex((item) => item.id === action.payload.id);
+      const idx = state.cart.findIndex((item) => item.item_id === action.payload.item_id);
       if (idx !== -1) {
         state.cart[idx].quantity += action.payload.quantity;
         return;
@@ -44,6 +44,7 @@ const globalSlice = createSlice({
     },
     updateCart: (state, action: PayloadAction<CartInterface>) => {
       const index = state.cart.findIndex(item => item.id === action.payload.id);
+      if (index === -1) return;
       state.cart[index] = action.payload;
     },
     clearCart: state => { state.cart = []; },

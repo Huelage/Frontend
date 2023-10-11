@@ -1,16 +1,9 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { useAppTheme } from "@hooks";
-import {
-  ProfileInfo,
-  ProfileList,
-  ProfileList2,
-} from "@components/core/Profile";
+import { ProfileInfo, ProfileList, ProfileList2, } from "@components/core/Profile";
 import { StatusBar } from "expo-status-bar";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
 
 const ProfileScreen = () => {
   const { color } = useAppTheme();

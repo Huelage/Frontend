@@ -1,14 +1,10 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { fonts } from "@utils";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
 import { UserProfileTabProps } from "@interfaces";
-
 import { useNavigation } from "@react-navigation/native";
+import { fonts } from "@utils";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
 
 const ProfileList2 = () => {
   const { color } = useAppTheme();
@@ -16,81 +12,26 @@ const ProfileList2 = () => {
   return (
     <View style={styles.container} testID="Profile List">
       <View style={styles.mainBox}>
-        <TouchableOpacity
-          style={styles.innerBox}
-          onPress={() => navigate("Setting")}
-        >
-          <MaterialCommunityIcons
-            name="cog-outline"
-            size={30}
-            color={color.mainGreen}
-          ></MaterialCommunityIcons>
-          <Text style={[styles.textStyle, { color: color.mainText }]}>
-            {" "}
-            Settings
-          </Text>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={30}
-            color={color.mainText}
-          ></MaterialCommunityIcons>
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("Setting")}>
+          <MaterialCommunityIcons name="cog-outline" size={30} color={color.mainGreen}></MaterialCommunityIcons>
+          <Text style={[styles.textStyle, { color: color.mainText }]}>{" "} Settings </Text>
+          <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText}></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.innerBox}
-          onPress={() => navigate("FAQs")}
-        >
-          <MaterialCommunityIcons
-            name="frequently-asked-questions"
-            size={30}
-            color={color.mainGreen}
-          ></MaterialCommunityIcons>
-          <Text style={[styles.textStyle, { color: color.mainText }]}>
-            {" "}
-            FAQs
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("FAQs")} >
+          <MaterialCommunityIcons name="frequently-asked-questions" size={30} color={color.mainGreen}></MaterialCommunityIcons>
+          <Text style={[styles.textStyle, { color: color.mainText }]}>{" "}FAQs
           </Text>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={30}
-            color={color.mainText}
-          ></MaterialCommunityIcons>
+          <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText} ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.innerBox}
-          onPress={() => navigate("Help")}
-        >
-          <MaterialCommunityIcons
-            name="help-circle-outline"
-            size={30}
-            color={color.mainGreen}
-          ></MaterialCommunityIcons>
-          <Text style={[styles.textStyle, { color: color.mainText }]}>
-            {" "}
-            Help
-          </Text>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={30}
-            color={color.mainText}
-          ></MaterialCommunityIcons>
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("Help")} >
+          <MaterialCommunityIcons name="help-circle-outline" size={30} color={color.mainGreen}></MaterialCommunityIcons>
+          <Text style={[styles.textStyle, { color: color.mainText }]}> {" "} Help </Text>
+          <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText}></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.innerBox}
-          onPress={() => navigate("About")}
-        >
-          <MaterialCommunityIcons
-            name="information-outline"
-            size={30}
-            color={color.mainGreen}
-          ></MaterialCommunityIcons>
-          <Text style={[styles.textStyle, { color: color.mainText }]}>
-            {" "}
-            About Us
-          </Text>
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={30}
-            color={color.mainText}
-          ></MaterialCommunityIcons>
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("About")} >
+          <MaterialCommunityIcons name="information-outline" size={30} color={color.mainGreen} ></MaterialCommunityIcons>
+          <Text style={[styles.textStyle, { color: color.mainText }]}>   {" "}   About Us </Text>
+          <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText} ></MaterialCommunityIcons>
         </TouchableOpacity>
       </View>
     </View>

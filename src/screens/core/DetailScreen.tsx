@@ -1,4 +1,3 @@
-import { BuyNow, QuantitySelect, Ratings } from "@components/core/Cart";
 import { fonts, shadowStyle } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -11,19 +10,19 @@ import {
 } from "react-native-responsive-screen";
 import { UserNavigationProps } from "@interfaces";
 
-const CartScreen = () => {
-  const [isHearted, setIsHearted] = useState(false);
+const DetailScreen = () => {
+  // const [isHearted, setIsHearted] = useState(false);
 
-  const handleHeartPress = () => {
-    setIsHearted(!isHearted);
-  };
-  const navigation = useNavigation<UserNavigationProps>();
-  const goToCartScreen = () => {
-    navigation.navigate("Detail");
-  };
+  // const handleHeartPress = () => {
+  //   setIsHearted(!isHearted);
+  // };
+  // const navigation = useNavigation<UserNavigationProps>();
+  // const goToCartScreen = () => {
+  //   navigation.navigate("Detail");
+  // };
   return (
-    <View style={styles.container}>
-      <View style={styles.semiCircle}>
+    <View style={styles.container} testID="detail screen">
+      {/* <View style={styles.semiCircle}>
         <View style={styles.love}>
           <View>
             <TouchableOpacity onPress={handleHeartPress}>
@@ -66,12 +65,12 @@ const CartScreen = () => {
           />
         </TouchableOpacity>
         <BuyNow />
-      </View>
+      </View> */}
     </View>
   );
 };
 
-export default CartScreen;
+export default DetailScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

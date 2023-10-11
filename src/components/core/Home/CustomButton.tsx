@@ -19,7 +19,7 @@ const CustomButton = ({ label, icon, height, fontSize, inactive, onPress }: Butt
     <TouchableOpacity style={{ height }} onPress={onPress} testID='custom button'>
       <View style={[styles.buttonBox, inactive && styles.buttonInactive]}>
         <Text style={[styles.buttonText, { fontSize }, inactive && { color: color.mainText }]}>{label}</Text>
-        {icon && <Ionicons name={icon} size={20} color={inactive ? color.mainText : "white"} />}
+        {icon && <Ionicons name={icon} size={20} color={inactive ? color.mainText : "white"} testID='button icon' />}
       </View>
     </TouchableOpacity>
   );

@@ -2,6 +2,7 @@ import { SignUpInfoInterface } from '@interfaces';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus } from 'react-hook-form';
 import CustomTextInput from './CustomTextInput';
+import { StyleSheet, View } from 'react-native';
 
 interface signupInputsProps {
   isVendor: boolean;
@@ -13,7 +14,7 @@ interface signupInputsProps {
 
 const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInputsProps) => {
   return (
-    <>
+    <View style={styles.container} testID='signup inputs'>
       {isVendor ? (
         <>
           <Controller
@@ -23,7 +24,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
                 autoCapitalize="words"
                 autoCorrect={false}
                 error={errors.businessName}
-                label="Business name"
+                label="Business Name"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("businessAddress")}
@@ -48,7 +49,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
                 autoCapitalize="words"
                 autoCorrect={false}
                 error={errors.businessAddress}
-                label="Business address"
+                label="Business Address"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("repName")}
@@ -73,7 +74,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
                 autoCapitalize="words"
                 autoCorrect={false}
                 error={errors.repName}
-                label="Vendor's name"
+                label="Vendor's Name"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("email")}
@@ -101,7 +102,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
                 autoCapitalize="words"
                 autoCorrect={false}
                 error={errors.firstName}
-                label="First name"
+                label="First Name"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("lastName")}
@@ -126,7 +127,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
                 autoCapitalize="words"
                 autoCorrect={false}
                 error={errors.lastName}
-                label="Last name"
+                label="Last Name"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("email")}
@@ -154,7 +155,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
             autoCorrect={false}
             error={errors.email}
             keyboardType="email-address"
-            label="Email address"
+            label="Email Address"
             onBlur={onBlur}
             onChangeText={onChange}
             onSubmitEditing={() => setFocus("phone")}
@@ -181,7 +182,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
             error={errors.phone}
             isPhone
             keyboardType="number-pad"
-            label="Phone number"
+            label="Phone Number"
             onBlur={onBlur}
             onChangeText={onChange}
             onSubmitEditing={() => setFocus("password")}
@@ -206,7 +207,7 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
             autoCorrect={false}
             error={errors.password}
             isPass
-            label="Create password"
+            label="Password"
             onBlur={onBlur}
             onChangeText={onChange}
             onSubmitEditing={() => !isVendor && submit()}
@@ -225,8 +226,14 @@ const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInp
           },
         }}
       />
-    </>
+    </View>
   );
 };
 
 export default SignupInputs;
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 20
+  }
+});

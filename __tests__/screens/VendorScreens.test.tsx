@@ -1,4 +1,4 @@
-import { HomeScreen } from "@screens/Vendor";
+import { HomeScreen, NotificationScreen } from "@screens/Vendor";
 import { render, screen } from "@testing-library/react-native";
 
 describe("When Testing Vendor Screens: ", () => {
@@ -17,6 +17,13 @@ describe("When Testing Vendor Screens: ", () => {
     });
     it("should render the ReviewList component", () => {
       expect(screen.getByTestId("review list")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<NotificationScreen />: ", () => {
+    it("should render the component correctly", () => {
+      render(<NotificationScreen />);
+      expect(screen.getByTestId("notification screen")).toBeOnTheScreen();
     });
   });
 });

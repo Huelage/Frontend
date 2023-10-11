@@ -1,8 +1,8 @@
 import { RatingCard } from '@components/core/Detail';
 import { CustomImage } from '@components/misc';
-import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { Box, BoxShadow, Canvas, SkRRect, rect, rrect } from '@shopify/react-native-skia';
+import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -17,13 +17,11 @@ interface CategoryCardInterface {
   imgUrl: string;
   addToCart: () => void;
   animationValue: Animated.SharedValue<number>;
-  testRect?: SkRRect; /* for testing only */
 }
-const CategoryCard = ({ testRect, idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
+const CategoryCard = ({ idx, name, rating, price, imgUrl, addToCart, animationValue }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
-  const containerRect = testRect || rrect(rect(6, 6, (wp('67%') - 20), (hp('40%') - 20)), 15, 15);
 
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -91,9 +89,9 @@ const CategoryCard = ({ testRect, idx, name, rating, price, imgUrl, addToCart, a
     <Animated.View style={styles.container} testID='category card'>
       <Animated.View style={[styles.itemBox, cardStyle]}>
         <Canvas style={styles.resBox}>
-          <Box box={containerRect} color={color.cardBg}>
-            <BoxShadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
-          </Box>
+          <RoundedRect x={6} y={6} width={wp('67%') - 20} height={(hp('40%') - 20)} r={15} color={color.cardBg}>
+            <Shadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
+          </RoundedRect>
         </Canvas>
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
@@ -109,7 +107,7 @@ const CategoryCard = ({ testRect, idx, name, rating, price, imgUrl, addToCart, a
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage testRect={testRect} imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );

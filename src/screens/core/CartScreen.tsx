@@ -12,9 +12,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const CartScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
+  const dismissKeyboard = () => Keyboard.dismiss();
   const { goBack } = useNavigation<UserNavigationProps>();
   return (
-    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={() => Keyboard.dismiss()} testID="cart screen">
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="cart screen">
       <View style={styles.headerBox}>
         <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />

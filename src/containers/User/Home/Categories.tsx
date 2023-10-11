@@ -7,6 +7,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 const Categories = () => {
   const { color } = useAppTheme();
   const categories = ["Swallow", "Pastries", "Rice", "Snacks", "Pasta", "Shawarma", "Pizza"];
+  const handleCategory = (category: string) => console.log(category);
   return (
     <View style={styles.categories} testID='categories'>
       <Text style={[styles.categoriesText, { color: color.mainText }]}>Categories</Text>
@@ -16,7 +17,7 @@ const Categories = () => {
         keyExtractor={category => category}
         renderItem={({ item }) => (
           <View style={{ paddingLeft: 20 }}>
-            <CustomButton icon='md-close-outline' fontSize={14} label={item} height={36} inactive onPress={() => console.log(item)} />
+            <CustomButton icon='md-close-outline' fontSize={14} label={item} height={36} inactive onPress={() => handleCategory(item)} />
           </View>
         )}
         testID='category icon list'

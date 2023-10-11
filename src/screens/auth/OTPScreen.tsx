@@ -1,28 +1,19 @@
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { REFRESH_OTP, VERIFY_OTP } from "@api/graphql";
-import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
-import { useMutation } from "@apollo/client";
-import { CustomPinInput, SubmitButton } from "@components/auth";
-import { AntDesign } from "@expo/vector-icons";
-import { useAppTheme } from "@hooks";
-import {
-  AuthNavigationProps,
-  OTPRouteProps,
-  entityInterface,
-} from "@interfaces";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { fonts, getItem, setItem } from "@utils";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Animated from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
+import { REFRESH_OTP, VERIFY_OTP } from '@api/graphql';
+import { getVendorStatus, setCredentials } from '@api/slices/globalSlice';
+import { useMutation } from '@apollo/client';
+import { CustomPinInput, SubmitButton } from '@components/auth';
+import { AntDesign } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
+import { AuthNavigationProps, OTPRouteProps, entityInterface } from '@interfaces';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { fonts, getItem, setItem } from '@utils';
+import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import CountDown from 'react-native-countdown-fixed';
+import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const OTPScreen = () => {
   const { color } = useAppTheme();
@@ -35,10 +26,9 @@ const OTPScreen = () => {
   const [verifyCode, { data, loading }] = useMutation(VERIFY_OTP);
   const [refreshOTP] = useMutation(REFRESH_OTP);
   const [phoneOtp, setPhoneOtp] = useState<string>("");
-  const [seconds, setSeconds] = useState<number>(59);
   const { goBack } = useNavigation<AuthNavigationProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
-  const timerRef = useRef<number>(seconds);
+
   const numbers = phoneno.replace(/-\./g, " ").split(" ");
   const countrycode = numbers[0];
   const number = numbers.slice(1).join("");
@@ -49,12 +39,10 @@ const OTPScreen = () => {
 
   const resendCode = async () => {
     setIsTimerActive(true);
-    timerRef.current = 59;
     const entityId = await getItem("huelageEntityId");
     const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") };
     await refreshOTP({ variables: { input } });
   };
-
   const verifyOTP = async () => {
     if (/\d{4}/.test(phoneOtp.trim())) {
       const input = {
@@ -65,19 +53,8 @@ const OTPScreen = () => {
     }
   };
   const onChange = (otp: string) => setPhoneOtp(otp);
+  const dismissKeyboard = () => Keyboard.dismiss();
 
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      if (timerRef.current <= 0) {
-        clearInterval(timerId);
-        setIsTimerActive(false);
-      } else {
-        timerRef.current--;
-        setSeconds(timerRef.current);
-      }
-    }, 1000);
-    return () => clearInterval(timerId);
-  }, [isTimerActive]);
   useEffect(() => {
     if (data) {
       const res = data.verifyPhoneOtp;
@@ -101,12 +78,8 @@ const OTPScreen = () => {
   }, [data, loading]);
   return (
     <>
-      <StatusBar style="auto" />
-      <View
-        style={[styles.container, { paddingTop: insets.top + 10 }]}
-        onTouchStart={() => Keyboard.dismiss()}
-        testID="otp screen"
-      >
+      <StatusBar style='auto' />
+      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="otp screen">
         <View style={styles.headerBox}>
           <TouchableOpacity
             style={styles.backButton}
@@ -126,33 +99,28 @@ const OTPScreen = () => {
             testID="logo image"
             source={require("@images/onboard_logo.png")}
           />
-          <Text style={[styles.infoText, { color: color.mainText }]}>
-            Code has been sent to {formattedNumber}
-          </Text>
-          <CustomPinInput
-            value={phoneOtp}
-            onChange={onChange}
-            onSubmit={verifyOTP}
-          />
-          {seconds ? (
-            <Text style={[styles.resendText, { color: color.mainText }]}>
-              Resend code in&nbsp;
-              <Text style={[styles.resendTimer, { color: color.mainGreen }]}>
-                00:{seconds.toString().padStart(2, "0")}
+          <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
+          <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
+          {isTimerActive ? (
+            <View style={styles.resendTextBox}>
+              <Text style={[styles.resendText, { color: color.mainText }]}>
+                Resend code in&nbsp;
               </Text>
-              s
-            </Text>
+              <CountDown
+                digitStyle={styles.countdownTimer}
+                digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+                onFinish={() => setIsTimerActive(false)}
+                separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+                showSeparator
+                timeToShow={['M', 'S']}
+                timeLabels={{ s: '' }}
+                until={59}
+              />
+              <Text style={[styles.resendText, { color: color.mainText }]}>s</Text>
+            </View>
           ) : (
-            <TouchableOpacity onPress={resendCode}>
-              <Text
-                style={[
-                  styles.resendText,
-                  styles.resendTimer,
-                  { color: color.mainGreen },
-                ]}
-              >
-                Resend Code
-              </Text>
+            <TouchableOpacity onPress={resendCode} style={styles.resendTextBox}>
+              <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
             </TouchableOpacity>
           )}
           <SubmitButton
@@ -204,13 +172,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
   },
+  resendTextBox: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 30
+  },
   resendText: {
     fontFamily: fonts.I_500,
     fontSize: 16,
-    marginBottom: 30,
-    textAlign: "center",
+    textAlign: 'center'
   },
   resendTimer: {
-    fontFamily: fonts.I_600,
+    fontFamily: fonts.I_500,
+    fontSize: 16,
+    textAlign: 'center'
   },
+  countdownTimer: {
+    height: "auto",
+    width: "auto"
+  }
 });

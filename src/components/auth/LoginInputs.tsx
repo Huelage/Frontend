@@ -3,6 +3,7 @@ import { BiometricType } from '@utils';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus } from 'react-hook-form';
 import CustomTextInput from './CustomTextInput';
+import { StyleSheet, View } from 'react-native';
 
 interface loginInputsProps {
   isVendor: boolean;
@@ -15,7 +16,7 @@ interface loginInputsProps {
 
 const LoginInputs = ({ isVendor, loginwithsaved, control, errors, setFocus, submit }: loginInputsProps) => {
   return (
-    <>
+    <View style={styles.container} testID='login inputs'>
       {!loginwithsaved &&
         (isVendor ? (
           <Controller
@@ -50,7 +51,7 @@ const LoginInputs = ({ isVendor, loginwithsaved, control, errors, setFocus, subm
                 error={errors.email}
                 innerRef={ref}
                 keyboardType="email-address"
-                label="Email address"
+                label="Email Address"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("password")}
@@ -87,8 +88,14 @@ const LoginInputs = ({ isVendor, loginwithsaved, control, errors, setFocus, subm
         name="password"
         rules={{ required: "Password is required" }}
       />
-    </>
+    </View>
   );
 };
 
 export default LoginInputs;
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 20
+  }
+});

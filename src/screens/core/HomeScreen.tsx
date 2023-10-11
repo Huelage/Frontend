@@ -1,15 +1,10 @@
 import { MainSearchBar } from '@components/core/Home';
 import { Categories, PopularFood, PopularRestaurant } from '@containers/User';
 import { useAppTheme } from '@hooks';
-import { SkRRect } from '@shopify/react-native-skia';
 import React from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 
-interface HomeScreenInterface {
-  testRect?: SkRRect; /* This is for unit testing purposes only */
-}
-
-const HomeScreen = ({ testRect }: HomeScreenInterface) => {
+const HomeScreen = () => {
   const { color, theme } = useAppTheme();
   const heroImage = Image.resolveAssetSource(require('@images/HomeHero.png')).uri;
   const heroImageDark = Image.resolveAssetSource(require('@images/HomeHeroDark.png')).uri;
@@ -20,8 +15,8 @@ const HomeScreen = ({ testRect }: HomeScreenInterface) => {
         <View style={{ gap: 10 }}>
           <MainSearchBar searchFunc={handleSearch} />
           <Image style={styles.heroImage} source={{ uri: theme === 'dark' ? heroImageDark : heroImage }} testID='hero image' />
-          <PopularFood testRect={testRect} />
-          <PopularRestaurant testRect={testRect} />
+          <PopularFood />
+          <PopularRestaurant />
           <Categories />
         </View>
       </ScrollView>

@@ -21,9 +21,9 @@ export const authenticate = async (prompt?: string, cancel?: string) => {
 
 export const enableBiometrics = async () => {
   const isAuthenticated = await authenticate("Enable Biometric Authentication", "Cancel");
-  if (isAuthenticated) {
+  // if (isAuthenticated) {
 
-  }
+  // }
 };
 
 export const loginWithBiometrics = async () => {
@@ -32,10 +32,10 @@ export const loginWithBiometrics = async () => {
     const publicKey = await SecureStore.getItemAsync('publicKey');
     return publicKey;
   }
+  return null;
 };
 
-
-export const BiometricType = {
+export const getBiometricType = () => ({
   1: {
     type: Platform.OS === 'ios' ? 'Touch ID' : 'Fingerprint',
     icon: FingerPrint
@@ -48,4 +48,4 @@ export const BiometricType = {
     type: 'Iris',
     icon: Iris
   }
-};
+});

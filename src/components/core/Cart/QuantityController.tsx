@@ -21,7 +21,7 @@ const QuantityController = ({ quantity, increase, decrease }: ControllerInterfac
       >
         <AntDesign name="minus" size={12} color="white" />
       </TouchableOpacity>
-      <Text style={[styles.quantity, { color: color.mainText }]}>{quantity}</Text>
+      <Text style={[styles.quantity, { color: color.mainText }]} testID='quantity value'>{quantity}</Text>
       <TouchableOpacity
         onPress={increase}
         testID='increase quantity'
