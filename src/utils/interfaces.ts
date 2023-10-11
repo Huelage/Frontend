@@ -81,6 +81,8 @@ export type UserProfileTabStackParamList = {
   UserDetails: undefined;
   Location: undefined;
   Notification: undefined;
+  VerifyEmail: undefined;
+  VerifyPhone: undefined;
   Wallet: undefined;
   Referral: undefined;
   Setting: undefined;
@@ -150,6 +152,7 @@ export interface entityInterface {
   imgUrl: string | null;
   isPhoneVerified: boolean,
   isEmailVerified: boolean,
+  knownLocation?: LocationInterface;
   firstName?: string;
   lastName?: string;
   repName?: string;
@@ -218,3 +221,9 @@ export interface LocationInterface {
   id: string;
   name: string;
 }
+
+// interface sides {
+//   desription: string;
+//   options: {name: string, price: number}[];
+//   isRequired: boolean;
+// }

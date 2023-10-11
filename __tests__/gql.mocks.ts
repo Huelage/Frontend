@@ -126,7 +126,7 @@ export const MOCK_VERIFY_OTP = [
           isEmailVerified: true,
           refreshToken: "123",
           accessToken: "123",
-          user: { firstName: "John", lastName: "Doe" },
+          user: { firstName: "John", lastName: "Doe", knownLocation: { locations: [] } },
           vendor: { businessName: "John Doe", businessAddress: "123 Main St", repName: "John Doe" }
         }
       }
@@ -179,7 +179,8 @@ export const MOCK_LOGIN_USER = [
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }
@@ -212,7 +213,8 @@ export const MOCK_LOGIN_USER_SAVED = [
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }

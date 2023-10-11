@@ -18,7 +18,8 @@ describe("When Testing Authentication Screens: ", () => {
     phone: "+2349058731812",
     imgUrl: null,
     isPhoneVerified: false,
-    isEmailVerified: true
+    isEmailVerified: true,
+    knownLocation: []
   };
   const vendorState = {
     id: "123",

@@ -96,6 +96,7 @@ const LoginScreen = () => {
       } else {
         entity.firstName = res.firstName;
         entity.lastName = res.lastName;
+        entity.knownLocation = res.knownLocation.locations;
       }
       const [accessToken, refreshToken] = [res.entity.accessToken, res.entity.refreshToken];
       const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;

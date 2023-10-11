@@ -63,8 +63,9 @@ const OTPScreen = () => {
         const { __typename, ...vendor } = res.vendor;
         entity = { ...entity, ...vendor };
       } else {
-        const { __typename, ...user } = res.user;
+        const { __typename, knownLocation: { locations }, ...user } = res.user;
         entity = { ...entity, ...user };
+        entity.knownLocation = locations;
       }
       (async () => await setItem("huelageRefreshToken", res.refreshToken))();
       dispatch(setCredentials({ entity, accessToken: res.accessToken }));
