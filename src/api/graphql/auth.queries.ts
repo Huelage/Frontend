@@ -37,6 +37,7 @@ export const LOGIN_USER = gql(`
       }
       firstName
       lastName
+      knownLocation
     }
   }
 `);
@@ -81,6 +82,7 @@ export const VERIFY_OTP = gql(`
       user {
         firstName
         lastName
+        knownLocation
       }
       vendor {
         businessName
@@ -112,6 +114,15 @@ export const VERIFY_EMAIL = gql(`
   mutation ($input: VerifyEmailInput!) {
     verifyEmailOtp(input: $input) {
       entityId
+    }
+  }
+`);
+
+export const VERIFY_PHONE = gql(`
+  mutation ($input: VerifyPhoneInput!) {
+    verifyPhoneOtp(input: $input) {
+      refreshToken
+      accessToken
     }
   }
 `);
