@@ -16,10 +16,10 @@ const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ entity: entityInterface, accessToken: string; }>) => {
+    setCredentials: (state, action: PayloadAction<{ entity?: entityInterface, accessToken?: string; }>) => {
       const { entity, accessToken } = action.payload;
-      state.entity = entity;
-      state.accessToken = accessToken;
+      if (entity) state.entity = entity;
+      if (accessToken) state.accessToken = accessToken;
     },
     clearCredentials: (state) => {
       state.entity = null;
