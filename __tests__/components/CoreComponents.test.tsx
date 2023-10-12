@@ -375,6 +375,13 @@ describe("When Testing Core Profile Components: ", () => {
       render(<DetailElement label="test" value="test value" verifible />);
       expect(screen.getByTestId("unverified")).toBeOnTheScreen();
     });
+    it("should call the verify function when the element is verifiable and the value is unverified", () => {
+      const verify = jest.fn();
+      render(<DetailElement label="test" value="test value" verifible verify={verify} />);
+      const unverified = screen.getByTestId("unverified");
+      fireEvent.press(unverified);
+      expect(verify).toBeCalled();
+    });
   });
 
   describe("<LocationElement />: ", () => {
