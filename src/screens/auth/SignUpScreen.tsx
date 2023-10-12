@@ -2,12 +2,7 @@ import { useAppSelector } from "@api/app/appHooks";
 import { SIGNUP_USER, SIGNUP_VENDOR } from "@api/graphql";
 import { getVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import {
-  AuthNavigate,
-  SignupInputs,
-  SocialLogin,
-  SubmitButton,
-} from "@components/auth";
+import { AuthNavigate, SignupInputs, SocialLogin, SubmitButton } from "@components/auth";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -19,40 +14,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SignUpScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
-  const [sigup_user, { data: uData, loading: uLoading }] =
-    useMutation(SIGNUP_USER);
-  const [signup_vendor, { data: vData, loading: vLoading }] =
-    useMutation(SIGNUP_VENDOR);
+  const [sigup_user, { data: uData, loading: uLoading }] = useMutation(SIGNUP_USER);
+  const [signup_vendor, { data: vData, loading: vLoading }] = useMutation(SIGNUP_VENDOR);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
-  const {
-    handleSubmit,
-    control,
-    setFocus,
-    reset,
-    formState: { errors },
-  } = useForm<SignUpInfoInterface>({ mode: "onChange" });
-  const onSubmit: SubmitHandler<SignUpInfoInterface> = async (
-    data: SignUpInfoInterface
-  ) => {
-    let input = {
-      ...data,
-      confirmPassword: data.password,
-      phone: data.phone.replace(/[\s-.]/g, ""),
-    };
-    isVendor
-      ? await signup_vendor({ variables: { input } })
-      : await sigup_user({ variables: { input } });
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: "onChange" });
+  const onSubmit: SubmitHandler<SignUpInfoInterface> = async (data: SignUpInfoInterface) => {
+    let input = { ...data, confirmPassword: data.password, phone: data.phone.replace(/[\s-.]/g, "") };
+    isVendor ? await signup_vendor({ variables: { input } }) : await sigup_user({ variables: { input } });
     reset();
     navigate("OTP", { phoneno: data.phone });
   };
@@ -65,9 +41,7 @@ const SignUpScreen = () => {
     if (vData || uData) {
       const res = isVendor ? vData.signUpVendor : uData.signUpUser;
       const entityId = isVendor ? res.vendorId : res.userId;
-      const name = isVendor
-        ? res.businessName
-        : `${res.firstName} ${res.lastName}`;
+      const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;
       (async () => {
         await setItem("huelageEntityId", entityId);
         await setItem("huelageEntityName", name);
@@ -79,33 +53,15 @@ const SignUpScreen = () => {
       <StatusBar style="auto" />
       <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} onTouchStart={dismissKeyboard} testID='signup screen'>
         <View style={styles.headerBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
+          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
           <View>
-            <Text
-              style={[styles.welcomeText, { color: color.mainGreen }]}
-              testID="welcome text"
-            >
-              Sign Up
-            </Text>
-            <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>
-              Please fill in your details
-            </Text>
+            <Text style={[styles.welcomeText, { color: color.mainGreen }]} testID="welcome text">Sign Up</Text>
+            <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
           </View>
         </View>
         <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
           <View style={styles.inputBox}>
-            <SignupInputs
-              isVendor={isVendor}
-              control={control}
-              errors={errors}
-              setFocus={setFocus}
-              submit={handleSubmit(onSubmit)}
-            />
+            <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
             {isVendor && (
               <CheckBox
                 checked={acceptTerms}
@@ -121,10 +77,7 @@ const SignUpScreen = () => {
                 containerStyle={styles.termsContainer}
               />
             )}
-            <SubmitButton
-              label="CREATE ACCOUNT"
-              onSubmit={handleSubmit(onSubmit)}
-            />
+            <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
             {!isVendor && <SocialLogin page="SU" />}
           </View>
         </KeyboardAwareScrollView>

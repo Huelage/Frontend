@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP } from "@api/graphql";
+import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
   {
@@ -80,6 +80,25 @@ export const MOCK_VERIFY_EMAIL = [
   }
 ];
 
+export const MOCK_VERIFY_PHONE = [
+  {
+    request: {
+      query: VERIFY_PHONE,
+      variables: {
+        input: {
+          phone: "+2349058731812",
+          otp: 1234
+        }
+      }
+    },
+    result: {
+      data: {
+        verifyPhoneOtp: { refreshToken: "123", accessToken: "123" }
+      }
+    }
+  }
+];
+
 export const MOCK_SET_PASSWORD = [
   {
     request: {
@@ -122,9 +141,11 @@ export const MOCK_VERIFY_OTP = [
           email: "mail@mail.com",
           phone: "+2349058731812",
           imgUrl: null,
+          isPhoneVerified: false,
+          isEmailVerified: true,
           refreshToken: "123",
           accessToken: "123",
-          user: { firstName: "John", lastName: "Doe" },
+          user: { firstName: "John", lastName: "Doe", knownLocation: { locations: [] } },
           vendor: { businessName: "John Doe", businessAddress: "123 Main St", repName: "John Doe" }
         }
       }
@@ -170,12 +191,15 @@ export const MOCK_LOGIN_USER = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }
@@ -201,12 +225,15 @@ export const MOCK_LOGIN_USER_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }
@@ -232,6 +259,8 @@ export const MOCK_LOGIN_VENDOR = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -264,6 +293,8 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"

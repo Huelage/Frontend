@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { useAppTheme } from "@hooks";
 import { ProfileInfo, ProfileList, ProfileList2, } from "@components/core/Profile";
+import { useAppTheme } from "@hooks";
 import { StatusBar } from "expo-status-bar";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const ProfileScreen = () => {
   const { color } = useAppTheme();
@@ -11,10 +11,7 @@ const ProfileScreen = () => {
   return (
     <>
       <StatusBar style="auto" />
-      <ScrollView
-        style={[styles.container, { backgroundColor: color.mainBg }]}
-        testID="profile screen"
-      >
+      <ScrollView style={[styles.container, { backgroundColor: color.mainBg }]} testID="profile screen">
         <View style={styles.mainBox}>
           <ProfileInfo />
           <ProfileList />

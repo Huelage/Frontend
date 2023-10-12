@@ -36,13 +36,12 @@ const LocationScreen = () => {
   ];
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="location screen">
-      <View style={styles.headerBox}>
+      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
         <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Locations</Text>
       </View>
-      <View style={[styles.headerUnderline, { backgroundColor: color.mainGreen }]} />
       <GooglePlacesAutocomplete
         ref={placesRef}
         placeholder="Add a new location"
@@ -85,15 +84,15 @@ const styles = StyleSheet.create({
   },
   headerBox: {
     alignItems: "center",
+    borderBottomWidth: 2,
     flexDirection: "row",
     justifyContent: "center",
+    paddingBottom: 20,
     paddingHorizontal: 10
-  },
-  headerUnderline: {
-    height: 2
   },
   backButton: {
     position: "absolute",
+    top: -5,
     left: 10
   },
   headerText: {

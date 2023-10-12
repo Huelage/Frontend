@@ -30,6 +30,8 @@ jest.mock('@utils', () => ({
   enableBiometrics: jest.fn(() => Promise.resolve()),
   getItem: jest.fn(),
   setItem: jest.fn(),
+  showError: jest.fn(),
+  showSuccess: jest.fn()
 }));
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),

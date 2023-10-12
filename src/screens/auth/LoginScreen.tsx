@@ -23,10 +23,8 @@ const LoginScreen = () => {
   const BiometricType = getBiometricType();
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const [login_user, { data: uData, loading: uLoading }] =
-    useMutation(LOGIN_USER);
-  const [login_vendor, { data: vData, loading: vLoading }] =
-    useMutation(LOGIN_VENDOR);
+  const [login_user, { data: uData, loading: uLoading }] = useMutation(LOGIN_USER);
+  const [login_vendor, { data: vData, loading: vLoading }] = useMutation(LOGIN_VENDOR);
   const [useSaved, setUseSaved] = useState<boolean>(true);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
   const [savedDetails, setSavedDetails] = useState<{ id: string, name: string; } | null>(null);
@@ -45,16 +43,14 @@ const LoginScreen = () => {
     } else {
       input = data;
     }
-    isVendor
-      ? await login_vendor({ variables: { input } })
-      : await login_user({ variables: { input } });
+    isVendor ? await login_vendor({ variables: { input } }) : await login_user({ variables: { input } });
     if (!bioDetail) {
       Alert.alert(
         "Enable Biometric Login?",
         "Enjoy quicker, secure access with biometric authentication. Enable it now?",
         [
           { text: "Enable", onPress: enableBiometrics },
-          { text: "Not now", onPress: () => { } },
+          { text: "Not now", onPress: () => {} },
         ]
       );
     }
@@ -71,21 +67,14 @@ const LoginScreen = () => {
       const name = await getItem("huelageEntityName");
       if (id && name) {
         setSavedDetails({ id, name });
-        const { hasBiometrics, isEnrolled, biometricType } =
-          await getBiometrics();
+        const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
         setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
       }
     };
     getData();
   }, []);
   useEffect(() => {
-    setTimeout(
-      () =>
-        setFocus(
-          !loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"
-        ),
-      0
-    );
+    setTimeout(() => setFocus(!loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"), 0);
     reset();
   }, [isVendor, loginwithsaved]);
   useEffect(() => {
@@ -97,6 +86,8 @@ const LoginScreen = () => {
         email: res.entity.email,
         phone: res.entity.phone,
         imgUrl: res.entity.imgUrl,
+        isPhoneVerified: res.entity.isPhoneVerified,
+        isEmailVerified: res.entity.isEmailVerified
       };
       if (isVendor) {
         entity.repName = res.repName;
@@ -105,14 +96,10 @@ const LoginScreen = () => {
       } else {
         entity.firstName = res.firstName;
         entity.lastName = res.lastName;
+        entity.knownLocation = res.knownLocation.locations;
       }
-      const [accessToken, refreshToken] = [
-        res.entity.accessToken,
-        res.entity.refreshToken,
-      ];
-      const name = isVendor
-        ? res.businessName
-        : `${res.firstName} ${res.lastName}`;
+      const [accessToken, refreshToken] = [res.entity.accessToken, res.entity.refreshToken];
+      const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;
       (async () => {
         await setItem("huelageRefreshToken", refreshToken);
         await setItem("huelageEntityId", res.entity.entityId);
@@ -126,19 +113,10 @@ const LoginScreen = () => {
       <StatusBar style="auto" />
       <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen' onTouchStart={dismissKeyboard}>
         <View style={styles.headerBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
+          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
           <View style={styles.welcomeBox}>
-            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>
-              Welcome Back!
-            </Text>
-            <Text style={[styles.welcomeName, { color: color.mainText }]}>
-              {loginwithsaved ? savedDetails?.name : "Login to continue"}
-            </Text>
+            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
+            <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
           </View>
         </View>
         <View style={styles.inputContainer}>
@@ -146,9 +124,7 @@ const LoginScreen = () => {
           <View style={styles.inputs}>
             <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
             <TouchableOpacity onPress={goToforgotPassword}>
-              <Text style={[styles.forgotText, { color: color.mainText }]}>
-                Forgot Password?
-              </Text>
+              <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
             </TouchableOpacity>
             <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
           </View>
@@ -158,17 +134,8 @@ const LoginScreen = () => {
                 <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
               </TouchableOpacity>
               <View style={styles.biometricBox}>
-                <Text style={[styles.biometricText, { color: color.mainText }]}>
-                  Login with {bioDetail?.type}
-                </Text>
-                <TouchableOpacity
-                  onPress={loginWithBiometrics}
-                  testID="biometric button"
-                  style={[
-                    styles.biometricButton,
-                    { borderColor: color.mainGreen },
-                  ]}
-                >
+                <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
+                <TouchableOpacity onPress={loginWithBiometrics} testID="biometric button" style={[styles.biometricButton, { borderColor: color.mainGreen }]}>
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>
               </View>
@@ -188,11 +155,7 @@ const LoginScreen = () => {
         </View>
         <Text style={[styles.contactText, { color: color.mainText }]}>
           <View style={{ marginTop: -7 }}>
-            <MaterialCommunityIcons
-              name="message-processing-outline"
-              size={24}
-              color={color.mainText}
-            />
+            <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
           </View>{" "}
           Need help?
           <Text style={{ color: color.mainGreen }}>

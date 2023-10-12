@@ -7,6 +7,8 @@ export { default as MyOrdersScreen } from "./Orders/MyOrdersScreen";
 export { default as PersonalDetailScreen } from "./Profile/PersonalDetailScreen";
 export { default as ProfileScreen } from "./Profile/ProfileScreen";
 export { default as LocationScreen } from "./Profile/LocationScreen";
+export { default as VerifyPhoneScreen } from "./Profile/VerifyPhoneScreen";
+export { default as VerifyEmailScreen } from "./Profile/VerifyEmailScreen";
 export { default as AboutUs } from "./Profile/AboutUs";
 export { default as FAQs } from "./Profile/Faqs";
 export { default as Help } from "./Profile/Help";
