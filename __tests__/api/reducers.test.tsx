@@ -17,12 +17,20 @@ describe("When testing the individual reducers", () => {
       { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
     );
   });
-  it("should add user details to the state when setCredentials action is dispatched", () => {
+  it("should add entity to the state when setCredentials action is dispatched", () => {
     const action = "global/setCredentials";
-    const payload = { entity: { id: "1234" }, accessToken: "access-token" };
+    const payload = { entity: { id: "1234" } };
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual(
-      { isVendor: false, entity: { id: "1234" }, accessToken: "access-token", themeType: "system", theme: "dark", cart: [], }
+      { isVendor: false, entity: { id: "1234" }, accessToken: null, themeType: "system", theme: "dark", cart: [], }
+    );
+  });
+  it("should add accessToken to the state when setCredentials action is dispatched", () => {
+    const action = "global/setCredentials";
+    const payload = { accessToken: "access-token" };
+    const reducer = setupReducer({ action, payload });
+    expect(reducer).toEqual(
+      { isVendor: false, entity: null, accessToken: "access-token", themeType: "system", theme: "dark", cart: [], }
     );
   });
   it("should clear user details from the state when clearCredentials action is dispatched", () => {
