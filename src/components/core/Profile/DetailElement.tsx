@@ -9,9 +9,10 @@ interface DetailElementInterface {
   value: string;
   verifible?: boolean;
   isVerified?: boolean;
+  verify?: () => void;
 }
 
-const DetailElement = ({ label, value, verifible, isVerified }: DetailElementInterface) => {
+const DetailElement = ({ label, value, verifible, isVerified, verify }: DetailElementInterface) => {
   const { color } = useAppTheme();
   return (
     <View style={styles.container} testID='detail element'>
@@ -24,7 +25,7 @@ const DetailElement = ({ label, value, verifible, isVerified }: DetailElementInt
               <MaterialIcons name="verified" size={24} color="#1A30FF" />
             </View>
           ) : (
-            <TouchableOpacity testID='unverified'>
+            <TouchableOpacity onPress={verify} testID='unverified'>
               <Octicons name="unverified" size={24} color="#E93223" />
             </TouchableOpacity>
           )
