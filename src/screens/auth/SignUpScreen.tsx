@@ -14,7 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SignUpScreen = () => {
@@ -25,9 +25,9 @@ const SignUpScreen = () => {
   const [signup_vendor, { data: vData, loading: vLoading }] = useMutation(SIGNUP_VENDOR);
   const { navigate } = useNavigation<AuthNavigationProps>();
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
-  const { handleSubmit, control, setFocus, reset, formState: { errors }, } = useForm<SignUpInfoInterface>({ mode: "onChange" });
+  const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: "onChange" });
   const onSubmit: SubmitHandler<SignUpInfoInterface> = async (data: SignUpInfoInterface) => {
-    let input = { ...data, confirmPassword: data.password, phone: data.phone.replace(/[\s-.]/g, '') };
+    let input = { ...data, confirmPassword: data.password, phone: data.phone.replace(/[\s-.]/g, "") };
     isVendor ? await signup_vendor({ variables: { input } }) : await sigup_user({ variables: { input } });
     reset();
     navigate("OTP", { phoneno: data.phone });
@@ -53,12 +53,7 @@ const SignUpScreen = () => {
       <StatusBar style="auto" />
       <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} onTouchStart={dismissKeyboard} testID='signup screen'>
         <View style={styles.headerBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
+          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
           <View>
             <Text style={[styles.welcomeText, { color: color.mainGreen }]} testID="welcome text">Sign Up</Text>
             <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
@@ -82,7 +77,7 @@ const SignUpScreen = () => {
                 containerStyle={styles.termsContainer}
               />
             )}
-            <SubmitButton label="CREATE ACCOUNT" isLoading={uLoading || vLoading} onSubmit={handleSubmit(onSubmit)} />
+            <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
             {!isVendor && <SocialLogin page="SU" />}
           </View>
         </KeyboardAwareScrollView>
@@ -113,13 +108,13 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_700,
     fontSize: 25,
     letterSpacing: 0.5,
-    textAlign: 'center'
+    textAlign: "center",
   },
   welcomeInfoText: {
     fontFamily: fonts.I_400,
     fontSize: 18,
-    letterSpacing: .5,
-    textAlign: 'center'
+    letterSpacing: 0.5,
+    textAlign: "center",
   },
   inputContainer: {
     flex: 1,
@@ -129,7 +124,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputBox: {
-    gap: 20
+    gap: 20,
   },
   termsContainer: {
     backgroundColor: "transparent",
@@ -140,5 +135,5 @@ const styles = StyleSheet.create({
     color: "#000",
     fontFamily: fonts.I_400I,
     fontSize: 14,
-  }
+  },
 });

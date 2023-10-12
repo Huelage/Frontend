@@ -89,6 +89,8 @@ export type UserProfileTabStackParamList = {
   FAQs: undefined;
   Help: undefined;
   About: undefined;
+  MyOrders: undefined;
+  ProfileDetails: undefined;
 };
 
 // // Vendor Tab Stacks
@@ -211,7 +213,6 @@ export interface UserFoodInterface {
   availability: "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
   sides?: FoodSideInterface[];
 }
-
 export interface FoodSideInterface {
   name: string;
   price: number;

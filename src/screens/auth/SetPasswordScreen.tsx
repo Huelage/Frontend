@@ -2,7 +2,7 @@ import { useAppSelector } from "@api/app/appHooks";
 import { SET_PASSWORD } from "@api/graphql";
 import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import { CustomTextInput, SetPasswordInputs, SubmitButton } from "@components/auth";
+import { SetPasswordInputs, SubmitButton } from "@components/auth";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, ResetPasswordInterface, SetPasswordRouteProps } from "@interfaces";
@@ -10,7 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, setItem } from "@utils";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -72,6 +72,7 @@ const SetPasswordScreen = () => {
 };
 
 export default SetPasswordScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

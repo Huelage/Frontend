@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { LOGIN_USER, LOGIN_VENDOR } from "@api/graphql";
 import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import { AuthNavigate, LoginInputs, SubmitButton, UserVendor } from "@components/auth";
+import { AuthNavigate, SubmitButton, UserVendor, LoginInputs } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
@@ -11,9 +11,9 @@ import { getBiometricType, enableBiometrics, fonts, getBiometrics, getItem, logi
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
@@ -49,8 +49,8 @@ const LoginScreen = () => {
         "Enable Biometric Login?",
         "Enjoy quicker, secure access with biometric authentication. Enable it now?",
         [
-          { text: "Enable", onPress: enableBiometrics, },
-          { text: "Not now", onPress: () => {}, },
+          { text: "Enable", onPress: enableBiometrics },
+          { text: "Not now", onPress: () => {} },
         ]
       );
     }
@@ -113,12 +113,7 @@ const LoginScreen = () => {
       <StatusBar style="auto" />
       <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen' onTouchStart={dismissKeyboard}>
         <View style={styles.headerBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
+          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
           <View style={styles.welcomeBox}>
             <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
             <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
@@ -129,9 +124,7 @@ const LoginScreen = () => {
           <View style={styles.inputs}>
             <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
             <TouchableOpacity onPress={goToforgotPassword}>
-              <Text style={[styles.forgotText, { color: color.mainText }]}>
-                Forgot Password?
-              </Text>
+              <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
             </TouchableOpacity>
             <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
           </View>
@@ -141,14 +134,8 @@ const LoginScreen = () => {
                 <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
               </TouchableOpacity>
               <View style={styles.biometricBox}>
-                <Text style={[styles.biometricText, { color: color.mainText }]}>
-                  Login with {bioDetail?.type}
-                </Text>
-                <TouchableOpacity
-                  onPress={loginWithBiometrics}
-                  testID='biometric button'
-                  style={[styles.biometricButton, { borderColor: color.mainGreen }]}
-                >
+                <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
+                <TouchableOpacity onPress={loginWithBiometrics} testID="biometric button" style={[styles.biometricButton, { borderColor: color.mainGreen }]}>
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>
               </View>
@@ -168,11 +155,7 @@ const LoginScreen = () => {
         </View>
         <Text style={[styles.contactText, { color: color.mainText }]}>
           <View style={{ marginTop: -7 }}>
-            <MaterialCommunityIcons
-              name="message-processing-outline"
-              size={24}
-              color={color.mainText}
-            />
+            <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
           </View>{" "}
           Need help?
           <Text style={{ color: color.mainGreen }}>
@@ -203,8 +186,8 @@ const styles = StyleSheet.create({
     width: 80,
   },
   welcomeBox: {
-    alignItems: 'center',
-    gap: 5
+    alignItems: "center",
+    gap: 5,
   },
   welcomeText: {
     fontFamily: fonts.I_700,
@@ -214,7 +197,7 @@ const styles = StyleSheet.create({
   welcomeName: {
     fontFamily: fonts.I_700,
     fontSize: 18,
-    letterSpacing: .5
+    letterSpacing: 0.5,
   },
   inputContainer: {
     flex: 1,
@@ -224,7 +207,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputs: {
-    gap: 20
+    gap: 20,
   },
   forgotText: {
     alignSelf: "flex-end",
@@ -267,5 +250,5 @@ const styles = StyleSheet.create({
   contactText: {
     fontFamily: fonts.I_400,
     fontSize: 14,
-  }
+  },
 });

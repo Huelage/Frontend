@@ -76,25 +76,18 @@ const OTPScreen = () => {
       <StatusBar style='auto' />
       <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="otp screen">
         <View style={styles.headerBox}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="back button">
+          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="back button" >
             <AntDesign name="arrowleft" size={26} color={color.mainText} />
           </TouchableOpacity>
           <Text style={[styles.headerText, { color: color.mainText }]}>OTP Code Verification</Text>
         </View>
         <View style={styles.mainBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
+          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
           <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
           <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
           {isTimerActive ? (
             <View style={styles.resendTextBox}>
-              <Text style={[styles.resendText, { color: color.mainText }]}>
-                Resend code in&nbsp;
-              </Text>
+              <Text style={[styles.resendText, { color: color.mainText }]}>Resend code in&nbsp;</Text>
               <CountDown
                 digitStyle={styles.countdownTimer}
                 digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
@@ -112,7 +105,7 @@ const OTPScreen = () => {
               <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
             </TouchableOpacity>
           )}
-          <SubmitButton label='Verify' isLoading={loading} onSubmit={verifyOTP} />
+          <SubmitButton label="Verify" isLoading={loading} onSubmit={verifyOTP} />
         </View>
       </View>
     </>
@@ -123,30 +116,30 @@ export default OTPScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   headerBox: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   backButton: {
     position: "absolute",
-    left: 20
+    left: 20,
   },
   headerText: {
     fontFamily: fonts.I_600,
-    fontSize: 20
+    fontSize: 20,
   },
   mainBox: {
     flex: 1,
     gap: 20,
     paddingHorizontal: 20,
-    paddingTop: 70
+    paddingTop: 70,
   },
   logoImage: {
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 40,
     height: 80,
     marginBottom: 40,
@@ -155,7 +148,7 @@ const styles = StyleSheet.create({
   infoText: {
     fontFamily: fonts.I_600,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center",
   },
   resendTextBox: {
     alignItems: 'center',

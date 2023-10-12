@@ -18,7 +18,7 @@ import {
 } from "@expo-google-fonts/dev";
 import { MainNavigator } from "@navigators";
 import { Provider } from "react-redux";
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from "redux-persist/integration/react";
 import FlashMessage from "react-native-flash-message";
 
 const App = () => {
@@ -36,7 +36,6 @@ const App = () => {
     Inter_700Bold,
     InterTight_700Bold_Italic,
   });
-
 
   if (!fontsLoaded) return null;
   return (
