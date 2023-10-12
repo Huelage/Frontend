@@ -4,10 +4,14 @@ import { useAppTheme } from "@hooks";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
 import { fonts } from "@utils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppSelector } from "@api/app/appHooks";
+import { getEntity } from "@api/slices/globalSlice";
 
 const ProfileInfo = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { color } = useAppTheme();
+  const entity = useAppSelector(getEntity);
+  if (!entity) return null;
 
   return (
     <View style={styles.container} testID="profile Info">
@@ -23,7 +27,7 @@ const ProfileInfo = () => {
           </TouchableOpacity>
         </View>
         <Text style={[styles.profileText, { color: color.mainText }]}>
-          John Jane Doe
+          {entity.firstName} {entity.lastName}
         </Text>
         <TouchableOpacity
           style={[styles.Edit, { borderColor: color.mainGreen }]}
