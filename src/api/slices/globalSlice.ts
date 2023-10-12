@@ -31,7 +31,7 @@ const globalSlice = createSlice({
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
     },
-    addToCart: (state, action: PayloadAction<CartInterface>) => {
+    addItemToCart: (state, action: PayloadAction<CartInterface>) => {
       const idx = state.cart.findIndex((item) => item.item_id === action.payload.item_id);
       if (idx !== -1) {
         state.cart[idx].quantity += action.payload.quantity;
@@ -53,7 +53,7 @@ const globalSlice = createSlice({
 
 // Dispatches
 export const {
-  addToCart,
+  addItemToCart,
   clearCart,
   clearCredentials,
   removeFromCart,

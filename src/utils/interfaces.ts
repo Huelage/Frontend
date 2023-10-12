@@ -221,17 +221,6 @@ interface CartExtraInterface extends FoodSideInterface {
 }
 
 // USER SCREEN INTERFACES
-export interface FoodInterface {
-  id: string;
-  name: string;
-  price: number;
-  desc: string;
-  imgUrl: string;
-  isFavourite: boolean;
-  rating: number;
-  cals: number;
-  location: string;
-}
 
 export interface RestaurantInterface {
   id: string;
@@ -258,33 +247,25 @@ export interface ReviewInterface {
   message: string;
 }
 
-export interface UserBaseFoodInterface {
+export interface UserFoodInterface {
   id: string;
   name: string;
   description: string;
-  img_url: string;
+  imgUrl: string;
   category: string;
-  availability: "available" | "temporarily unavailable" | "unavailable";
+  isFavourite: boolean;
+  pricingMethod: "PRICE" | "PORTION" | "FIXED" | "PACKAGE";
+  price?: number;
+  packageSizes?: { name: string; price: number; }[];
+  availability: "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
   sides?: FoodSideInterface[];
 }
-interface FoodPriceInterface extends UserBaseFoodInterface {
-  pricing_method: "price" | "fixed";
-  min_price: number;
-}
-interface FoodPortionInterface extends UserBaseFoodInterface {
-  pricing_method: "portion";
-  portion_price: number;
-}
-interface FoodPackageInterface extends UserBaseFoodInterface {
-  pricing_method: "package";
-  package_sizes: { name: string; price: number }[];
-}
-
-export type UserFoodInterface =
-  | FoodPriceInterface
-  | FoodPortionInterface
-  | FoodPackageInterface;
 export interface FoodSideInterface {
   name: string;
   price: number;
+}
+
+export interface LocationInterface {
+  id: string;
+  name: string;
 }

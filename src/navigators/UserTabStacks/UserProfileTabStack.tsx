@@ -1,19 +1,20 @@
 import { UserTabHeader } from "@components/navigation";
 import { UserProfileTabStackParamList } from "@interfaces";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { ProfileScreen } from "@screens/core";
 import {
   AboutUs,
   FAQs,
   Help,
-  Location,
+  LocationScreen,
   MyOrders,
   Notification,
   ProfileDetails,
   Referral,
   Setting,
   Wallet,
-} from "@screens/core/Profile";
+  PersonalDetailScreen,
+  ProfileScreen,
+} from "@screens/core";
 import React from "react";
 
 const Stack = createNativeStackNavigator<UserProfileTabStackParamList>();
@@ -29,14 +30,15 @@ const UserProfileTabStack = () => {
       <Stack.Screen name="About" component={AboutUs} />
       <Stack.Screen name="FAQs" component={FAQs} />
       <Stack.Screen name="Help" component={Help} />
-      <Stack.Screen name="Locations" component={Location} />
       <Stack.Screen name="MyOrders" component={MyOrders} />
       <Stack.Screen name="Notification" component={Notification} />
       <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
       <Stack.Screen name="Referral" component={Referral} />
       <Stack.Screen name="Setting" component={Setting} />
       <Stack.Screen name="Wallet" component={Wallet} />
-    </Stack.Navigator>
+      <Stack.Screen name="UserDetails" component={PersonalDetailScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Locations" component={LocationScreen} options={{ headerShown: false }} />
+    </Stack.Navigator >
   );
 };
 

@@ -12,7 +12,7 @@ const ProfileList = () => {
   return (
     <View style={styles.container} testID="Profile List">
       <View style={styles.mainBox}>
-        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("ProfileDetails")} >
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("UserDetails")} >
           <MaterialCommunityIcons name="account-circle-outline" size={30} color={color.mainGreen}   ></MaterialCommunityIcons>
           <Text style={[styles.textStyle, { color: color.mainText }]}>     {" "}     Profile Details   </Text>
           <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText}   ></MaterialCommunityIcons>

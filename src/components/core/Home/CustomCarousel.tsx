@@ -4,8 +4,14 @@ import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CategoryCard from './CategoryCard';
+import { UserFoodInterface } from '@interfaces';
 
-const CustomCarousel = () => {
+interface CustomCarouselInterface {
+  items: UserFoodInterface[];
+  addToCart: (id: string) => void;
+}
+
+const CustomCarousel = ({ items, addToCart }: CustomCarouselInterface) => {
   const carouselRef = useRef<ICarouselInstance>(null);
   const isNewSwap = useRef<boolean>(false);
   const [itemIdx, setItemIdx] = useState<number>(0);
@@ -49,7 +55,7 @@ const CustomCarousel = () => {
           },
         }}
         autoPlayInterval={10000}
-        data={mockCategories}
+        data={items}
         testID='carousel'
         onScrollBegin={onScrollBegin}
         onProgressChange={onProgressChange}
@@ -60,7 +66,7 @@ const CustomCarousel = () => {
             animationValue={animationValue}
             key={index}
             idx={index}
-            addToCart={() => console.log("addedd")}
+            addToCart={addToCart}
           />
         )}
       />
