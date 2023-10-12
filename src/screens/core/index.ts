@@ -7,5 +7,7 @@ export { default as MyOrdersScreen } from "./Orders/MyOrdersScreen";
 export { default as PersonalDetailScreen } from "./Profile/PersonalDetailScreen";
 export { default as ProfileScreen } from "./Profile/ProfileScreen";
 export { default as LocationScreen } from "./Profile/LocationScreen";
+export { default as VerifyPhoneScreen } from "./Profile/VerifyPhoneScreen";
+export { default as VerifyEmailScreen } from "./Profile/VerifyEmailScreen";
 // Vendor Screens
 export { default as VendorScreen } from "./Vendors/VendorScreen";
