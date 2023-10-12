@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP } from "@api/graphql";
+import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
   {
@@ -75,6 +75,25 @@ export const MOCK_VERIFY_EMAIL = [
     result: {
       data: {
         verifyEmailOtp: { entityId: "123" }
+      }
+    }
+  }
+];
+
+export const MOCK_VERIFY_PHONE = [
+  {
+    request: {
+      query: VERIFY_PHONE,
+      variables: {
+        input: {
+          phone: "+2349058731812",
+          otp: 1234
+        }
+      }
+    },
+    result: {
+      data: {
+        verifyPhoneOtp: { refreshToken: "123", accessToken: "123" }
       }
     }
   }
