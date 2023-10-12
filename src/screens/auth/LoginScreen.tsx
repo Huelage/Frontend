@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { LOGIN_USER, LOGIN_VENDOR } from "@api/graphql";
 import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import { AuthNavigate, LoginInputs, SubmitButton, UserVendor } from "@components/auth";
+import { AuthNavigate, SubmitButton, UserVendor, LoginInputs } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
@@ -11,9 +11,9 @@ import { getBiometricType, enableBiometrics, fonts, getBiometrics, getItem, logi
 import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated from "react-native-reanimated";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LoginScreen = () => {
@@ -23,8 +23,10 @@ const LoginScreen = () => {
   const BiometricType = getBiometricType();
   const isVendor = useAppSelector(getVendorStatus);
   const { navigate } = useNavigation<AuthNavigationProps>();
-  const [login_user, { data: uData, loading: uLoading }] = useMutation(LOGIN_USER);
-  const [login_vendor, { data: vData, loading: vLoading }] = useMutation(LOGIN_VENDOR);
+  const [login_user, { data: uData, loading: uLoading }] =
+    useMutation(LOGIN_USER);
+  const [login_vendor, { data: vData, loading: vLoading }] =
+    useMutation(LOGIN_VENDOR);
   const [useSaved, setUseSaved] = useState<boolean>(true);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
   const [savedDetails, setSavedDetails] = useState<{ id: string, name: string; } | null>(null);
@@ -43,14 +45,16 @@ const LoginScreen = () => {
     } else {
       input = data;
     }
-    isVendor ? await login_vendor({ variables: { input } }) : await login_user({ variables: { input } });
+    isVendor
+      ? await login_vendor({ variables: { input } })
+      : await login_user({ variables: { input } });
     if (!bioDetail) {
       Alert.alert(
         "Enable Biometric Login?",
         "Enjoy quicker, secure access with biometric authentication. Enable it now?",
         [
-          { text: "Enable", onPress: enableBiometrics, },
-          { text: "Not now", onPress: () => {}, },
+          { text: "Enable", onPress: enableBiometrics },
+          { text: "Not now", onPress: () => { } },
         ]
       );
     }
@@ -67,14 +71,21 @@ const LoginScreen = () => {
       const name = await getItem("huelageEntityName");
       if (id && name) {
         setSavedDetails({ id, name });
-        const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
+        const { hasBiometrics, isEnrolled, biometricType } =
+          await getBiometrics();
         setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
       }
     };
     getData();
   }, []);
   useEffect(() => {
-    setTimeout(() => setFocus(!loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"), 0);
+    setTimeout(
+      () =>
+        setFocus(
+          !loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"
+        ),
+      0
+    );
     reset();
   }, [isVendor, loginwithsaved]);
   useEffect(() => {
@@ -95,8 +106,13 @@ const LoginScreen = () => {
         entity.firstName = res.firstName;
         entity.lastName = res.lastName;
       }
-      const [accessToken, refreshToken] = [res.entity.accessToken, res.entity.refreshToken];
-      const name = isVendor ? res.businessName : `${res.firstName} ${res.lastName}`;
+      const [accessToken, refreshToken] = [
+        res.entity.accessToken,
+        res.entity.refreshToken,
+      ];
+      const name = isVendor
+        ? res.businessName
+        : `${res.firstName} ${res.lastName}`;
       (async () => {
         await setItem("huelageRefreshToken", refreshToken);
         await setItem("huelageEntityId", res.entity.entityId);
@@ -117,8 +133,12 @@ const LoginScreen = () => {
             source={require("@images/onboard_logo.png")}
           />
           <View style={styles.welcomeBox}>
-            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
-            <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
+            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>
+              Welcome Back!
+            </Text>
+            <Text style={[styles.welcomeName, { color: color.mainText }]}>
+              {loginwithsaved ? savedDetails?.name : "Login to continue"}
+            </Text>
           </View>
         </View>
         <View style={styles.inputContainer}>
@@ -143,8 +163,11 @@ const LoginScreen = () => {
                 </Text>
                 <TouchableOpacity
                   onPress={loginWithBiometrics}
-                  testID='biometric button'
-                  style={[styles.biometricButton, { borderColor: color.mainGreen }]}
+                  testID="biometric button"
+                  style={[
+                    styles.biometricButton,
+                    { borderColor: color.mainGreen },
+                  ]}
                 >
                   <bioDetail.icon size={45} />
                 </TouchableOpacity>
@@ -200,8 +223,8 @@ const styles = StyleSheet.create({
     width: 80,
   },
   welcomeBox: {
-    alignItems: 'center',
-    gap: 5
+    alignItems: "center",
+    gap: 5,
   },
   welcomeText: {
     fontFamily: fonts.I_700,
@@ -211,7 +234,7 @@ const styles = StyleSheet.create({
   welcomeName: {
     fontFamily: fonts.I_700,
     fontSize: 18,
-    letterSpacing: .5
+    letterSpacing: 0.5,
   },
   inputContainer: {
     flex: 1,
@@ -221,7 +244,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   inputs: {
-    gap: 20
+    gap: 20,
   },
   forgotText: {
     alignSelf: "flex-end",
@@ -264,5 +287,5 @@ const styles = StyleSheet.create({
   contactText: {
     fontFamily: fonts.I_400,
     fontSize: 14,
-  }
+  },
 });
