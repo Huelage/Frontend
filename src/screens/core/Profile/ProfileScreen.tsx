@@ -19,7 +19,7 @@ const ProfileScreen = () => {
           <ProfileInfo />
           <ProfileList />
         </View>
-        <View style={[styles.horizontalLine]}></View>
+        <View style={[styles.horizontalLine, { backgroundColor: color.mainGreen }]}></View>
         <ProfileList2 />
       </ScrollView>
     </>
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     marginTop: hp("5%"),
   },
   horizontalLine: {
-    borderBottomWidth: 5,
-    borderBottomColor: "#F0FFF0",
+    height: 3,
     marginBottom: 50,
+    marginTop: 15,
   },
 });

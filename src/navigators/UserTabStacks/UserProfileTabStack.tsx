@@ -27,15 +27,15 @@ const UserProfileTabStack = () => {
         component={ProfileScreen}
         options={{ header: () => <UserTabHeader /> }}
       />
-      <Stack.Screen name="About" component={AboutUs} />
-      <Stack.Screen name="FAQs" component={FAQs} />
-      <Stack.Screen name="Help" component={Help} />
-      <Stack.Screen name="MyOrders" component={MyOrders} />
-      <Stack.Screen name="Notification" component={Notification} />
-      <Stack.Screen name="ProfileDetails" component={ProfileDetails} />
-      <Stack.Screen name="Referral" component={Referral} />
-      <Stack.Screen name="Setting" component={Setting} />
-      <Stack.Screen name="Wallet" component={Wallet} />
+      <Stack.Screen name="About" component={AboutUs} options={{ headerShown: false }} />
+      <Stack.Screen name="FAQs" component={FAQs} options={{ headerShown: false }} />
+      <Stack.Screen name="Help" component={Help} options={{ headerShown: false }} />
+      <Stack.Screen name="MyOrders" component={MyOrders} options={{ headerShown: false }} />
+      <Stack.Screen name="Notification" component={Notification} options={{ headerShown: false }} />
+      <Stack.Screen name="ProfileDetails" component={ProfileDetails} options={{ headerShown: false }} />
+      <Stack.Screen name="Referral" component={Referral} options={{ headerShown: false }} />
+      <Stack.Screen name="Setting" component={Setting} options={{ headerShown: false }} />
+      <Stack.Screen name="Wallet" component={Wallet} options={{ headerShown: false }} />
       <Stack.Screen name="UserDetails" component={PersonalDetailScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Locations" component={LocationScreen} options={{ headerShown: false }} />
     </Stack.Navigator >
