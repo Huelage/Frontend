@@ -23,7 +23,7 @@ const ToggleSwitch = ({ label, initialValue, onValueChange }: ToggleSwitchProps)
     return (
         <View style={styles.container}>
             <View style={styles.mainBox}>
-                <Text style={styles.textStyle}>{label}</Text>
+                <Text style={[styles.textStyle, { color: color.mainText }]}>{label}</Text>
                 <View>
                     <Switch
                         trackColor={{ false: '#767577', true: color.mainGreen }}

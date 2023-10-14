@@ -1,4 +1,6 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { useAppDispatch } from '@api/app/appHooks';
+import { switchTheme } from '@api/slices/globalSlice';
+import { StyleSheet, View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { fonts } from "@utils";
@@ -7,11 +9,30 @@ import { useState } from "react";
 
 
 const GeneralSetting = () => {
-    const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
-    const handleNotificationsToggle = (value: boolean | ((prevState: boolean) => boolean)) => {
-        setIsNotificationsEnabled(value);
+    const { color, theme } = useAppTheme();
+    const dispatch = useAppDispatch();
+    const [isActive, setActive] = useState(theme || 'light');
+
+    const handleMatchDeviceSettingToggle = (value: boolean) => {
+        //setActiveMode(device);
+
     };
-    const { color } = useAppTheme();
+    const handleDarkModeToggle = () => {
+        if (isActive !== 'dark') {
+            dispatch(switchTheme("dark"));
+            setActive("dark");
+        }
+
+    };
+    const handleLightModeToggle = () => {
+        if (isActive !== 'light') {
+            dispatch(switchTheme("light"));
+            setActive("light");
+        }
+
+    };
+
+
     return (
         <View style={styles.container} testID="General Settings">
             <View style={styles.mainBox}>
@@ -24,21 +45,21 @@ const GeneralSetting = () => {
 
                     <ToggleSwitch
                         label="Match device settings"
-                        initialValue={isNotificationsEnabled}
-                        onValueChange={handleNotificationsToggle}
+                        initialValue={isActive === 'light'}
+                        onValueChange={handleMatchDeviceSettingToggle}
                     />
 
 
                     <ToggleSwitch
                         label="Dark Mode"
-                        initialValue={isNotificationsEnabled}
-                        onValueChange={handleNotificationsToggle}
+                        initialValue={isActive === 'dark'}
+                        onValueChange={handleDarkModeToggle}
                     />
 
                     <ToggleSwitch
                         label="Light Mode"
-                        initialValue={isNotificationsEnabled}
-                        onValueChange={handleNotificationsToggle}
+                        initialValue={isActive === 'light'}
+                        onValueChange={handleLightModeToggle}
                     />
                 </View>
             </View>

@@ -269,8 +269,3 @@ export interface LocationInterface {
   id: string;
   name: string;
 }
-export interface ToggleSwitchProps {
-  label: string;
-  initialValue: boolean;
-  onValueChange: (value: boolean) => void;
-}
