@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@api/app/appHooks';
+import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
 import { clearCredentials, switchTheme } from '@api/slices/globalSlice';
 import { useAppTheme } from '@hooks';
 import { UserNavigationProps } from '@interfaces';
@@ -10,10 +10,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
+import { getEntity } from "@api/slices/globalSlice";
 
 const UserTabHeader = () => {
   const dispatch = useAppDispatch();
   const { navigate } = useNavigation<UserNavigationProps>();
+
+  const entity = useAppSelector(getEntity);
+  if (!entity) return null;
   const inset = useSafeAreaInsets();
   const { color, theme } = useAppTheme();
   const imgLight = Image.resolveAssetSource(require('@icons/toggle_light.png')).uri;
@@ -31,7 +35,7 @@ const UserTabHeader = () => {
             <TouchableOpacity onPress={logout}>
               <Image testID='user image' style={styles.headerImage} source={require('@images/beejay_dp.png')} />
             </TouchableOpacity>
-            <Text testID='username' style={[styles.headerName, { color: color.mainText }]}>John Jane Doe</Text>
+            <Text testID='username' style={[styles.headerName, { color: color.mainText }]}> {entity.firstName} {entity.lastName}</Text>
           </View>
           <View style={styles.headerAction}>
             <TouchableOpacity testID='theme toggle' onPress={toggleTheme}>

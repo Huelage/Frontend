@@ -6,9 +6,9 @@ import ToggleSwitch from "@containers/User/Profile/ToggleSwitch";
 import { useState } from "react";
 
 const PrivacySetting = () => {
-    const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
-    const handleNotificationsToggle = (value: boolean | ((prevState: boolean) => boolean)) => {
-        setIsNotificationsEnabled(value);
+    const [isActive, setIsActive] = useState(false);
+    const handlePrivacyToggle = (value: boolean | ((prevState: boolean) => boolean)) => {
+        setIsActive(value);
     };
     const { color } = useAppTheme();
 
@@ -22,8 +22,8 @@ const PrivacySetting = () => {
                 <View style={styles.toggle}>
                     <ToggleSwitch
                         label="Location"
-                        initialValue={isNotificationsEnabled}
-                        onValueChange={handleNotificationsToggle}
+                        initialValue={isActive}
+                        onValueChange={handlePrivacyToggle}
                     />
                 </View>
 

@@ -8,12 +8,13 @@ import ToggleSwitch from "@containers/User/Profile/ToggleSwitch";
 import { useState } from "react";
 
 
+
 const GeneralSetting = () => {
     const { color, theme } = useAppTheme();
     const dispatch = useAppDispatch();
     const [isActive, setActive] = useState(theme || 'light');
 
-    const handleMatchDeviceSettingToggle = (value: boolean) => {
+    const handleMatchDeviceSettingToggle = () => {
         //setActiveMode(device);
 
     };
@@ -21,6 +22,7 @@ const GeneralSetting = () => {
         if (isActive !== 'dark') {
             dispatch(switchTheme("dark"));
             setActive("dark");
+
         }
 
     };
