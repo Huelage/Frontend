@@ -1,5 +1,6 @@
-import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
+// AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
   {
     request: {
@@ -302,6 +303,65 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
           businessName: "John Doe",
           businessAddress: "123 Main St",
           repName: "John Doe"
+        }
+      }
+    }
+  }
+];
+
+// USER QUERIES
+export const MOCK_ADD_LOCATION = [
+  {
+    request: {
+      query: EDIT_LOCATIONS,
+      variables: {
+        input: {
+          locationId: "123",
+          name: "123 Main St"
+        }
+      }
+    },
+    result: {
+      data: {
+        editUserLocation: {
+          knownLocation: {
+            locations: [{ locationId: "123", name: "123 Main St" }]
+          }
+        }
+      }
+    }
+  }
+];
+
+export const MOCK_REMOVE_LOCATION = [
+  {
+    request: {
+      query: EDIT_LOCATIONS,
+      variables: {
+        input: {
+          locationId: "123"
+        }
+      }
+    },
+    result: {
+      data: {
+        editUserLocation: { knownLocation: { locations: [] } }
+      }
+    }
+  }
+];
+
+export const MOCK_GET_KNOWN_LOCATIONS = [
+  {
+    request: {
+      query: GET_KNOWN_LOCATIONS
+    },
+    result: {
+      data: {
+        getUserProfile: {
+          knownLocation: {
+            locations: [{ locationId: "123", name: "123 Main St" }]
+          }
         }
       }
     }
