@@ -25,6 +25,19 @@ export const renderApollo = (ui: React.ReactNode, mocks: any) => {
   );
 };
 
+export const entity = {
+  id: "123",
+  walletId: "123",
+  imgUrl: "123",
+  firstName: "John",
+  lastName: "Doe",
+  phone: "+2349058731812",
+  email: "mail@mail.com",
+  knownLocation: [{ locationId: "123", name: "123 Main St" }],
+  isPhoneVerified: true,
+  isEmailVerified: true
+};
+
 // export const renderApolloNavigator = (ui: React.ReactNode, mocks: any) => {
 //   render(
 //     <MockedProvider mocks={mocks} addTypename={false}>
