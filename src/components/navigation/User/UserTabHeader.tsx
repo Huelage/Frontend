@@ -35,7 +35,7 @@ const UserTabHeader = () => {
             <TouchableOpacity onPress={logout}>
               <Image testID='user image' style={styles.headerImage} source={require('@images/beejay_dp.png')} />
             </TouchableOpacity>
-            <Text testID='username' style={[styles.headerName, { color: color.mainText }]}> {entity.firstName} {entity.lastName}</Text>
+            <Text testID='username' style={[styles.headerName, { color: color.mainText }]}>{""} Hi, {entity.firstName} </Text>
           </View>
           <View style={styles.headerAction}>
             <TouchableOpacity testID='theme toggle' onPress={toggleTheme}>
