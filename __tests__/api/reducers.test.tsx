@@ -1,5 +1,5 @@
 import { RootState, store } from "@api/app/store";
-import globalReducer, { getCart, getEntity, getTheme, getVendorStatus } from "@api/slices/globalSlice";
+import globalReducer, { getCart, getEntity, getShowOnboard, getTheme, getVendorStatus } from "@api/slices/globalSlice";
 
 describe("When testing the individual reducers", () => {
   interface SetupReducerProps {
@@ -25,14 +25,12 @@ describe("When testing the individual reducers", () => {
     expect(reducer).toEqual(initialState);
   });
   it("should add entity to the state when setCredentials action is dispatched", () => {
-    const action = "global/setCredentials";
-    const payload = { entity: { id: "1234" } };
+    const action = "global/setCredentials", payload = { entity: { id: "1234" } };
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, entity: { id: "1234" } });
   });
   it("should add accessToken to the state when setCredentials action is dispatched", () => {
-    const action = "global/setCredentials";
-    const payload = { accessToken: "access-token" };
+    const action = "global/setCredentials", payload = { accessToken: "access-token" };
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, accessToken: "access-token" });
   });
@@ -43,48 +41,41 @@ describe("When testing the individual reducers", () => {
     expect(reducer).toEqual(initialState);
   });
   it("should set the vendor status when the setVendorStatus action is dispatched", () => {
-    const action = "global/setVendorStatus";
-    const payload = true;
+    const action = "global/setVendorStatus", payload = true;
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, isVendor: true });
   });
   it("should switch the app theme when the switchTheme action is dispatched", () => {
-    const action = "global/switchTheme";
-    const payload = "light";
+    const action = "global/switchTheme", payload = "light";
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, theme: "light" });
   });
   it("should add an item to the cart when the addToCart action is dispatched", () => {
-    const action = "global/addItemToCart";
-    const payload = { item_id: "test", quantity: 4 };
+    const action = "global/addItemToCart", payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, cart: [{ id: expect.stringMatching(uuidRegex), item_id: "test", quantity: 4 }] });
   });
   it("should increase the quantity of an item in the cart when the addToCart action is dispatched with an item that already exists in the cart", () => {
     const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/addItemToCart";
-    const payload = { item_id: "test", quantity: 4 };
+    const action = "global/addItemToCart", payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 8 }] });
   });
   it("should remove an item from the cart when the removeFromCart action is dispatched", () => {
     const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/removeFromCart";
-    const payload = "1234";
+    const action = "global/removeFromCart", payload = "1234";
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual(initialState);
   });
   it("should update an item in the cart when the updateCart action is dispatched", () => {
     const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/updateCart";
-    const payload = { id: "1234", item_id: "test", quantity: 2 };
+    const action = "global/updateCart", payload = { id: "1234", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 2 }] });
   });
   it("should return the previous state when the updateCart action is dispatched with an item that does not exist in the cart", () => {
     const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/updateCart";
-    const payload = { id: "1235", item_id: "test", quantity: 2 };
+    const action = "global/updateCart", payload = { id: "1235", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] });
   });
@@ -93,6 +84,11 @@ describe("When testing the individual reducers", () => {
     const action = "global/clearCart";
     const reducer = setupReducer({ previousState, action });
     expect(reducer).toEqual(initialState);
+  });
+  it("should set the showOnboard state to false when the setShowOnboard action is dispatched", () => {
+    const action = "global/setShowOnboard", payload = false;
+    const reducer = setupReducer({ action, payload });
+    expect(reducer).toEqual({ ...initialState, showOnboard: false });
   });
 });
 
@@ -109,5 +105,8 @@ describe("When testing the individual selectors", () => {
   });
   it("should return the current entity when the getEntity selector is called", () => {
     expect(getEntity(state)).toEqual(null);
+  });
+  it("should return the current value for showOnboard when the getShowOnboard selector is called", () => {
+    expect(getShowOnboard(state)).toEqual(true);
   });
 });
