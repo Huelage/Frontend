@@ -140,6 +140,7 @@ export type VendorMenuTabItemDetailRouteProps = RouteProp<VendorMenuTabStackPara
 export interface globalStateInterface {
   entity: entityInterface | null;
   isVendor: boolean;
+  showOnboard: boolean;
   themeType: "system" | "manual";
   theme: "light" | "dark";
   cart: CartInterface[];
@@ -154,7 +155,7 @@ export interface entityInterface {
   imgUrl: string | null;
   isPhoneVerified: boolean,
   isEmailVerified: boolean,
-  knownLocation?: LocationInterface;
+  knownLocation?: LocationInterface[];
   firstName?: string;
   lastName?: string;
   repName?: string;
@@ -219,7 +220,7 @@ export interface FoodSideInterface {
 }
 
 export interface LocationInterface {
-  id: string;
+  locationId: string;
   name: string;
 }
 
