@@ -130,4 +130,11 @@ describe("toasts.ts: ", () => {
     const Icon = mockedShowMessage.mock.calls[0][0].icon as React.FC;
     render(<Icon />);
   });
+  it("should call showMessage with teh correct parameters when showSuccess is called", () => {
+    const mockedShowMessage = jest.spyOn(toasts, "showMessage");
+    utils.showSuccess("test");
+    expect(mockedShowMessage).toBeCalledWith(expect.objectContaining({ message: "test", type: "success" }));
+    const Icon = mockedShowMessage.mock.calls[1][0].icon as React.FC;
+    render(<Icon />);
+  });
 });

@@ -30,11 +30,14 @@ export const LOGIN_USER = gql(`
         wallet {
           walletId
         }
+        isPhoneVerified
+        isEmailVerified
         accessToken
         refreshToken
       }
       firstName
       lastName
+      knownLocation
     }
   }
 `);
@@ -50,6 +53,8 @@ export const LOGIN_VENDOR = gql(`
         wallet {
           walletId
         }
+        isPhoneVerified
+        isEmailVerified
         accessToken
         refreshToken
       }
@@ -70,11 +75,14 @@ export const VERIFY_OTP = gql(`
       email
       phone
       imgUrl
+      isPhoneVerified
+      isEmailVerified
       refreshToken
       accessToken
       user {
         firstName
         lastName
+        knownLocation
       }
       vendor {
         businessName
@@ -110,6 +118,15 @@ export const VERIFY_EMAIL = gql(`
   }
 `);
 
+export const VERIFY_PHONE = gql(`
+  mutation ($input: VerifyPhoneInput!) {
+    verifyPhoneOtp(input: $input) {
+      refreshToken
+      accessToken
+    }
+  }
+`);
+
 export const SET_PASSWORD = gql(`
   mutation ($input: ForgotPasswordInput!) {
     forgotPassword(input: $input) {
@@ -124,5 +141,11 @@ export const SET_PASSWORD = gql(`
         repName
       }
     }
+  }
+`);
+
+export const REFRESH_ACCESS_TOKEN = gql(`
+  mutation {
+    refreshAccessToken
   }
 `);

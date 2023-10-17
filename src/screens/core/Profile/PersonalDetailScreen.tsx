@@ -1,9 +1,11 @@
 import { useAppSelector } from "@api/app/appHooks";
+import { REFRESH_OTP, REQUEST_EMAIL_VERIFICATION } from "@api/graphql";
 import { getEntity } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
 import { DetailElement } from "@components/core/Profile";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserNavigationProps } from "@interfaces";
+import { UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React from "react";
@@ -16,22 +18,32 @@ const PersonalDetailScreen = () => {
   if (!entity) return null;
   const insets = useSafeAreaInsets();
   const dismissKeyboard = () => Keyboard.dismiss();
-  const { goBack } = useNavigation<UserNavigationProps>();
+  const [sendPhoneOTP] = useMutation(REFRESH_OTP);
+  const [sendEmailOTP] = useMutation(REQUEST_EMAIL_VERIFICATION);
+  const { goBack, navigate } = useNavigation<UserProfileTabProps>();
+  const verifyEmail = async () => {
+    await sendEmailOTP({ variables: { email: entity.email } });
+    navigate("VerifyEmail");
+  };
+  const verifyPhone = async () => {
+    const input = { entityId: entity.id, phone: entity.phone };
+    await sendPhoneOTP({ variables: { input } });
+    navigate("VerifyPhone");
+  };
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="personal detail screen">
-      <View style={styles.headerBox}>
+      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
         <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Personal Details</Text>
       </View>
-      <View style={[styles.headerUnderline, { backgroundColor: color.mainGreen }]} />
       <ScrollView>
         <View style={styles.detailBody}>
           <DetailElement label="First Name" value={entity.firstName as string} />
           <DetailElement label="Last Name" value={entity.lastName as string} />
-          <DetailElement label="Phone Number" value={entity.phone} verifible />
-          <DetailElement label="Email Address" value={entity.email} verifible isVerified />
+          <DetailElement label="Phone Number" value={entity.phone} verifible isVerified={entity.isPhoneVerified} verify={verifyPhone} />
+          <DetailElement label="Email Address" value={entity.email} verifible isVerified={entity.isEmailVerified} verify={verifyEmail} />
         </View>
       </ScrollView>
     </View>
@@ -47,15 +59,15 @@ const styles = StyleSheet.create({
   },
   headerBox: {
     alignItems: "center",
+    borderBottomWidth: 2,
     flexDirection: "row",
     justifyContent: "center",
+    paddingBottom: 20,
     paddingHorizontal: 10
-  },
-  headerUnderline: {
-    height: 2
   },
   backButton: {
     position: "absolute",
+    top: -5,
     left: 10
   },
   headerText: {

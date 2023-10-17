@@ -17,7 +17,7 @@ const ProfileList = () => {
           <Text style={[styles.textStyle, { color: color.mainText }]}>     {" "}     Profile Details   </Text>
           <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText}   ></MaterialCommunityIcons>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("Locations")}>
+        <TouchableOpacity style={styles.innerBox} onPress={() => navigate("Location")}>
           <MaterialCommunityIcons name="map-marker-outline" size={30} color={color.mainGreen}> </MaterialCommunityIcons>
           <Text style={[styles.textStyle, { color: color.mainText }]}>    {" "}    Locations  </Text>
           <MaterialCommunityIcons name="chevron-right" size={30} color={color.mainText}  ></MaterialCommunityIcons>

@@ -1,3 +1,5 @@
+const { resolve } = require('path');
+
 module.exports = function (api) {
   api.cache(true);
   return {
@@ -7,6 +9,7 @@ module.exports = function (api) {
       ["@babel/plugin-proposal-decorators", { "legacy": true }],
       ["@babel/plugin-proposal-class-properties", { "loose": true }],
       ["module-resolver", {
+        root: ["."],
         alias: {
           "@images": "./assets/images",
           "@icons": "./assets/icons",
@@ -19,7 +22,7 @@ module.exports = function (api) {
           "@hooks": "./src/hooks",
           "@interfaces": "./src/utils/interfaces.ts"
         },
-        "extensions": [".tsx", ".ts", ".json", ".png", ".jpg", ".jpeg"]
+        extensions: [".tsx", ".ts", ".json", ".png", ".jpg", ".jpeg"]
       }],
       'react-native-reanimated/plugin'
     ]

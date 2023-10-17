@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const NotificationSetting = () => {
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
-    const handleNotificationsToggle = (value: boolean | ((prevState: boolean) => boolean)) => {
-        setIsNotificationsEnabled(value);
+    const handleNotificationsToggle = () => {
+        setIsNotificationsEnabled(false);
     };
     const { color } = useAppTheme();
 

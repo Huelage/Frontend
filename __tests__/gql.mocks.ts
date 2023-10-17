@@ -1,5 +1,6 @@
-import { LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP } from "@api/graphql";
+import { EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
+// AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
   {
     request: {
@@ -80,6 +81,25 @@ export const MOCK_VERIFY_EMAIL = [
   }
 ];
 
+export const MOCK_VERIFY_PHONE = [
+  {
+    request: {
+      query: VERIFY_PHONE,
+      variables: {
+        input: {
+          phone: "+2349058731812",
+          otp: 1234
+        }
+      }
+    },
+    result: {
+      data: {
+        verifyPhoneOtp: { refreshToken: "123", accessToken: "123" }
+      }
+    }
+  }
+];
+
 export const MOCK_SET_PASSWORD = [
   {
     request: {
@@ -122,9 +142,11 @@ export const MOCK_VERIFY_OTP = [
           email: "mail@mail.com",
           phone: "+2349058731812",
           imgUrl: null,
+          isPhoneVerified: false,
+          isEmailVerified: true,
           refreshToken: "123",
           accessToken: "123",
-          user: { firstName: "John", lastName: "Doe" },
+          user: { firstName: "John", lastName: "Doe", knownLocation: { locations: [] } },
           vendor: { businessName: "John Doe", businessAddress: "123 Main St", repName: "John Doe" }
         }
       }
@@ -170,12 +192,15 @@ export const MOCK_LOGIN_USER = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }
@@ -201,12 +226,15 @@ export const MOCK_LOGIN_USER_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
           },
           firstName: "John",
-          lastName: "Doe"
+          lastName: "Doe",
+          knownLocation: { locations: [] }
         }
       }
     }
@@ -232,6 +260,8 @@ export const MOCK_LOGIN_VENDOR = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -264,6 +294,8 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
             email: "mail@mail.com",
             phone: "+2349058731812",
             imgUrl: null,
+            isPhoneVerified: false,
+            isEmailVerified: true,
             wallet: { walletId: "123" },
             accessToken: "123",
             refreshToken: "123"
@@ -271,6 +303,65 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
           businessName: "John Doe",
           businessAddress: "123 Main St",
           repName: "John Doe"
+        }
+      }
+    }
+  }
+];
+
+// USER QUERIES
+export const MOCK_ADD_LOCATION = [
+  {
+    request: {
+      query: EDIT_LOCATIONS,
+      variables: {
+        input: {
+          locationId: "123",
+          name: "123 Main St"
+        }
+      }
+    },
+    result: {
+      data: {
+        editUserLocation: {
+          knownLocation: {
+            locations: [{ locationId: "123", name: "123 Main St" }]
+          }
+        }
+      }
+    }
+  }
+];
+
+export const MOCK_REMOVE_LOCATION = [
+  {
+    request: {
+      query: EDIT_LOCATIONS,
+      variables: {
+        input: {
+          locationId: "123"
+        }
+      }
+    },
+    result: {
+      data: {
+        editUserLocation: { knownLocation: { locations: [] } }
+      }
+    }
+  }
+];
+
+export const MOCK_GET_KNOWN_LOCATIONS = [
+  {
+    request: {
+      query: GET_KNOWN_LOCATIONS
+    },
+    result: {
+      data: {
+        getUserProfile: {
+          knownLocation: {
+            locations: [{ locationId: "123", name: "123 Main St" }]
+          }
         }
       }
     }

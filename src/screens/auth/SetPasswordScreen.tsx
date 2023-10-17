@@ -72,6 +72,7 @@ const SetPasswordScreen = () => {
 };
 
 export default SetPasswordScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -1,50 +1,54 @@
-import { useAppSelector } from "@api/app/appHooks";
-import { getEntity } from "@api/slices/globalSlice";
-import { LocationElement, LocationInput } from "@components/core/Profile";
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { EDIT_LOCATIONS } from "@api/graphql";
+import { getEntity, setCredentials } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
+import { LocationInput } from "@components/core/Profile";
+import { LocationList } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, showError } from "@utils";
-import React, { useRef } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { GooglePlaceData, GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from "react-native-google-places-autocomplete";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { GooglePlaceData, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const LocationScreen = () => {
   const { color } = useAppTheme();
-  const placesRef = useRef<GooglePlacesAutocompleteRef>(null);
+  const dispatch = useAppDispatch();
   const entity = useAppSelector(getEntity);
   if (!entity) return null;
+  const [addLocation, { data: added }] = useMutation(EDIT_LOCATIONS);
   const insets = useSafeAreaInsets();
   const { goBack } = useNavigation<UserNavigationProps>();
-  const handleLocation = (data: GooglePlaceData) => {
-    const datas = {
-      id: data.place_id,
-      name: data.description,
-    };
-  };
-  const removeLocation = (id: string) => {
-    console.log(id);
+
+  const handleLocation = async (data: GooglePlaceData) => {
+    const location = entity.knownLocation?.find(location => location.locationId === data.place_id);
+    if (location) {
+      showError(`${data.structured_formatting.main_text} is already a known location`);
+    } else {
+      const input = { locationId: data.place_id, name: data.description };
+      await addLocation({ variables: { input } });
+    }
   };
   const onError = (error: string) => showError(error);
 
-  const locations = [
-    { id: "123", name: "Moremi Hall, Tafawa Balewa Way, Unilag101245, Lagos" },
-    { id: "1234", name: "Sodeinde Hall, Dan Fodio St, Akoka , Lagos" },
-    { id: "12345", name: "Honours Hall, DLI ,University of Lagos." }
-  ];
+  useEffect(() => {
+    if (added) {
+      const newEntity = { ...entity, knownLocation: added.editUserLocation.knownLocation.locations };
+      dispatch(setCredentials({ entity: newEntity }));
+    }
+  }, [added]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="location screen">
-      <View style={styles.headerBox}>
+      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
         <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Locations</Text>
       </View>
-      <View style={[styles.headerUnderline, { backgroundColor: color.mainGreen }]} />
       <GooglePlacesAutocomplete
-        ref={placesRef}
         placeholder="Add a new location"
         query={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY, components: 'country:ng' }}
         onPress={handleLocation}
@@ -61,17 +65,7 @@ const LocationScreen = () => {
           description: { color: color.mainText }
         }}
       />
-      <FlatList
-        contentContainerStyle={styles.locationList}
-        data={locations}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <LocationElement location={item} removeLocation={removeLocation} />
-        )}
-        showsVerticalScrollIndicator={false}
-        style={styles.locationBody}
-        testID="location list"
-      />
+      <LocationList />
     </View>
   );
 };
@@ -85,28 +79,20 @@ const styles = StyleSheet.create({
   },
   headerBox: {
     alignItems: "center",
+    borderBottomWidth: 2,
     flexDirection: "row",
     justifyContent: "center",
+    paddingBottom: 20,
     paddingHorizontal: 10
-  },
-  headerUnderline: {
-    height: 2
   },
   backButton: {
     position: "absolute",
+    top: -5,
     left: 10
   },
   headerText: {
     fontFamily: fonts.I_500,
     fontSize: 20
-  },
-  locationBody: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 30
-  },
-  locationList: {
-    gap: 40
   },
   googlePlacesContainer: {
     flex: 0,

@@ -20,6 +20,7 @@ module.exports = {
     "!**/coverage/**",
     "!**/node_modules/**",
     "!**/App.tsx",
+    "!**/store.ts",
     "!**/graphqlapi.ts",
     "!**/babel.config.js",
     "!**/jest.setup.js",

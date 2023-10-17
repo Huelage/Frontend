@@ -16,7 +16,10 @@ describe("When Testing Authentication Screens: ", () => {
     lastName: "Doe",
     email: "mail@mail.com",
     phone: "+2349058731812",
-    imgUrl: null
+    imgUrl: null,
+    isPhoneVerified: false,
+    isEmailVerified: true,
+    knownLocation: []
   };
   const vendorState = {
     id: "123",
@@ -26,8 +29,11 @@ describe("When Testing Authentication Screens: ", () => {
     repName: "John Doe",
     email: "mail@mail.com",
     phone: "+2349058731812",
-    imgUrl: null
+    imgUrl: null,
+    isPhoneVerified: false,
+    isEmailVerified: true
   };
+
   describe("<ForgotPasswordScreen />: ", () => {
     beforeEach(() => {
       renderApollo(<ForgotPasswordScreen />, []);
@@ -81,7 +87,6 @@ describe("When Testing Authentication Screens: ", () => {
       });
     });
   });
-
 
   describe("<LoginScreen />: ", () => {
     beforeEach(async () => {
@@ -281,7 +286,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<OnBoardScreen />: ", () => {
     beforeEach(async () => {
       await waitFor(() => {
@@ -326,7 +330,6 @@ describe("When Testing Authentication Screens: ", () => {
       expect(navigate).toBeCalledWith("SignupSelect");
     });
   });
-
 
   describe("<OTPScreen />: ", () => {
     beforeEach(() => {
@@ -425,7 +428,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<SetPasswordScreen />: ", () => {
     beforeEach(() => {
       renderApollo(<SetPasswordScreen />, []);
@@ -501,7 +503,6 @@ describe("When Testing Authentication Screens: ", () => {
       });
     });
   });
-
 
   describe("<SignUpScreen />: ", () => {
     beforeEach(() => {
@@ -601,7 +602,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<SignupSelectScreen />: ", () => {
     beforeEach(() => {
       render(<SignupSelectScreen />);
@@ -657,7 +657,6 @@ describe("When Testing Authentication Screens: ", () => {
       expect(navigate).toBeCalledWith("SignUp");
     });
   });
-
 
   describe("<VerifyEmailScreen />: ", () => {
     beforeEach(() => {
