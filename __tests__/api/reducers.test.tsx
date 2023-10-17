@@ -7,107 +7,92 @@ describe("When testing the individual reducers", () => {
     action?: any;
     payload?: any;
   }
+  const initialState = {
+    isVendor: false,
+    entity: null,
+    accessToken: null,
+    themeType: "system",
+    theme: "dark",
+    cart: [],
+    showOnboard: true
+  };
   const setupReducer = ({ previousState, action, payload }: SetupReducerProps) => {
     return globalReducer(previousState, { type: action, payload });
   };
   const uuidRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
   it("should return the initial state", () => {
     const reducer = setupReducer({});
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual(initialState);
   });
   it("should add entity to the state when setCredentials action is dispatched", () => {
     const action = "global/setCredentials";
     const payload = { entity: { id: "1234" } };
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: { id: "1234" }, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual({ ...initialState, entity: { id: "1234" } });
   });
   it("should add accessToken to the state when setCredentials action is dispatched", () => {
     const action = "global/setCredentials";
     const payload = { accessToken: "access-token" };
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: "access-token", themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual({ ...initialState, accessToken: "access-token" });
   });
   it("should clear user details from the state when clearCredentials action is dispatched", () => {
-    const previousState = { isVendor: false, entity: { id: "1234" }, accessToken: "access-token", themeType: "system", theme: "dark", cart: [], };
+    const previousState = { ...initialState, entity: { id: "1234" }, accessToken: "access-token" };
     const action = "global/clearCredentials";
     const reducer = setupReducer({ previousState, action });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual(initialState);
   });
   it("should set the vendor status when the setVendorStatus action is dispatched", () => {
     const action = "global/setVendorStatus";
     const payload = true;
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual(
-      { isVendor: true, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual({ ...initialState, isVendor: true });
   });
   it("should switch the app theme when the switchTheme action is dispatched", () => {
     const action = "global/switchTheme";
     const payload = "light";
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "light", cart: [], }
-    );
+    expect(reducer).toEqual({ ...initialState, theme: "light" });
   });
   it("should add an item to the cart when the addToCart action is dispatched", () => {
     const action = "global/addItemToCart";
     const payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: expect.stringMatching(uuidRegex), item_id: "test", quantity: 4 }], }
-    );
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: expect.stringMatching(uuidRegex), item_id: "test", quantity: 4 }] });
   });
   it("should increase the quantity of an item in the cart when the addToCart action is dispatched with an item that already exists in the cart", () => {
-    const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
     const action = "global/addItemToCart";
     const payload = { item_id: "test", quantity: 4 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 8 }], }
-    );
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 8 }] });
   });
   it("should remove an item from the cart when the removeFromCart action is dispatched", () => {
-    const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
     const action = "global/removeFromCart";
     const payload = "1234";
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual(initialState);
   });
   it("should update an item in the cart when the updateCart action is dispatched", () => {
-    const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
     const action = "global/updateCart";
     const payload = { id: "1234", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 2 }], }
-    );
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 2 }] });
   });
   it("should return the previous state when the updateCart action is dispatched with an item that does not exist in the cart", () => {
-    const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
     const action = "global/updateCart";
     const payload = { id: "1235", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }], }
-    );
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] });
   });
   it("should clear the cart when the clearCart action is dispatched", () => {
-    const previousState = { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
     const action = "global/clearCart";
     const reducer = setupReducer({ previousState, action });
-    expect(reducer).toEqual(
-      { isVendor: false, entity: null, accessToken: null, themeType: "system", theme: "dark", cart: [], }
-    );
+    expect(reducer).toEqual(initialState);
   });
 });
 
