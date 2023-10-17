@@ -143,3 +143,9 @@ export const SET_PASSWORD = gql(`
     }
   }
 `);
+
+export const REFRESH_ACCESS_TOKEN = gql(`
+  mutation {
+    refreshAccessToken
+  }
+`);

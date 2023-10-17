@@ -5,6 +5,7 @@ import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
   isVendor: false,
+  showOnboard: true,
   entity: null,
   accessToken: null,
   themeType: "system",
@@ -24,6 +25,9 @@ const globalSlice = createSlice({
     clearCredentials: (state) => {
       state.entity = null;
       state.accessToken = null;
+    },
+    setShowOnboard: (state, action: PayloadAction<boolean>) => {
+      state.showOnboard = action.payload;
     },
     setVendorStatus: (state, action: PayloadAction<boolean>) => {
       state.isVendor = action.payload;
@@ -60,11 +64,13 @@ export const {
   updateCart,
   setCredentials,
   setVendorStatus,
+  setShowOnboard,
   switchTheme
 } = globalSlice.actions;
 // Selectors
 export const getTheme = (state: RootState) => state.global.theme;
 export const getVendorStatus = (state: RootState) => state.global.isVendor;
+export const getShowOnboard = (state: RootState) => state.global.showOnboard;
 export const getCart = (state: RootState) => state.global.cart;
 export const getEntity = (state: RootState) => state.global.entity;
 // Reducer

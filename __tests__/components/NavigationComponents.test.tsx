@@ -144,6 +144,7 @@ describe("When Testing User Navigation Components: ", () => {
   });
 });
 
+
 describe("When Testing Vendor Navigation Component: ", () => {
   const Tab = createBottomTabNavigator<VendorTabParamList>();
   const TestComp = () => <Text>test component</Text>;

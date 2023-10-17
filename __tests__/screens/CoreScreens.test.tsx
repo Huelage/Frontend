@@ -1,29 +1,17 @@
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { useNavigation } from "@react-navigation/native";
 import { CartScreen, DetailScreen, HomeScreen, LocationScreen, PersonalDetailScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { renderApollo, renderNavigator } from "../testhelpers";
+import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
-import { useNavigation } from "@react-navigation/native";
-import { setItem, showSuccess } from "@utils";
+import { MOCK_ADD_LOCATION, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
+import { entity, renderApollo, renderNavigator } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
-  const testSearchFunc = () => {
+  const testSearchFunc = (logSpy: any) => {
     const searchBar = screen.getByPlaceholderText(/search dishes/i);
     fireEvent.changeText(searchBar, "test");
-    expect(console.log).toBeCalledWith("test");
-  };
-  const entity = {
-    id: "123",
-    walletId: "123",
-    imgUrl: "123",
-    firstName: "John",
-    lastName: "Doe",
-    phone: "+2349058731812",
-    email: "mail@mail.com",
-    knownLocations: [],
-    isPhoneVerified: true,
-    isEmailVerified: true
+    expect(logSpy).toBeCalledWith("test");
   };
 
   describe("<CartScreen />: ", () => {
@@ -89,11 +77,10 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       expect(screen.getByTestId("categories")).toBeOnTheScreen();
     });
     it("should call the search function when the search bar is used", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       (useAppSelector as jest.Mock).mockReturnValueOnce("dark");
       render(<HomeScreen />);
-      testSearchFunc();
-      console.log = console.log.bind(console);
+      testSearchFunc(logSpy);
     });
   });
 
@@ -115,10 +102,9 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
       });
       it("should call the search function when the search bar is used", () => {
-        console.log = jest.fn();
+        const logSpy = jest.spyOn(console, "log");
         render(<VendorScreen />);
-        testSearchFunc();
-        console.log = console.log.bind(console);
+        testSearchFunc(logSpy);
       });
     });
   });
@@ -126,15 +112,16 @@ describe("When Testing Core(User Flow) Screens: ", () => {
   describe("Profile Screens: ", () => {
     describe("<LocationScreen />: ", () => {
       beforeEach(() => {
-        (useAppSelector as jest.Mock).mockReturnValue({ id: 123 });
-        render(<LocationScreen />);
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<LocationScreen />, []);
       });
+      // Testing UI
       it("should render the component correctly", () => {
         expect(screen.getByTestId("location screen")).toBeOnTheScreen();
       });
       it("should not render component if user is not logged in", () => {
         (useAppSelector as jest.Mock).mockReturnValue(null);
-        render(<LocationScreen />);
+        renderApollo(<LocationScreen />, []);
         expect(screen.queryByTestId("location screen")).toBeNull();
       });
       it("should render the screen title", () => {
@@ -143,24 +130,34 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       it("should render the go back button", () => {
         expect(screen.getByTestId("go back")).toBeOnTheScreen();
       });
-      it("should render the locationInput component", () => {
-        expect(screen.getByTestId("location input")).toBeOnTheScreen();
-      });
       it("should render the location list", () => {
         expect(screen.getByTestId("location list")).toBeOnTheScreen();
       });
-      it("should render the location elements using the LocationElement component", () => {
-        expect(screen.getAllByTestId("location element")).not.toBeNull();
+      it("should call the handleLocation function when a location is selected and location is already a known location", async () => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<LocationScreen />, []);
+        const locationElement = screen.getByTestId("places autocomplete");
+        fireEvent(locationElement, "onTouchStart");
+        expect(showError).toBeCalledWith("Main St is already a known location");
       });
-      it("should call the removeLocation function when the remove button is pressed", () => {
-        console.log = jest.fn();
-        render(<LocationScreen />);
-        const removeButtons = screen.getAllByTestId("remove button");
-        removeButtons.forEach(button => {
-          fireEvent.press(button);
-          expect(console.log).toBeCalled();
+      it("should call the handleLocation function when a location is selected and location is not already a known location", async () => {
+        const dispatch = jest.fn();
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+        const user = { ...entity, knownLocation: [{ locationId: "1234", name: "123 Main St" }] };
+        (useAppSelector as jest.Mock).mockReturnValue(user);
+        renderApollo(<LocationScreen />, MOCK_ADD_LOCATION);
+        const locationElement = screen.getByTestId("places autocomplete");
+        fireEvent(locationElement, "onTouchStart");
+        await waitFor(() => {
+          expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity: { ...entity, knownLocation: [{ locationId: "123", name: "123 Main St" }] } } });
         });
-        console.log = console.log.bind(console);
+      });
+      it("should call the onError function when the onFail prop is called", () => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<LocationScreen />, []);
+        const locationElement = screen.getByTestId("places autocomplete");
+        fireEvent(locationElement, "onTouchCancel");
+        expect(showError).toBeCalledWith("test error");
       });
     });
 

@@ -1,5 +1,8 @@
-import { CartItem, CartOverview, Categories, PopularFood, PopularRestaurant } from "@containers/User";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { CartItem, CartOverview, Categories, LocationList, PopularFood, PopularRestaurant } from "@containers/User";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
+import { entity, renderApollo } from "../testhelpers";
 
 describe("When Testing User Cart Containers: ", () => {
   describe("<CartItem />: ", () => {
@@ -79,27 +82,26 @@ describe("When Testing User Cart Containers: ", () => {
       expect(screen.getByTestId("promo box")).toBeOnTheScreen();
     });
     it("should apply the promo code when the apply button is pressed", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       render(<CartOverview />);
       const input = screen.getByTestId("promo input");
       fireEvent.changeText(input, "test");
       fireEvent(input, "onSubmitEditing");
-      expect(console.log).toBeCalledWith("test");
-      console.log = console.log.bind(console);
+      expect(logSpy).toBeCalledWith("test");
     });
     it("should render the OverviewBox component", () => {
       expect(screen.getByTestId("overview box")).toBeOnTheScreen();
     });
     it("should checkout when the checkout button is pressed", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       render(<CartOverview />);
       const button = screen.getByTestId("checkout button");
       fireEvent.press(button);
-      expect(console.log).toBeCalledWith("Checkout");
-      console.log = console.log.bind(console);
+      expect(logSpy).toBeCalledWith("Checkout");
     });
   });
 });
+
 
 describe("When Testing User Home Containers: ", () => {
   describe("<Categories />: ", () => {
@@ -116,14 +118,13 @@ describe("When Testing User Home Containers: ", () => {
       expect(screen.getAllByTestId("custom button")).not.toBeNull();
     });
     it("should select a category when the category icon is pressed", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       render(<Categories />);
       const buttons = screen.getAllByTestId("custom button");
       buttons.forEach(button => {
         fireEvent.press(button);
-        expect(console.log).toBeCalled();
+        expect(logSpy).toBeCalled();
       });
-      console.log = console.log.bind(console);
     });
     it("should render the CustomCarousel component", () => {
       expect(screen.getByTestId("carousel")).toBeOnTheScreen();
@@ -144,12 +145,11 @@ describe("When Testing User Home Containers: ", () => {
       expect(screen.getByTestId("custom button")).toBeOnTheScreen();
     });
     it("should call the handleViewAll function when the View all button is pressed", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       render(<PopularFood />);
       const button = screen.getByTestId("custom button");
       fireEvent.press(button);
-      expect(console.log).toBeCalledWith("View All");
-      console.log = console.log.bind(console);
+      expect(logSpy).toBeCalledWith("View All");
     });
     it("should render the popular food list", () => {
       expect(screen.getByTestId("popular food list")).toBeOnTheScreen();
@@ -170,15 +170,58 @@ describe("When Testing User Home Containers: ", () => {
       expect(screen.getByTestId("custom button")).toBeOnTheScreen();
     });
     it("should call the handleViewAll function when the View all button is pressed", () => {
-      console.log = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
       render(<PopularRestaurant />);
       const button = screen.getByTestId("custom button");
       fireEvent.press(button);
-      expect(console.log).toBeCalledWith("View All");
-      console.log = console.log.bind(console);
+      expect(logSpy).toBeCalledWith("View All");
     });
     it("should render the popular restaurant list", () => {
       expect(screen.getByTestId("popular restaurant list")).toBeOnTheScreen();
+    });
+  });
+});
+
+
+describe("When Testing User Profile Containers: ", () => {
+  describe("<LocationList />: ", () => {
+    beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(entity);
+      renderApollo(<LocationList />, []);
+    });
+    // Testing UI
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("location list")).toBeOnTheScreen();
+    });
+    it("should not render the container if user is not logged in", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(null);
+      renderApollo(<LocationList />, []);
+      expect(screen.queryByTestId("location list")).toBeNull();
+    });
+    it("should render the location elements using the LocationElement component", () => {
+      expect(screen.getAllByTestId("location element")).not.toBeNull();
+    });
+    // Testing Functionality
+    it("should call the removeLocation function when the remove button is pressed", async () => {
+      const dispatch = jest.fn();
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      (useAppSelector as jest.Mock).mockReturnValue(entity);
+      renderApollo(<LocationList />, MOCK_REMOVE_LOCATION);
+      const removeButton = screen.getByTestId("remove button 123");
+      fireEvent.press(removeButton);
+      await waitFor(() => {
+        expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity: { ...entity, knownLocation: [] } } });
+      });
+    });
+    it("should check if the user has known locations on mount if the knownLocation array is empty", async () => {
+      const dispatch = jest.fn();
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      const user = { ...entity, knownLocation: [] };
+      (useAppSelector as jest.Mock).mockReturnValue(user);
+      renderApollo(<LocationList />, MOCK_GET_KNOWN_LOCATIONS);
+      await waitFor(() => {
+        expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity: { ...entity, knownLocation: [{ locationId: "123", name: "123 Main St" }] } } });
+      });
     });
   });
 });

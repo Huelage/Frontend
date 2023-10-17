@@ -1,11 +1,12 @@
 import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
-import { CategoryCard, CustomButton, CustomCarousel, FoodCard, MainSearchBar, RestaurantCard, FoodModalContent, FoodModalResCard } from "@components/core/Home";
+import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
 import { DetailElement, LocationElement, LocationInput } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
+import { useRef } from "react";
 
 const foodData = mockFoods[0];
 const resData = mockRestaurants[0];
@@ -104,6 +105,7 @@ describe("When Testing Core Cart Components: ", () => {
   });
 });
 
+
 describe("When Testing Core Detail Components: ", () => {
   describe("<RatingCard />: ", () => {
     beforeEach(() => {
@@ -117,6 +119,7 @@ describe("When Testing Core Detail Components: ", () => {
     });
   });
 });
+
 
 describe("When Testing Core Home Components: ", () => {
   describe("<CategoryCard />: ", () => {
@@ -330,6 +333,7 @@ describe("When Testing Core Home Components: ", () => {
   });
 });
 
+
 describe("When Testing Core Vendor Components: ", () => {
   describe("<VendorResCard />: ", () => {
     beforeEach(() => {
@@ -352,6 +356,7 @@ describe("When Testing Core Vendor Components: ", () => {
     });
   });
 });
+
 
 describe("When Testing Core Profile Components: ", () => {
   describe("<DetailElement />: ", () => {
@@ -385,10 +390,14 @@ describe("When Testing Core Profile Components: ", () => {
   });
 
   describe("<LocationElement />: ", () => {
-    const location = { id: "1", name: "123rd main street" };
+    const location = { locationId: "1", name: "123rd main street" };
     const removeLocation = jest.fn();
+    const Component = () => {
+      const initialMode = useRef<boolean>(true);
+      return <LocationElement location={location} initialMode={initialMode} idx={1} removeLocation={removeLocation} />;
+    };
     beforeEach(() => {
-      render(<LocationElement location={location} removeLocation={removeLocation} />);
+      render(<Component />);
     });
     it("should render the component correctly", () => {
       expect(screen.getByTestId("location element")).toBeOnTheScreen();
@@ -397,9 +406,9 @@ describe("When Testing Core Profile Components: ", () => {
       expect(screen.getByText(location.name)).toBeOnTheScreen();
     });
     it("should call the remove location function with the location id when the remove button is pressed", () => {
-      const removeButton = screen.getByTestId("remove button");
+      const removeButton = screen.getByTestId("remove button 1");
       fireEvent.press(removeButton);
-      expect(removeLocation).toBeCalledWith(location.id);
+      expect(removeLocation).toBeCalledWith(location.locationId);
     });
   });
 

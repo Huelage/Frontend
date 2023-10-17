@@ -33,6 +33,7 @@ describe("When Testing Authentication Screens: ", () => {
     isPhoneVerified: false,
     isEmailVerified: true
   };
+
   describe("<ForgotPasswordScreen />: ", () => {
     beforeEach(() => {
       renderApollo(<ForgotPasswordScreen />, []);
@@ -86,7 +87,6 @@ describe("When Testing Authentication Screens: ", () => {
       });
     });
   });
-
 
   describe("<LoginScreen />: ", () => {
     beforeEach(async () => {
@@ -286,7 +286,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<OnBoardScreen />: ", () => {
     beforeEach(async () => {
       await waitFor(() => {
@@ -331,7 +330,6 @@ describe("When Testing Authentication Screens: ", () => {
       expect(navigate).toBeCalledWith("SignupSelect");
     });
   });
-
 
   describe("<OTPScreen />: ", () => {
     beforeEach(() => {
@@ -430,7 +428,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<SetPasswordScreen />: ", () => {
     beforeEach(() => {
       renderApollo(<SetPasswordScreen />, []);
@@ -506,7 +503,6 @@ describe("When Testing Authentication Screens: ", () => {
       });
     });
   });
-
 
   describe("<SignUpScreen />: ", () => {
     beforeEach(() => {
@@ -606,7 +602,6 @@ describe("When Testing Authentication Screens: ", () => {
     });
   });
 
-
   describe("<SignupSelectScreen />: ", () => {
     beforeEach(() => {
       render(<SignupSelectScreen />);
@@ -662,7 +657,6 @@ describe("When Testing Authentication Screens: ", () => {
       expect(navigate).toBeCalledWith("SignUp");
     });
   });
-
 
   describe("<VerifyEmailScreen />: ", () => {
     beforeEach(() => {
