@@ -1,17 +1,31 @@
 import globalReducer from "@api/slices/globalSlice";
+import { globalStateInterface } from "@interfaces";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { CustomSecureStore } from "@utils";
-import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, createTransform, persistReducer, persistStore } from 'redux-persist';
+
+const globalTransform = createTransform(
+  (inboundState: globalStateInterface) => {
+    return {
+      ...inboundState,
+      showOnboard: true,
+      entity: { ...inboundState.entity, knownLocation: [] },
+    };
+  },
+  (outboundState: any) => outboundState,
+  { whitelist: ['global'] }
+);
 
 const persistConfig = {
   key: 'root',
-  storage: CustomSecureStore
+  storage: CustomSecureStore,
+  transforms: [globalTransform]
 };
 
 const rootReducers = combineReducers({
   global: globalReducer,
 });
-const persistedReducer = persistReducer(persistConfig, rootReducers);
+const persistedReducer = persistReducer(persistConfig, rootReducers) as typeof rootReducers;
 
 export const store = configureStore({
   reducer: persistedReducer,
