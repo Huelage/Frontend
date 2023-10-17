@@ -7,8 +7,8 @@ import { useState } from "react";
 
 const PrivacySetting = () => {
     const [isActive, setIsActive] = useState(false);
-    const handlePrivacyToggle = (value: boolean | ((prevState: boolean) => boolean)) => {
-        setIsActive(value);
+    const handlePrivacyToggle = () => {
+        setIsActive(false);
     };
     const { color } = useAppTheme();
 
