@@ -18,7 +18,7 @@ const VendorScreen = () => {
         keyExtractor={item => item.id}
         testID='vendors list'
         renderItem={({ item }) => (
-          <View style={{ paddingHorizontal: 20 }}>
+          <View style={styles.vendorCard}>
             <VendorResCard resId={item.id} />
           </View>
         )}
@@ -40,5 +40,8 @@ const styles = StyleSheet.create({
     gap: 15,
     paddingTop: 0,
     width: wp('100%')
+  },
+  vendorCard: {
+    paddingHorizontal: 20
   }
 });

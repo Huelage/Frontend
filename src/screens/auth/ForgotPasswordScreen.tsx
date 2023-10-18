@@ -8,7 +8,6 @@ import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, ResetPasswordInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -38,51 +37,48 @@ const ForgotPasswordScreen = () => {
     }
   }, [data]);
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="forgot password screen">
-        <View style={styles.headerBox}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-            <AntDesign name="arrowleft" size={26} color={color.mainText} />
-          </TouchableOpacity>
-          <Text style={[styles.headerText, { color: color.mainText }]}>Forgot Password</Text>
-        </View>
-        <View style={styles.mainBox}>
-          <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
-            <MaterialCommunityIcons name="lock-reset" size={100} color="white" />
-          </Animated.View>
-          <Text style={[styles.infoText, { color: color.mainText }]}>Please enter your registered Email address to receive a verification code.</Text>
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value, ref } }) => (
-              <CustomTextInput
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={errors.email}
-                isPass={false}
-                innerRef={ref}
-                keyboardType="email-address"
-                label="Email address"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                onSubmitEditing={handleSubmit(onSubmit)}
-                returnKeyType="send"
-                value={value}
-              />
-            )}
-            name="email"
-            rules={{
-              required: "Email is required",
-              pattern: {
-                value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
-                message: "Email is invalid",
-              },
-            }}
-          />
-          <SubmitButton label="Send code" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
-        </View>
+    <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="forgot password screen">
+      <View style={styles.headerBox}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
+          <AntDesign name="arrowleft" size={26} color={color.mainText} />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { color: color.mainText }]}>Forgot Password</Text>
       </View>
-    </>
+      <View style={styles.mainBox}>
+        <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
+          <MaterialCommunityIcons name="lock-reset" size={100} color="white" />
+        </Animated.View>
+        <Text style={[styles.infoText, { color: color.mainText }]}>Please enter your registered Email address to receive a verification code.</Text>
+        <Controller
+          control={control}
+          render={({ field: { onChange, onBlur, value, ref } }) => (
+            <CustomTextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              error={errors.email}
+              isPass={false}
+              innerRef={ref}
+              keyboardType="email-address"
+              label="Email address"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              onSubmitEditing={handleSubmit(onSubmit)}
+              returnKeyType="send"
+              value={value}
+            />
+          )}
+          name="email"
+          rules={{
+            required: "Email is required",
+            pattern: {
+              value: /^[\w.+-]{3,}@[\w-]+\.[\w-]{2,}$/,
+              message: "Email is invalid",
+            },
+          }}
+        />
+        <SubmitButton label="Send code" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
+      </View>
+    </View>
   );
 };
 

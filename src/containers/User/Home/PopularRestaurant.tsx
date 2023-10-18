@@ -19,7 +19,7 @@ const PopularRestaurant = () => {
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         data={mockRestaurants}
         testID="popular restaurant list"
         renderItem={({ item }) => (

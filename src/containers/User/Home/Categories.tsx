@@ -24,13 +24,13 @@ const Categories = () => {
         horizontal
         keyExtractor={category => category}
         renderItem={({ item }) => (
-          <View style={{ paddingLeft: 20 }}>
+          <View style={styles.categoryItem}>
             <CustomButton icon='md-close-outline' fontSize={14} label={item} height={36} inactive onPress={() => handleCategory(item)} />
           </View>
         )}
         testID='category icon list'
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={styles.categoryContainer}
       />
       <CustomCarousel items={mockFoods} addToCart={addToCart} />
     </View>
@@ -49,4 +49,10 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingHorizontal: 20
   },
+  categoryItem: {
+    paddingLeft: 20
+  },
+  categoryContainer: {
+    paddingBottom: 20
+  }
 });

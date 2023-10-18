@@ -2,13 +2,12 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { LOGIN_USER, LOGIN_VENDOR } from "@api/graphql";
 import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
-import { AuthNavigate, SubmitButton, UserVendor, LoginInputs } from "@components/auth";
+import { AuthNavigate, LoginInputs, SubmitButton, UserVendor } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { getBiometricType, enableBiometrics, fonts, getBiometrics, getItem, loginWithBiometrics, setItem, } from "@utils";
-import { StatusBar } from "expo-status-bar";
+import { enableBiometrics, fonts, getBiometricType, getBiometrics, getItem, loginWithBiometrics, setItem, } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -109,62 +108,59 @@ const LoginScreen = () => {
     }
   }, [uData, vData]);
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen' onTouchStart={dismissKeyboard}>
-        <View style={styles.headerBox}>
-          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
-          <View style={styles.welcomeBox}>
-            <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
-            <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
-          </View>
+    <View style={[styles.container, { paddingTop: inset.top + hp("8%"), paddingBottom: inset.bottom + 5 }]} testID='login screen' onTouchStart={dismissKeyboard}>
+      <View style={styles.headerBox}>
+        <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
+        <View style={styles.welcomeBox}>
+          <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
+          <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
         </View>
-        <View style={styles.inputContainer}>
-          <UserVendor />
-          <View style={styles.inputs}>
-            <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
-            <TouchableOpacity onPress={goToforgotPassword}>
-              <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
+      </View>
+      <View style={styles.inputContainer}>
+        <UserVendor />
+        <View style={styles.inputs}>
+          <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
+          <TouchableOpacity onPress={goToforgotPassword}>
+            <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
+          </TouchableOpacity>
+          <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
+        </View>
+        {loginwithsaved && bioDetail ? (
+          <View style={styles.footer}>
+            <TouchableOpacity onPress={changeUseSaved}>
+              <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
             </TouchableOpacity>
-            <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
-          </View>
-          {loginwithsaved && bioDetail ? (
-            <View style={styles.footer}>
-              <TouchableOpacity onPress={changeUseSaved}>
-                <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
+            <View style={styles.biometricBox}>
+              <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
+              <TouchableOpacity onPress={loginWithBiometrics} testID="biometric button" style={[styles.biometricButton, { borderColor: color.mainGreen }]}>
+                <bioDetail.icon size={45} />
               </TouchableOpacity>
-              <View style={styles.biometricBox}>
-                <Text style={[styles.biometricText, { color: color.mainText }]}>Login with {bioDetail?.type}</Text>
-                <TouchableOpacity onPress={loginWithBiometrics} testID="biometric button" style={[styles.biometricButton, { borderColor: color.mainGreen }]}>
-                  <bioDetail.icon size={45} />
+            </View>
+          </View>
+        ) : (
+          <>
+            {loginwithsaved && (
+              <View style={styles.footer}>
+                <TouchableOpacity onPress={changeUseSaved}>
+                  <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          ) : (
-            <>
-              {loginwithsaved && (
-                <View style={styles.footer}>
-                  <TouchableOpacity onPress={changeUseSaved}>
-                    <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-              <AuthNavigate page="SI" />
-            </>
-          )}
-        </View>
-        <Text style={[styles.contactText, { color: color.mainText }]}>
-          <View style={{ marginTop: -7 }}>
-            <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
-          </View>{" "}
-          Need help?
-          <Text style={{ color: color.mainGreen }}>
-            {" "}
-            Chat with Huelage Support
-          </Text>
-        </Text>
+            )}
+            <AuthNavigate page="SI" />
+          </>
+        )}
       </View>
-    </>
+      <Text style={[styles.contactText, { color: color.mainText }]}>
+        <View style={{ marginTop: -7 }}>
+          <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
+        </View>{" "}
+        Need help?
+        <Text style={{ color: color.mainGreen }}>
+          {" "}
+          Chat with Huelage Support
+        </Text>
+      </Text>
+    </View>
   );
 };
 

@@ -8,7 +8,6 @@ import { AuthNavigationProps, SignUpInfoInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "@rneui/themed";
 import { fonts, setItem } from "@utils";
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, View } from "react-native";
@@ -49,41 +48,38 @@ const SignUpScreen = () => {
     }
   }, [uData, vData]);
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} onTouchStart={dismissKeyboard} testID='signup screen'>
-        <View style={styles.headerBox}>
-          <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
-          <View>
-            <Text style={[styles.welcomeText, { color: color.mainGreen }]} testID="welcome text">Sign Up</Text>
-            <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
-          </View>
+    <View style={[styles.container, { paddingTop: insets.top + hp("3%"), paddingBottom: insets.bottom + 5 }]} onTouchStart={dismissKeyboard} testID='signup screen'>
+      <View style={styles.headerBox}>
+        <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
+        <View>
+          <Text style={[styles.welcomeText, { color: color.mainGreen }]} testID="welcome text">Sign Up</Text>
+          <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
         </View>
-        <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
-          <View style={styles.inputBox}>
-            <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
-            {isVendor && (
-              <CheckBox
-                checked={acceptTerms}
-                center
-                onPress={() => setAcceptTerms(!acceptTerms)}
-                iconType="material-community"
-                checkedIcon="checkbox-marked"
-                uncheckedIcon="checkbox-blank-outline"
-                checkedColor={color.mainGreen}
-                title="I accept all terms and condition"
-                testID="terms and condition"
-                textStyle={[styles.termsText, { color: color.mainText }]}
-                containerStyle={styles.termsContainer}
-              />
-            )}
-            <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
-            {!isVendor && <SocialLogin page="SU" />}
-          </View>
-        </KeyboardAwareScrollView>
-        <AuthNavigate page="SU" />
       </View>
-    </>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
+        <View style={styles.inputBox}>
+          <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
+          {isVendor && (
+            <CheckBox
+              checked={acceptTerms}
+              center
+              onPress={() => setAcceptTerms(!acceptTerms)}
+              iconType="material-community"
+              checkedIcon="checkbox-marked"
+              uncheckedIcon="checkbox-blank-outline"
+              checkedColor={color.mainGreen}
+              title="I accept all terms and condition"
+              testID="terms and condition"
+              textStyle={[styles.termsText, { color: color.mainText }]}
+              containerStyle={styles.termsContainer}
+            />
+          )}
+          <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
+          {!isVendor && <SocialLogin page="SU" />}
+        </View>
+      </KeyboardAwareScrollView>
+      <AuthNavigate page="SU" />
+    </View>
   );
 };
 
