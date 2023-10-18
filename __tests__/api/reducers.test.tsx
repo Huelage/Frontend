@@ -1,5 +1,5 @@
 import { RootState, store } from "@api/app/store";
-import globalReducer, { getCart, getEntity, getShowOnboard, getTheme, getVendorStatus } from "@api/slices/globalSlice";
+import globalReducer, { getCart, getEntity, getShowOnboard, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
 
 describe("When testing the individual reducers", () => {
   interface SetupReducerProps {
@@ -96,6 +96,9 @@ describe("When testing the individual selectors", () => {
   let state: RootState = store.getState();
   it("should return the current app theme when the getTheme selector is called", () => {
     expect(getTheme(state)).toEqual("dark");
+  });
+  it("should return the current app theme type when the getThemeType selector is called", () => {
+    expect(getThemeType(state)).toEqual("system");
   });
   it("should return the current vendor status when the getVendorStatus selector is called", () => {
     expect(getVendorStatus(state)).toEqual(false);
