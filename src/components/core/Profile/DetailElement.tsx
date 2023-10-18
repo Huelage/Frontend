@@ -1,8 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CustomBox } from '@components/misc';
 import { MaterialIcons, Octicons } from '@expo/vector-icons';
-import React from 'react';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 interface DetailElementInterface {
   label: string;
@@ -17,7 +19,8 @@ const DetailElement = ({ label, value, verifible, isVerified, verify }: DetailEl
   return (
     <View style={styles.container} testID='detail element'>
       <Text style={[styles.elementHeader, { color: color.mainText }]}>{label}</Text>
-      <View style={[styles.elementBody, { backgroundColor: color.cardBg }]}>
+      <View style={styles.elementBody}>
+        <CustomBox width={wp('100%') - 30} height={90} pad={6} r={10} />
         <Text style={[styles.elementText, { color: color.mainText }]}>{value}</Text>
         {verifible ? (
           isVerified ? (
@@ -48,7 +51,6 @@ const styles = StyleSheet.create({
   },
   elementBody: {
     alignItems: 'center',
-    borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 30
