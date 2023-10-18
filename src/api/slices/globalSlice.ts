@@ -69,6 +69,7 @@ export const {
 } = globalSlice.actions;
 // Selectors
 export const getTheme = (state: RootState) => state.global.theme;
+export const getThemeType = (state: RootState) => state.global.themeType;
 export const getVendorStatus = (state: RootState) => state.global.isVendor;
 export const getShowOnboard = (state: RootState) => state.global.showOnboard;
 export const getCart = (state: RootState) => state.global.cart;
