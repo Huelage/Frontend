@@ -2,7 +2,7 @@ import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
-import { DetailElement, LocationElement, LocationInput } from "@components/core/Profile";
+import { DetailElement, ElementInterface, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
@@ -334,30 +334,6 @@ describe("When Testing Core Home Components: ", () => {
 });
 
 
-describe("When Testing Core Vendor Components: ", () => {
-  describe("<VendorResCard />: ", () => {
-    beforeEach(() => {
-      render(<VendorResCard resId={resData.id} />);
-    });
-    it("should render the component", () => {
-      expect(screen.getByTestId("vendor res card")).toBeOnTheScreen();
-    });
-    it("should render restaurant image", () => {
-      expect(screen.getByTestId("restaurant image")).toBeOnTheScreen();
-    });
-    it("should render restaurant name", () => {
-      expect(screen.getByText(resData.name)).toBeOnTheScreen();
-    });
-    it("should render restaurant location", () => {
-      expect(screen.getByText(resData.location)).toBeOnTheScreen();
-    });
-    it("should render view button", () => {
-      expect(screen.getByText("View")).toBeOnTheScreen();
-    });
-  });
-});
-
-
 describe("When Testing Core Profile Components: ", () => {
   describe("<DetailElement />: ", () => {
     beforeEach(() => {
@@ -424,6 +400,71 @@ describe("When Testing Core Profile Components: ", () => {
     });
     it("should render the location input", () => {
       expect(screen.getByPlaceholderText("test location")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<ProfileBoxElement />: ", () => {
+    const props: ElementInterface = { label: "test", nav: "Main", icon: "chevron-right" };
+    beforeEach(() => {
+      render(<ProfileBoxElement {...props} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("profile box element")).toBeOnTheScreen();
+    });
+    it("should render the element label", () => {
+      expect(screen.getByText("test")).toBeOnTheScreen();
+    });
+    it("should render the element icon", () => {
+      expect(screen.getByTestId("element icon")).toBeOnTheScreen();
+    });
+    it("should call the navigate function when the element is pressed", () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
+      render(<ProfileBoxElement {...props} />);
+      const element = screen.getByTestId("profile box element");
+      fireEvent.press(element);
+      expect(navigate).toBeCalledWith(props.nav);
+    });
+  });
+
+  describe("<ProfileNavBox />: ", () => {
+    const elements: ElementInterface[] = [{ label: "test", nav: "Main", icon: "chevron-right" }];
+    beforeEach(() => {
+      render(<ProfileNavBox elements={elements} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("profile nav box")).toBeOnTheScreen();
+    });
+    it("should render the profile nav list", () => {
+      expect(screen.getByTestId("profile nav list")).toBeOnTheScreen();
+    });
+    it("should render the nav elements using the ProfileBoxElement component", () => {
+      const elements = screen.getAllByTestId("profile box element");
+      expect(elements).toHaveLength(1);
+    });
+  });
+});
+
+
+describe("When Testing Core Vendor Components: ", () => {
+  describe("<VendorResCard />: ", () => {
+    beforeEach(() => {
+      render(<VendorResCard resId={resData.id} />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("vendor res card")).toBeOnTheScreen();
+    });
+    it("should render restaurant image", () => {
+      expect(screen.getByTestId("restaurant image")).toBeOnTheScreen();
+    });
+    it("should render restaurant name", () => {
+      expect(screen.getByText(resData.name)).toBeOnTheScreen();
+    });
+    it("should render restaurant location", () => {
+      expect(screen.getByText(resData.location)).toBeOnTheScreen();
+    });
+    it("should render view button", () => {
+      expect(screen.getByText("View")).toBeOnTheScreen();
     });
   });
 });
