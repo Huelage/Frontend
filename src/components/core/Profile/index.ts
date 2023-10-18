@@ -4,3 +4,6 @@ export { default as ProfileList2 } from "./ProfileList2";
 export { default as DetailElement } from "./DetailElement";
 export { default as LocationInput } from "./LocationInput";
 export { default as LocationElement } from "./LocationElement";
+export { default as GeneralSetting } from "./GeneralSetting";
+export { default as NotificationSetting } from "./NotificationSettting";
+export { default as PrivacySetting } from "./PrivacySetting";

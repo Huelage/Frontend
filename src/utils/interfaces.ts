@@ -223,9 +223,12 @@ export interface LocationInterface {
   locationId: string;
   name: string;
 }
+<<<<<<< HEAD
+=======
 
 // interface sides {
 //   desription: string;
 //   options: {name: string, price: number}[];
 //   isRequired: boolean;
 // }
+>>>>>>> f4d87495a7f744834c612abea4190070b536bbf0
