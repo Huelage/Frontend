@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation } from "@react-navigation/native";
-import { CartScreen, DetailScreen, HomeScreen, LocationScreen, PersonalDetailScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen } from "@screens/core";
+import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
@@ -110,6 +110,51 @@ describe("When Testing Core(User Flow) Screens: ", () => {
   });
 
   describe("Profile Screens: ", () => {
+    describe("<AboutScreen />: ", () => {
+      beforeEach(() => {
+        render(<AboutScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("about screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("About Us")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<FAQScreen />: ", () => {
+      beforeEach(() => {
+        render(<FAQScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("faq screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("FAQ")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<HelpScreen />: ", () => {
+      beforeEach(() => {
+        render(<HelpScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("help screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Help")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
     describe("<LocationScreen />: ", () => {
       beforeEach(() => {
         (useAppSelector as jest.Mock).mockReturnValue(entity);
@@ -216,6 +261,67 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         await waitFor(() => {
           expect(navigate).toBeCalledWith("VerifyPhone");
         });
+      });
+    });
+
+    describe("<ProfileScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<ProfileScreen />, []);
+      });
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("profile screen")).toBeOnTheScreen();
+      });
+      it("should render the ProfileHeader container", () => {
+        expect(screen.getByTestId("profile header")).toBeOnTheScreen();
+      });
+      it("should render 2 profile nav boxes", () => {
+        expect(screen.getAllByTestId("profile nav box")).toHaveLength(2);
+      });
+    });
+
+    describe("<ReferralScreen />: ", () => {
+      beforeEach(() => {
+        render(<ReferralScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("referral screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Referrals")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<SettingScreen />: ", () => {
+      beforeEach(() => {
+        render(<SettingScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("setting screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Settings")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<WalletScreen />: ", () => {
+      beforeEach(() => {
+        render(<WalletScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("wallet screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Wallet")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
       });
     });
 
