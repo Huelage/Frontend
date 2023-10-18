@@ -80,17 +80,14 @@ export type UserProfileTabStackParamList = {
   Main: undefined;
   UserDetails: undefined;
   Location: undefined;
-  Notification: undefined;
   VerifyEmail: undefined;
   VerifyPhone: undefined;
   Wallet: undefined;
   Referral: undefined;
   Setting: undefined;
-  FAQs: undefined;
+  FAQ: undefined;
   Help: undefined;
   About: undefined;
-  MyOrders: undefined;
-  ProfileDetails: undefined;
 };
 
 // // Vendor Tab Stacks
