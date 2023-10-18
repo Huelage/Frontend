@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const EDIT_LOCATIONS = gql(`
-  mutation ($input: EditUserLocationInput!) {
+  mutation EditKnownLocations ($input: EditUserLocationInput!) {
     editUserLocation(input: $input) {
       knownLocation
     }
@@ -9,7 +9,7 @@ export const EDIT_LOCATIONS = gql(`
 `);
 
 export const GET_KNOWN_LOCATIONS = gql(`
-  query {
+  query GetKnownLocations {
     getUserProfile {
       knownLocation
     }

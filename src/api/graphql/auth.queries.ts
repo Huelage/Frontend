@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const SIGNUP_USER = gql(`
-  mutation ($input: CreateUserInput!) {
+  mutation RegisterUser ($input: CreateUserInput!) {
     signUpUser(input: $input) {
       userId
       firstName
@@ -11,7 +11,7 @@ export const SIGNUP_USER = gql(`
 `);
 
 export const SIGNUP_VENDOR = gql(`
-  mutation ($input: CreateVendorInput!) {
+  mutation RegisterVendor ($input: CreateVendorInput!) {
     signUpVendor(input: $input) {
       vendorId
       businessName
@@ -20,7 +20,7 @@ export const SIGNUP_VENDOR = gql(`
 `);
 
 export const LOGIN_USER = gql(`
-  mutation ($input: AuthenticateUserInput!) {
+  mutation LoginUser ($input: AuthenticateUserInput!) {
     signInUser(input: $input) {
       entity {
         entityId
@@ -43,7 +43,7 @@ export const LOGIN_USER = gql(`
 `);
 
 export const LOGIN_VENDOR = gql(`
-  mutation ($input: AuthenticateVendorInput!) {
+  mutation LoginVendor ($input: AuthenticateVendorInput!) {
     signInVendor(input: $input) {
       entity {
         entityId
@@ -66,7 +66,7 @@ export const LOGIN_VENDOR = gql(`
 `);
 
 export const VERIFY_OTP = gql(`
-  mutation ($input: VerifyPhoneInput!) {
+  mutation VerifyOTP ($input: VerifyPhoneInput!) {
     verifyPhoneOtp(input: $input) {
       entityId
       wallet {
@@ -94,7 +94,7 @@ export const VERIFY_OTP = gql(`
 `);
 
 export const REFRESH_OTP = gql(`
-  mutation ($input: UpdatePhoneInput!) {
+  mutation RefreshOTP ($input: UpdatePhoneInput!) {
     updatePhone(input: $input) {
       entityId
     }
@@ -102,7 +102,7 @@ export const REFRESH_OTP = gql(`
 `);
 
 export const REQUEST_EMAIL_VERIFICATION = gql(`
-  mutation ($email: String!) {
+  mutation RequestEmailOTP ($email: String!) {
     requestEmailVerification(email: $email) {
       entityType
       email
@@ -111,7 +111,7 @@ export const REQUEST_EMAIL_VERIFICATION = gql(`
 `);
 
 export const VERIFY_EMAIL = gql(`
-  mutation ($input: VerifyEmailInput!) {
+  mutation VerifyEmailOTP ($input: VerifyEmailInput!) {
     verifyEmailOtp(input: $input) {
       entityId
     }
@@ -119,7 +119,7 @@ export const VERIFY_EMAIL = gql(`
 `);
 
 export const VERIFY_PHONE = gql(`
-  mutation ($input: VerifyPhoneInput!) {
+  mutation VerifyPhoneOTP ($input: VerifyPhoneInput!) {
     verifyPhoneOtp(input: $input) {
       refreshToken
       accessToken
@@ -128,7 +128,7 @@ export const VERIFY_PHONE = gql(`
 `);
 
 export const SET_PASSWORD = gql(`
-  mutation ($input: ForgotPasswordInput!) {
+  mutation ChangePassword ($input: ForgotPasswordInput!) {
     forgotPassword(input: $input) {
       entityId
       user {
@@ -145,7 +145,7 @@ export const SET_PASSWORD = gql(`
 `);
 
 export const REFRESH_ACCESS_TOKEN = gql(`
-  mutation {
+  mutation RefreshAccessToken {
     refreshAccessToken
   }
 `);
