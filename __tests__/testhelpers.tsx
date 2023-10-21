@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { MockedProvider } from "@apollo/client/testing";
 import { RootState } from "@api/app/store";
 import { PropsWithChildren } from "react";
+import { globalStateInterface } from "@utils/interfaces";
 
 export const store = configureStore({ reducer: { global: globalSlice } });
 
@@ -23,6 +24,19 @@ export const renderApollo = (ui: React.ReactNode, mocks: any) => {
       {ui}
     </MockedProvider>
   );
+};
+
+export const initialState: globalStateInterface = {
+  isVendor: false,
+  entity: null,
+  accessToken: null,
+  themeType: "system",
+  theme: "dark",
+  cart: [],
+  showOnboard: true,
+  allowPush: true,
+  allowToast: true,
+  allowLocation: true
 };
 
 export const entity = {

@@ -288,9 +288,7 @@ describe("When Testing Authentication Screens: ", () => {
 
   describe("<OnBoardScreen />: ", () => {
     beforeEach(async () => {
-      await waitFor(() => {
-        render(<OnBoardScreen />);
-      });
+      await waitFor(() => render(<OnBoardScreen />));
     });
     it("should render the OnBoardScreen component", () => {
       expect(screen.getByTestId("onboard screen")).toBeOnTheScreen();
@@ -309,9 +307,7 @@ describe("When Testing Authentication Screens: ", () => {
     it("should navigate to the login screen when the login button is pressed", async () => {
       const navigate = jest.fn();
       (useNavigation as jest.Mock).mockReturnValue({ navigate });
-      await waitFor(() => {
-        render(<OnBoardScreen />);
-      });
+      await waitFor(() => render(<OnBoardScreen />));
       const loginButton = screen.getByTestId("login button");
       fireEvent.press(loginButton);
       expect(navigate).toBeCalledWith("Login");
@@ -322,12 +318,24 @@ describe("When Testing Authentication Screens: ", () => {
     it("should navigate to the signup select screen when the signup button is pressed", async () => {
       const navigate = jest.fn();
       (useNavigation as jest.Mock).mockReturnValue({ navigate });
-      await waitFor(() => {
-        render(<OnBoardScreen />);
-      });
+      await waitFor(() => render(<OnBoardScreen />));
       const loginButton = screen.getByTestId("signup button");
       fireEvent.press(loginButton);
       expect(navigate).toBeCalledWith("SignupSelect");
+    });
+    it("should navigate to the login screen if the showOnboard state is false", async () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
+      (useAppSelector as jest.Mock).mockReturnValue(false);
+      await waitFor(() => render(<OnBoardScreen />));
+      await waitFor(() => expect(navigate).toBeCalledWith("Login"));
+    });
+    it("should dispatch setShowOnboard(false) if the showOnboard state is true", async () => {
+      const dispatch = jest.fn();
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      (useAppSelector as jest.Mock).mockReturnValue(true);
+      await waitFor(() => render(<OnBoardScreen />));
+      await waitFor(() => expect(dispatch).toBeCalledWith({ type: "global/setShowOnboard", payload: false }));
     });
   });
 

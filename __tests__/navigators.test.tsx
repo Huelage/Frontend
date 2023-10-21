@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getEntity, getTheme, getVendorStatus } from "@api/slices/globalSlice";
+import { getAccessToken, getEntity, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
 import { renderNavigator } from "./testhelpers";
@@ -18,53 +18,92 @@ describe("When Testing the Navigators: ", () => {
   describe("<MainNavigator />: ", () => {
     describe("When user is not signed in: ", () => {
       it("should render the OnBoardScreen", () => {
+        const dispatch = jest.fn();
         (useAppSelector as jest.Mock).mockReturnValue(false);
-        const mockDispatch = jest.fn();
-        (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
         render(<MainNavigator />);
         expect(screen.getByTestId("onboard screen")).toBeOnTheScreen();
       });
     });
     describe("When user is signed in: ", () => {
       it("should render the vendor flow HomeScreen if user is a vendor", () => {
+        const dispatch = jest.fn();
         (useAppSelector as jest.Mock).mockImplementation(selector => {
-          if (selector === getEntity) return { id: "123231" };
+          if (selector === getAccessToken) return "123";
           if (selector === getVendorStatus) return true;
           if (selector === getTheme) return "dark";
         });
-        const mockDispatch = jest.fn();
-        (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
         render(<MainNavigator />);
         expect(screen.getByTestId("vendor home screen")).toBeOnTheScreen();
       });
       it("should render the user flow HomeScreen if user is not a vendor", () => {
+        const dispatch = jest.fn();
         (useAppSelector as jest.Mock).mockImplementation(selector => {
-          if (selector === getEntity) return { id: "123231" };
+          if (selector === getAccessToken) return "123";
           if (selector === getVendorStatus) return false;
         });
-        const mockDispatch = jest.fn();
         (useColorScheme as jest.Mock).mockReturnValue("dark");
-        (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
         render(<MainNavigator />);
         expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
       });
+    });
+    // Testing auto theme switch
+    it("should switch to system theme if the theme type is system", () => {
+      const dispatch = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValue("system");
+      (useColorScheme as jest.Mock).mockReturnValue("dark");
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<MainNavigator />);
+      expect(dispatch).toBeCalledWith({ payload: "dark", type: "global/switchTheme" });
+    });
+    it("should not switch to system theme if the theme type is not system", () => {
+      const dispatch = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValue("manual");
+      (useColorScheme as jest.Mock).mockReturnValue("dark");
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<MainNavigator />);
+      expect(dispatch).not.toBeCalledWith({ payload: "dark", type: "global/switchTheme" });
+    });
+    it("should default to dark theme if the nativeTheme is not available", () => {
+      const dispatch = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValue("system");
+      (useColorScheme as jest.Mock).mockReturnValue(undefined);
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<MainNavigator />);
+      expect(dispatch).toBeCalledWith({ payload: "dark", type: "global/switchTheme" });
     });
   });
 
   describe("<StackNavigator />", () => {
     it("should render the vendor flow HomeScreen if user is a vendor", () => {
+      const dispatch = jest.fn();
       (useAppSelector as jest.Mock).mockReturnValue(true);
-      const mockDispatch = jest.fn();
-      (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       renderNavigator(<StackNavigator />);
       expect(screen.getByTestId("vendor home screen")).toBeOnTheScreen();
     });
     it("should render the user flow HomeScreen if user is not a vendor", () => {
+      const dispatch = jest.fn();
       (useAppSelector as jest.Mock).mockReturnValue(false);
-      const mockDispatch = jest.fn();
-      (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       renderNavigator(<StackNavigator />);
       expect(screen.getByTestId("user home screen")).toBeOnTheScreen();
+    });
+    it("should dispatch setShowOnboard(false) if showOnboard is true", () => {
+      const dispatch = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValue(true);
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      renderNavigator(<StackNavigator />);
+      expect(dispatch).toBeCalledWith({ payload: false, type: "global/setShowOnboard" });
+    });
+    it("should not dispatch setShowOnboard(false) if showOnboard is false", () => {
+      const dispatch = jest.fn();
+      (useAppSelector as jest.Mock).mockReturnValue(false);
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      renderNavigator(<StackNavigator />);
+      expect(dispatch).not.toBeCalledWith({ payload: false, type: "global/setShowOnboard" });
     });
   });
 
