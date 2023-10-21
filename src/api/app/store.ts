@@ -1,7 +1,7 @@
 import globalReducer from "@api/slices/globalSlice";
 import { globalStateInterface } from "@interfaces";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { CustomSecureStore } from "@utils";
+import { CustomSecureStore } from "@utils/miscs";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, createTransform, persistReducer, persistStore } from 'redux-persist';
 
 const globalTransform = createTransform(
