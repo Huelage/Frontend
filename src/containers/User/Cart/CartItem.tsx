@@ -1,10 +1,12 @@
 import food from "@api/mock/mockFoodData";
 import { QuantityController } from "@components/core/Cart";
+import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { CartInterface } from "@interfaces";
-import { fonts } from "@utils";
+import { fonts, outline } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const CartItem = ({ item_id, quantity, extras }: CartInterface) => {
   const { color } = useAppTheme();
@@ -15,7 +17,8 @@ const CartItem = ({ item_id, quantity, extras }: CartInterface) => {
   const decrease = () => { if (itemQuantity > 1) setItemQuantity(itemQuantity - 1); };
   if (!item) return null;
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID='cart item'>
+    <View style={styles.container} testID='cart item'>
+      <CustomBox width={wp('100%') - 30} height={110} r={20} pad={6} left={-4} />
       <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID='cart item image' />
       <View style={styles.detailBox}>
         <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item?.name}</Text>
@@ -24,7 +27,7 @@ const CartItem = ({ item_id, quantity, extras }: CartInterface) => {
       </View>
       <View style={styles.quatityBox}>
         <QuantityController quantity={itemQuantity} increase={increase} decrease={decrease} />
-        <Text style={styles.totalPrice} testID='cart item total'>₦{item.price * quantity}</Text>
+        <Text style={styles.totalPrice} testID='cart item total'>₦{(item.price ?? 0) * quantity}</Text>
       </View>
     </View>
   );
@@ -35,18 +38,17 @@ export default CartItem;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    borderRadius: 20,
     flexDirection: "row",
     gap: 10,
     justifyContent: "center",
     marginHorizontal: 20,
-    paddingHorizontal: 8,
-    paddingVertical: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
   itemImage: {
     borderRadius: 40,
     height: 80,
-    width: 80,
+    width: 80
   },
   detailBox: {
     flex: 1,
