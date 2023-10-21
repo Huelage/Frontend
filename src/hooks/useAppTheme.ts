@@ -9,7 +9,7 @@ const useAppTheme = () => {
 
 const colors = {
   dark: {
-    accentText: "#fff",
+    accentText: "#FFF",
     cardBg: "#141414",
     cardShadow: "rgba(0, 0, 0, 0.61)",
     chartBg: "#333333",
@@ -17,11 +17,12 @@ const colors = {
     main: "#000",
     defaultBg: "#000",
     mainBg: "#181818",
-    mainText: "#fff",
+    mainText: "#FFF",
     mainGreen: "#5BCF5F",
+    mainGreenOpaque: "rgba(91, 207, 95, .3)",
     modalBg: "#0D0D0D",
     searchBg: "#4F4F4F",
-    searchText: "#fff"
+    searchText: "#FFF"
   },
   light: {
     accentText: "#626262",
@@ -29,12 +30,13 @@ const colors = {
     cardShadow: "rgba(76, 175, 80, 0.61)",
     chartBg: "#D9D9D9",
     filterBg: "#F3F3F3",
-    main: "#fff",
-    defaultBg: "#f2f2f2",
-    mainBg: "#fff",
+    main: "#FFF",
+    defaultBg: "#F2F2F2",
+    mainBg: "#FFF",
     mainText: "#000",
     mainGreen: "#4CAF50",
-    modalBg: "#fff",
+    mainGreenOpaque: "rgba(76, 175, 80, .3)",
+    modalBg: "#FFF",
     searchBg: "#F3F3F3",
     searchText: "#626262"
   }
