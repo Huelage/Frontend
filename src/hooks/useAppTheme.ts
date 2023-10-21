@@ -22,7 +22,8 @@ const colors = {
     mainGreenOpaque: "rgba(91, 207, 95, .3)",
     modalBg: "#0D0D0D",
     searchBg: "#4F4F4F",
-    searchText: "#FFF"
+    searchText: "#FFF",
+    tabBg: "#000",
   },
   light: {
     accentText: "#626262",
@@ -38,7 +39,8 @@ const colors = {
     mainGreenOpaque: "rgba(76, 175, 80, .3)",
     modalBg: "#FFF",
     searchBg: "#F3F3F3",
-    searchText: "#626262"
+    searchText: "#626262",
+    tabBg: "#F5F5F5"
   }
 };
 
