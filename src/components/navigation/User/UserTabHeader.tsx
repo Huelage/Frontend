@@ -4,7 +4,7 @@ import { useAppTheme } from '@hooks';
 import { UserNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
@@ -17,13 +17,21 @@ const UserTabHeader = () => {
   if (!entity) return null;
   const inset = useSafeAreaInsets();
   const { color, theme } = useAppTheme();
+  const hour = new Date().getHours();
+  const [timeOfDay, setTimeOfDay] = useState<string>("morning");
   const imgLight = Image.resolveAssetSource(require('@icons/toggle_light.png')).uri;
   const imgDark = Image.resolveAssetSource(require('@icons/toggle_dark.png')).uri;
   const toggleTheme = () => dispatch(switchTheme(theme === 'light' ? 'dark' : 'light'));
   const goToCart = () => navigate("Cart");
+
+  useEffect(() => {
+    if (hour < 12) setTimeOfDay('morning');
+    else if (hour < 18) setTimeOfDay('afternoon');
+    else setTimeOfDay('evening');
+  }, [hour]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg, paddingTop: inset.top }]}>
-      <Text testID='greeting text' style={[styles.headerGreeting, { color: color.mainText }]}>Good morning</Text>
+      <Text testID='greeting text' style={[styles.headerGreeting, { color: color.mainText }]}>Good {timeOfDay}</Text>
       <View style={styles.headerBox}>
         <View style={styles.headerDetail}>
           <View style={[styles.headerImageBox, { backgroundColor: color.cardBg }]}>
