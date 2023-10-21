@@ -1,16 +1,17 @@
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { getShowOnboard, setShowOnboard } from "@api/slices/globalSlice";
 import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Easing, SlideInDown, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from "react-native-reanimated";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
+  const dispatch = useAppDispatch();
+  const showOnboard = useAppSelector(getShowOnboard);
   const progress = useSharedValue(0);
   const degrees = useSharedValue(360);
   const animatedOpacity = useAnimatedStyle(() => ({
@@ -31,6 +32,10 @@ const OnBoardScreen = () => {
       )
     );
   }, []);
+  useEffect(() => {
+    if (!showOnboard) setTimeout(() => navigate('Login'), 0);
+    else dispatch(setShowOnboard(false));
+  });
   return (
     <View style={styles.container} testID="onboard screen">
       <View style={styles.logoWrapper}>
