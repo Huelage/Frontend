@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/core";
 import { CompositeNavigationProp, NavigatorScreenParams } from "@react-navigation/native";
@@ -142,6 +143,9 @@ export interface globalStateInterface {
   theme: "light" | "dark";
   cart: CartInterface[];
   accessToken: string | null;
+  allowPush: boolean;
+  allowToast: boolean;
+  allowLocation: boolean;
 }
 
 export interface entityInterface {
@@ -187,6 +191,33 @@ export interface BiometricsInterface {
   isEnrolled: boolean;
   biometricType: BioAuth.AuthenticationType[];
 }
+
+export interface ProfileElementInterface {
+  label: string;
+  nav: keyof UserProfileTabStackParamList;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+}
+
+export interface SettingOptionInterface {
+  title: string;
+  isToggle: boolean;
+  onPress: () => void;
+  disabled?: boolean;
+  initVal?: boolean;
+  danger?: boolean;
+}
+
+export interface SettingOptionsInterface {
+  description?: string;
+  options: SettingOptionInterface[];
+}
+
+export interface SettingElementInterface {
+  title: string;
+  Icon: () => React.JSX.Element;
+  options: SettingOptionsInterface[];
+}
+
 
 // Entity Interfaces
 export interface ReviewInterface {
