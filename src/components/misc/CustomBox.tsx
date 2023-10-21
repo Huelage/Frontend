@@ -8,12 +8,13 @@ interface CustomBoxInterface {
   width: number;
   pad: number;
   r: number;
+  left?: number;
 }
 
-const CustomBox = ({ height, width, pad, r }: CustomBoxInterface) => {
+const CustomBox = ({ height, width, pad, r, left }: CustomBoxInterface) => {
   const { color } = useAppTheme();
   return (
-    <Canvas style={[styles.container, { height, width }]}>
+    <Canvas style={[styles.container, { height, width, left: left || 0 }]}>
       <RoundedRect x={pad} y={pad} width={width - 20} height={height - 20} r={r} color={color.cardBg}>
         <Shadow dx={4} dy={4} blur={4} color={color.cardShadow} />
       </RoundedRect>
@@ -26,7 +27,6 @@ export default React.memo(CustomBox);
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
-    left: 0
+    top: 0
   }
 });
