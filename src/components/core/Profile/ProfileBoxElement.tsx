@@ -1,18 +1,12 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { UserProfileTabProps, UserProfileTabStackParamList } from '@interfaces';
+import { ProfileElementInterface, UserProfileTabProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export interface ElementInterface {
-  label: string;
-  nav: keyof UserProfileTabStackParamList;
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-}
-
-const ProfileBoxElement = ({ label, icon, nav }: ElementInterface) => {
+const ProfileBoxElement = ({ label, icon, nav }: ProfileElementInterface) => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<UserProfileTabProps>();
   return (

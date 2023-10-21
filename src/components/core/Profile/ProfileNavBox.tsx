@@ -1,11 +1,12 @@
 import { CustomBox } from '@components/misc';
+import { ProfileElementInterface } from '@interfaces';
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import ProfileBoxElement, { ElementInterface } from './ProfileBoxElement';
+import ProfileBoxElement from './ProfileBoxElement';
 
 interface ProfileNavBoxInterface {
-  elements: ElementInterface[];
+  elements: ProfileElementInterface[];
 }
 
 const ProfileNavBox = ({ elements }: ProfileNavBoxInterface) => {
