@@ -82,8 +82,7 @@ export default SettingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    gap: 20,
-
+    gap: 20
   },
   headerBox: {
     alignItems: "center",
@@ -101,39 +100,5 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: fonts.I_500,
     fontSize: 20
-  },
-  horizontalLine: {
-    height: 3,
-    marginBottom: 50,
-    marginTop: 15,
-  },
-  mainBox: {
-    gap: 10,
-    flex: 1,
-    alignItems: "flex-start",
-    flexDirection: "column"
-  },
-  textStyle: {
-    fontSize: 24,
-    fontFamily: fonts.I_500,
-    fontWeight: "700",
-  },
-  textStyle2: {
-    fontSize: 20,
-    fontFamily: fonts.I_400,
-    fontWeight: "400",
-  },
-  innerBox: {
-    flex: 1,
-    marginTop: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-  },
-  smallContainer: {
-    marginTop: 2,
-    marginHorizontal: 55,
-
-
   }
 });
