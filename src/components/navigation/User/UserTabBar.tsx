@@ -11,7 +11,7 @@ const UserTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 
   const { color } = useAppTheme();
   return (
-    <View style={[styles.tabBg, { backgroundColor: color.main, paddingBottom: (insets.bottom + (Platform.OS === 'ios' ? 0 : 15)) }]}>
+    <View style={[styles.tabBg, { backgroundColor: color.tabBg, paddingBottom: (insets.bottom + (Platform.OS === 'ios' ? 0 : 15)) }]}>
       {state.routes.map((route, idx) => {
         const { options } = descriptors[route.key];
         const label = route.name;
