@@ -1464,7 +1464,7 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#FFF",
+          "backgroundColor": "#F5F5F5",
           "paddingBottom": 0,
         },
       ]
@@ -2141,7 +2141,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#FFF",
+          "backgroundColor": "#F5F5F5",
           "paddingBottom": 0,
         },
       ]
@@ -2818,7 +2818,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#FFF",
+          "backgroundColor": "#F5F5F5",
           "paddingBottom": 15,
         },
       ]
@@ -3495,7 +3495,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabHeader />:  should
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#FFF",
+          "backgroundColor": "#F5F5F5",
           "paddingBottom": 0,
         },
       ]
