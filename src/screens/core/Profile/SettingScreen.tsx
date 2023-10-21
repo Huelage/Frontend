@@ -1,17 +1,64 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { clearCredentials, getGlobalState, toggleAllowLocation, toggleAllowPush, toggleAllowToast, toggleTheme, toggleThemeType } from "@api/slices/globalSlice";
+import { SettingElement } from "@components/core/Profile";
+import { Fontisto, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserNavigationProps } from "@interfaces";
+import { SettingElementInterface, UserNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
-import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useMemo } from "react";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GeneralSetting, NotificationSetting, PrivacySetting } from "@components/core/Profile";
 
-const Settings = () => {
+const SettingScreen = () => {
   const { color } = useAppTheme();
+  const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
+  const globalState = useAppSelector(getGlobalState);
   const { goBack } = useNavigation<UserNavigationProps>();
+  const settings: SettingElementInterface[] = useMemo(() => ([
+    {
+      title: "General", Icon: () => <Fontisto name="equalizer" size={20} color="white" style={{ transform: [{ rotate: "-90deg" }] }} />, options: [
+        {
+          description: "Theme", options: [
+            { title: "Match device setting", isToggle: true, initVal: globalState.themeType === 'system', onPress: () => dispatch(toggleThemeType()) },
+            { title: "Dark Mode", isToggle: true, initVal: globalState.theme === 'dark', disabled: globalState.themeType === 'system', onPress: () => dispatch(toggleTheme()) },
+          ]
+        }
+      ]
+    },
+    {
+      title: "Notifications", Icon: () => <MaterialCommunityIcons name="bell" size={24} color="white" />, options: [
+        {
+          options: [
+            { title: "Push notifications", isToggle: true, initVal: globalState.allowPush, onPress: () => dispatch(toggleAllowPush()) },
+            { title: "In-app notifications", isToggle: true, initVal: globalState.allowToast, onPress: () => dispatch(toggleAllowToast()) },
+          ]
+        }
+      ]
+    },
+    {
+      title: "Privacy", Icon: () => <MaterialIcons name="privacy-tip" size={24} color="white" />, options: [
+        {
+          options: [
+            { title: "Location", isToggle: true, initVal: globalState.allowLocation, onPress: () => dispatch(toggleAllowLocation()) },
+          ]
+        }
+      ]
+    },
+    {
+      title: "Account", Icon: () => <MaterialCommunityIcons name="account-cog-outline" size={24} color="white" />, options: [
+        {
+          options: [
+            { title: "Change Phone Number", isToggle: false, onPress: () => console.log("pressed") },
+            { title: "Change Password", isToggle: false, onPress: () => console.log("pressed") },
+            { title: "Delete Account", isToggle: false, danger: true, onPress: () => console.log("pressed") },
+            { title: "Logout", isToggle: false, danger: true, onPress: () => dispatch(clearCredentials()) }
+          ]
+        }
+      ]
+    }
+  ]), [globalState]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="setting screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
@@ -20,33 +67,17 @@ const Settings = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Settings</Text>
       </View>
-      <ScrollView>
-        < GeneralSetting />
-        <View style={[styles.horizontalLine, { backgroundColor: color.mainGreen }]}></View>
-        <NotificationSetting />
-        <View style={[styles.horizontalLine, { backgroundColor: color.mainGreen }]}></View>
-        <PrivacySetting />
-        <View style={[styles.horizontalLine, { backgroundColor: color.mainGreen }]}></View>
-        <View style={styles.mainBox}>
-          <View style={styles.innerBox}>
-            <MaterialCommunityIcons name="account-cog" size={30} color={color.mainGreen} ></MaterialCommunityIcons>
-            <Text style={[styles.textStyle, { color: color.mainText }]}>   {" "}  Account </Text>
-          </View>
-          <TouchableOpacity style={styles.smallContainer}>
-            <Text style={[styles.textStyle2, { color: color.mainText }]}>   {" "}  Change Password </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.smallContainer}>
-            <Text style={[styles.textStyle2, { color: color.mainText }]}>   {" "}  Delete Account </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      <FlatList
+        data={settings}
+        keyExtractor={(_, idx) => idx.toString()}
+        renderItem={({ item }) => <SettingElement {...item} />}
+        testID="setting list"
+      />
     </View>
-
-
   );
 };
 
-export default Settings;
+export default SettingScreen;
 
 const styles = StyleSheet.create({
   container: {
