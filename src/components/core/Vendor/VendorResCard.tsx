@@ -1,14 +1,17 @@
 import { mockRestaurants } from '@api/mock';
+import { CustomBox } from '@components/misc';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const VendorResCard = ({ resId }: { resId: string; }) => {
 	const { color } = useAppTheme();
 	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
-		<View style={[styles.container, { backgroundColor: color.cardBg }]} testID='vendor res card'>
+		<View style={[styles.container]} testID='vendor res card'>
+			<CustomBox height={100} width={wp('100%') - 30} pad={6} r={10} />
 			<Image testID='restaurant image' style={styles.image} source={{ uri: restaurant?.imgUrl }} />
 			<View style={styles.details}>
 				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
@@ -26,12 +29,11 @@ export default VendorResCard;
 const styles = StyleSheet.create({
 	container: {
 		alignItems: 'center',
-		backgroundColor: "#F0FFF0",
-		borderRadius: 10,
 		flexDirection: 'row',
 		gap: 15,
 		justifyContent: 'center',
-		paddingHorizontal: 20,
+		paddingLeft: 20,
+		paddingRight: 10,
 		paddingVertical: 10
 	},
 	details: {

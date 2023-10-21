@@ -1,25 +1,36 @@
-import { ProfileInfo, ProfileList, ProfileList2, } from "@components/core/Profile";
+import { ProfileNavBox } from "@components/core/Profile";
+import { ProfileHeader } from "@containers/User";
 import { useAppTheme } from "@hooks";
-import { StatusBar } from "expo-status-bar";
+import { ProfileElementInterface } from "@interfaces";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ProfileScreen = () => {
   const { color } = useAppTheme();
-
+  const insets = useSafeAreaInsets();
+  const nav1: ProfileElementInterface[] = [
+    { label: "Profile Details", icon: "account-circle-outline", nav: "UserDetails" },
+    { label: "Locations", icon: "map-marker-outline", nav: "Location" },
+    { label: "My Wallet", icon: "wallet-outline", nav: "Wallet" },
+    { label: "Referrals", icon: "account-group", nav: "Referral" },
+  ];
+  const nav2: ProfileElementInterface[] = [
+    { label: "Settings", icon: "cog-outline", nav: "Setting" },
+    { label: "FAQs", icon: "frequently-asked-questions", nav: "FAQ" },
+    { label: "Help", icon: "help-circle-outline", nav: "Help" },
+    { label: "About Us", icon: "information-outline", nav: "About" },
+  ];
   return (
-    <>
-      <StatusBar style="auto" />
-      <ScrollView style={[styles.container, { backgroundColor: color.mainBg }]} testID="profile screen">
-        <View style={styles.mainBox}>
-          <ProfileInfo />
-          <ProfileList />
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="profile screen">
+      <ScrollView contentContainerStyle={styles.innerContainer}>
+        <ProfileHeader />
+        <View style={styles.navBox}>
+          <ProfileNavBox elements={nav1} />
+          <ProfileNavBox elements={nav2} />
         </View>
-        <View style={[styles.horizontalLine, { backgroundColor: color.mainGreen }]}></View>
-        <ProfileList2 />
       </ScrollView>
-    </>
+    </View>
   );
 };
 
@@ -27,16 +38,13 @@ export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
-  mainBox: {
-    flex: 1,
-    gap: 50,
-    marginTop: hp("5%"),
+  innerContainer: {
+    gap: 30,
+    paddingBottom: 30
   },
-  horizontalLine: {
-    height: 3,
-    marginBottom: 50,
-    marginTop: 15,
-  },
+  navBox: {
+    gap: 10,
+  }
 });

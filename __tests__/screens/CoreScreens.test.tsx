@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation } from "@react-navigation/native";
-import { CartScreen, DetailScreen, HomeScreen, LocationScreen, PersonalDetailScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen } from "@screens/core";
+import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
 import { MOCK_ADD_LOCATION, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
-import { entity, renderApollo, renderNavigator } from "../testhelpers";
+import { entity, initialState, renderApollo, renderNavigator } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
   const testSearchFunc = (logSpy: any) => {
@@ -110,6 +110,54 @@ describe("When Testing Core(User Flow) Screens: ", () => {
   });
 
   describe("Profile Screens: ", () => {
+    describe("<AboutScreen />: ", () => {
+      beforeEach(() => {
+        render(<AboutScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("about screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("About Us")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<FAQScreen />: ", () => {
+      beforeEach(() => {
+        render(<FAQScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("faq screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("FAQ")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<HelpScreen />: ", () => {
+      beforeEach(() => {
+        render(<HelpScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("help screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Help")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
     describe("<LocationScreen />: ", () => {
       beforeEach(() => {
         (useAppSelector as jest.Mock).mockReturnValue(entity);
@@ -216,6 +264,127 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         await waitFor(() => {
           expect(navigate).toBeCalledWith("VerifyPhone");
         });
+      });
+    });
+
+    describe("<ProfileScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<ProfileScreen />, []);
+      });
+      // Testing UI
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("profile screen")).toBeOnTheScreen();
+      });
+      it("should render the ProfileHeader container", () => {
+        expect(screen.getByTestId("profile header")).toBeOnTheScreen();
+      });
+      it("should render 2 profile nav boxes", () => {
+        expect(screen.getAllByTestId("profile nav box")).toHaveLength(2);
+      });
+    });
+
+    describe("<ReferralScreen />: ", () => {
+      beforeEach(() => {
+        render(<ReferralScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("referral screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Referrals")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<SettingScreen />: ", () => {
+      const dispatch = jest.fn();
+      const logSpy = jest.spyOn(console, "log");
+      beforeEach(() => {
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+        (useAppSelector as jest.Mock).mockReturnValue(initialState);
+        render(<SettingScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("setting screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Settings")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+      it("should render the setting list", () => {
+        expect(screen.getByTestId("setting list")).toBeOnTheScreen();
+      });
+      it("should render the setting elements using the SettingElement component", () => {
+        expect(screen.getAllByTestId("setting element")).not.toBeNull();
+      });
+      // Testing Functionality
+      it("should toggle the theme type when the match device setting toggle is pressed", () => {
+        const toggle = screen.getByTestId(/match device setting toggle switch/i);
+        fireEvent(toggle, "onValueChange");
+        expect(dispatch).toBeCalledWith({ type: "global/toggleThemeType" });
+      });
+      it("should toggle the theme when the dark mode toggle is pressed", () => {
+        const toggle = screen.getByTestId(/dark mode toggle switch/i);
+        fireEvent(toggle, "onValueChange");
+        expect(dispatch).toBeCalledWith({ type: "global/toggleTheme" });
+      });
+      it("should toggle the push notifications when the push notifications toggle is pressed", () => {
+        const toggle = screen.getByTestId(/push notifications toggle switch/i);
+        fireEvent(toggle, "onValueChange");
+        expect(dispatch).toBeCalledWith({ type: "global/toggleAllowPush" });
+      });
+      it("should toggle the in-app notifications when the in-app notifications toggle is pressed", () => {
+        const toggle = screen.getByTestId(/in-app notifications toggle switch/i);
+        fireEvent(toggle, "onValueChange");
+        expect(dispatch).toBeCalledWith({ type: "global/toggleAllowToast" });
+      });
+      it("should toggle the location when the location toggle is pressed", () => {
+        const toggle = screen.getByTestId(/location toggle switch/i);
+        fireEvent(toggle, "onValueChange");
+        expect(dispatch).toBeCalledWith({ type: "global/toggleAllowLocation" });
+      });
+      it("should call the appropriate onPress function when the change phone number option is pressed", () => {
+        const changePhoneOption = screen.getByTestId(/change phone number setting option item/i);
+        fireEvent.press(changePhoneOption);
+        expect(logSpy).toBeCalledWith("pressed");
+      });
+      it("should call the appropriate onPress function when the change password option is pressed", () => {
+        const changePasswordOption = screen.getByTestId(/change password setting option item/i);
+        fireEvent.press(changePasswordOption);
+        expect(logSpy).toBeCalledWith("pressed");
+      });
+      it("should call the appropriate onPress function when the delete account option is pressed", () => {
+        const deleteAccountOption = screen.getByTestId(/delete account setting option item/i);
+        fireEvent.press(deleteAccountOption);
+        expect(logSpy).toBeCalledWith("pressed");
+      });
+      it("should call the clearCredentials function when the logout button is pressed", () => {
+        const logoutButton = screen.getByTestId(/logout setting option item/i);
+        fireEvent.press(logoutButton);
+        expect(dispatch).toBeCalledWith({ type: "global/clearCredentials" });
+      });
+    });
+
+    describe("<WalletScreen />: ", () => {
+      beforeEach(() => {
+        render(<WalletScreen />);
+      });
+      // Testing UI
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("wallet screen")).toBeOnTheScreen();
+      });
+      it("should render the screen title", () => {
+        expect(screen.getByText("Wallet")).toBeOnTheScreen();
+      });
+      it("should render the go back button", () => {
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
       });
     });
 

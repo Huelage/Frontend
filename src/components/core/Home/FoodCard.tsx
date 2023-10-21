@@ -1,8 +1,7 @@
-import { CustomImage, CustomModal } from '@components/misc';
+import { CustomBox, CustomImage, CustomModal } from '@components/misc';
 import { useAppTheme } from '@hooks';
 import { UserFoodInterface } from '@interfaces';
 import { CheckBox } from '@rneui/themed';
-import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
@@ -17,11 +16,7 @@ const FoodCard = ({ imgUrl, name, isFavourite, description }: UserFoodInterface)
   return (
     <>
       <View style={styles.container} testID='food card'>
-        <Canvas style={styles.foodBox}>
-          <RoundedRect x={6} y={6} width={wp('60%') - 20} height={135} r={10} color={color.cardBg}>
-            <Shadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
-          </RoundedRect>
-        </Canvas>
+        <CustomBox height={160} pad={6} width={wp('60%')} r={10} />
         <View style={styles.foodDetails}>
           <View style={styles.foodIntro}>
             <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />

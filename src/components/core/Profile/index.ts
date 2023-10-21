@@ -1,9 +1,17 @@
-export { default as ProfileInfo } from "./ProfileInfo";
-export { default as ProfileList } from "./ProfileList";
-export { default as ProfileList2 } from "./ProfileList2";
-export { default as DetailElement } from "./DetailElement";
-export { default as LocationInput } from "./LocationInput";
+// About
+// FAQ
+// Help
+// Location
 export { default as LocationElement } from "./LocationElement";
-export { default as GeneralSetting } from "./GeneralSetting";
-export { default as NotificationSetting } from "./NotificationSettting";
-export { default as PrivacySetting } from "./PrivacySetting";
+export { default as LocationInput } from "./LocationInput";
+// Personal Detail
+export { default as DetailElement } from "./DetailElement";
+// Profile
+export { default as ProfileBoxElement } from './ProfileBoxElement';
+export { default as ProfileNavBox } from './ProfileNavBox';
+// Referral
+// Setting
+export { default as SettingElement } from './SettingElement';
+export { default as SettingOptionBox } from './SettingOptionBox';
+export { default as SettingOptionItem } from './SettingOptionItem';
+// Wallet

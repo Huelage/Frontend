@@ -1,5 +1,6 @@
 import { RootState, store } from "@api/app/store";
-import globalReducer, { getCart, getEntity, getShowOnboard, getTheme, getVendorStatus } from "@api/slices/globalSlice";
+import globalReducer, { getAccessToken, getAllowLocation, getAllowPush, getAllowToast, getCart, getEntity, getGlobalState, getShowOnboard, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
+import { initialState } from "../testhelpers";
 
 describe("When testing the individual reducers", () => {
   interface SetupReducerProps {
@@ -7,19 +8,11 @@ describe("When testing the individual reducers", () => {
     action?: any;
     payload?: any;
   }
-  const initialState = {
-    isVendor: false,
-    entity: null,
-    accessToken: null,
-    themeType: "system",
-    theme: "dark",
-    cart: [],
-    showOnboard: true
-  };
   const setupReducer = ({ previousState, action, payload }: SetupReducerProps) => {
     return globalReducer(previousState, { type: action, payload });
   };
   const uuidRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
+
   it("should return the initial state", () => {
     const reducer = setupReducer({});
     expect(reducer).toEqual(initialState);
@@ -90,15 +83,50 @@ describe("When testing the individual reducers", () => {
     const reducer = setupReducer({ action, payload });
     expect(reducer).toEqual({ ...initialState, showOnboard: false });
   });
+  it("should toggle the themetype when the toggleThemeType action is dispatched", () => {
+    const action = "global/toggleThemeType";
+    const reducer = setupReducer({ action });
+    expect(reducer).toEqual({ ...initialState, themeType: "manual" });
+    const reducer2 = setupReducer({ previousState: { ...initialState, themeType: "manual" }, action });
+    expect(reducer2).toEqual({ ...initialState, themeType: "system" });
+  });
+  it("should toggle the theme when the toggleTheme action is dispatched", () => {
+    const action = "global/toggleTheme";
+    const reducer = setupReducer({ action });
+    expect(reducer).toEqual({ ...initialState, theme: "light" });
+    const reducer2 = setupReducer({ previousState: { ...initialState, theme: "light" }, action });
+    expect(reducer2).toEqual({ ...initialState, theme: "dark" });
+  });
+  it("should toggle the allowPush when the toggleAllowPush action is dispatched", () => {
+    const action = "global/toggleAllowPush";
+    const reducer = setupReducer({ action });
+    expect(reducer).toEqual({ ...initialState, allowPush: false });
+  });
+  it("should toggle the allowToast when the toggleAllowToast action is dispatched", () => {
+    const action = "global/toggleAllowToast";
+    const reducer = setupReducer({ action });
+    expect(reducer).toEqual({ ...initialState, allowToast: false });
+  });
+  it("should toggle the allowLocation when the toggleAllowLocation action is dispatched", () => {
+    const action = "global/toggleAllowLocation";
+    const reducer = setupReducer({ action });
+    expect(reducer).toEqual({ ...initialState, allowLocation: false });
+  });
 });
 
 describe("When testing the individual selectors", () => {
   let state: RootState = store.getState();
-  it("should return the current app theme when the getTheme selector is called", () => {
-    expect(getTheme(state)).toEqual("dark");
+  it("should return the current access token when the getAccessToken selector is called", () => {
+    expect(getAccessToken(state)).toEqual(null);
   });
-  it("should return the current vendor status when the getVendorStatus selector is called", () => {
-    expect(getVendorStatus(state)).toEqual(false);
+  it("should return the current allowLocation value when the getAllowLocation selector is called", () => {
+    expect(getAllowLocation(state)).toBeTruthy();
+  });
+  it("should return the current allowPush value when the getAllowPush selector is called", () => {
+    expect(getAllowPush(state)).toBeTruthy();
+  });
+  it("should return the current allowToast value when the getAllowToast selector is called", () => {
+    expect(getAllowToast(state)).toBeTruthy();
   });
   it("should return the current cart when the getCart selector is called", () => {
     expect(getCart(state)).toEqual([]);
@@ -106,7 +134,19 @@ describe("When testing the individual selectors", () => {
   it("should return the current entity when the getEntity selector is called", () => {
     expect(getEntity(state)).toEqual(null);
   });
+  it("should return the current global state when the getGlobalState selector is called", () => {
+    expect(getGlobalState(state)).toEqual(initialState);
+  });
   it("should return the current value for showOnboard when the getShowOnboard selector is called", () => {
     expect(getShowOnboard(state)).toEqual(true);
+  });
+  it("should return the current app theme when the getTheme selector is called", () => {
+    expect(getTheme(state)).toEqual("dark");
+  });
+  it("should return the current app theme type when the getThemeType selector is called", () => {
+    expect(getThemeType(state)).toEqual("system");
+  });
+  it("should return the current vendor status when the getVendorStatus selector is called", () => {
+    expect(getVendorStatus(state)).toEqual(false);
   });
 });

@@ -8,7 +8,6 @@ import { useAppTheme } from '@hooks';
 import { AuthNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, showSuccess } from '@utils';
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CountDown from 'react-native-countdown-fixed';
@@ -49,46 +48,43 @@ const VerifyEmailScreen = () => {
     }
   }, [data]);
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="profile verify email screen">
-        <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-            <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-          </TouchableOpacity>
-          <Text style={[styles.headerText, { color: color.mainText }]}>Verify Email Address</Text>
-        </View>
-        <View style={styles.mainBox}>
-          <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
-            <MaterialCommunityIcons name="email-check" size={100} color="white" />
-          </Animated.View>
-          <Text style={[styles.infoText, { color: color.mainText }]}>Please enter the 4 digit code sent to your email address</Text>
-          <CustomPinInput value={otpcode} onChange={onChange} onSubmit={onSubmit} />
-          <SubmitButton label="Verify" isLoading={loading} onSubmit={onSubmit} />
-          <View style={styles.resendBox}>
-            <Text style={[styles.resendText, { color: color.mainText }]}>Didn't receive a code?</Text>
-            {isTimerActive ? (
-              <>
-                <CountDown
-                  digitStyle={styles.countdownTimer}
-                  digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
-                  onFinish={() => setIsTimerActive(false)}
-                  separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
-                  showSeparator
-                  timeToShow={['M', 'S']}
-                  timeLabels={{ s: '' }}
-                  until={59}
-                />
-              </>
-            ) : (
-              <TouchableOpacity onPress={resendCode}>
-                <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="profile verify email screen">
+      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
+          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { color: color.mainText }]}>Verify Email Address</Text>
+      </View>
+      <View style={styles.mainBox}>
+        <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
+          <MaterialCommunityIcons name="email-check" size={100} color="white" />
+        </Animated.View>
+        <Text style={[styles.infoText, { color: color.mainText }]}>Please enter the 4 digit code sent to your email address</Text>
+        <CustomPinInput value={otpcode} onChange={onChange} onSubmit={onSubmit} />
+        <SubmitButton label="Verify" isLoading={loading} onSubmit={onSubmit} />
+        <View style={styles.resendBox}>
+          <Text style={[styles.resendText, { color: color.mainText }]}>Didn't receive a code?</Text>
+          {isTimerActive ? (
+            <>
+              <CountDown
+                digitStyle={styles.countdownTimer}
+                digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+                onFinish={() => setIsTimerActive(false)}
+                separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+                showSeparator
+                timeToShow={['M', 'S']}
+                timeLabels={{ s: '' }}
+                until={59}
+              />
+            </>
+          ) : (
+            <TouchableOpacity onPress={resendCode}>
+              <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
-    </>
+    </View>
   );
 };
 

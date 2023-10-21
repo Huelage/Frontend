@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { CartItem, CartOverview, Categories, LocationList, PopularFood, PopularRestaurant } from "@containers/User";
+import { CartItem, CartOverview, Categories, LocationList, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
 import { entity, renderApollo } from "../testhelpers";
@@ -222,6 +222,49 @@ describe("When Testing User Profile Containers: ", () => {
       await waitFor(() => {
         expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity: { ...entity, knownLocation: [{ locationId: "123", name: "123 Main St" }] } } });
       });
+    });
+  });
+
+  describe("<ProfileHeader />: ", () => {
+    beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(entity);
+      render(<ProfileHeader />);
+    });
+    // Testing UI
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("profile header")).toBeOnTheScreen();
+    });
+    it("should not render the container if user is not logged in", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(null);
+      render(<ProfileHeader />);
+      expect(screen.queryByTestId("profile header")).toBeNull();
+    });
+    it("should render the user image if the user has an image", () => {
+      const image = screen.getByTestId("user image");
+      expect(image).toBeOnTheScreen();
+      expect(image.props.source).toEqual([{ uri: entity.imgUrl }]);
+    });
+    it("should render a add image text instead of an image, if user has no image", () => {
+      const user = { ...entity, imgUrl: "" };
+      (useAppSelector as jest.Mock).mockReturnValue(user);
+      render(<ProfileHeader />);
+      const text = screen.getByText("Add an image");
+      expect(text).toBeOnTheScreen();
+      expect(screen.queryByTestId("user image")).toBeNull();
+    });
+    it("should render the add image button", () => {
+      expect(screen.getByTestId("add image button")).toBeOnTheScreen();
+    });
+    it("should render the user's name", () => {
+      expect(screen.getByText(`${entity.firstName} ${entity.lastName}`)).toBeOnTheScreen();
+    });
+    // Testing Functionality
+    it("should call the addImage function when the add image button is pressed", () => {
+      const logSpy = jest.spyOn(console, "log");
+      render(<ProfileHeader />);
+      const button = screen.getByTestId("add image button");
+      fireEvent.press(button);
+      expect(logSpy).toBeCalledWith("add image");
     });
   });
 });

@@ -1,8 +1,11 @@
+import { store } from '@api/app/store';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { StyleSheet } from "react-native";
 import { showMessage } from "react-native-flash-message";
 
 export const showError = (message: string) => {
+  const allowToast = store.getState().global.allowToast;
+  if (!allowToast) return;
   showMessage({
     message,
     type: 'danger',
@@ -13,6 +16,8 @@ export const showError = (message: string) => {
 };
 
 export const showSuccess = (message: string) => {
+  const allowToast = store.getState().global.allowToast;
+  if (!allowToast) return;
   showMessage({
     message,
     type: 'success',

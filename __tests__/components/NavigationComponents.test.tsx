@@ -5,7 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Platform, Text } from "react-native";
-import { renderNavigator } from "../testhelpers";
+import { entity, renderNavigator } from "../testhelpers";
+import { getEntity, getTheme, getThemeType } from "@api/slices/globalSlice";
 
 describe("When Testing User Navigation Components: ", () => {
   const Tab = createBottomTabNavigator<UserTabParamList>();
@@ -30,6 +31,10 @@ describe("When Testing User Navigation Components: ", () => {
 
   describe("<UserTabBar />: ", () => {
     beforeEach(() => {
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return entity;
+        if (selector === getThemeType) return "manual";
+      });
       renderNav();
     });
     // Testing UI
@@ -80,7 +85,11 @@ describe("When Testing User Navigation Components: ", () => {
 
   describe("<UserTabHeader />: ", () => {
     beforeEach(() => {
-      (useAppSelector as jest.Mock).mockReturnValue("light");
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return entity;
+        if (selector === getThemeType) return "manual";
+        if (selector === getTheme) return "light";
+      });
       renderNav();
     });
     // Testing UI
@@ -93,14 +102,37 @@ describe("When Testing User Navigation Components: ", () => {
     it("should render user image", () => {
       expect(screen.getByTestId("user image")).toBeOnTheScreen();
     });
+    it("should render the user image text when the user image is not available", () => {
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return { ...entity, imgUrl: "" };
+        if (selector === getThemeType) return "manual";
+        if (selector === getTheme) return "light";
+      });
+      renderNav();
+      expect(screen.getByTestId("user image text")).toBeOnTheScreen();
+      expect(screen.queryByTestId("user image")).toBeNull();
+    });
     it("should render user name", () => {
-      expect(screen.getByTestId("username")).toBeOnTheScreen();
+      expect(screen.getByText(`${entity.firstName} ${entity.lastName}`)).toBeOnTheScreen();
     });
     it("should render the theme toggle button", () => {
       expect(screen.getByTestId("theme toggle")).toBeOnTheScreen();
     });
+    it("should not render the theme toggle button when the theme is auto", () => {
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return entity;
+        if (selector === getThemeType) return "system";
+        if (selector === getTheme) return "light";
+      });
+      renderNav();
+      expect(screen.queryByTestId("theme toggle")).toBeNull();
+    });
     it("should render the sun image as the theme toggle button when the theme is dark", () => {
-      (useAppSelector as jest.Mock).mockReturnValue("dark");
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return entity;
+        if (selector === getThemeType) return "manual";
+        if (selector === getTheme) return "dark";
+      });
       renderNav();
       expect(screen.getByTestId("theme toggle")).toBeOnTheScreen();
     });
@@ -118,7 +150,11 @@ describe("When Testing User Navigation Components: ", () => {
     });
     it("should switch theme to light on toggle button press and initial dark theme", () => {
       const dispatch = jest.fn();
-      (useAppSelector as jest.Mock).mockReturnValue("dark");
+      (useAppSelector as jest.Mock).mockImplementation(selector => {
+        if (selector === getEntity) return entity;
+        if (selector === getThemeType) return "manual";
+        if (selector === getTheme) return "dark";
+      });
       (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       renderNav();
       const toggleButton = screen.getByTestId("theme toggle");
@@ -132,14 +168,6 @@ describe("When Testing User Navigation Components: ", () => {
       const cartButton = screen.getByTestId("cart button");
       fireEvent.press(cartButton);
       expect(navigate).toBeCalledWith("Cart");
-    });
-    it("should dispatch clearCredentials when the user image is pressed", () => {
-      const dispatch = jest.fn();
-      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
-      renderNav();
-      const userImage = screen.getByTestId("user image");
-      fireEvent.press(userImage);
-      expect(dispatch).toBeCalledWith({ type: "global/clearCredentials" });
     });
   });
 });

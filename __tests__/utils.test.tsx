@@ -6,6 +6,8 @@ import * as toasts from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import { render, screen } from "@testing-library/react-native";
 import React, { ReactElement } from "react";
+import { store } from "@api/app/store";
+import { initialState } from "./testhelpers";
 
 const utils = jest.requireActual("@utils");
 
@@ -136,5 +138,13 @@ describe("toasts.ts: ", () => {
     expect(mockedShowMessage).toBeCalledWith(expect.objectContaining({ message: "test", type: "success" }));
     const Icon = mockedShowMessage.mock.calls[1][0].icon as React.FC;
     render(<Icon />);
+  });
+  it("should not call the showMessage or showError toasts if allowToast is disabled", () => {
+    const mockedGetState = jest.spyOn(store, "getState");
+    mockedGetState.mockReturnValue({ global: { ...initialState, allowToast: false } });
+    const mockedShowMessage = jest.spyOn(toasts, "showMessage");
+    utils.showError("test fail");
+    utils.showSuccess("test fail");
+    expect(mockedShowMessage).not.toBeCalledWith(expect.objectContaining({ message: "test fail" }));
   });
 });

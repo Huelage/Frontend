@@ -1,8 +1,7 @@
-import { CustomImage } from '@components/misc';
+import { CustomBox, CustomImage } from '@components/misc';
 import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { UserFoodInterface } from '@interfaces';
-import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
 import { fonts, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -96,11 +95,7 @@ const CategoryCard = ({ id, idx, name, pricingMethod, price, packageSizes, imgUr
   return (
     <Animated.View style={styles.container} testID='category card'>
       <Animated.View style={[styles.itemBox, cardStyle]}>
-        <Canvas style={styles.resBox}>
-          <RoundedRect x={6} y={6} width={wp('67%') - 20} height={(hp('40%') - 20)} r={15} color={color.cardBg}>
-            <Shadow dx={2} dy={4} blur={4} color="rgba(76, 175, 80, 0.61)" />
-          </RoundedRect>
-        </Canvas>
+        <CustomBox height={hp('40%')} width={wp('67%')} pad={6} r={15} />
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
           <Text style={[styles.itemName, { color: color.mainText }]}>{name}</Text>
@@ -122,7 +117,7 @@ const CategoryCard = ({ id, idx, name, pricingMethod, price, packageSizes, imgUr
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor='rgba(71, 202, 76, .5)' shadowHeight={10} />
+        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor={color.cardShadow} shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );

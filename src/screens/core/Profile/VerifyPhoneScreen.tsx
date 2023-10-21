@@ -8,7 +8,6 @@ import { useAppTheme } from '@hooks';
 import { AuthNavigationProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, setItem, showSuccess } from '@utils';
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CountDown from 'react-native-countdown-fixed';
@@ -54,50 +53,47 @@ const VerifyPhoneScreen = () => {
     }
   }, [data, loading]);
   return (
-    <>
-      <StatusBar style='auto' />
-      <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="verify phone screen">
-        <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-            <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-          </TouchableOpacity>
-          <Text style={[styles.headerText, { color: color.mainText }]}>Verify Phone Number</Text>
-        </View>
-        <View style={styles.mainBox}>
-          <Animated.Image
-            sharedTransitionTag="huelageLogo"
-            style={styles.logoImage}
-            testID="logo image"
-            source={require("@images/onboard_logo.png")}
-          />
-          <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
-          <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
-          {isTimerActive ? (
-            <View style={styles.resendTextBox}>
-              <Text style={[styles.resendText, { color: color.mainText }]}>
-                Resend code in&nbsp;
-              </Text>
-              <CountDown
-                digitStyle={styles.countdownTimer}
-                digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
-                onFinish={() => setIsTimerActive(false)}
-                separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
-                showSeparator
-                timeToShow={['M', 'S']}
-                timeLabels={{ s: '' }}
-                until={59}
-              />
-              <Text style={[styles.resendText, { color: color.mainText }]}>s</Text>
-            </View>
-          ) : (
-            <TouchableOpacity onPress={resendCode} style={styles.resendTextBox}>
-              <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
-            </TouchableOpacity>
-          )}
-          <SubmitButton label='Verify' isLoading={loading} onSubmit={verifyOTP} />
-        </View>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="verify phone screen">
+      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
+          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { color: color.mainText }]}>Verify Phone Number</Text>
       </View>
-    </>
+      <View style={styles.mainBox}>
+        <Animated.Image
+          sharedTransitionTag="huelageLogo"
+          style={styles.logoImage}
+          testID="logo image"
+          source={require("@images/onboard_logo.png")}
+        />
+        <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
+        <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
+        {isTimerActive ? (
+          <View style={styles.resendTextBox}>
+            <Text style={[styles.resendText, { color: color.mainText }]}>
+              Resend code in&nbsp;
+            </Text>
+            <CountDown
+              digitStyle={styles.countdownTimer}
+              digitTxtStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+              onFinish={() => setIsTimerActive(false)}
+              separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
+              showSeparator
+              timeToShow={['M', 'S']}
+              timeLabels={{ s: '' }}
+              until={59}
+            />
+            <Text style={[styles.resendText, { color: color.mainText }]}>s</Text>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={resendCode} style={styles.resendTextBox}>
+            <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
+          </TouchableOpacity>
+        )}
+        <SubmitButton label='Verify' isLoading={loading} onSubmit={verifyOTP} />
+      </View>
+    </View>
   );
 };
 

@@ -8,7 +8,6 @@ import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, ResetPasswordInterface, SetPasswordRouteProps } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, setItem } from "@utils";
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -49,25 +48,22 @@ const SetPasswordScreen = () => {
     }
   }, [data]);
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="set password screen">
-        <View style={styles.headerBox}>
-          <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-            <AntDesign name="arrowleft" size={26} color={color.mainText} />
-          </TouchableOpacity>
-          <Text style={[styles.headerText, { color: color.mainText }]}>Set Password</Text>
-        </View>
-        <View style={styles.mainBox}>
-          <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
-            <MaterialCommunityIcons name="lock-open-plus-outline" size={100} color="white" />
-          </Animated.View>
-          <Text style={[styles.infoText, { color: color.mainText }]}>Your new password must be different from previously used password</Text>
-          <SetPasswordInputs isSignedIn={!!isSignedIn} control={control} errors={errors} setFocus={setFocus} watch={watch} submit={handleSubmit(onSubmit)} />
-          <SubmitButton label="Change Password" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
-        </View>
+    <View style={[styles.container, { paddingTop: insets.top + 10 }]} onTouchStart={dismissKeyboard} testID="set password screen">
+      <View style={styles.headerBox}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
+          <AntDesign name="arrowleft" size={26} color={color.mainText} />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { color: color.mainText }]}>Set Password</Text>
       </View>
-    </>
+      <View style={styles.mainBox}>
+        <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
+          <MaterialCommunityIcons name="lock-open-plus-outline" size={100} color="white" />
+        </Animated.View>
+        <Text style={[styles.infoText, { color: color.mainText }]}>Your new password must be different from previously used password</Text>
+        <SetPasswordInputs isSignedIn={!!isSignedIn} control={control} errors={errors} setFocus={setFocus} watch={watch} submit={handleSubmit(onSubmit)} />
+        <SubmitButton label="Change Password" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
+      </View>
+    </View>
   );
 };
 

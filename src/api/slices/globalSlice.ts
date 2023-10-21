@@ -11,6 +11,9 @@ const initialState: globalStateInterface = {
   themeType: "system",
   theme: "dark",
   cart: [],
+  allowPush: true,
+  allowToast: true,
+  allowLocation: true
 };
 
 const globalSlice = createSlice({
@@ -52,6 +55,21 @@ const globalSlice = createSlice({
       state.cart[index] = action.payload;
     },
     clearCart: state => { state.cart = []; },
+    toggleThemeType: (state) => {
+      state.themeType = state.themeType === "system" ? "manual" : "system";
+    },
+    toggleTheme: (state) => {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+    },
+    toggleAllowPush: (state) => {
+      state.allowPush = !state.allowPush;
+    },
+    toggleAllowToast: (state) => {
+      state.allowToast = !state.allowToast;
+    },
+    toggleAllowLocation: (state) => {
+      state.allowLocation = !state.allowLocation;
+    }
   },
 });
 
@@ -65,13 +83,24 @@ export const {
   setCredentials,
   setVendorStatus,
   setShowOnboard,
-  switchTheme
+  switchTheme,
+  toggleAllowLocation,
+  toggleAllowPush,
+  toggleAllowToast,
+  toggleTheme,
+  toggleThemeType
 } = globalSlice.actions;
 // Selectors
-export const getTheme = (state: RootState) => state.global.theme;
-export const getVendorStatus = (state: RootState) => state.global.isVendor;
-export const getShowOnboard = (state: RootState) => state.global.showOnboard;
+export const getAccessToken = (state: RootState) => state.global.accessToken;
+export const getAllowLocation = (state: RootState) => state.global.allowLocation;
+export const getAllowPush = (state: RootState) => state.global.allowPush;
+export const getAllowToast = (state: RootState) => state.global.allowToast;
 export const getCart = (state: RootState) => state.global.cart;
 export const getEntity = (state: RootState) => state.global.entity;
+export const getGlobalState = (state: RootState) => state.global;
+export const getShowOnboard = (state: RootState) => state.global.showOnboard;
+export const getTheme = (state: RootState) => state.global.theme;
+export const getThemeType = (state: RootState) => state.global.themeType;
+export const getVendorStatus = (state: RootState) => state.global.isVendor;
 // Reducer
 export default globalSlice.reducer;

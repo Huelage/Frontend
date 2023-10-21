@@ -105,7 +105,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                     "fontSize": 12,
                   },
                   {
-                    "color": "#fff",
+                    "color": "#FFF",
                   },
                 ]
               }
@@ -133,37 +133,19 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
-                    {
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 25,
+                        "height": 40,
+                        "justifyContent": "center",
+                        "width": 40,
+                      },
+                      {
+                        "backgroundColor": "#141414",
+                      },
+                    ]
                   }
                 >
                   <RCTImageView
@@ -181,9 +163,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                     source={
                       [
                         {
-                          "height": undefined,
-                          "uri": undefined,
-                          "width": undefined,
+                          "uri": "123",
                         },
                       ]
                     }
@@ -206,13 +186,12 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                         "fontSize": 18,
                       },
                       {
-                        "color": "#fff",
+                        "color": "#FFF",
                       },
                     ]
                   }
-                  testID="username"
                 >
-                  John Jane Doe
+                  John Doe
                 </Text>
               </View>
               <View
@@ -461,7 +440,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -520,7 +499,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -579,7 +558,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -696,7 +675,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                     "fontSize": 12,
                   },
                   {
-                    "color": "#fff",
+                    "color": "#FFF",
                   },
                 ]
               }
@@ -724,37 +703,19 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
-                    {
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 25,
+                        "height": 40,
+                        "justifyContent": "center",
+                        "width": 40,
+                      },
+                      {
+                        "backgroundColor": "#141414",
+                      },
+                    ]
                   }
                 >
                   <RCTImageView
@@ -772,9 +733,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                     source={
                       [
                         {
-                          "height": undefined,
-                          "uri": undefined,
-                          "width": undefined,
+                          "uri": "123",
                         },
                       ]
                     }
@@ -797,13 +756,12 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
                         "fontSize": 18,
                       },
                       {
-                        "color": "#fff",
+                        "color": "#FFF",
                       },
                     ]
                   }
-                  testID="username"
                 >
-                  John Jane Doe
+                  John Doe
                 </Text>
               </View>
               <View
@@ -1052,7 +1010,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -1111,7 +1069,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -1170,7 +1128,7 @@ exports[`When Testing User Navigation Components:  <UserTabBar />:  should rende
               "fontSize": 12,
             },
             {
-              "color": "#fff",
+              "color": "#FFF",
             },
           ]
         }
@@ -1273,7 +1231,7 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
                   "paddingHorizontal": 20,
                 },
                 {
-                  "backgroundColor": "#fff",
+                  "backgroundColor": "#FFF",
                   "paddingTop": 0,
                 },
               ]
@@ -1315,37 +1273,19 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
                 }
               >
                 <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
                   style={
-                    {
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "alignItems": "center",
+                        "borderRadius": 25,
+                        "height": 40,
+                        "justifyContent": "center",
+                        "width": 40,
+                      },
+                      {
+                        "backgroundColor": "#F0FFF0",
+                      },
+                    ]
                   }
                 >
                   <RCTImageView
@@ -1363,9 +1303,7 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
                     source={
                       [
                         {
-                          "height": undefined,
-                          "uri": undefined,
-                          "width": undefined,
+                          "uri": "123",
                         },
                       ]
                     }
@@ -1392,9 +1330,8 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
                       },
                     ]
                   }
-                  testID="username"
                 >
-                  John Jane Doe
+                  John Doe
                 </Text>
               </View>
               <View
@@ -1527,7 +1464,7 @@ exports[`When Testing User Navigation Components:  <UserTabHeader />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFF",
           "paddingBottom": 0,
         },
       ]
@@ -2022,7 +1959,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#fff",
+                  "backgroundColor": "#FFF",
                   "borderRadius": 10,
                   "flexDirection": "row",
                   "gap": 15,
@@ -2204,7 +2141,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFF",
           "paddingBottom": 0,
         },
       ]
@@ -2699,7 +2636,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#fff",
+                  "backgroundColor": "#FFF",
                   "borderRadius": 10,
                   "flexDirection": "row",
                   "gap": 15,
@@ -2881,7 +2818,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabBar />:  should re
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFF",
           "paddingBottom": 15,
         },
       ]
@@ -3376,7 +3313,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabHeader />:  should
               style={
                 {
                   "alignItems": "center",
-                  "backgroundColor": "#fff",
+                  "backgroundColor": "#FFF",
                   "borderRadius": 10,
                   "flexDirection": "row",
                   "gap": 15,
@@ -3558,7 +3495,7 @@ exports[`When Testing Vendor Navigation Component:  <VendorTabHeader />:  should
           "paddingTop": 20,
         },
         {
-          "backgroundColor": "#fff",
+          "backgroundColor": "#FFF",
           "paddingBottom": 0,
         },
       ]

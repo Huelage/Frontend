@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/core";
 import { CompositeNavigationProp, NavigatorScreenParams } from "@react-navigation/native";
@@ -80,17 +81,14 @@ export type UserProfileTabStackParamList = {
   Main: undefined;
   UserDetails: undefined;
   Location: undefined;
-  Notification: undefined;
   VerifyEmail: undefined;
   VerifyPhone: undefined;
   Wallet: undefined;
   Referral: undefined;
   Setting: undefined;
-  FAQs: undefined;
+  FAQ: undefined;
   Help: undefined;
   About: undefined;
-  MyOrders: undefined;
-  ProfileDetails: undefined;
 };
 
 // // Vendor Tab Stacks
@@ -145,6 +143,9 @@ export interface globalStateInterface {
   theme: "light" | "dark";
   cart: CartInterface[];
   accessToken: string | null;
+  allowPush: boolean;
+  allowToast: boolean;
+  allowLocation: boolean;
 }
 
 export interface entityInterface {
@@ -191,6 +192,33 @@ export interface BiometricsInterface {
   biometricType: BioAuth.AuthenticationType[];
 }
 
+export interface ProfileElementInterface {
+  label: string;
+  nav: keyof UserProfileTabStackParamList;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+}
+
+export interface SettingOptionInterface {
+  title: string;
+  isToggle: boolean;
+  onPress: () => void;
+  disabled?: boolean;
+  initVal?: boolean;
+  danger?: boolean;
+}
+
+export interface SettingOptionsInterface {
+  description?: string;
+  options: SettingOptionInterface[];
+}
+
+export interface SettingElementInterface {
+  title: string;
+  Icon: () => React.JSX.Element;
+  options: SettingOptionsInterface[];
+}
+
+
 // Entity Interfaces
 export interface ReviewInterface {
   id: string;
@@ -223,12 +251,9 @@ export interface LocationInterface {
   locationId: string;
   name: string;
 }
-<<<<<<< HEAD
-=======
 
 // interface sides {
 //   desription: string;
 //   options: {name: string, price: number}[];
 //   isRequired: boolean;
 // }
->>>>>>> f4d87495a7f744834c612abea4190070b536bbf0

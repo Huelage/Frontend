@@ -2,11 +2,13 @@ import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
-import { DetailElement, LocationElement, LocationInput } from "@components/core/Profile";
+import { DetailElement, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox, SettingElement, SettingOptionBox, SettingOptionItem } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
+import { ProfileElementInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { useRef } from "react";
+import { View } from "react-native";
 
 const foodData = mockFoods[0];
 const resData = mockRestaurants[0];
@@ -334,30 +336,6 @@ describe("When Testing Core Home Components: ", () => {
 });
 
 
-describe("When Testing Core Vendor Components: ", () => {
-  describe("<VendorResCard />: ", () => {
-    beforeEach(() => {
-      render(<VendorResCard resId={resData.id} />);
-    });
-    it("should render the component", () => {
-      expect(screen.getByTestId("vendor res card")).toBeOnTheScreen();
-    });
-    it("should render restaurant image", () => {
-      expect(screen.getByTestId("restaurant image")).toBeOnTheScreen();
-    });
-    it("should render restaurant name", () => {
-      expect(screen.getByText(resData.name)).toBeOnTheScreen();
-    });
-    it("should render restaurant location", () => {
-      expect(screen.getByText(resData.location)).toBeOnTheScreen();
-    });
-    it("should render view button", () => {
-      expect(screen.getByText("View")).toBeOnTheScreen();
-    });
-  });
-});
-
-
 describe("When Testing Core Profile Components: ", () => {
   describe("<DetailElement />: ", () => {
     beforeEach(() => {
@@ -424,6 +402,162 @@ describe("When Testing Core Profile Components: ", () => {
     });
     it("should render the location input", () => {
       expect(screen.getByPlaceholderText("test location")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<ProfileBoxElement />: ", () => {
+    const props: ProfileElementInterface = { label: "test", nav: "Main", icon: "chevron-right" };
+    beforeEach(() => {
+      render(<ProfileBoxElement {...props} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("profile box element")).toBeOnTheScreen();
+    });
+    it("should render the element label", () => {
+      expect(screen.getByText("test")).toBeOnTheScreen();
+    });
+    it("should render the element icon", () => {
+      expect(screen.getByTestId("element icon")).toBeOnTheScreen();
+    });
+    it("should call the navigate function when the element is pressed", () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
+      render(<ProfileBoxElement {...props} />);
+      const element = screen.getByTestId("profile box element");
+      fireEvent.press(element);
+      expect(navigate).toBeCalledWith(props.nav);
+    });
+  });
+
+  describe("<ProfileNavBox />: ", () => {
+    const elements: ProfileElementInterface[] = [{ label: "test", nav: "Main", icon: "chevron-right" }];
+    beforeEach(() => {
+      render(<ProfileNavBox elements={elements} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("profile nav box")).toBeOnTheScreen();
+    });
+    it("should render the profile nav list", () => {
+      expect(screen.getByTestId("profile nav list")).toBeOnTheScreen();
+    });
+    it("should render the nav elements using the ProfileBoxElement component", () => {
+      const elements = screen.getAllByTestId("profile box element");
+      expect(elements).toHaveLength(1);
+    });
+  });
+
+  describe("<SettingElement />: ", () => {
+    const props = { title: "test setting", Icon: () => <View />, options: [{ options: [{ title: "test", isToggle: false, onPress: jest.fn() }] }] };
+    beforeEach(() => {
+      render(<SettingElement {...props} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("setting element")).toBeOnTheScreen();
+    });
+    it("should render the setting icon", () => {
+      expect(screen.getByTestId("setting icon")).toBeOnTheScreen();
+    });
+    it("should render the setting title", () => {
+      expect(screen.getByText(props.title)).toBeOnTheScreen();
+    });
+    it("should render the setting box list", () => {
+      expect(screen.getByTestId("setting box list")).toBeOnTheScreen();
+    });
+    it("should render the box items using the SettingOptionBox component", () => {
+      expect(screen.getAllByTestId("setting option box")).toHaveLength(1);
+    });
+  });
+
+  describe("<SettingOptionBox />: ", () => {
+    const props = { description: "test description", options: [{ title: "test", isToggle: false, onPress: jest.fn() }] };
+    beforeEach(() => {
+      render(<SettingOptionBox {...props} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("setting option box")).toBeOnTheScreen();
+    });
+    it("should render the description", () => {
+      expect(screen.getByText(props.description)).toBeOnTheScreen();
+    });
+    it("should not render the description is there isn't one", () => {
+      render(<SettingOptionBox {...props} description={undefined} />);
+      expect(screen.queryByText(props.description)).toBeNull();
+    });
+    it("should render the options list", () => {
+      expect(screen.getByTestId("setting options list")).toBeOnTheScreen();
+    });
+    it("should render the options using the SettingOptionItem component", () => {
+      expect(screen.getAllByTestId(/setting option item/)).toHaveLength(1);
+    });
+  });
+
+  describe("<SettingOptionItem />: ", () => {
+    const onPress = jest.fn();
+    const props = { title: "test", isToggle: false, onPress };
+    beforeEach(() => {
+      render(<SettingOptionItem {...props} />);
+    });
+    // Testing UI
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId(/setting option item/)).toBeOnTheScreen();
+    });
+    it("should render the element title", () => {
+      expect(screen.getByText(props.title)).toBeOnTheScreen();
+    });
+    it("should render the chevron icon when the element is not a toggle", () => {
+      expect(screen.getByTestId("chevron icon")).toBeOnTheScreen();
+    });
+    it("should render the toggle switch instead of the chevron icon when the element is a toggle", () => {
+      render(<SettingOptionItem {...props} isToggle />);
+      expect(screen.queryByTestId("chevron icon")).not.toBeOnTheScreen();
+      expect(screen.getByTestId(/toggle switch/)).toBeOnTheScreen();
+    });
+    it("should render a disabled switch if the element is a toggle and is disabled", () => {
+      render(<SettingOptionItem {...props} isToggle disabled />);
+      const toggleSwitch = screen.getByTestId(/toggle switch/);
+      expect(toggleSwitch.props.disabled).toBeTruthy();
+    });
+    it("should disable the wrapper touchable if the element is a toggle", () => {
+      render(<SettingOptionItem {...props} isToggle />);
+      const touchable = screen.getByTestId(/setting option item/);
+      expect(touchable.props.accessibilityState.disabled).toBeTruthy();
+    });
+    // Testing Functionality
+    it("should call the onPress function when the element is pressed and is not a toggle", () => {
+      const element = screen.getByTestId(/setting option item/);
+      fireEvent.press(element);
+      expect(onPress).toBeCalled();
+    });
+    it("should toggle the switch when it is pressed and the element is a toggle", () => {
+      render(<SettingOptionItem {...props} isToggle initVal={true} />);
+      const toggleSwitch = screen.getByTestId(/toggle switch/);
+      fireEvent(toggleSwitch, "onValueChange");
+      expect(toggleSwitch.props.value).toBeFalsy();
+      expect(onPress).toBeCalled();
+    });
+  });
+});
+
+
+describe("When Testing Core Vendor Components: ", () => {
+  describe("<VendorResCard />: ", () => {
+    beforeEach(() => {
+      render(<VendorResCard resId={resData.id} />);
+    });
+    it("should render the component", () => {
+      expect(screen.getByTestId("vendor res card")).toBeOnTheScreen();
+    });
+    it("should render restaurant image", () => {
+      expect(screen.getByTestId("restaurant image")).toBeOnTheScreen();
+    });
+    it("should render restaurant name", () => {
+      expect(screen.getByText(resData.name)).toBeOnTheScreen();
+    });
+    it("should render restaurant location", () => {
+      expect(screen.getByText(resData.location)).toBeOnTheScreen();
+    });
+    it("should render view button", () => {
+      expect(screen.getByText("View")).toBeOnTheScreen();
     });
   });
 });
