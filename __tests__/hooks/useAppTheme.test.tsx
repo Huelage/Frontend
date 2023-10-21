@@ -40,7 +40,8 @@ describe("When Testing useAppTheme Custom Hook", () => {
       mainGreenOpaque: "rgba(76, 175, 80, .3)",
       modalBg: "#FFF",
       searchBg: "#F3F3F3",
-      searchText: "#626262"
+      searchText: "#626262",
+      tabBg: "#F5F5F5"
     });
   });
 });
