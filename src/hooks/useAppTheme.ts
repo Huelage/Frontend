@@ -11,8 +11,10 @@ const colors = {
   dark: {
     accentText: "#FFF",
     cardBg: "#141414",
+    cardBg2: "#141414",
     cardShadow: "rgba(0, 0, 0, 0.61)",
     chartBg: "#333333",
+    danger: "rgba(233, 50, 35, .6)",
     filterBg: "#181818",
     main: "#000",
     defaultBg: "#000",
@@ -28,8 +30,10 @@ const colors = {
   light: {
     accentText: "#626262",
     cardBg: "#F0FFF0",
+    cardBg2: "#F5F5F5",
     cardShadow: "rgba(76, 175, 80, 0.61)",
     chartBg: "#D9D9D9",
+    danger: "rgba(233, 50, 35, .6)",
     filterBg: "#F3F3F3",
     main: "#FFF",
     defaultBg: "#F2F2F2",
