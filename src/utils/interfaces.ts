@@ -113,7 +113,7 @@ export type VendorNavigationProps = NativeStackNavigationProp<VendorStackParamLi
 export type AuthNavigationProps = NativeStackNavigationProp<AuthStackParamList>;
 // // Main Tabs
 export type UserTabProps = CompositeNavigationProp<BottomTabNavigationProp<UserTabParamList>, UserNavigationProps>;
-export type VendorTabProps = BottomTabNavigationProp<VendorTabParamList>;
+export type VendorTabProps = CompositeNavigationProp<BottomTabNavigationProp<VendorTabParamList>, VendorNavigationProps>;
 // // User Tab Stacks
 export type UserVendorTabProps = CompositeNavigationProp<NativeStackNavigationProp<UserVendorsTabStackParamList>, UserTabProps>;
 export type UserOrdersTabProps = CompositeNavigationProp<NativeStackNavigationProp<UserOrdersTabStackParamList>, UserTabProps>;
@@ -218,6 +218,22 @@ export interface SettingElementInterface {
   options: SettingOptionsInterface[];
 }
 
+export interface FilterGroup {
+  id: string;
+  items: FilterItem[];
+  label: string;
+  type: "SINGLE" | "MULTIPLE";
+}
+
+export interface FilterItem {
+  id: string;
+  groupId: string;
+  name: string;
+  onPress: (checked: boolean) => void;
+}
+
+export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELIVERED" | "COMPLETED" | "CANCELLED";
+
 
 // Entity Interfaces
 export interface ReviewInterface {
@@ -252,6 +268,15 @@ export interface LocationInterface {
   name: string;
 }
 
+export interface OrderInterface {
+  id: string;
+  name: string;
+  orderedAt: string;
+  updatedAt: string;
+  status: OrderStatus;
+  total: number;
+  items: any;
+}
 // interface sides {
 //   desription: string;
 //   options: {name: string, price: number}[];
