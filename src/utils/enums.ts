@@ -12,3 +12,13 @@ export enum fonts {
   I_700 = "Inter_700Bold",
   I_700I = "InterTight_700Bold_Italic"
 }
+
+export enum orderStatInfo {
+  "PENDING" = "Your order is being processed",
+  "PREPARING" = "Your order is being prepared",
+  "READY" = "Your order is ready for pickup",
+  "EN_ROUTE" = "Your order is on the way",
+  "DELIVERED" = "Your order is here",
+  "COMPLETED" = "Your order has been completed",
+  "CANCELLED" = "Your order has been cancelled"
+}
