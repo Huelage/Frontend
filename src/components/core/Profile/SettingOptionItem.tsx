@@ -15,7 +15,7 @@ const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress
   return (
     <TouchableOpacity disabled={isToggle} onPress={onPress} testID={`${title} setting option item`}>
       <View style={styles.container}>
-        <Text style={[styles.textStyle, { color: danger ? "rgba(233, 50, 35, .6)" : color.mainText }]}>{title}</Text>
+        <Text style={[styles.textStyle, { color: danger ? color.danger : color.mainText }]}>{title}</Text>
         {isToggle ? (
           <Switch
             disabled={disabled}
@@ -28,7 +28,7 @@ const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress
             testID={`${title} toggle switch`}
           />
         ) : (
-          <MaterialCommunityIcons testID='chevron icon' name="chevron-right" size={30} color={danger ? "rgba(233, 50, 35, .6)" : color.mainText} />
+          <MaterialCommunityIcons testID='chevron icon' name="chevron-right" size={30} color={danger ? color.danger : color.mainText} />
         )}
       </View>
     </TouchableOpacity>
