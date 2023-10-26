@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getAccessToken, getEntity, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
+import { getAccessToken, getTheme, getVendorStatus } from "@api/slices/globalSlice";
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
-import { renderNavigator } from "./testhelpers";
 import { useColorScheme } from "react-native";
+import { renderNavigator } from "./testhelpers";
 
 describe("When Testing the Navigators: ", () => {
   describe("<AuthStackNavigator />: ", () => {
@@ -139,7 +139,7 @@ describe("When Testing the Navigators: ", () => {
     describe("<UserOrdersTabStack />: ", () => {
       it("should render the MyOrdersScreen", () => {
         renderNavigator(<UserOrdersTabStack />);
-        expect(screen.getByTestId("my orders screen")).toBeOnTheScreen();
+        expect(screen.getByTestId("order screen")).toBeOnTheScreen();
       });
     });
     describe("<UserProfileTabStack />: ", () => {

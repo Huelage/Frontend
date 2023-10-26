@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { CartItem, CartOverview, Categories, LocationList, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
+import { mockOrderItems } from "@api/mock";
+import { CartItem, CartOverview, Categories, LocationList, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
 import { entity, renderApollo } from "../testhelpers";
@@ -29,6 +30,13 @@ describe("When Testing User Cart Containers: ", () => {
       expect(view.props.children).toBeDefined();
     });
     it("should render the item price", () => {
+      const view = screen.getByTestId("cart item price");
+      expect(view).toBeOnTheScreen();
+      expect(view.props.children).toBeDefined();
+    });
+    it("should render the price for the first package size if the item has package sizes", () => {
+      const item = { ...itemProp, item_id: "8" };
+      render(<CartItem {...item} />);
       const view = screen.getByTestId("cart item price");
       expect(view).toBeOnTheScreen();
       expect(view.props.children).toBeDefined();
@@ -178,6 +186,54 @@ describe("When Testing User Home Containers: ", () => {
     });
     it("should render the popular restaurant list", () => {
       expect(screen.getByTestId("popular restaurant list")).toBeOnTheScreen();
+    });
+  });
+});
+
+
+describe("When Testing User Order Containers: ", () => {
+  describe("<OrderSummaryElement />: ", () => {
+    const mockOrder = mockOrderItems[0];
+    beforeEach(() => {
+      render(<OrderSummaryElement {...mockOrder} />);
+    });
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("order summary element")).toBeOnTheScreen();
+    });
+    it("should render the estimated time for the order", () => {
+      expect(screen.getByText(/the estimated time for this order/i)).toBeOnTheScreen();
+    });
+    it("should render the restaurant name", () => {
+      expect(screen.getByText(mockOrder.name)).toBeOnTheScreen();
+    });
+    it("should render the order total price", () => {
+      expect(screen.getByText(`₦${mockOrder.total}`)).toBeOnTheScreen();
+    });
+    it("should render the order formatted date", () => {
+      expect(screen.getByTestId("formatted date")).toBeOnTheScreen();
+    });
+    it("should render the status progress bar component", () => {
+      expect(screen.getByTestId("status progress bar")).toBeOnTheScreen();
+    });
+    it("should render the order status", () => {
+      expect(screen.getByText(mockOrder.status)).toBeOnTheScreen();
+    });
+    it("should render the order info text", () => {
+      expect(screen.getByTestId("order info text")).toBeOnTheScreen();
+    });
+    describe("When the order the resolved or rejected", () => {
+      it("should not render the estimated time for the order", () => {
+        render(<OrderSummaryElement {...mockOrder} status="COMPLETED" />);
+        expect(screen.queryByText(/the estimated time for this order/i)).toBeNull();
+      });
+      it("should render the order status in the order resolved box", () => {
+        render(<OrderSummaryElement {...mockOrder} status="CANCELLED" />);
+        expect(screen.getByText(/order cancelled/i)).toBeOnTheScreen();
+      });
+      it("should not render the bar box", () => {
+        render(<OrderSummaryElement {...mockOrder} status="CANCELLED" />);
+        expect(screen.queryByTestId("status progress bar")).toBeNull();
+      });
     });
   });
 });

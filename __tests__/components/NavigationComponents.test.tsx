@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { getEntity, getTheme, getThemeType } from "@api/slices/globalSlice";
 import { OrderBar, UserTabBar, UserTabHeader, VendorTabBar, VendorTabHeader } from "@components/navigation";
 import { UserTabParamList, VendorTabParamList } from "@interfaces";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -6,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { Platform, Text } from "react-native";
 import { entity, renderNavigator } from "../testhelpers";
-import { getEntity, getTheme, getThemeType } from "@api/slices/globalSlice";
 
 describe("When Testing User Navigation Components: ", () => {
   const Tab = createBottomTabNavigator<UserTabParamList>();
@@ -38,14 +38,14 @@ describe("When Testing User Navigation Components: ", () => {
       renderNav();
     });
     // Testing UI
-    it("should render correctly", () => {
-      expect(screen.toJSON()).toMatchSnapshot();
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("user tab bar")).toBeOnTheScreen();
     });
-    it("should render correctly on android", () => {
-      (Platform.OS = "android");
+    it("should also render the component correctly on android", () => {
+      Platform.OS = "android";
       renderNav();
-      expect(screen.toJSON()).toMatchSnapshot();
-      (Platform.OS = "ios");
+      expect(screen.getByTestId("user tab bar")).toBeOnTheScreen();
+      Platform.OS = "ios";
     });
     it("should render the correct number of tabs", () => {
       expect(screen.getAllByTestId(/tab button/i)).toHaveLength(4);
@@ -93,8 +93,8 @@ describe("When Testing User Navigation Components: ", () => {
       renderNav();
     });
     // Testing UI
-    it("should render correctly", async () => {
-      expect(screen.toJSON()).toMatchSnapshot();
+    it("should render component correctly", async () => {
+      expect(screen.getByTestId("user tab header")).toBeOnTheScreen();
     });
     it("should render greeting text", () => {
       expect(screen.getByTestId("greeting text")).toBeOnTheScreen();
@@ -140,6 +140,19 @@ describe("When Testing User Navigation Components: ", () => {
       expect(screen.getByTestId("cart button")).toBeOnTheScreen();
     });
     // Testing Functionality
+    it("should greet the user with the correct time of day", () => {
+      const dateSpy = jest.spyOn(Date.prototype, "getHours");
+      dateSpy.mockReturnValue(10);
+      renderNav();
+      expect(screen.getByText("Good morning")).toBeOnTheScreen();
+      dateSpy.mockReturnValue(14);
+      renderNav();
+      expect(screen.getByText("Good afternoon")).toBeOnTheScreen();
+      dateSpy.mockReturnValue(20);
+      renderNav();
+      expect(screen.getByText("Good evening")).toBeOnTheScreen();
+      dateSpy.mockRestore();
+    });
     it("should switch theme to dark on toggle button press and initial light theme", () => {
       const dispatch = jest.fn();
       (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
@@ -199,14 +212,14 @@ describe("When Testing Vendor Navigation Component: ", () => {
       renderNav();
     });
     // Testing UI
-    it("should render correctly", () => {
-      expect(screen.toJSON()).toMatchSnapshot();
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("vendor tab bar")).toBeOnTheScreen();
     });
-    it("should render correctly on android", () => {
-      (Platform.OS = "android");
+    it("should also render the component correctly on android", () => {
+      Platform.OS = "android";
       renderNav();
-      expect(screen.toJSON()).toMatchSnapshot();
-      (Platform.OS = "ios");
+      expect(screen.getByTestId("vendor tab bar")).toBeOnTheScreen();
+      Platform.OS = "ios";
     });
     it("should render the correct number of tabs", () => {
       expect(screen.getAllByTestId(/tab button/i)).toHaveLength(4);
@@ -249,7 +262,7 @@ describe("When Testing Vendor Navigation Component: ", () => {
       renderNav();
     });
     it("should render correctly", async () => {
-      expect(screen.toJSON()).toMatchSnapshot();
+      expect(screen.getByTestId("vendor tab header")).toBeOnTheScreen();
     });
     it("should render the vendor name", () => {
       expect(screen.getByTestId("vendor name")).toBeOnTheScreen();

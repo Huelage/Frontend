@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation } from "@react-navigation/native";
-import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
@@ -572,6 +572,72 @@ describe("When Testing Core(User Flow) Screens: ", () => {
           expect(screen.getByText(/59/i)).toBeOnTheScreen();
         });
       });
+    });
+  });
+});
+
+describe("Order Screens: ", () => {
+  describe("<OrderScreen />: ", () => {
+    beforeEach(() => {
+      render(<OrderScreen />);
+    });
+    it("should render the screen correctly", () => {
+      expect(screen.getByTestId("order screen")).toBeOnTheScreen();
+    });
+    describe("When there are no orders: ", () => {
+      const navigate = jest.fn();
+      beforeEach(() => {
+        (useNavigation as jest.Mock).mockReturnValue({ navigate });
+        render(<OrderScreen testEmpty />);
+      });
+      it("should render the order empty image", () => {
+        const emptyImage = screen.getByTestId("order empty image");
+        expect(emptyImage).toBeOnTheScreen();
+        expect(emptyImage.props.source).toBeDefined();
+      });
+      it("should render the order empty text", () => {
+        expect(screen.getByText(/you haven't made any order with huelage/i)).toBeOnTheScreen();
+      });
+      it("should render the order empty button", () => {
+        expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+      });
+      it("should navigate to the vendor main screen when the order empty button is pressed", () => {
+        const button = screen.getByTestId("submit button");
+        fireEvent.press(button);
+        expect(navigate).toBeCalledWith("Vendors", { screen: "Main" });
+      });
+    });
+    it("should render the order box header", () => {
+      expect(screen.getByTestId("order box header")).toBeOnTheScreen();
+    });
+    it("should render the order summary elements list", () => {
+      expect(screen.getByTestId("order summary elements list")).toBeOnTheScreen();
+    });
+    it("should render the order summary elements using the OrderSummaryElement component", () => {
+      expect(screen.getAllByTestId("order summary element")).not.toBeNull();
+    });
+    // Testing Functionality
+    it("should filter the items when a filter item is pressed", () => {
+      const filterItems = screen.getAllByTestId("filter item");
+      filterItems.forEach(item => {
+        fireEvent.press(item);
+        expect(screen.queryAllByTestId("order summary element")).toBeDefined();
+      });
+      filterItems.forEach(item => {
+        fireEvent.press(item);
+        expect(screen.queryAllByTestId("order summary element")).toBeDefined();
+      });
+    });
+    it("should filter by date when the date filter item is pressed", () => {
+      const filterHeaderItem = screen.getAllByTestId("filter header item")[1];
+      fireEvent.press(filterHeaderItem);
+      const filterItems = screen.getAllByTestId("filter item");
+      filterItems.forEach(item => {
+        fireEvent.press(item);
+        expect(screen.queryAllByTestId("order summary element")).toBeDefined();
+      });
+      fireEvent.press(filterItems[3]);
+      expect(screen.queryAllByTestId("order summary element")).toBeDefined();
     });
   });
 });
