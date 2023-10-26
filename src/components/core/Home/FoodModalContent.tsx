@@ -2,14 +2,15 @@ import restuarants from '@api/mock/mockRestaurants';
 import { CustomImage } from '@components/misc';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { UserFoodInterface } from '@interfaces';
 import { fonts } from '@utils';
 import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import FoodModalResCard from './FoodModalResCard';
 
-interface ModalInterface extends Partial<UserFoodInterface> {
+interface ModalInterface {
+  name: string;
+  description: string;
   imgUrl: string;
   close: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -1,6 +1,6 @@
 import { OverviewBox, PromoBox } from '@components/core/Cart';
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const CartOverview = () => {
   const totals = [
@@ -15,7 +15,7 @@ const CartOverview = () => {
     console.log("Checkout");
   };
   return (
-    <View style={{ gap: 20 }} testID='cart overview'>
+    <View style={styles.container} testID='cart overview'>
       <PromoBox handleApply={handleApply} />
       <OverviewBox totals={totals} checkout={checkout} />
     </View>
@@ -23,3 +23,9 @@ const CartOverview = () => {
 };
 
 export default CartOverview;
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 20
+  }
+});

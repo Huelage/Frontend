@@ -2,7 +2,7 @@ import { useAppTheme } from '@hooks';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { fonts } from '@utils';
 import React from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Path, Svg } from 'react-native-svg';
 
@@ -10,7 +10,7 @@ const VendorTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
   const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
   return (
-    <View style={[styles.tabBg, { backgroundColor: color.main, paddingBottom: (insets.bottom + (Platform.OS === 'ios' ? 0 : 15)) }]}>
+    <View style={[styles.tabBg, { backgroundColor: color.tabBg, paddingBottom: (insets.bottom + (Platform.OS === 'ios' ? 0 : 15)) }]} testID='vendor tab bar'>
       {state.routes.map((route, idx) => {
         const { options } = descriptors[route.key];
         const label = route.name;

@@ -29,8 +29,10 @@ describe("When Testing useAppTheme Custom Hook", () => {
     expect(result.current.color).toEqual({
       accentText: "#626262",
       cardBg: "#F0FFF0",
+      cardBg2: "#F5F5F5",
       cardShadow: "rgba(76, 175, 80, 0.61)",
       chartBg: "#D9D9D9",
+      danger: "rgba(233, 50, 35, .6)",
       filterBg: "#F3F3F3",
       main: "#FFF",
       defaultBg: "#F2F2F2",
@@ -40,7 +42,8 @@ describe("When Testing useAppTheme Custom Hook", () => {
       mainGreenOpaque: "rgba(76, 175, 80, .3)",
       modalBg: "#FFF",
       searchBg: "#F3F3F3",
-      searchText: "#626262"
+      searchText: "#626262",
+      tabBg: "#F5F5F5"
     });
   });
 });

@@ -2,11 +2,12 @@ import { mockFoods, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
+import { StatusProgressBar } from "@components/core/Order";
 import { DetailElement, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox, SettingElement, SettingOptionBox, SettingOptionItem } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
 import { ProfileElementInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { useRef } from "react";
 import { View } from "react-native";
 
@@ -125,7 +126,7 @@ describe("When Testing Core Detail Components: ", () => {
 
 describe("When Testing Core Home Components: ", () => {
   describe("<CategoryCard />: ", () => {
-    const category = { ...foodData, idx: 1, addToCart: jest.fn(), animationValue: { value: 1 } };
+    const category = { category: foodData, idx: 1, addToCart: jest.fn(), animationValue: { value: 1 } };
     beforeEach(() => {
       render(<CategoryCard {...category} />);
     });
@@ -143,10 +144,14 @@ describe("When Testing Core Home Components: ", () => {
       expect(screen.getByText(foodData.pricingMethod)).toBeOnTheScreen();
     });
     it("should render the category price", () => {
+      category.category = mockFoods[7];
+      render(<CategoryCard {...category} />);
       expect(screen.getByText(/price:/i)).toBeOnTheScreen();
-      expect(screen.getByText(`₦ ${foodData.price?.toFixed(2)}`)).toBeOnTheScreen();
+      expect(screen.getByTestId("item price")).toBeOnTheScreen();
     });
     it("should render the vendor name", () => {
+      category.category = mockFoods[2];
+      render(<CategoryCard {...category} />);
       expect(screen.getByText(/korede's joint/i)).toBeOnTheScreen();
     });
     it("should render the category image", () => {
@@ -331,6 +336,24 @@ describe("When Testing Core Home Components: ", () => {
       const detailBox = screen.getByTestId("details box");
       fireEvent.press(detailBox);
       expect(navigate).toBeCalled();
+    });
+  });
+});
+
+
+describe("When Testing Core Order Components: ", () => {
+  describe("<StatusProgressBar />: ", () => {
+    beforeEach(() => {
+      render(<StatusProgressBar status="PENDING" />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("status progress bar")).toBeOnTheScreen();
+    });
+    it("should render the status points", () => {
+      expect(screen.getAllByTestId("status point")).not.toBeNull();
+    });
+    it("should render the status bar component", () => {
+      expect(screen.getByTestId("status bar")).toBeOnTheScreen();
     });
   });
 });

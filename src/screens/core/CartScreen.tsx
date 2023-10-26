@@ -28,11 +28,8 @@ const CartScreen = () => {
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           testID="cart items list"
-          renderItem={({ item }) => (
-            <CartItem {...item} />
-          )}
+          renderItem={({ item }) => <CartItem {...item} />}
           contentContainerStyle={styles.listContainerStyle}
-          style={styles.listStyle}
         />
         <CartOverview />
       </View>
@@ -68,9 +65,7 @@ const styles = StyleSheet.create({
     gap: 20
   },
   listContainerStyle: {
-    gap: 20
+    gap: 20,
+    paddingBottom: 5
   },
-  listStyle: {
-    flex: 1
-  }
 });

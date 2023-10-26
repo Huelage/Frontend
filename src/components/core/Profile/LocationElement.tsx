@@ -3,7 +3,7 @@ import { useAppTheme } from '@hooks';
 import { LocationInterface } from '@interfaces';
 import { fonts } from '@utils';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Animated, { FadeInUp, SlideOutLeft } from 'react-native-reanimated';
 
 interface LocationElementInterface {
@@ -24,7 +24,7 @@ const LocationElement = ({ location: { name, locationId }, initialMode, idx, rem
     >
       <Text style={[styles.location, { color: color.mainText }]}>{name}</Text>
       <TouchableOpacity onPress={() => removeLocation(locationId)} testID={`remove button ${locationId}`}>
-        <Feather name="trash-2" size={24} color="rgba(233, 50, 35, .6)" />
+        <Feather name="trash-2" size={24} color={color.danger} />
       </TouchableOpacity>
     </Animated.View>
   );

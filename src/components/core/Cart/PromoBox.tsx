@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { useAppTheme } from '@hooks';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
 import { fonts, shadowStyle } from '@utils';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 interface PromoBoxInterface {
   handleApply: (val: string) => void;
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     padding: 10,
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   promoInput: {
     flex: 1,
