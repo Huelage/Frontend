@@ -8,28 +8,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-interface CategoryCardInterface extends UserFoodInterface {
+interface CategoryCardInterface {
+  category: UserFoodInterface;
   idx: number;
   animationValue: Animated.SharedValue<number>;
   addToCart: (id: string) => void;
 }
-const CategoryCard = ({ id, idx, name, pricingMethod, price, packageSizes, imgUrl, animationValue, addToCart }: CategoryCardInterface) => {
+const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp('67%');
   const HEIGHT = hp('35%');
-  if (pricingMethod === 'PACKAGE') {
-    price = packageSizes && packageSizes[0].price;
-  }
-  let p_method;
-  switch (pricingMethod) {
-    case 'PRICE':
-      p_method = 'Min Price';
-      break;
-    default:
-      p_method = 'Price';
-      break;
-  }
-
+  const p_method = category.pricingMethod === 'PRICE' ? 'Min Price' : 'Price';
+  const price = category.pricingMethod === 'PACKAGE' ? category.packageSizes[0].price : category.price;
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
       animationValue.value,
@@ -98,26 +88,26 @@ const CategoryCard = ({ id, idx, name, pricingMethod, price, packageSizes, imgUr
         <CustomBox height={hp('40%')} width={wp('67%')} pad={6} r={15} />
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
-          <Text style={[styles.itemName, { color: color.mainText }]}>{name}</Text>
+          <Text style={[styles.itemName, { color: color.mainText }]}>{category.name}</Text>
           <Text style={[styles.itemVendorName, { color: color.mainGreen }]}>Pricing Details</Text>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>Method: </Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]}>{pricingMethod}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>{category.pricingMethod}</Text>
           </View>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>{p_method}: </Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]}>₦ {price?.toFixed(2)}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]} testID='item price'>₦ {price?.toFixed(2)}</Text>
           </View>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
-            <TouchableOpacity testID={'addToCart'} style={styles.itemBuyIcon} onPress={() => addToCart(id)}>
+            <TouchableOpacity testID={'addToCart'} style={styles.itemBuyIcon} onPress={() => addToCart(category.id)}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
           </View>
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor={color.cardShadow} shadowHeight={10} />
+        <CustomImage imgUrl={category.imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor={color.cardShadow} shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );
