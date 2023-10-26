@@ -1,10 +1,10 @@
 import { mockCategories } from '@api/mock';
+import { UserFoodInterface } from '@interfaces';
 import React, { useRef, useState } from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import CategoryCard from './CategoryCard';
-import { UserFoodInterface } from '@interfaces';
 
 interface CustomCarouselInterface {
   items: UserFoodInterface[];
@@ -61,13 +61,7 @@ const CustomCarousel = ({ items, addToCart }: CustomCarouselInterface) => {
         onProgressChange={onProgressChange}
         onSnapToItem={idx => setItemIdx(idx)}
         renderItem={({ item, index, animationValue }) => (
-          <CategoryCard
-            {...item}
-            animationValue={animationValue}
-            key={index}
-            idx={index}
-            addToCart={addToCart}
-          />
+          <CategoryCard category={item} animationValue={animationValue} key={index} idx={index} addToCart={addToCart} />
         )}
       />
       <FlatList
