@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
-import { AuthNavigationProps } from '@interfaces';
+import { UserProfileTabProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, showSuccess } from '@utils';
 import React, { useEffect, useState } from 'react';
@@ -25,7 +25,7 @@ const VerifyEmailScreen = () => {
   const [verifyEmail, { data, loading }] = useMutation(VERIFY_EMAIL);
   const [resendOtp] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
-  const { goBack } = useNavigation<AuthNavigationProps>();
+  const { goBack } = useNavigation<UserProfileTabProps>();
   const onSubmit = async () => {
     if (/\d{4}/.test(otpcode.trim())) {
       const input = { email, otp: parseInt(otpcode) };
