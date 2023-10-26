@@ -2,7 +2,7 @@ export { default as CartScreen } from "./CartScreen";
 export { default as DetailScreen } from "./DetailScreen";
 export { default as HomeScreen } from "./HomeScreen";
 // Order Screens
-export { default as MyOrdersScreen } from "./Orders/MyOrdersScreen";
+export { default as OrderScreen } from "./Orders/OrderScreen";
 // Profile Screens
 export { default as AboutScreen } from "./Profile/AboutScreen";
 export { default as FAQScreen } from "./Profile/FAQScreen";
