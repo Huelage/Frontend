@@ -245,19 +245,27 @@ export interface ReviewInterface {
   message: string;
 }
 
-export interface UserFoodInterface {
+interface UserFoodBase {
   id: string;
   name: string;
   description: string;
   imgUrl: string;
   category: string;
   isFavourite: boolean;
-  pricingMethod: "PRICE" | "PORTION" | "FIXED" | "PACKAGE";
-  price?: number;
-  packageSizes?: { name: string; price: number; }[];
   availability: "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
   sides?: FoodSideInterface[];
 }
+interface UserFoodPrice extends UserFoodBase {
+  pricingMethod: "PRICE" | "PORTION" | "FIXED";
+  price: number;
+}
+interface UserFoodPackage extends UserFoodBase {
+  pricingMethod: "PACKAGE";
+  packageSizes: { name: string; price: number; }[];
+}
+
+export type UserFoodInterface = UserFoodPrice | UserFoodPackage;
+
 export interface FoodSideInterface {
   name: string;
   price: number;
