@@ -30,7 +30,7 @@ const UserTabHeader = () => {
     else setTimeOfDay('evening');
   }, [hour]);
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg, paddingTop: inset.top }]}>
+    <View style={[styles.container, { backgroundColor: color.mainBg, paddingTop: inset.top }]} testID='user tab header'>
       <Text testID='greeting text' style={[styles.headerGreeting, { color: color.mainText }]}>Good {timeOfDay}</Text>
       <View style={styles.headerBox}>
         <View style={styles.headerDetail}>

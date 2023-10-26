@@ -16,7 +16,7 @@ const VendorTabHeader = () => {
   const inset = useSafeAreaInsets();
   const { color } = useAppTheme();
   return (
-    <ImageBackground style={[styles.container, { paddingTop: inset.top + 20 }]} source={require('@images/salado.png')}>
+    <ImageBackground style={[styles.container, { paddingTop: inset.top + 20 }]} source={require('@images/salado.png')} testID='vendor tab header'>
       <View style={styles.headerBox}>
         <Text testID='vendor name' style={styles.resName}>Salado Cafeteria</Text>
         <TouchableOpacity onPress={() => dispatch(clearCredentials())}>
