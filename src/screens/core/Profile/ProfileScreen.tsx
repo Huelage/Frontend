@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     paddingBottom: 30
   },
   navBox: {
-    gap: 10,
+    gap: 15,
   }
 });
