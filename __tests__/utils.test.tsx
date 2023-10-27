@@ -1,12 +1,12 @@
-import { CustomSecureStore, getBiometrics, getItem, replacer } from "@utils";
-import * as SecureStore from 'expo-secure-store';
+import { store } from "@api/app/store";
+import { render } from "@testing-library/react-native";
+import { replacer } from "@utils";
+import dayjs from "dayjs";
 import * as BioAuth from 'expo-local-authentication';
+import * as SecureStore from 'expo-secure-store';
+import React from "react";
 import { Platform } from "react-native";
 import * as toasts from "react-native-flash-message";
-import { showMessage } from "react-native-flash-message";
-import { render, screen } from "@testing-library/react-native";
-import React, { ReactElement } from "react";
-import { store } from "@api/app/store";
 import { initialState } from "./testhelpers";
 
 const utils = jest.requireActual("@utils");
@@ -70,6 +70,46 @@ describe("miscs.ts: ", () => {
     mockedDeleteItem.mockReturnValueOnce(Promise.resolve());
     await utils.removeItem("test");
     expect(mockedDeleteItem).toBeCalledWith("test");
+  });
+  it("should return a currency formatted number when the numberToCurrency function is called", () => {
+    const res = utils.numberToCurrency(1000);
+    expect(res).toEqual("₦1,000.00");
+  });
+  describe("When Testing the getDateDiff Function: ", () => {
+    let res;
+    it("should check if the date is inBetween now and the today", () => {
+      res = utils.getDateDiff("Today", dayjs().subtract(3, "h"));
+      expect(res).toBeTruthy;
+      res = utils.getDateDiff("Today", dayjs().subtract(2, "d"));
+      expect(res).toBeFalsy;
+    });
+    it("should check if the date is inBetween now and yesterday", () => {
+      res = utils.getDateDiff("Yesterday", dayjs().subtract(1, "d"));
+      expect(res).toBeTruthy;
+      res = utils.getDateDiff("Yesterday", dayjs().subtract(2, "d"));
+      expect(res).toBeFalsy;
+    });
+    it("should check if the date is inBetween now and the previous week", () => {
+      res = utils.getDateDiff("Last Week", dayjs().subtract(1, "w"));
+      expect(res).toBeTruthy;
+      res = utils.getDateDiff("Last Week", dayjs().subtract(2, "w"));
+      expect(res).toBeFalsy;
+    });
+    it("should check if the date is inBetween now and the previous month", () => {
+      res = utils.getDateDiff("Last Month", dayjs().subtract(1, "M"));
+      expect(res).toBeTruthy;
+      res = utils.getDateDiff("Last Month", dayjs().subtract(2, "M"));
+      expect(res).toBeFalsy;
+    });
+  });
+  it("should return the correct status state whne the getStatus function is called", () => {
+    let res;
+    res = utils.getStatus("COMPLETED");
+    expect(res).toEqual("Completed");
+    res = utils.getStatus("CANCELLED");
+    expect(res).toEqual("Cancelled");
+    res = utils.getStatus("PENDING");
+    expect(res).toEqual("Pending");
   });
 });
 

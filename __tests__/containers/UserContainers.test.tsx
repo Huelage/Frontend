@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { mockOrderItems } from "@api/mock";
-import { CartItem, CartOverview, Categories, LocationList, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
+import { mockCartItems, mockOrderItems } from "@api/mock";
+import { CartItem, CartOverview, Categories, LocationList, OrderDetailItem, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
 import { entity, renderApollo } from "../testhelpers";
+import { numberToCurrency } from "@utils/miscs";
 
 describe("When Testing User Cart Containers: ", () => {
   describe("<CartItem />: ", () => {
@@ -34,8 +35,8 @@ describe("When Testing User Cart Containers: ", () => {
       expect(view).toBeOnTheScreen();
       expect(view.props.children).toBeDefined();
     });
-    it("should render the price for the first package size if the item has package sizes", () => {
-      const item = { ...itemProp, item_id: "8" };
+    it("should render the price for the specified package size if the item has package sizes", () => {
+      const item = { ...itemProp, item_id: "8", size: "small" };
       render(<CartItem {...item} />);
       const view = screen.getByTestId("cart item price");
       expect(view).toBeOnTheScreen();
@@ -192,6 +193,34 @@ describe("When Testing User Home Containers: ", () => {
 
 
 describe("When Testing User Order Containers: ", () => {
+  describe("<OrderDetailItem />: ", () => {
+    const cart = mockCartItems[0];
+    beforeEach(() => {
+      render(<OrderDetailItem {...cart} />);
+    });
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("order detail item")).toBeOnTheScreen();
+    });
+    it("should not render the container if item_id is not found", () => {
+      render(<OrderDetailItem {...cart} item_id="20" />);
+      expect(screen.queryByTestId("order detail item")).toBeNull();
+    });
+    it("should render the item quantity", () => {
+      expect(screen.getByTestId("order item quantity")).toBeOnTheScreen();
+    });
+    it("should render the item name", () => {
+      expect(screen.getByTestId("order item name")).toBeOnTheScreen();
+    });
+    it("should render the item extras", () => {
+      expect(screen.getByTestId("order item extras")).toBeOnTheScreen();
+    });
+    it("should render the total item price", () => {
+      const cart = { id: "3", item_id: "8", quantity: 1, size: "small" };
+      render(<OrderDetailItem {...cart} />);
+      expect(screen.getByTestId("order item total")).toBeOnTheScreen();
+    });
+  });
+
   describe("<OrderSummaryElement />: ", () => {
     const mockOrder = mockOrderItems[0];
     beforeEach(() => {
@@ -207,7 +236,7 @@ describe("When Testing User Order Containers: ", () => {
       expect(screen.getByText(mockOrder.name)).toBeOnTheScreen();
     });
     it("should render the order total price", () => {
-      expect(screen.getByText(`₦${mockOrder.total}`)).toBeOnTheScreen();
+      expect(screen.getByText(numberToCurrency(mockOrder.total))).toBeOnTheScreen();
     });
     it("should render the order formatted date", () => {
       expect(screen.getByTestId("formatted date")).toBeOnTheScreen();

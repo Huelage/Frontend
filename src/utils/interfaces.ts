@@ -69,13 +69,12 @@ export type VendorTabParamList = {
 // // User Tab Stacks
 export type UserVendorsTabStackParamList = {
   Main: undefined;
-  Vendor: { vendorId: string; };
+  VendorHome: { vendorId: string; };
   ItemDetail: { itemId: string; };
 };
 export type UserOrdersTabStackParamList = {
   Main: undefined;
   OrderDetail: { orderId: string; };
-  TrackOrder: { orderId: string; };
 };
 export type UserProfileTabStackParamList = {
   Main: undefined;
@@ -129,7 +128,6 @@ export type VerifyEmailRouteProps = RouteProp<AuthStackParamList, "VerifyEmail">
 export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "Vendor">;
 export type UserVendorsTabItemDetailRouteProps = RouteProp<UserVendorsTabStackParamList, "ItemDetail">;
 export type UserOrdersTabOrderDetailRouteProps = RouteProp<UserOrdersTabStackParamList, "OrderDetail">;
-export type UserOrdersTabTrackOrderRouteProps = RouteProp<UserOrdersTabStackParamList, "TrackOrder">;
 export type VendorOrdersTabOrderDetailRouteProps = RouteProp<VendorOrdersTabStackParamList, "OrderDetail">;
 export type VendorOrdersTabTrackOrderRouteProps = RouteProp<VendorOrdersTabStackParamList, "TrackOrder">;
 export type VendorMenuTabItemDetailRouteProps = RouteProp<VendorMenuTabStackParamList, "ItemDetail">;
@@ -168,6 +166,7 @@ export interface CartInterface {
   id: string;
   item_id: string;
   quantity: number;
+  size?: string;
   extras?: CartExtraInterface[];
 }
 
@@ -279,11 +278,13 @@ export interface LocationInterface {
 export interface OrderInterface {
   id: string;
   name: string;
+  deliveryAddress: string;
   orderedAt: string;
   updatedAt: string;
   status: OrderStatus;
   total: number;
-  items: any;
+  vendorAddress: string;
+  items: CartInterface[];
 }
 // interface sides {
 //   desription: string;

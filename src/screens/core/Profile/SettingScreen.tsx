@@ -3,7 +3,7 @@ import { clearCredentials, getGlobalState, toggleAllowLocation, toggleAllowPush,
 import { SettingElement } from "@components/core/Profile";
 import { Fontisto, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { SettingElementInterface, UserNavigationProps } from "@interfaces";
+import { SettingElementInterface, UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React, { useMemo } from "react";
@@ -15,7 +15,7 @@ const SettingScreen = () => {
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
   const globalState = useAppSelector(getGlobalState);
-  const { goBack } = useNavigation<UserNavigationProps>();
+  const { goBack } = useNavigation<UserProfileTabProps>();
   const settings: SettingElementInterface[] = useMemo(() => ([
     {
       title: "General", Icon: () => <Fontisto name="equalizer" size={20} color="white" style={{ transform: [{ rotate: "-90deg" }] }} />, options: [

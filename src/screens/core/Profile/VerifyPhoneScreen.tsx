@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from '@hooks';
-import { AuthNavigationProps } from '@interfaces';
+import { UserProfileTabProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, setItem, showSuccess } from '@utils';
 import React, { useEffect, useState } from 'react';
@@ -24,7 +24,7 @@ const VerifyPhoneScreen = () => {
   const [verifyCode, { data, loading }] = useMutation(VERIFY_PHONE);
   const [refreshOTP] = useMutation(REFRESH_OTP);
   const [phoneOtp, setPhoneOtp] = useState<string>("");
-  const { goBack } = useNavigation<AuthNavigationProps>();
+  const { goBack } = useNavigation<UserProfileTabProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const formattedNumber = `${phoneno?.slice(0, 4)} ${phoneno?.slice(4, 6)}******${phoneno?.slice(-2)}`;
 

@@ -1,13 +1,16 @@
 import { mockRestaurants } from '@api/mock';
 import { CustomBox } from '@components/misc';
 import { useAppTheme } from '@hooks';
+import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
+import { UserVendorTabProps } from '@utils/interfaces';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 const VendorResCard = ({ resId }: { resId: string; }) => {
 	const { color } = useAppTheme();
+	const { navigate } = useNavigation<UserVendorTabProps>();
 	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
 		<View style={[styles.container]} testID='vendor res card'>
@@ -17,7 +20,7 @@ const VendorResCard = ({ resId }: { resId: string; }) => {
 				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
 				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{restaurant?.location}</Text>
 			</View>
-			<TouchableOpacity style={styles.buttonBox}>
+			<TouchableOpacity onPress={() => navigate("VendorHome", { vendorId: resId })} style={styles.buttonBox} testID='view vendor'>
 				<Text style={styles.button}>View</Text>
 			</TouchableOpacity>
 		</View>

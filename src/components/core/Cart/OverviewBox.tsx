@@ -1,16 +1,17 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { fonts, shadowStyle } from '@utils';
 import { useAppTheme } from '@hooks';
+import { fonts, numberToCurrency, shadowStyle } from '@utils';
+import React from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface OverviewBoxProps {
   totals: { name: string, amount: number; }[];
-  checkout: () => void;
+  paymentMethod?: { name: string, amount: number; }[];
+  checkout?: () => void;
 }
 
-const OverviewBox = ({ totals, checkout }: OverviewBoxProps) => {
+const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
   const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
   return (
@@ -19,13 +20,28 @@ const OverviewBox = ({ totals, checkout }: OverviewBoxProps) => {
         {totals.map((total, idx) => (
           <View key={idx} style={[styles.overviewItem, idx !== 2 && styles.overviewItemSeperator]}>
             <Text style={[idx === 2 ? styles.overviewMainText : styles.overviewSubText, { color: color.mainText }]}>{total.name}</Text>
-            <Text style={[idx === 2 ? styles.overviewMainAmount : styles.overviewSubAmount, { color: idx === 2 ? color.mainText : "#626262" }]}>₦ {total.amount}</Text>
+            <Text style={[idx === 2 ? styles.overviewMainAmount : styles.overviewSubAmount, { color: idx === 2 ? color.mainText : "#626262" }]}>{numberToCurrency(total.amount)}</Text>
           </View>
         ))}
       </View>
-      <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]}>
-        <Text style={styles.overviewButtonText} testID='checkout button'>Proceed to Checkout</Text>
-      </TouchableOpacity>
+      {paymentMethod ? (
+        <View style={styles.paymentBox} testID='payment box'>
+          <Image style={styles.paymentIcon} source={require("@icons/orderPaidMan.png")} />
+          <FlatList
+            contentContainerStyle={styles.paymentList}
+            data={paymentMethod}
+            scrollEnabled={false}
+            keyExtractor={(_, idx) => idx.toString()}
+            renderItem={({ item }) => (
+              <Text style={[styles.paymentText, { color: color.mainTextDim }]}>{numberToCurrency(item.amount)} paid via {item.name}</Text>
+            )}
+          />
+        </View>
+      ) : (
+        <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]} testID='checkout button'>
+          <Text style={styles.overviewButtonText}>Proceed to Checkout</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -86,5 +102,21 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: fonts.I_600,
     fontSize: 18
+  },
+  paymentBox: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 20
+  },
+  paymentIcon: {
+    aspectRatio: 1,
+    width: 80
+  },
+  paymentList: {
+    gap: 5
+  },
+  paymentText: {
+    fontFamily: fonts.I_400I,
+    fontSize: 16
   }
 });

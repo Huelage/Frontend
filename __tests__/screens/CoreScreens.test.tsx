@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { useNavigation } from "@react-navigation/native";
-import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
@@ -577,6 +577,51 @@ describe("When Testing Core(User Flow) Screens: ", () => {
 });
 
 describe("Order Screens: ", () => {
+  describe("<OrderDetailScreen />: ", () => {
+    beforeEach(() => {
+      (useRoute as jest.Mock).mockReturnValue({ params: { orderId: "1" } });
+      render(<OrderDetailScreen />);
+    });
+    it("should render the screen correctly", () => {
+      expect(screen.getByTestId("order detail screen")).toBeOnTheScreen();
+    });
+    it("should not render the screen if the order id is not provided", () => {
+      (useRoute as jest.Mock).mockReturnValue({ params: {} });
+      render(<OrderDetailScreen />);
+      expect(screen.queryByTestId("order detail screen")).toBeNull();
+    });
+    it("should render the header box", () => {
+      expect(screen.getByTestId("header box")).toBeOnTheScreen();
+    });
+    it("should render the order header box", () => {
+      expect(screen.getByTestId("order header box")).toBeOnTheScreen();
+    });
+    it("should render the order detail items list", () => {
+      expect(screen.getByTestId("order detail item list")).toBeOnTheScreen();
+    });
+    it("should render the order detail items using the OrderDetailItem component", () => {
+      expect(screen.getAllByTestId("order detail item")).toHaveLength(3);
+    });
+    it("should render the TrackOrder component", () => {
+      expect(screen.getByTestId("track order")).toBeOnTheScreen();
+    });
+    it("should render the call rider button if order is en route already", () => {
+      (useRoute as jest.Mock).mockReturnValue({ params: { orderId: "5" } });
+      render(<OrderDetailScreen />);
+      expect(screen.getByTestId("call rider button")).toBeOnTheScreen();
+    });
+    it("should render the cancel order button if order is pending approval", () => {
+      (useRoute as jest.Mock).mockReturnValue({ params: { orderId: "6" } });
+      render(<OrderDetailScreen />);
+      expect(screen.getByTestId("cancel order button")).toBeOnTheScreen();
+    });
+    it("should not render the TrackOrder component if the order is resolved or rejected", () => {
+      (useRoute as jest.Mock).mockReturnValue({ params: { orderId: "4" } });
+      render(<OrderDetailScreen />);
+      expect(screen.queryByTestId("track order")).toBeNull();
+    });
+  });
+
   describe("<OrderScreen />: ", () => {
     beforeEach(() => {
       render(<OrderScreen />);
@@ -638,6 +683,14 @@ describe("Order Screens: ", () => {
       });
       fireEvent.press(filterItems[3]);
       expect(screen.queryAllByTestId("order summary element")).toBeDefined();
+    });
+    it("should navigate to the order detail screen when an order is pressed", () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
+      render(<OrderScreen />);
+      const orderItem = screen.getAllByTestId("order element")[0];
+      fireEvent.press(orderItem);
+      expect(navigate).toBeCalledWith("OrderDetail", { orderId: expect.stringMatching(/\d/) });
     });
   });
 });

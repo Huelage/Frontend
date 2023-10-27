@@ -1,7 +1,7 @@
 import { CustomBox } from '@components/misc';
 import { ProfileElementInterface } from '@interfaces';
-import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { FlatList, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import ProfileBoxElement from './ProfileBoxElement';
 
@@ -10,7 +10,11 @@ interface ProfileNavBoxInterface {
 }
 
 const ProfileNavBox = ({ elements }: ProfileNavBoxInterface) => {
-  const height = elements.length * 80;
+  const [height, setHeight] = useState<number>(0);
+  const handleLayout = (e: LayoutChangeEvent) => {
+    const { height } = e.nativeEvent.layout;
+    setHeight(height + 30);
+  };
   return (
     <View style={styles.container} testID='profile nav box'>
       <CustomBox width={wp('100%') - 15} height={height} pad={6} r={10} />
@@ -19,6 +23,7 @@ const ProfileNavBox = ({ elements }: ProfileNavBoxInterface) => {
         scrollEnabled={false}
         keyExtractor={item => item.label}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
+        onLayout={handleLayout}
         renderItem={({ item }) => <ProfileBoxElement {...item} />}
         testID='profile nav list'
       />

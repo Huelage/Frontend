@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserNavigationProps } from "@interfaces";
+import { UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React from "react";
@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const WalletScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
-  const { goBack } = useNavigation<UserNavigationProps>();
+  const { goBack } = useNavigation<UserProfileTabProps>();
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="wallet screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>

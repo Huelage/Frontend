@@ -6,7 +6,7 @@ import { LocationInput } from "@components/core/Profile";
 import { LocationList } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserNavigationProps } from "@interfaces";
+import { UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, showError } from "@utils";
 import React, { useEffect } from "react";
@@ -21,7 +21,7 @@ const LocationScreen = () => {
   if (!entity) return null;
   const [addLocation, { data: added }] = useMutation(EDIT_LOCATIONS);
   const insets = useSafeAreaInsets();
-  const { goBack } = useNavigation<UserNavigationProps>();
+  const { goBack } = useNavigation<UserProfileTabProps>();
 
   const handleLocation = async (data: GooglePlaceData) => {
     const location = entity.knownLocation?.find(location => location.locationId === data.place_id);
