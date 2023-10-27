@@ -69,7 +69,7 @@ export type VendorTabParamList = {
 // // User Tab Stacks
 export type UserVendorsTabStackParamList = {
   Main: undefined;
-  Vendor: { vendorId: string; };
+  VendorHome: { vendorId: string; };
   ItemDetail: { itemId: string; };
 };
 export type UserOrdersTabStackParamList = {
