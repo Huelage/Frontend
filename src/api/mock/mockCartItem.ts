@@ -1,5 +1,3 @@
-import { Image } from "react-native";
-
 const data = [
   {
     id: "1",
