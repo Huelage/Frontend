@@ -2,6 +2,7 @@ export { default as CartScreen } from "./CartScreen";
 export { default as DetailScreen } from "./DetailScreen";
 export { default as HomeScreen } from "./HomeScreen";
 // Order Screens
+export { default as OrderDetailScreen } from "./Orders/OrderDetailScreen";
 export { default as OrderScreen } from "./Orders/OrderScreen";
 // Profile Screens
 export { default as AboutScreen } from "./Profile/AboutScreen";
@@ -15,6 +16,5 @@ export { default as SettingScreen } from "./Profile/SettingScreen";
 export { default as VerifyEmailScreen } from "./Profile/VerifyEmailScreen";
 export { default as VerifyPhoneScreen } from "./Profile/VerifyPhoneScreen";
 export { default as WalletScreen } from "./Profile/WalletScreen";
-
 // Vendor Screens
 export { default as VendorScreen } from "./Vendors/VendorScreen";
