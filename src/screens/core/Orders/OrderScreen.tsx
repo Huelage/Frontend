@@ -5,41 +5,10 @@ import { OrderSummaryElement } from '@containers/User';
 import { useAppTheme } from '@hooks';
 import { FilterGroup, OrderInterface, UserOrdersTabProps } from '@interfaces';
 import { useNavigation } from '@react-navigation/native';
-import { fonts } from '@utils';
-import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
+import { fonts, getDateDiff, getStatus } from '@utils';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Layout } from 'react-native-reanimated';
-
-dayjs.extend(isBetween);
-const getDateDiff = (category: string, date: string) => {
-  const now = dayjs(), orderDate = dayjs(date);
-  const today = now.startOf('day');
-  const yesterday = today.subtract(1, 'day');
-  const lastWeek = today.subtract(1, 'week');
-  const lastMonth = today.subtract(1, 'month');
-  switch (category) {
-    case 'Today':
-      return orderDate.isBetween(now, today);
-    case 'Yesterday':
-      return orderDate.isBetween(now, yesterday);
-    case 'Last week':
-      return orderDate.isBetween(now, lastWeek);
-    case 'Last month':
-      return orderDate.isBetween(now, lastMonth);
-  }
-};
-const getStatus = (status: string) => {
-  switch (status) {
-    case "COMPLETED":
-      return "Completed";
-    case "CANCELLED":
-      return "Cancelled";
-    default:
-      return "Pending";
-  }
-};
 
 interface OrderScreenInterface {
   testEmpty?: boolean;
@@ -105,7 +74,11 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
             data={filteredOrder}
             itemLayoutAnimation={Layout.springify().damping(15).delay(150)}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => <OrderSummaryElement {...item} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID='order element'>
+                <OrderSummaryElement {...item} />
+              </TouchableOpacity>
+            )}
             testID="order summary elements list"
           />
         </View>
