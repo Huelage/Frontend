@@ -6,7 +6,9 @@ export { default as Categories } from './Home/Categories';
 export { default as PopularFood } from './Home/PopularFood';
 export { default as PopularRestaurant } from "./Home/PopularRestaurant";
 // Order
+export { default as OrderDetailItem } from "./Order/OrderDetailItem";
 export { default as OrderSummaryElement } from "./Order/OrderSummaryElement";
 // Profile
 export { default as LocationList } from "./Profile/LocationList";
 export { default as ProfileHeader } from "./Profile/ProfileHeader";
+
