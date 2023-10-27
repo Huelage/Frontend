@@ -14,14 +14,14 @@ const OrderDetailItem = ({ item_id, quantity, size, extras }: CartInterface) => 
   const price = item.pricingMethod === 'PACKAGE' ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
   const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) ?? 0) + (price * quantity);
   return (
-    <View style={styles.container} testID='cart item'>
+    <View style={styles.container} testID='order detail item'>
       <CustomBox width={wp('100%') - 30} height={100} r={20} pad={6} left={-4} />
-      <Text style={[styles.itemQuantity, { color: color.mainText }]} testID='cart item quantity'>x{quantity}</Text>
+      <Text style={[styles.itemQuantity, { color: color.mainText }]} testID='order item quantity'>x{quantity}</Text>
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item?.name}</Text>
-        <Text style={[styles.itemExtras, { color: color.mainTextDim }]} numberOfLines={1} testID='cart item extras'>{extras?.map(item => item.name).join(", ")}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='order item name'>{item?.name}</Text>
+        <Text style={[styles.itemExtras, { color: color.mainTextDim }]} numberOfLines={1} testID='order item extras'>{extras?.map(item => item.name).join(", ")}</Text>
       </View>
-      <Text style={[styles.totalPrice, { color: color.mainText }]} testID='cart item total'>{numberToCurrency(totalPrice)}</Text>
+      <Text style={[styles.totalPrice, { color: color.mainText }]} testID='order item total'>{numberToCurrency(totalPrice)}</Text>
     </View>
   );
 };
