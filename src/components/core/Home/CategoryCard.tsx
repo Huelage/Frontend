@@ -2,7 +2,7 @@ import { CustomBox, CustomImage } from '@components/misc';
 import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { UserFoodInterface } from '@interfaces';
-import { fonts, withAnchorPoint } from '@utils';
+import { fonts, numberToCurrency, withAnchorPoint } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
@@ -96,7 +96,7 @@ const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCard
           </View>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>{p_method}: </Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]} testID='item price'>₦ {price?.toFixed(2)}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]} testID='item price'>{numberToCurrency(price)}</Text>
           </View>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
