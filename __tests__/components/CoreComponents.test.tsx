@@ -1,24 +1,30 @@
-import { mockFoods, mockRestaurants } from "@api/mock";
+import { mockFoods, mockOrderItems, mockRestaurants } from "@api/mock";
 import { OverviewBox, PromoBox, QuantityController } from "@components/core/Cart";
 import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
-import { StatusProgressBar } from "@components/core/Order";
+import { OrderDetailDelivery, StatusProgressBar, TrackItem, TrackOrder } from "@components/core/Order";
 import { DetailElement, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox, SettingElement, SettingOptionBox, SettingOptionItem } from "@components/core/Profile";
 import { VendorResCard } from "@components/core/Vendor";
-import { ProfileElementInterface } from "@interfaces";
+import { OrderStatus, ProfileElementInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { numberToCurrency } from "@utils/miscs";
 import { useRef } from "react";
 import { View } from "react-native";
 
 const foodData = mockFoods[0];
 const resData = mockRestaurants[0];
+const order = mockOrderItems[0];
 
 describe("When Testing Core Cart Components: ", () => {
   describe("<OverviewBox />: ", () => {
     const totals = [
       { name: "test 1", amount: 1000 },
       { name: "test 2", amount: 2000 }
+    ];
+    const paymentMethod = [
+      { name: "cash", amount: 8000 },
+      { name: "huenit wallet", amount: 800 }
     ];
     const checkout = jest.fn();
     beforeEach(() => {
@@ -34,7 +40,7 @@ describe("When Testing Core Cart Components: ", () => {
     });
     it("should render the totals amount", () => {
       totals.forEach(total => {
-        expect(screen.getByText(`₦ ${total.amount}`)).toBeOnTheScreen();
+        expect(screen.getByText(numberToCurrency(total.amount))).toBeOnTheScreen();
       });
     });
     it("should render the checkout button", () => {
@@ -44,6 +50,10 @@ describe("When Testing Core Cart Components: ", () => {
       const checkoutButton = screen.getByTestId("checkout button");
       fireEvent.press(checkoutButton);
       expect(checkout).toBeCalled();
+    });
+    it("should render the payment box when payment method is provided", () => {
+      render(<OverviewBox totals={totals} paymentMethod={paymentMethod} />);
+      expect(screen.getByTestId("payment box")).toBeOnTheScreen();
     });
   });
 
@@ -342,6 +352,24 @@ describe("When Testing Core Home Components: ", () => {
 
 
 describe("When Testing Core Order Components: ", () => {
+  describe("<OrderDetailDelivery />: ", () => {
+    beforeEach(() => {
+      render(<OrderDetailDelivery fromAddress="123 main st" toAddress="123 broad st" />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("order detail delivery")).toBeOnTheScreen();
+    });
+    it("should render the component title", () => {
+      expect(screen.getByText(/delivery details/i)).toBeOnTheScreen();
+    });
+    it("should render the from address", () => {
+      expect(screen.getByText("123 main st")).toBeOnTheScreen();
+    });
+    it("should render the to address", () => {
+      expect(screen.getByText("123 broad st")).toBeOnTheScreen();
+    });
+  });
+
   describe("<StatusProgressBar />: ", () => {
     beforeEach(() => {
       render(<StatusProgressBar status="PENDING" />);
@@ -354,6 +382,70 @@ describe("When Testing Core Order Components: ", () => {
     });
     it("should render the status bar component", () => {
       expect(screen.getByTestId("status bar")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<TrackItem />: ", () => {
+    const props = { title: "Order received", desc: "test description", updatedAt: "", Icon: () => <View />, status: "PENDING" as OrderStatus };
+    beforeEach(() => {
+      render(<TrackItem {...props} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("track item")).toBeOnTheScreen();
+    });
+    it("should render the item icon", () => {
+      expect(screen.getByTestId("item icon")).toBeOnTheScreen();
+    });
+    it("should render the title", () => {
+      expect(screen.getByText("Order received")).toBeOnTheScreen();
+    });
+    it("should render the description", () => {
+      expect(screen.getByText("test description")).toBeOnTheScreen();
+    });
+    it("should render the update time if the status is correctly mapped to the title", () => {
+      expect(screen.getByTestId("update time")).toBeOnTheScreen();
+    });
+    it("should not render the update time if the status is not correctly mapped to the title", () => {
+      render(<TrackItem {...props} title="Order ready" />);
+      expect(screen.queryByTestId("update time")).toBeNull();
+    });
+  });
+
+  describe("<TrackOrder />: ", () => {
+    beforeEach(() => {
+      render(<TrackOrder order={order} />);
+    });
+    // Testing UI
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("track order")).toBeOnTheScreen();
+    });
+    it("should render the toggle box", () => {
+      expect(screen.getByTestId("toggle box")).toBeOnTheScreen();
+    });
+    it("should render the track box", () => {
+      expect(screen.getByTestId("track box")).toBeOnTheScreen();
+    });
+    it("should render the track items list", () => {
+      expect(screen.getByTestId("track item list")).toBeOnTheScreen();
+    });
+    it("should render the track items using the TrackItem component", () => {
+      expect(screen.getAllByTestId("track item")).toHaveLength(5);
+    });
+    // Testing Functionality
+    it("should update the height of the custom box and track line when the track item list is rendered", () => {
+      const trackBox = screen.getByTestId("track item list");
+      fireEvent(trackBox, "onLayout", { nativeEvent: { layout: { height: 100 } } });
+      const trackLine = screen.getByTestId("track line");
+      expect(trackLine.props.style[1].height).toEqual(90);
+    });
+    it("should open the track box when the toggle box is pressed", async () => {
+      const toggleBox = screen.getByTestId("toggle box");
+      const trackBox = screen.getByTestId("track box");
+      const trackList = screen.getByTestId("track item list");
+      fireEvent(trackList, "onLayout", { nativeEvent: { layout: { height: 100 } } });
+      expect(trackBox.props.animatedStyle.value.height).toEqual(0);
+      fireEvent.press(toggleBox);
+      await waitFor(() => expect(trackBox.props.animatedStyle.value.height).toEqual(310));
     });
   });
 });
@@ -467,6 +559,10 @@ describe("When Testing Core Profile Components: ", () => {
       const elements = screen.getAllByTestId("profile box element");
       expect(elements).toHaveLength(1);
     });
+    it("should compute the height of the custom box when the nav list is rendered", () => {
+      const navList = screen.getByTestId("profile nav list");
+      fireEvent(navList, "onLayout", { nativeEvent: { layout: { height: 100 } } });
+    });
   });
 
   describe("<SettingElement />: ", () => {
@@ -511,6 +607,10 @@ describe("When Testing Core Profile Components: ", () => {
     });
     it("should render the options using the SettingOptionItem component", () => {
       expect(screen.getAllByTestId(/setting option item/)).toHaveLength(1);
+    });
+    it("should compute the height of the custom box when the options list is rendered", () => {
+      const optionsList = screen.getByTestId("setting options list");
+      fireEvent(optionsList, "onLayout", { nativeEvent: { layout: { height: 100 } } });
     });
   });
 
@@ -564,7 +664,9 @@ describe("When Testing Core Profile Components: ", () => {
 
 describe("When Testing Core Vendor Components: ", () => {
   describe("<VendorResCard />: ", () => {
+    const navigate = jest.fn();
     beforeEach(() => {
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
       render(<VendorResCard resId={resData.id} />);
     });
     it("should render the component", () => {
@@ -579,8 +681,13 @@ describe("When Testing Core Vendor Components: ", () => {
     it("should render restaurant location", () => {
       expect(screen.getByText(resData.location)).toBeOnTheScreen();
     });
-    it("should render view button", () => {
-      expect(screen.getByText("View")).toBeOnTheScreen();
+    it("should render view vendor button", () => {
+      expect(screen.getByTestId("view vendor")).toBeOnTheScreen();
+    });
+    it("should navigate to the vendor home when the view vendor button is pressed", () => {
+      const viewButton = screen.getByTestId("view vendor");
+      fireEvent.press(viewButton);
+      expect(navigate).toBeCalledWith("VendorHome", { vendorId: resData.id });
     });
   });
 });
