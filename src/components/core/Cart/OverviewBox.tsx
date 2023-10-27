@@ -25,7 +25,7 @@ const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
         ))}
       </View>
       {paymentMethod ? (
-        <View style={styles.paymentBox}>
+        <View style={styles.paymentBox} testID='payment box'>
           <Image style={styles.paymentIcon} source={require("@icons/orderPaidMan.png")} />
           <FlatList
             contentContainerStyle={styles.paymentList}
@@ -38,8 +38,8 @@ const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
           />
         </View>
       ) : (
-        <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]}>
-          <Text style={styles.overviewButtonText} testID='checkout button'>Proceed to Checkout</Text>
+        <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]} testID='checkout button'>
+          <Text style={styles.overviewButtonText}>Proceed to Checkout</Text>
         </TouchableOpacity>
       )}
     </View>

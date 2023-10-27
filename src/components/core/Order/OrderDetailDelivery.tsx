@@ -12,7 +12,7 @@ interface OrderDetailDeliveryInterface {
 const OrderDetailDelivery = ({ fromAddress, toAddress }: OrderDetailDeliveryInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='order detail delivery'>
       <Text style={[styles.elementHeader, { color: color.mainText }]}>Delivery details</Text>
       <View style={styles.elementBody}>
         <View style={styles.element}>

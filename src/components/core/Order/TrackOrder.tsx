@@ -44,15 +44,15 @@ const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderI
     progress.value = withTiming(showTrackBox ? 1 : 0, { duration: 500 });
   }, [showTrackBox]);
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={() => setShowTrackBox(!showTrackBox)} style={styles.toggleBox}>
+    <View style={styles.container} testID='track order'>
+      <TouchableOpacity onPress={() => setShowTrackBox(!showTrackBox)} style={styles.toggleBox} testID='toggle box'>
         <CustomBox width={150} height={65} r={10} pad={6} />
         <Text style={[styles.toggleText, { color: color.mainText }]}>Track order</Text>
         <Animated.View style={animatedIcon}>
           <FontAwesome name="angle-up" size={22} color={color.mainText} />
         </Animated.View>
       </TouchableOpacity>
-      <Animated.View style={[styles.trackBox, animatedTrackBox]}>
+      <Animated.View style={[styles.trackBox, animatedTrackBox]} testID='track box'>
         <CustomBox bgColor={color.cardBg2} width={wp('100%') - 33} height={trackHeight + 220} r={10} pad={6} />
         <View style={[styles.trackHeader, { borderColor: color.mainGreen }]}>
           <View style={styles.orderInfo}>
@@ -75,8 +75,9 @@ const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderI
             renderItem={({ item }) => (
               <TrackItem {...item} status={status} updatedAt={updatedAt} />
             )}
+            testID='track item list'
           />
-          <View style={[styles.trackLine, { borderColor: color.mainGreen, height: trackHeight }]} />
+          <View style={[styles.trackLine, { borderColor: color.mainGreen, height: trackHeight }]} testID='track line' />
         </View>
       </Animated.View>
     </View>

@@ -19,14 +19,14 @@ const TrackItem = ({ title, desc, updatedAt, Icon, status }: TrackItemInterface)
   const { color } = useAppTheme();
   const isChecked = useMemo(() => (orderStatRank[titleStatusMap[title]] <= orderStatRank[status]), [status]);
   return (
-    <View style={styles.container}>
-      <View style={[styles.itemIconBox, { backgroundColor: isChecked ? color.mainGreen : color.cardBg2, borderColor: isChecked ? "#FFF" : "#BCB5B5" }]}>
+    <View style={styles.container} testID='track item'>
+      <View style={[styles.itemIconBox, { backgroundColor: isChecked ? color.mainGreen : color.cardBg2, borderColor: isChecked ? "#FFF" : "#BCB5B5" }]} testID='item icon'>
         <Icon size={22} color={isChecked ? "#FFF" : "#BCB5B5"} />
       </View>
       <View style={styles.itemBox}>
         <View style={styles.itemHeader}>
           <Text style={[styles.itemTitle, { color: isChecked ? color.mainText : color.mainTextDim }]}>{title}</Text>
-          {titleStatusMap[title] === status ? <Text style={[styles.itemTime, { color: color.mainGreen }]}>{dayjs(updatedAt).format('hh:mma')}</Text> : null}
+          {titleStatusMap[title] === status ? <Text style={[styles.itemTime, { color: color.mainGreen }]} testID='update time'>{dayjs(updatedAt).format('hh:mma')}</Text> : null}
         </View>
         <Text style={[styles.itemInfo, { color: isChecked ? color.mainText : color.mainTextDim }]}>{desc}</Text>
       </View>
