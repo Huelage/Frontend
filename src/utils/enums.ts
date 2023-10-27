@@ -22,3 +22,13 @@ export enum orderStatInfo {
   "COMPLETED" = "Your order has been completed",
   "CANCELLED" = "Your order has been cancelled"
 }
+
+export enum orderStatRank {
+  "PENDING",
+  "PREPARING",
+  "READY",
+  "EN_ROUTE",
+  "DELIVERED",
+  "COMPLETED",
+  "CANCELLED"
+}
