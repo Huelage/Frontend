@@ -1,5 +1,6 @@
 import { useAppTheme } from '@hooks';
 import { OrderStatus } from '@interfaces';
+import { orderStatRank } from '@utils';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -12,19 +13,18 @@ const BREAKPOINTS = Array(6).fill(0).map((_, i) => i);
 const StatusProgressBar = ({ status }: StatusProgressBarInterface) => {
   const { color } = useAppTheme();
   const progress = useSharedValue(0);
-  const orderStatus = { "PENDING": 0, "PREPARING": 1, "READY": 2, "EN_ROUTE": 3, "DELIVERED": 4, "COMPLETED": 5, "CANCELLED": 6 };
   const animatedWidth = useAnimatedStyle(() => ({
     width: `${progress.value}%`,
   }));
 
   useEffect(() => {
-    progress.value = withTiming(orderStatus[status] * 20, { duration: 1000 });
+    progress.value = withTiming(orderStatRank[status] * 20, { duration: 1000 });
   }, [status]);
   return (
     <View style={[styles.bar, { backgroundColor: color.mainGreenOpaque }]} testID='status progress bar'>
       {BREAKPOINTS.map(point => (
         <View key={point} style={[styles.breakPoint, { borderColor: color.mainGreen }]} testID='status point'>
-          {(point <= orderStatus[status]) ? <View style={[styles.breakPointFill, { backgroundColor: color.mainGreen }]} /> : null}
+          {(point <= orderStatRank[status]) ? <View style={[styles.breakPointFill, { backgroundColor: color.mainGreen }]} /> : null}
         </View>
       ))}
       <Animated.View style={[styles.progressTracker, animatedWidth, { backgroundColor: color.mainGreen }]} testID="status bar" />
