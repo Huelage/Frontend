@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInUp, SlideOutLeft } from 'react-native-reanimated';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const OrderSummaryElement = ({ name, orderedAt, updatedAt, status, total }: OrderInterface) => {
+const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAmount }: OrderInterface) => {
   const { color } = useAppTheme();
   const [height, setHeight] = useState<number>(105);
   const [isBarVisible, setIsBarVisible] = useState<boolean>(true);
@@ -34,8 +34,8 @@ const OrderSummaryElement = ({ name, orderedAt, updatedAt, status, total }: Orde
       {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is 1 hour</Text> : null}
       <View style={styles.detailBox}>
         <View style={styles.detailHeader}>
-          <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
-          <Text style={[styles.subTotal, { color: color.mainText }]}>{numberToCurrency(total)}</Text>
+          <Text style={[styles.resName, { color: color.mainText }]}>{vendorName}</Text>
+          <Text style={[styles.subTotal, { color: color.mainText }]}>{numberToCurrency(totalAmount)}</Text>
         </View>
         <View style={styles.detailHeader}>
           <Text style={[styles.orderedAt, { color: isBarVisible ? color.accentText : color.mainGreen }]} testID='formatted date'>{dayjs(orderedAt).format('D MMM, YYYY | hh:mma')}</Text>
