@@ -2,18 +2,19 @@ import { mockFoods } from "@api/mock";
 import { QuantityController } from "@components/core/Cart";
 import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
-import { CartInterface } from "@interfaces";
+import { OrderItemInterface } from "@interfaces";
 import { fonts, numberToCurrency } from "@utils";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const CartItem = ({ item_id, quantity, size, extras }: CartInterface) => {
+const CartItem = ({ item_id, quantity, portion, size, extras }: OrderItemInterface) => {
   const item = mockFoods.find((item) => item.id === item_id);
   if (!item) return null;
   const { color } = useAppTheme();
   const [itemQuantity, setItemQuantity] = useState<number>(quantity);
   const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
+  const totalPrice = ((extras?.reduce((acc, curr) => acc + (curr.price * (curr.quantity ?? 1)), 0) ?? 0) + price) * quantity;
 
   const increase = () => setItemQuantity(itemQuantity + 1);
   const decrease = () => { if (itemQuantity > 1) setItemQuantity(itemQuantity - 1); };
@@ -22,13 +23,13 @@ const CartItem = ({ item_id, quantity, size, extras }: CartInterface) => {
       <CustomBox width={wp('100%') - 30} height={110} r={20} pad={6} left={-4} />
       <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID='cart item image' />
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item?.name}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item.name}</Text>
         <Text style={styles.itemExtras} numberOfLines={1} testID='cart item extras'>{extras?.map(item => item.name).join(", ")}</Text>
         <Text style={[styles.itemPrice, { color: color.mainText }]} testID='cart item price'>{numberToCurrency(price)}</Text>
       </View>
       <View style={styles.quatityBox}>
         <QuantityController quantity={itemQuantity} increase={increase} decrease={decrease} />
-        <Text style={styles.totalPrice} testID='cart item total'>{numberToCurrency(price * quantity)}</Text>
+        <Text style={styles.totalPrice} testID='cart item total'>{numberToCurrency(totalPrice)}</Text>
       </View>
     </View>
   );
