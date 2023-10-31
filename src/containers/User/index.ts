@@ -11,4 +11,6 @@ export { default as OrderSummaryElement } from "./Order/OrderSummaryElement";
 // Profile
 export { default as LocationList } from "./Profile/LocationList";
 export { default as ProfileHeader } from "./Profile/ProfileHeader";
-
+// Vendor
+export { default as AddToCart } from "./Vendor/AddToCart";
+export { default as ItemSideElement } from "./Vendor/ItemSideElement";
