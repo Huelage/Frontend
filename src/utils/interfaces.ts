@@ -11,7 +11,6 @@ export interface LoginInfoInterface {
   email?: string;
   password: string;
 }
-
 export interface SignUpInfoInterface {
   businessName?: string;
   businessAddress?: string;
@@ -125,7 +124,7 @@ export type VendorAccountTabProps = CompositeNavigationProp<NativeStackNavigatio
 export type OTPRouteProps = RouteProp<AuthStackParamList, "OTP">;
 export type SetPasswordRouteProps = RouteProp<AuthStackParamList, "SetPassword">;
 export type VerifyEmailRouteProps = RouteProp<AuthStackParamList, "VerifyEmail">;
-export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "Vendor">;
+export type UserVendorsTabVendorRouteProps = RouteProp<UserVendorsTabStackParamList, "VendorHome">;
 export type UserVendorsTabItemDetailRouteProps = RouteProp<UserVendorsTabStackParamList, "ItemDetail">;
 export type UserOrdersTabOrderDetailRouteProps = RouteProp<UserOrdersTabStackParamList, "OrderDetail">;
 export type VendorOrdersTabOrderDetailRouteProps = RouteProp<VendorOrdersTabStackParamList, "OrderDetail">;
@@ -139,13 +138,72 @@ export interface globalStateInterface {
   showOnboard: boolean;
   themeType: "system" | "manual";
   theme: "light" | "dark";
-  cart: CartInterface[];
+  cart: OrderItemInterface[];
   accessToken: string | null;
   allowPush: boolean;
   allowToast: boolean;
   allowLocation: boolean;
 }
 
+// USER SCREEN INTERFACES
+export interface RestaurantInterface {
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  imgUrl: string;
+}
+
+// MISCELLANEOUS INTERFACES
+export interface BiometricsInterface {
+  hasBiometrics: boolean;
+  isEnrolled: boolean;
+  biometricType: BioAuth.AuthenticationType[];
+}
+export interface ProfileElementInterface {
+  label: string;
+  nav: keyof UserProfileTabStackParamList;
+  icon: keyof typeof MaterialCommunityIcons.glyphMap;
+}
+export interface SettingOptionInterface {
+  title: string;
+  isToggle: boolean;
+  onPress: () => void;
+  disabled?: boolean;
+  initVal?: boolean;
+  danger?: boolean;
+}
+export interface SettingOptionsInterface {
+  description?: string;
+  options: SettingOptionInterface[];
+}
+export interface SettingElementInterface {
+  title: string;
+  Icon: () => React.JSX.Element;
+  options: SettingOptionsInterface[];
+}
+export interface FilterGroup {
+  id: string;
+  items: FilterItem[];
+  label: string;
+  type: "SINGLE" | "MULTIPLE";
+}
+export interface FilterItem {
+  id: string;
+  groupId: string;
+  name: string;
+  onPress: (checked: boolean) => void;
+}
+export interface LocationInterface {
+  locationId: string;
+  name: string;
+}
+export interface extraInterface extends itemExtraInterface {
+  groupId: string;
+}
+
+// Server Interfaces
+// // Entity Interfaces
 export interface entityInterface {
   id: string;
   walletId: string;
@@ -162,97 +220,17 @@ export interface entityInterface {
   businessAddress?: string;
 }
 
-export interface CartInterface {
-  id: string;
-  item_id: string;
-  quantity: number;
-  size?: string;
-  extras?: CartExtraInterface[];
-}
-
-interface CartExtraInterface extends FoodSideInterface {
-  quantity: number;
-}
-
-// USER SCREEN INTERFACES
-
-export interface RestaurantInterface {
-  id: string;
-  name: string;
-  location: string;
-  rating: number;
-  imgUrl: string;
-}
-
-// MISCELLANEOUS INTERFACES
-export interface BiometricsInterface {
-  hasBiometrics: boolean;
-  isEnrolled: boolean;
-  biometricType: BioAuth.AuthenticationType[];
-}
-
-export interface ProfileElementInterface {
-  label: string;
-  nav: keyof UserProfileTabStackParamList;
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-}
-
-export interface SettingOptionInterface {
-  title: string;
-  isToggle: boolean;
-  onPress: () => void;
-  disabled?: boolean;
-  initVal?: boolean;
-  danger?: boolean;
-}
-
-export interface SettingOptionsInterface {
-  description?: string;
-  options: SettingOptionInterface[];
-}
-
-export interface SettingElementInterface {
-  title: string;
-  Icon: () => React.JSX.Element;
-  options: SettingOptionsInterface[];
-}
-
-export interface FilterGroup {
-  id: string;
-  items: FilterItem[];
-  label: string;
-  type: "SINGLE" | "MULTIPLE";
-}
-
-export interface FilterItem {
-  id: string;
-  groupId: string;
-  name: string;
-  onPress: (checked: boolean) => void;
-}
-
-export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELIVERED" | "COMPLETED" | "CANCELLED";
-
-
-// Entity Interfaces
-export interface ReviewInterface {
-  id: string;
-  name: string;
-  avatar: string;
-  rating: number;
-  date: string;
-  message: string;
-}
-
+// // Food Interfaces
 interface UserFoodBase {
   id: string;
   name: string;
   description: string;
   imgUrl: string;
-  category: string;
+  category: FoodCategory;
   isFavourite: boolean;
-  availability: "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
-  sides?: FoodSideInterface[];
+  availability: FoodAvailability;
+  preparationTime?: string;
+  sides?: SideInterface[];
 }
 interface UserFoodPrice extends UserFoodBase {
   pricingMethod: "PRICE" | "PORTION" | "FIXED";
@@ -262,32 +240,64 @@ interface UserFoodPackage extends UserFoodBase {
   pricingMethod: "PACKAGE";
   packageSizes: { name: string; price: number; }[];
 }
-
-export type UserFoodInterface = UserFoodPrice | UserFoodPackage;
-
-export interface FoodSideInterface {
+export interface SideInterface {
+  id: string;
+  description: string;
+  options: SideOptionsInterface[];
+  isRequired: boolean;
+  isMultiple: boolean;
+}
+export interface SideOptionsInterface {
+  groupId: string;
   name: string;
   price: number;
+  isSingle: boolean;
 }
+export type UserFoodInterface = UserFoodPrice | UserFoodPackage;
+export type FoodCategory = "MAIN" | "PROTEIN" | "SOUPS" | "SIDE" | "SNACKS" | "DRINKS";
+export type FoodAvailability = "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
 
-export interface LocationInterface {
-  locationId: string;
-  name: string;
-}
 
+// // Order Interfaces
 export interface OrderInterface {
   id: string;
-  name: string;
+  vendorName: string;
+  status: OrderStatus;
   deliveryAddress: string;
+  vendorAddress: string;
+  estimatedDeliveryTime: string;
+  subTotal: number;
+  deliveryFee: number;
+  paymentBreakdown: { name: PaymentMethod; amount: number; }[];
+  totalAmount: number;
+  paymentStatus: boolean;
+  orderItems: OrderItemInterface[];
   orderedAt: string;
   updatedAt: string;
-  status: OrderStatus;
-  total: number;
-  vendorAddress: string;
-  items: CartInterface[];
 }
-// interface sides {
-//   desription: string;
-//   options: {name: string, price: number}[];
-//   isRequired: boolean;
-// }
+export interface OrderItemInterface {
+  id: string;
+  item_id: string;
+  quantity: number;
+  portion?: number;
+  price?: number;
+  size?: string;
+  extras?: itemExtraInterface[];
+}
+export interface itemExtraInterface {
+  name: string;
+  price: number;
+  quantity?: number;
+}
+export type PaymentMethod = "CARD" | "HUENIT" | "CASH";
+export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELIVERED" | "COMPLETED" | "CANCELLED";
+
+// // Vendor
+export interface ReviewInterface {
+  id: string;
+  name: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  message: string;
+}
