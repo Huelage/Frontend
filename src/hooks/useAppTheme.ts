@@ -21,7 +21,7 @@ const colors = {
     mainBg: "#181818",
     mainText: "#FFF",
     mainTextDim: "rgba(255, 255, 255, .61)",
-    mainGreen: "#5BCF5F",
+    mainGreen: "#4CAF50",
     mainGreenOpaque: "rgba(91, 207, 95, .3)",
     modalBg: "#0D0D0D",
     searchBg: "#4F4F4F",
