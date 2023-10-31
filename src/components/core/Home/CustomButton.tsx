@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontFamily: fonts.I_700,
+    textTransform: "capitalize"
   },
   buttonTextInactive: {
     color: "#626262"
