@@ -3,7 +3,7 @@ import { CustomBox } from '@components/misc';
 import { useAppTheme } from '@hooks';
 import { useNavigation } from '@react-navigation/native';
 import { fonts } from '@utils';
-import { UserVendorTabProps } from '@utils/interfaces';
+import { UserVendorTabProps } from '@interfaces';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
