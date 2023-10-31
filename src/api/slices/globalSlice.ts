@@ -1,5 +1,5 @@
 import { RootState } from "@api/app/store";
-import { CartInterface, entityInterface, globalStateInterface } from "@interfaces";
+import { OrderItemInterface, entityInterface, globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-native-uuid";
 
@@ -38,7 +38,7 @@ const globalSlice = createSlice({
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
     },
-    addItemToCart: (state, action: PayloadAction<CartInterface>) => {
+    addItemToCart: (state, action: PayloadAction<OrderItemInterface>) => {
       const idx = state.cart.findIndex((item) => item.item_id === action.payload.item_id);
       if (idx !== -1) {
         state.cart[idx].quantity += action.payload.quantity;
@@ -49,7 +49,7 @@ const globalSlice = createSlice({
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
-    updateCart: (state, action: PayloadAction<CartInterface>) => {
+    updateCart: (state, action: PayloadAction<OrderItemInterface>) => {
       const index = state.cart.findIndex(item => item.id === action.payload.id);
       if (index === -1) return;
       state.cart[index] = action.payload;
