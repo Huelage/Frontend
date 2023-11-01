@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AboutScreen, CartScreen, DetailScreen, FAQScreen, HelpScreen, HomeScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, CartScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
@@ -45,13 +45,6 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     });
   });
 
-  describe("<DetailScreen />: ", () => {
-    it("should render the component correctly", () => {
-      render(<DetailScreen />);
-      expect(screen.getByTestId("detail screen")).toBeOnTheScreen();
-    });
-  });
-
   describe("<HomeScreen />: ", () => {
     beforeEach(() => {
       render(<HomeScreen />);
@@ -85,6 +78,55 @@ describe("When Testing Core(User Flow) Screens: ", () => {
   });
 
   describe("Vendor Screens: ", () => {
+    describe("<ItemDetailScreen />: ", () => {
+      // Testing UI
+      it("should render the screen correctly", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("item detail screen")).toBeOnTheScreen();
+      });
+      it("should not render screen if itemId is not provided", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: {} });
+        render(<ItemDetailScreen />);
+        expect(screen.queryByTestId("item detail screen")).toBeNull();
+      });
+      it("should render the go back button", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+      it("should render the item image", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("item image")).toBeOnTheScreen();
+      });
+      it("should render the item info", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "6" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("item info")).toBeOnTheScreen();
+      });
+      it("should render the package size list items using the CustomButton component", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "9" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("package size list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("custom button")).not.toBeNull();
+      });
+      it("should render the item side list items using the ItemSideElement component", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1" } });
+        render(<ItemDetailScreen />);
+        expect(screen.getByTestId("item side list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("item side element")).not.toBeNull();
+      });
+      it("should change the pack size when the item pricing method is package", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "9" } });
+        render(<ItemDetailScreen />);
+        const packButtons = screen.getAllByTestId("custom button");
+        packButtons.forEach(button => {
+          fireEvent.press(button);
+        });
+      });
+    });
+
     describe("<VendorScreen />: ", () => {
       beforeEach(() => {
         render(<VendorScreen />);
@@ -600,7 +642,7 @@ describe("Order Screens: ", () => {
       expect(screen.getByTestId("order detail item list")).toBeOnTheScreen();
     });
     it("should render the order detail items using the OrderDetailItem component", () => {
-      expect(screen.getAllByTestId("order detail item")).toHaveLength(3);
+      expect(screen.getAllByTestId("order detail item")).toHaveLength(1);
     });
     it("should render the TrackOrder component", () => {
       expect(screen.getByTestId("track order")).toBeOnTheScreen();

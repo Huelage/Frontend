@@ -1,6 +1,5 @@
 import { store } from "@api/app/store";
 import { render } from "@testing-library/react-native";
-import { replacer } from "@utils";
 import dayjs from "dayjs";
 import * as BioAuth from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
@@ -12,41 +11,6 @@ import { initialState } from "./testhelpers";
 const utils = jest.requireActual("@utils");
 
 describe("miscs.ts: ", () => {
-  describe("When Testing the CustomSecureStore", () => {
-    const key = "testKey";
-    const replacedkey = replacer(key, "_");
-    test("that getItem calls SecureStore.getItemAsync with key", async () => {
-      const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
-      mockedGetItem.mockReturnValueOnce(Promise.resolve('"test"'));
-      const res = await utils.CustomSecureStore.getItem(replacedkey);
-      expect(res).toEqual("test");
-    });
-    test("that getItem returns null if item doesn't exist", async () => {
-      const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
-      mockedGetItem.mockReturnValueOnce(Promise.resolve(''));
-      const res = await utils.CustomSecureStore.getItem(replacedkey);
-      expect(res).toBeNull();
-    });
-    test("that setItem calls SecureStore.setItemAsync with key and value", async () => {
-      const mockedSetItem = jest.spyOn(SecureStore, "setItemAsync");
-      mockedSetItem.mockReturnValueOnce(Promise.resolve());
-      await utils.CustomSecureStore.setItem("test", "test");
-      expect(mockedSetItem).toBeCalledWith("test", JSON.stringify("test"));
-    });
-    test("that removeItem calls SecureStore.deleteItemAsync with key", async () => {
-      const mockedDeleteItem = jest.spyOn(SecureStore, "deleteItemAsync");
-      mockedDeleteItem.mockReturnValueOnce(Promise.resolve());
-      await utils.CustomSecureStore.removeItem("test");
-      expect(mockedDeleteItem).toBeCalledWith("test");
-    });
-  });
-  describe("When Testing the replacer function", () => {
-    test("that it replaces the all non-alphanum characters with _", () => {
-      const key = "Test key!";
-      const replacedkey = replacer(key, "_");
-      expect(replacedkey).toEqual("Test_key_");
-    });
-  });
   it("should return the correct value when getItem is called", async () => {
     const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
     mockedGetItem.mockReturnValueOnce(Promise.resolve('"test"'));

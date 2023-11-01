@@ -4,11 +4,11 @@ import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
 import { OrderDetailDelivery, StatusProgressBar, TrackItem, TrackOrder } from "@components/core/Order";
 import { DetailElement, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox, SettingElement, SettingOptionBox, SettingOptionItem } from "@components/core/Profile";
-import { VendorResCard } from "@components/core/Vendor";
+import { SideOptionElement, VendorResCard } from "@components/core/Vendor";
 import { OrderStatus, ProfileElementInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { numberToCurrency } from "@utils/miscs";
+import { numberToCurrency } from "@utils";
 import { useRef } from "react";
 import { View } from "react-native";
 
@@ -154,7 +154,7 @@ describe("When Testing Core Home Components: ", () => {
       expect(screen.getByText(foodData.pricingMethod)).toBeOnTheScreen();
     });
     it("should render the category price", () => {
-      category.category = mockFoods[7];
+      category.category = mockFoods[6];
       render(<CategoryCard {...category} />);
       expect(screen.getByText(/price:/i)).toBeOnTheScreen();
       expect(screen.getByTestId("item price")).toBeOnTheScreen();
@@ -663,6 +663,56 @@ describe("When Testing Core Profile Components: ", () => {
 
 
 describe("When Testing Core Vendor Components: ", () => {
+  describe("<SideOptionElement />: ", () => {
+    const increase = jest.fn(), decrease = jest.fn();
+    const props = { groupId: "1", name: "test", price: 1000, isSingle: false, optionSelected: false, increase, decrease };
+    beforeEach(() => {
+      render(<SideOptionElement {...props} />);
+    });
+    // Testing UI
+    it("should render the component", () => {
+      expect(screen.getByTestId("side option element")).toBeOnTheScreen();
+    });
+    it("should render the item name", () => {
+      render(<SideOptionElement {...props} />);
+      expect(screen.getByText(/test/i)).toBeOnTheScreen();
+    });
+    it("should render the radio button initially", () => {
+      expect(screen.getByTestId("test radio button")).toBeOnTheScreen();
+    });
+    it("should render the quantity controller component", () => {
+      const newProps = { ...props, optionSelected: true };
+      render(<SideOptionElement {...newProps} />);
+      expect(screen.getByTestId("quantity controller")).toBeOnTheScreen();
+    });
+    // Testing Functionality
+    it("should call the increase function and render the quantity controller when the radio button is initially called", () => {
+      const radioButton = screen.getByTestId("test radio button");
+      fireEvent.press(radioButton);
+      expect(increase).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 1 });
+      expect(screen.getByTestId("quantity controller")).toBeOnTheScreen();
+    });
+    it("should call the increase and decrease functions when the radio button is pressed and isSingle is true", () => {
+      const newProps = { ...props, isSingle: true };
+      render(<SideOptionElement {...newProps} />);
+      const radioButton = screen.getByTestId("test radio button");
+      fireEvent.press(radioButton);
+      expect(increase).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId });
+      fireEvent.press(radioButton);
+      expect(decrease).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId });
+    });
+    it("should alter the item quantity when the quantity controller is used", () => {
+      const newProps = { ...props, optionSelected: true };
+      render(<SideOptionElement {...newProps} />);
+      const increaseButton = screen.getByTestId("increase quantity");
+      const decreaseButton = screen.getByTestId("decrease quantity");
+      fireEvent.press(increaseButton);
+      expect(increase).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 2 });
+      fireEvent.press(decreaseButton);
+      expect(decrease).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 1 });
+    });
+  });
+
   describe("<VendorResCard />: ", () => {
     const navigate = jest.fn();
     beforeEach(() => {
