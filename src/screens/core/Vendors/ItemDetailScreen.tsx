@@ -33,8 +33,6 @@ const ItemDetailScreen = () => {
         return "per plate";
       case "PACKAGE":
         return `for ${packSize} package`;
-      default:
-        return "";
     }
   }, [item.pricingMethod, packSize]);
   return (
@@ -43,11 +41,11 @@ const ItemDetailScreen = () => {
         <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} style={{ left: -1 }} />
       </TouchableOpacity>
       <ScrollView style={[styles.container, { backgroundColor: color.mainBg }]} testID="item detail screen">
-        <View style={[styles.itemHeader, { backgroundColor: color.mainGreen, paddingTop: top }]}>
+        <View style={[styles.itemHeader, { backgroundColor: color.mainGreen, paddingTop: top }]} testID="item image">
           <CustomImage imgUrl={item.imgUrl} imgSize={wp('60%')} imgPad={0} style={[styles.itemImage, { top: top + 10 }]} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
         </View>
         <View style={styles.itemBody}>
-          <View style={styles.itemInfo}>
+          <View style={styles.itemInfo} testID="item info">
             <Text style={[styles.itemName, { color: color.mainText }]}>{item.name}</Text>
             <Text style={[styles.itemPrice, { color: color.mainText }]}>{numberToCurrency(price)} <Text style={{ color: color.mainGreen }}>{priceMethod}</Text></Text>
             <Text style={[styles.itemDesc, { color: color.mainTextDim }]}>{item.description}</Text>
@@ -61,6 +59,7 @@ const ItemDetailScreen = () => {
                 )}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.packageSizeList}
+                testID="package size list"
               />
             ) : null}
           </View>
@@ -71,6 +70,7 @@ const ItemDetailScreen = () => {
               scrollEnabled={false}
               keyExtractor={(_, idx) => idx.toString()}
               renderItem={({ item }) => <ItemSideElement {...item} extras={extras} setExtras={setExtras} />}
+              testID="item side list"
             />
           ) : null}
         </View>

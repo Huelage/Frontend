@@ -14,7 +14,7 @@ const AddToCart = ({ price, extras, quantity }: AddToCartInterface) => {
   const { color } = useAppTheme();
   const totalPrice = price + extras.reduce((acc, curr) => acc + (curr.price * (curr.quantity ?? 1)), 0);
   return (
-    <View style={[styles.container, { backgroundColor: color.mainGreen }]}>
+    <View style={[styles.container, { backgroundColor: color.mainGreen }]} testID='add to cart'>
       <Text style={styles.mainText}>Add {quantity} for {numberToCurrency(totalPrice)}</Text>
     </View>
   );

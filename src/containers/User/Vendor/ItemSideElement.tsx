@@ -17,7 +17,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
     let newExtras = extras;
     if (!isMultiple) {
       const singleExtra = newExtras.find(ext => ext.groupId === extra.groupId);
-      if (singleExtra) newExtras = newExtras.filter(ext => ext.groupId !== extra.groupId);
+      if (!!singleExtra) newExtras = newExtras.filter(ext => ext.groupId !== extra.groupId);
     }
     if (extras.find(ext => ext.name === extra.name))
       newExtras = newExtras.filter(ext => ext.name !== extra.name);
@@ -27,12 +27,11 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
   const decreaseExtra = useCallback((extra: extraInterface) => {
     let newExtras = extras;
     let actualExtra = extras.find(ext => ext.name === extra.name);
-    if (!actualExtra) return;
-    if (!actualExtra.quantity || actualExtra.quantity === 1) {
+    if (!actualExtra?.quantity || actualExtra.quantity <= 1) {
       newExtras = newExtras.filter(ext => ext.name !== extra.name);
     } else {
       newExtras = newExtras.map(ext => {
-        if (ext.name === actualExtra?.name) return { ...actualExtra, quantity: (actualExtra.quantity ?? 0) - 1 };
+        if (ext.name === actualExtra?.name) return { ...actualExtra, quantity: (actualExtra.quantity as number) - 1 };
         return ext;
       });
     }
@@ -40,7 +39,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
   }, [extras]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID='item side element'>
       <Text style={[styles.description, { color: color.mainText }]}>{`${description} ${isRequired ? "(Required)" : ""}`}</Text>
       <FlatList
         style={styles.optionList}
@@ -50,6 +49,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
         renderItem={({ item }) => (
           <SideOptionElement {...item} optionSelected={!!extras.find(ext => ext.name === item.name)} increase={increaseExtra} decrease={decreaseExtra} />
         )}
+        testID='side option list'
       />
     </View>
   );
