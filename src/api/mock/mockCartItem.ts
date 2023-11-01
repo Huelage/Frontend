@@ -1,45 +1,40 @@
-const data = [
+import { OrderItemInterface } from "@interfaces";
+
+const data: OrderItemInterface[] = [
   {
     id: "1",
-    item_id: "1",
+    item_id: "8",
     quantity: 1,
     extras: [
-      { name: "Plantain", price: 100, quantity: 2 },
-      { name: "Chicken", price: 1400, quantity: 1 }
+      { name: "Big Pack", price: 500 },
+      { name: "Amala", price: 300, quantity: 3 }
     ]
   },
   {
     id: "2",
-    item_id: "3",
-    quantity: 2,
-    extras: [
-      { name: "Plantain", price: 100, quantity: 2 }
-    ]
+    item_id: "10",
+    quantity: 3,
   },
   {
     id: "3",
-    item_id: "2",
-    quantity: 1
+    item_id: "12",
+    quantity: 1,
   },
   {
     id: "4",
-    item_id: "5",
-    quantity: 4,
+    item_id: "1",
+    quantity: 1,
     extras: [
-      { name: "Spaghetti", price: 100, quantity: 2 },
-      { name: "Beans", price: 100, quantity: 1 },
-      { name: "Coke", price: 200, quantity: 1 }
+      { name: "Big Pack", price: 500 },
+      { name: "Plantain", price: 200, quantity: 2 },
+      { name: "Bread", price: 300, quantity: 1 }
     ]
   },
   {
     id: "5",
-    item_id: "4",
+    item_id: "11",
     quantity: 1,
-    extras: [
-      { name: "Plantain", price: 100, quantity: 2 },
-      { name: "Chicken", price: 1400, quantity: 1 }
-    ]
-  },
+  }
 ];
 
 export default data;

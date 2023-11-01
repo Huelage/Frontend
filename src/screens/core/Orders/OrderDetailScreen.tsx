@@ -45,11 +45,11 @@ const OrderDetailScreen = () => {
               <Image source={require("@icons/orderChef.png")} />
               <Text style={[styles.orderHeaderMainText, { color: color.mainText }]}>Your order</Text>
             </View>
-            <Text style={[styles.orderHeaderText, { color: color.mainTextDim }]}>You have {order.items.length} item{order.items.length === 1 ? "" : "s"} from {order.name}</Text>
+            <Text style={[styles.orderHeaderText, { color: color.mainTextDim }]}>You have {order.orderItems.length} item{order.orderItems.length === 1 ? "" : "s"} from {order.vendorName}</Text>
           </View>
           <FlatList
             contentContainerStyle={styles.detailItemList}
-            data={order.items}
+            data={order.orderItems}
             keyExtractor={item => item.id}
             scrollEnabled={false}
             renderItem={({ item }) => (

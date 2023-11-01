@@ -1,10 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { mockCartItems, mockOrderItems } from "@api/mock";
-import { CartItem, CartOverview, Categories, LocationList, OrderDetailItem, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
+import { mockCartItems, mockFoods, mockOrderItems } from "@api/mock";
+import { AddToCart, CartItem, CartOverview, Categories, ItemSideElement, LocationList, OrderDetailItem, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
+import { SideInterface } from "@interfaces";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { numberToCurrency } from "@utils";
 import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
 import { entity, renderApollo } from "../testhelpers";
-import { numberToCurrency } from "@utils/miscs";
 
 describe("When Testing User Cart Containers: ", () => {
   describe("<CartItem />: ", () => {
@@ -36,7 +37,7 @@ describe("When Testing User Cart Containers: ", () => {
       expect(view.props.children).toBeDefined();
     });
     it("should render the price for the specified package size if the item has package sizes", () => {
-      const item = { ...itemProp, item_id: "8", size: "small" };
+      const item = { ...itemProp, item_id: "7", size: "small" };
       render(<CartItem {...item} />);
       const view = screen.getByTestId("cart item price");
       expect(view).toBeOnTheScreen();
@@ -233,10 +234,10 @@ describe("When Testing User Order Containers: ", () => {
       expect(screen.getByText(/the estimated time for this order/i)).toBeOnTheScreen();
     });
     it("should render the restaurant name", () => {
-      expect(screen.getByText(mockOrder.name)).toBeOnTheScreen();
+      expect(screen.getByText(mockOrder.vendorName)).toBeOnTheScreen();
     });
     it("should render the order total price", () => {
-      expect(screen.getByText(numberToCurrency(mockOrder.total))).toBeOnTheScreen();
+      expect(screen.getByText(numberToCurrency(mockOrder.totalAmount))).toBeOnTheScreen();
     });
     it("should render the order formatted date", () => {
       expect(screen.getByTestId("formatted date")).toBeOnTheScreen();
@@ -350,6 +351,94 @@ describe("When Testing User Profile Containers: ", () => {
       const button = screen.getByTestId("add image button");
       fireEvent.press(button);
       expect(logSpy).toBeCalledWith("add image");
+    });
+  });
+});
+
+
+describe("When Testing the User Vendor Containers: ", () => {
+  describe("<AddToCart />: ", () => {
+    const props = { price: 1000, extras: [{ name: "test", price: 100, quantity: 2 }, { name: "test", price: 100 }], quantity: 2 };
+    beforeEach(() => {
+      render(<AddToCart {...props} />);
+    });
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("add to cart")).toBeOnTheScreen();
+    });
+  });
+
+  describe("<ItemSideElement />: ", () => {
+    const side = (mockFoods[0].sides && mockFoods[0].sides[0]) as SideInterface;
+    const side2 = (mockFoods[0].sides && mockFoods[0].sides[1]) as SideInterface;
+    const extras = [
+      { name: "Plantain", price: 200, quantity: 2, groupId: "2" },
+      { name: "Bread", price: 300, quantity: 1, groupId: "2" }
+    ];
+    const setExtras = jest.fn();
+    const props = { ...side, extras, setExtras };
+    beforeEach(() => {
+      render(<ItemSideElement {...props} />);
+    });
+    // Testing UI
+    it("should render the container correctly", () => {
+      expect(screen.getByTestId("item side element")).toBeOnTheScreen();
+    });
+    it("should render the side description", () => {
+      expect(screen.getByText(`${side.description} ${side.isRequired && '(Required)'}`)).toBeOnTheScreen();
+    });
+    it("should render the side options list", () => {
+      const newProps = { ...side2, extras: [], setExtras };
+      render(<ItemSideElement {...newProps} />);
+      expect(screen.getByTestId("side option list")).toBeOnTheScreen();
+    });
+    it("should render the side options with the SideOptionElement component", () => {
+      expect(screen.getAllByTestId("side option element")).not.toBeNull();
+    });
+    // Testing Functionality
+    it("should call setExtras when the increase function is called", () => {
+      const radioButton = screen.getByTestId("Big Pack radio button");
+      fireEvent.press(radioButton);
+      expect(setExtras).toBeCalledWith([...extras, { groupId: "1", name: "Big Pack", price: 500 }]);
+    });
+    it("should call setExtras when the decrease function is called", () => {
+      const newExtras = [...extras, { groupId: "1", name: "Big Pack", price: 500 }];
+      const newProps = { ...side, extras: newExtras, setExtras };
+      render(<ItemSideElement {...newProps} />);
+      const radioButton = screen.getByTestId("Big Pack radio button");
+      fireEvent.press(radioButton);
+      expect(setExtras).toBeCalledWith(extras);
+    });
+    it("should remove item from extras if the item is not multiple", () => {
+      const newProps = { ...side, extras: [...extras, { groupId: "1", name: "Big Pack", price: 500 }], setExtras };
+      render(<ItemSideElement {...newProps} />);
+      const radioButton = screen.getByTestId("Small Pack radio button");
+      fireEvent.press(radioButton);
+      expect(setExtras).toBeCalledWith([...extras, { groupId: "1", name: "Small Pack", price: 300 }]);
+    });
+    it("should update the quantity of the item if the item is multiple", () => {
+      const newProps = { ...side2, extras, setExtras };
+      render(<ItemSideElement {...newProps} />);
+      const quantityController = screen.getAllByTestId("increase quantity")[0];
+      fireEvent.press(quantityController);
+      expect(setExtras).toBeCalledWith(extras);
+    });
+    it("should remove an item from the list of extras if the quantity is 0", () => {
+      const newProps = { ...side2, extras, setExtras };
+      render(<ItemSideElement {...newProps} />);
+      const quantityController = screen.getAllByTestId("decrease quantity")[1];
+      fireEvent.press(quantityController);
+      expect(setExtras).toBeCalledWith([{ name: "Plantain", price: 200, quantity: 2, groupId: "2" }]);
+    });
+    it("should reduce the quantity of an item if the quantity is greater than 2", () => {
+      const setExtras = jest.fn();
+      const newProps = { ...side2, extras, setExtras };
+      render(<ItemSideElement {...newProps} />);
+      const decreaseButton = screen.getAllByTestId("decrease quantity")[0];
+      fireEvent.press(decreaseButton);
+      expect(setExtras).toBeCalledWith([
+        { name: "Plantain", price: 200, quantity: 1, groupId: "2" },
+        { name: "Bread", price: 300, quantity: 1, groupId: "2" }
+      ]);
     });
   });
 });

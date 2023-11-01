@@ -1,6 +1,6 @@
 import { UserStackParamList } from "@interfaces";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CartScreen, DetailScreen } from "@screens/core";
+import { CartScreen } from "@screens/core";
 import React from "react";
 import UserTabNavigator from "./UserTabNavigator";
 
@@ -14,7 +14,6 @@ const UserStackNavigator = () => {
     >
       <Stack.Screen name="MainTabs" component={UserTabNavigator} />
       <Stack.Screen name="Cart" component={CartScreen} />
-      <Stack.Screen name="Detail" component={DetailScreen} />
     </Stack.Navigator>
   );
 };

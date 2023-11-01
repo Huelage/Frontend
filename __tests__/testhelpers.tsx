@@ -3,7 +3,7 @@ import { MockedProvider } from "@apollo/client/testing";
 import { NavigationContainer } from "@react-navigation/native";
 import { configureStore } from "@reduxjs/toolkit";
 import { render } from "@testing-library/react-native";
-import { globalStateInterface } from "@utils/interfaces";
+import { globalStateInterface } from "@interfaces";
 
 export const store = configureStore({ reducer: { global: globalSlice } });
 
