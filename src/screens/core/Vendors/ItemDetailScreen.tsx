@@ -6,8 +6,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserTabProps, UserVendorsTabItemDetailRouteProps, extraInterface } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { fonts, numberToCurrency } from "@utils";
-import React, { useMemo, useState } from "react";
+import { fonts, numberToCurrency, priceMethod } from "@utils";
+import React, { useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,22 +19,9 @@ const ItemDetailScreen = () => {
   const { color } = useAppTheme();
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<UserTabProps>();
-  const [packSize, setPackSize] = useState<string | null>(item.pricingMethod === "PACKAGE" ? item.packageSizes[0].name : null);
+  const [packSize, setPackSize] = useState<string | undefined>(item.pricingMethod === "PACKAGE" ? item.packageSizes[0].name : undefined);
   const [extras, setExtras] = useState<extraInterface[]>([]);
-
   const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item.price;
-  const priceMethod = useMemo(() => {
-    switch (item.pricingMethod) {
-      case "PORTION":
-        return "per portion";
-      case "PRICE":
-        return "minimum price";
-      case "FIXED":
-        return "per plate";
-      case "PACKAGE":
-        return `for ${packSize} package`;
-    }
-  }, [item.pricingMethod, packSize]);
   return (
     <>
       <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen, top }]} onPress={goBack} testID="go back">
@@ -47,7 +34,7 @@ const ItemDetailScreen = () => {
         <View style={styles.itemBody}>
           <View style={styles.itemInfo} testID="item info">
             <Text style={[styles.itemName, { color: color.mainText }]}>{item.name}</Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]}>{numberToCurrency(price)} <Text style={{ color: color.mainGreen }}>{priceMethod}</Text></Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>{numberToCurrency(price)} <Text style={{ color: color.mainGreen }}>{priceMethod(item.pricingMethod, packSize)}</Text></Text>
             <Text style={[styles.itemDesc, { color: color.mainTextDim }]}>{item.description}</Text>
             {item.pricingMethod === "PACKAGE" ? (
               <FlatList
