@@ -32,3 +32,5 @@ export enum orderStatRank {
   "COMPLETED",
   "CANCELLED"
 }
+
+export const foodCategories = ["ALL", "MAIN", "PROTEIN", "SOUPS", "SNACKS", "DRINKS"];
