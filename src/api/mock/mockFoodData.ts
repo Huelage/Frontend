@@ -60,7 +60,7 @@ const food: UserFoodInterface[] = [
     name: "Macaroni",
     description: "Macaroni eunde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.",
     imgUrl: Image.resolveAssetSource(require('@images/macaroni.png')).uri,
-    category: "SIDE",
+    category: "MAIN",
     availability: "AVAILABLE",
     pricingMethod: "PRICE",
     price: 300,

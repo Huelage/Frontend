@@ -254,8 +254,9 @@ export interface SideOptionsInterface {
   isSingle: boolean;
 }
 export type UserFoodInterface = UserFoodPrice | UserFoodPackage;
-export type FoodCategory = "MAIN" | "PROTEIN" | "SOUPS" | "SIDE" | "SNACKS" | "DRINKS";
+export type FoodCategory = "MAIN" | "PROTEIN" | "SOUPS" | "SNACKS" | "DRINKS";
 export type FoodAvailability = "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
+export type PricingMethod = "PRICE" | "PORTION" | "FIXED" | "PACKAGE";
 
 
 // // Order Interfaces
