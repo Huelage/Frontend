@@ -12,7 +12,7 @@ const OrderDetailItem = ({ item_id, quantity, size, extras }: OrderItemInterface
   if (!item) return null;
   const { color } = useAppTheme();
   const price = item.pricingMethod === 'PACKAGE' ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
-  const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * (curr.quantity as number), 0) ?? 0) + (price * quantity);
+  const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * (curr.quantity ?? 1), 0) ?? 0) + (price * quantity);
   return (
     <View style={styles.container} testID='order detail item'>
       <CustomBox width={wp('100%') - 30} height={100} r={20} pad={6} left={-4} />
