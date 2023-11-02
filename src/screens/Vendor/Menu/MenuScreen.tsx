@@ -54,6 +54,7 @@ const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
             renderItem={({ item }) => (
               <MenuItem item={item} />
             )}
+            testID="menu item list"
           />
         </View>
       )}

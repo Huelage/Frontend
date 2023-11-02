@@ -17,14 +17,15 @@ const MenuItem = ({ item }: { item: UserFoodInterface; }) => {
       entering={FadeInUp.delay(200)}
       exiting={SlideOutLeft.duration(300)}
       style={styles.container}
+      testID="menu item"
     >
       <CustomBox bgColor={color.cardBg2} width={wp('100%') - 30} height={110} r={20} pad={6} left={-4} />
-      <Image source={{ uri: item.imgUrl }} style={styles.itemImage} testID='cart item image' />
-      <View style={styles.itemInfo}>
+      <Image source={{ uri: item.imgUrl }} style={styles.itemImage} testID='menu item image' />
+      <View style={styles.itemInfo} testID="menu item info">
         <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1}>{item.name}</Text>
         <Text style={[styles.itemPrice, { color: color.mainGreen }]} numberOfLines={1}>{numberToCurrency(price)} {priceMethod(item.pricingMethod, size)}</Text>
       </View>
-      <View style={styles.itemAction}>
+      <View style={styles.itemAction} testID="menu item action">
         <TouchableOpacity>
           <FontAwesome name="edit" size={24} color={color.mainGreen} />
         </TouchableOpacity>
