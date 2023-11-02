@@ -17,8 +17,8 @@ const CustomButton = ({ label, icon, height, fontSize, inactive, onPress }: Butt
   const { color } = useAppTheme();
   return (
     <TouchableOpacity style={{ height }} onPress={onPress} testID='custom button'>
-      <View style={[styles.buttonBox, inactive && styles.buttonInactive]}>
-        <Text style={[styles.buttonText, { fontSize }, inactive && { color: color.mainText }]}>{label}</Text>
+      <View style={[styles.buttonBox, { backgroundColor: inactive ? "rgba(188, 181, 181, 0.25)" : color.mainGreen }]}>
+        <Text style={[styles.buttonText, { fontSize }, inactive && { color: color.mainTextDim }]}>{label}</Text>
         {icon && <Ionicons name={icon} size={20} color={inactive ? color.mainText : "white"} testID='button icon' />}
       </View>
     </TouchableOpacity>
