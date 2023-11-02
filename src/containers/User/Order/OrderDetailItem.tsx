@@ -1,18 +1,18 @@
 import { mockFoods } from '@api/mock';
 import { CustomBox } from '@components/misc';
 import { useAppTheme } from '@hooks';
-import { CartInterface } from '@interfaces';
+import { OrderItemInterface } from '@interfaces';
 import { fonts, numberToCurrency } from '@utils';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-const OrderDetailItem = ({ item_id, quantity, size, extras }: CartInterface) => {
+const OrderDetailItem = ({ item_id, quantity, size, extras }: OrderItemInterface) => {
   const item = mockFoods.find(item => item.id === item_id);
   if (!item) return null;
   const { color } = useAppTheme();
   const price = item.pricingMethod === 'PACKAGE' ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
-  const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * curr.quantity, 0) ?? 0) + (price * quantity);
+  const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * (curr.quantity as number), 0) ?? 0) + (price * quantity);
   return (
     <View style={styles.container} testID='order detail item'>
       <CustomBox width={wp('100%') - 30} height={100} r={20} pad={6} left={-4} />

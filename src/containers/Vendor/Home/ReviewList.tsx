@@ -1,10 +1,10 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { fonts } from '@utils';
-import { useAppTheme } from '@hooks';
 import { mockReviews } from '@api/mock';
 import { ReviewElement } from '@components/vendor/Home';
+import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@hooks';
+import { fonts } from '@utils';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const ReviewList = () => {
   const { color } = useAppTheme();

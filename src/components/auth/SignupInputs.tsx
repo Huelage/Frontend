@@ -1,8 +1,8 @@
 import { SignUpInfoInterface } from '@interfaces';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus } from 'react-hook-form';
-import CustomTextInput from './CustomTextInput';
 import { StyleSheet, View } from 'react-native';
+import CustomTextInput from './CustomTextInput';
 
 interface signupInputsProps {
   isVendor: boolean;

@@ -3,7 +3,7 @@ export { default as MainNavigator } from './MainNavigator';
 export { default as StackNavigator } from './StackNavigator';
 export { default as UserStackNavigator } from './UserStackNavigator';
 export { default as UserTabNavigator } from './UserTabNavigator';
+export { UserOrdersTabStack, UserProfileTabStack, UserVendorsTabStack } from './UserTabStacks';
 export { default as VendorStackNavigator } from './VendorStackNavigator';
 export { default as VendorTabNavigator } from './VendorTabNavigator';
-export { UserOrdersTabStack, UserProfileTabStack, UserVendorsTabStack } from './UserTabStacks';
 export { VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack } from './VendorTabStacks';

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ResetPasswordInterface } from '@interfaces';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from 'react-hook-form';
+import { StyleSheet, View } from 'react-native';
 import CustomTextInput from './CustomTextInput';
-import { ResetPasswordInterface } from '@interfaces';
 
 interface setPasswordInputsProps {
   isSignedIn: boolean;

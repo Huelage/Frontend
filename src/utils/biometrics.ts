@@ -1,7 +1,7 @@
 import * as BioAuth from 'expo-local-authentication';
+import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 import { FaceId, FingerPrint, Iris } from './svgs';
-import * as SecureStore from 'expo-secure-store';
 
 export const getBiometrics = async () => {
   const hasBiometrics = await BioAuth.hasHardwareAsync();

@@ -2,7 +2,7 @@ import { CustomBox } from '@components/misc';
 import { FontAwesome } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { OrderInterface } from '@interfaces';
-import { OrderDelivered, OrderEnRoute, OrderPreparing, OrderReady, OrderReceived, fonts, outline } from '@utils';
+import { OrderDelivered, OrderEnRoute, OrderPreparing, OrderReady, OrderReceived, fonts } from '@utils';
 import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, LayoutChangeEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';

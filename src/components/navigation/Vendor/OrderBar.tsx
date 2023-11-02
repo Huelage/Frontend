@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 const OrderBar = ({ initVal }: { initVal?: number; }) => {

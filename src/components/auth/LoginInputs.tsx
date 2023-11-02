@@ -1,9 +1,8 @@
 import { LoginInfoInterface } from '@interfaces';
-import { BiometricType } from '@utils';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus } from 'react-hook-form';
-import CustomTextInput from './CustomTextInput';
 import { StyleSheet, View } from 'react-native';
+import CustomTextInput from './CustomTextInput';
 
 interface loginInputsProps {
   isVendor: boolean;

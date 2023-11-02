@@ -1,6 +1,6 @@
 import { CustomFilterBox, CustomModal, CustomPopupModal, StarRating } from "@components/misc";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { FilterGroup } from "@utils/interfaces";
+import { FilterGroup } from "@interfaces";
 import { Text } from "react-native";
 
 describe("When Testing Miscellaneous Components: ", () => {

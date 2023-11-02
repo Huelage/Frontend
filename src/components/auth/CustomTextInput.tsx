@@ -3,8 +3,8 @@ import { useAppTheme } from '@hooks';
 import { fonts } from '@utils';
 import React, { useState } from 'react';
 import { FieldError, RefCallBack } from 'react-hook-form';
-import PhoneInput from "react-native-phone-input";
 import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
+import PhoneInput from "react-native-phone-input";
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;

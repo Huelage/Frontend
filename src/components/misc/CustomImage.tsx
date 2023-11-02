@@ -1,4 +1,4 @@
-import { Canvas, Fit, Group, Image, Shadow, SkRRect, rect, rrect, useImage } from '@shopify/react-native-skia';
+import { Canvas, Fit, Group, Image, Shadow, useImage } from '@shopify/react-native-skia';
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 
