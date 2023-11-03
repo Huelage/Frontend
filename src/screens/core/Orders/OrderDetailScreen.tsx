@@ -6,7 +6,7 @@ import { Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-ico
 import { useAppTheme } from '@hooks';
 import { UserOrdersTabOrderDetailRouteProps, UserOrdersTabProps } from '@interfaces';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts, getStatus, orderStatRank } from '@utils';
+import { fonts, getStatus, orderStatRank, outline } from '@utils';
 import React from 'react';
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -104,7 +104,9 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   order: {
+    flex: 1,
     gap: 30,
+    minHeight: "100%",
     paddingTop: 20
   },
   orderHeader: {

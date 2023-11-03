@@ -1,3 +1,4 @@
+import { PricingMethod } from '@interfaces';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import * as SecureStore from 'expo-secure-store';
@@ -48,5 +49,18 @@ export const getStatus = (status: string) => {
       return "Cancelled";
     default:
       return "Pending";
+  }
+};
+
+export const priceMethod = (method: PricingMethod, size?: string) => {
+  switch (method) {
+    case "PORTION":
+      return "per portion";
+    case "PRICE":
+      return "minimum price";
+    case "FIXED":
+      return "per plate";
+    case "PACKAGE":
+      return `for ${size} package`;
   }
 };

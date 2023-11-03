@@ -1,4 +1,6 @@
+import { mockFoods } from "@api/mock";
 import { OrderChartElement, SummaryElement, ReviewElement, StatElement } from "@components/vendor/Home";
+import { MenuItem } from "@components/vendor/Menu";
 import { render, screen } from "@testing-library/react-native";
 
 describe("When Testing Vendor Flow Home Components: ", () => {
@@ -85,6 +87,28 @@ describe("When Testing Vendor Flow Home Components: ", () => {
     });
     it("should render the right color for the overview status icon", () => {
       expect(screen.getByTestId("status icon")).toHaveStyle({ backgroundColor: "red" });
+    });
+  });
+});
+
+
+describe("When Testing Vendor Flow Menu Components: ", () => {
+  describe("<MenuItem />: ", () => {
+    const item = mockFoods[0];
+    beforeEach(() => {
+      render(<MenuItem item={item} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("menu item")).toBeOnTheScreen();
+    });
+    it("should render the item image", () => {
+      expect(screen.getByTestId("menu item image")).toBeOnTheScreen();
+    });
+    it("should render the menu item info", () => {
+      expect(screen.getByTestId("menu item info")).toBeOnTheScreen();
+    });
+    it("should render the menu item action box", () => {
+      expect(screen.getByTestId("menu item action")).toBeOnTheScreen();
     });
   });
 });
