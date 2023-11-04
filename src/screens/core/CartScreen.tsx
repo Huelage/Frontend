@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React from "react";
 import { FlatList, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const CartScreen = () => {
@@ -40,8 +41,7 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    gap: 20
+    flex: 1
   },
   headerBox: {
     alignItems: "center",
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   },
   listContainerStyle: {
     gap: 20,
-    paddingBottom: 5
+    paddingBottom: 5,
+    paddingTop: 20
   },
 });

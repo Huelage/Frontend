@@ -29,7 +29,7 @@ const ItemDetailScreen = () => {
       </TouchableOpacity>
       <ScrollView style={[styles.container, { backgroundColor: color.mainBg }]} testID="item detail screen">
         <View style={[styles.itemHeader, { backgroundColor: color.mainGreen, paddingTop: top }]} testID="item image">
-          <CustomImage imgUrl={item.imgUrl} imgSize={wp('60%')} imgPad={0} style={[styles.itemImage, { top: top + 10 }]} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
+          <CustomImage imgUrl={item.imgUrl} imgSize={wp("60%")} imgPad={0} style={[styles.itemImage, { top: top + 10 }]} shadowBlur={8} shadowHeight={10} shadowColor="rgba(76, 175, 80, 0.4)" />
         </View>
         <View style={styles.itemBody}>
           <View style={styles.itemInfo} testID="item info">
@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 1,
-    height: wp('60%'),
-    position: 'absolute',
-    width: wp('60%'),
-    borderRadius: wp('30%')
+    height: wp("60%"),
+    position: "absolute",
+    width: wp("60%"),
+    borderRadius: wp("30%")
   },
   itemBody: {
     gap: 30,

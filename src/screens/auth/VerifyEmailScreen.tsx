@@ -9,6 +9,7 @@ import { fonts } from "@utils";
 import React, { useEffect, useState } from "react";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CountDown from "react-native-countdown-fixed";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -48,7 +49,7 @@ const VerifyEmailScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Email Verification</Text>
       </View>
-      <View style={styles.mainBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
           <MaterialCommunityIcons name="email-check" size={100} color="white" />
         </Animated.View>
@@ -74,7 +75,7 @@ const VerifyEmailScreen = () => {
             </TouchableOpacity>
           )}
         </View>
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

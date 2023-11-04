@@ -50,7 +50,7 @@ const LocationScreen = () => {
       </View>
       <GooglePlacesAutocomplete
         placeholder="Add a new location"
-        query={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY, components: 'country:ng' }}
+        query={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY, components: "country:ng" }}
         onPress={handleLocation}
         onFail={onError}
         enablePoweredByContainer={false}
