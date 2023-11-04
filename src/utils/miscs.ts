@@ -1,7 +1,7 @@
-import { PricingMethod } from '@interfaces';
-import dayjs from 'dayjs';
-import isBetween from 'dayjs/plugin/isBetween';
-import * as SecureStore from 'expo-secure-store';
+import { PricingMethod } from "@interfaces";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+import * as SecureStore from "expo-secure-store";
 
 dayjs.extend(isBetween);
 export const getItem = async (key: string) => {
@@ -25,18 +25,18 @@ export const numberToCurrency = (value: number) => {
 
 export const getDateDiff = (category: string, date: string) => {
   const now = dayjs(), orderDate = dayjs(date);
-  const today = now.startOf('day');
-  const yesterday = today.subtract(1, 'day');
-  const lastWeek = today.subtract(1, 'week');
-  const lastMonth = today.subtract(1, 'month');
+  const today = now.startOf("day");
+  const yesterday = today.subtract(1, "day");
+  const lastWeek = today.subtract(1, "week");
+  const lastMonth = today.subtract(1, "month");
   switch (category) {
-    case 'Today':
+    case "Today":
       return orderDate.isBetween(now, today);
-    case 'Yesterday':
+    case "Yesterday":
       return orderDate.isBetween(now, yesterday);
-    case 'Last week':
+    case "Last week":
       return orderDate.isBetween(now, lastWeek);
-    case 'Last month':
+    case "Last month":
       return orderDate.isBetween(now, lastMonth);
   }
 };

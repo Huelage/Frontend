@@ -6,6 +6,6 @@ export const shadowStyle = {
 };
 
 export const outline = {
-  borderColor: 'black',
+  borderColor: "black",
   borderWidth: 2
 };
