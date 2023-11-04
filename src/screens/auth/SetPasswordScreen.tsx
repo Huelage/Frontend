@@ -1,6 +1,6 @@
 import { useAppSelector } from "@api/app/appHooks";
 import { SET_PASSWORD } from "@api/graphql";
-import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
+import { getVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { SetPasswordInputs, SubmitButton } from "@components/auth";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ import { fonts, setItem } from "@utils";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -19,21 +20,18 @@ const SetPasswordScreen = () => {
   const { color } = useAppTheme();
   const isVendor = useAppSelector(getVendorStatus);
   const { params: { entityId } } = useRoute<SetPasswordRouteProps>();
-  const isSignedIn = useAppSelector(getEntity);
   const [setPassword, { data, loading }] = useMutation(SET_PASSWORD);
   const { goBack, navigate } = useNavigation<AuthNavigationProps>();
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
   const onSubmit = async (data: ResetPasswordInterface) => {
     reset();
-    // if (!isSignedIn) {
     const input = { entityId, password: data.password };
     await setPassword({ variables: { input } });
-    // }
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 
   useEffect(() => {
-    setTimeout(() => setFocus(isSignedIn ? "oldPassword" : "password"), 0);
+    setTimeout(() => setFocus("password"), 0);
   }, []);
   useEffect(() => {
     if (data) {
@@ -55,14 +53,14 @@ const SetPasswordScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Set Password</Text>
       </View>
-      <View style={styles.mainBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
           <MaterialCommunityIcons name="lock-open-plus-outline" size={100} color="white" />
         </Animated.View>
         <Text style={[styles.infoText, { color: color.mainText }]}>Your new password must be different from previously used password</Text>
-        <SetPasswordInputs isSignedIn={!!isSignedIn} control={control} errors={errors} setFocus={setFocus} watch={watch} submit={handleSubmit(onSubmit)} />
+        <SetPasswordInputs control={control} errors={errors} setFocus={setFocus} watch={watch} submit={handleSubmit(onSubmit)} />
         <SubmitButton label="Change Password" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
