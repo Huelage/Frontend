@@ -1,3 +1,5 @@
+import { useAppSelector } from '@api/app/appHooks';
+import { getEntity } from '@api/slices/globalSlice';
 import { ResetPasswordInterface } from '@interfaces';
 import React from 'react';
 import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from 'react-hook-form';
@@ -5,7 +7,6 @@ import { StyleSheet, View } from 'react-native';
 import CustomTextInput from './CustomTextInput';
 
 interface setPasswordInputsProps {
-  isSignedIn: boolean;
   control: Control<ResetPasswordInterface, any>;
   errors: FieldErrors<ResetPasswordInterface>;
   setFocus: UseFormSetFocus<ResetPasswordInterface>;
@@ -14,17 +15,18 @@ interface setPasswordInputsProps {
 }
 
 
-const SetPasswordInputs = ({ isSignedIn, control, errors, setFocus, watch, submit }: setPasswordInputsProps) => {
+const SetPasswordInputs = ({ control, errors, setFocus, watch, submit }: setPasswordInputsProps) => {
+  const isSignedIn = useAppSelector(getEntity);
   return (
     <View style={styles.container} testID='set password inputs'>
-      {isSignedIn && (
+      {!!isSignedIn && (
         <Controller
           control={control}
           render={({ field: { onChange, onBlur, value, ref } }) => (
             <CustomTextInput
               autoCapitalize="none"
               autoCorrect={false}
-              error={errors.password}
+              error={errors.oldPassword}
               isPass={true}
               label="Old Password"
               onBlur={onBlur}

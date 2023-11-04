@@ -166,14 +166,14 @@ describe("When Testing Authentication Components: ", () => {
   });
 
   describe("<SetPasswordInputs />: ", () => {
-    let props = { isSignedIn: false };
     const setFocus = jest.fn();
     const submit = jest.fn();
     const ControlledInput = () => {
       const { control, watch } = useForm<ResetPasswordInterface>({ mode: "onChange" });
-      return <SetPasswordInputs {...props} control={control} errors={{}} setFocus={setFocus} watch={watch} submit={submit} />;
+      return <SetPasswordInputs control={control} errors={{}} setFocus={setFocus} watch={watch} submit={submit} />;
     };
     beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(null);
       render(<ControlledInput />);
     });
     it("should render the component correctly", () => {
@@ -208,7 +208,7 @@ describe("When Testing Authentication Components: ", () => {
     });
     describe("When user is changing password from the profile screen i.e is signed in", () => {
       beforeEach(() => {
-        props.isSignedIn = true;
+        (useAppSelector as jest.Mock).mockReturnValue({ id: "123" });
         render(<ControlledInput />);
       });
       it("should render the old password input", () => {
