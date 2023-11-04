@@ -119,7 +119,7 @@ const LoginScreen = () => {
       <View style={styles.inputContainer}>
         <UserVendor />
         <View style={styles.inputs}>
-          <LoginInputs isVendor={isVendor} loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
+          <LoginInputs loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
           <TouchableOpacity onPress={goToforgotPassword}>
             <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
           </TouchableOpacity>

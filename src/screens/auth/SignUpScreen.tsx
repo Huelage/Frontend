@@ -58,7 +58,7 @@ const SignUpScreen = () => {
       </View>
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
         <View style={styles.inputBox}>
-          <SignupInputs isVendor={isVendor} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
+          <SignupInputs control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
           {isVendor && (
             <CheckBox
               checked={acceptTerms}
