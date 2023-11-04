@@ -1,15 +1,15 @@
-import { mockReviews } from '@api/mock';
-import { ReviewElement } from '@components/vendor/Home';
-import { Ionicons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { mockReviews } from "@api/mock";
+import { ReviewElement } from "@components/vendor/Home";
+import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 const ReviewList = () => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container} testID='review list'>
+    <View style={styles.container} testID="review list">
       <View style={styles.header}>
         <Text style={[styles.title, { color: color.mainText }]}>Ratings and Reviews</Text>
         <Ionicons name="md-arrow-forward-sharp" size={20} color={color.mainText} />
@@ -20,7 +20,7 @@ const ReviewList = () => {
         renderItem={({ item }) => (
           <ReviewElement {...item} />
         )}
-        testID='review elements'
+        testID="review elements"
         scrollEnabled={false}
         contentContainerStyle={styles.reviewBox}
       />
@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     gap: 30
   },
   header: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 30,
-    justifyContent: 'space-between'
+    justifyContent: "space-between"
   },
   title: {
     fontFamily: fonts.I_600,

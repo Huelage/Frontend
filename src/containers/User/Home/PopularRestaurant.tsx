@@ -7,7 +7,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 
 const PopularRestaurant = () => {
   const { color } = useAppTheme();
-  const handleViewAll = () => console.log('View All');
+  const handleViewAll = () => console.log("View All");
   return (
     <View style={styles.container} testID="popular restaurant">
       <View style={styles.resNav}>

@@ -33,17 +33,17 @@ export default ProfileHeader;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 20,
     marginTop: hp("5%")
   },
   imageBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: "rgba(136, 136, 136, 0.5)",
     borderWidth: 1,
     borderRadius: 15,
     height: hp("15%"),
-    justifyContent: 'center',
+    justifyContent: "center",
     width: wp("33%")
   },
   image: {
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   editImage: {
-    position: 'absolute',
+    position: "absolute",
     bottom: -10,
     right: -15
   },
   nameText: {
     fontFamily: fonts.I_700,
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: "center"
   }
 });
