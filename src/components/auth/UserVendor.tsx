@@ -1,16 +1,16 @@
-import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { getVendorStatus, setVendorStatus } from '@api/slices/globalSlice';
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { getVendorStatus, setVendorStatus } from "@api/slices/globalSlice";
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const UserVendor = () => {
   const dispatch = useAppDispatch();
   const isVendor = useAppSelector(getVendorStatus);
   const { color } = useAppTheme();
   return (
-    <View style={styles.container} testID='user vendor'>
+    <View style={styles.container} testID="user vendor">
       <TouchableOpacity
         style={[styles.buttonBox, styles.box1, { borderColor: color.mainGreen }, isVendor && { backgroundColor: color.mainGreen }]}
         onPress={() => dispatch(setVendorStatus(true))}
@@ -31,16 +31,16 @@ export default UserVendor;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     paddingVertical: 5
   },
   buttonBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 2,
     height: 35,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 90
   },
   box1: {
