@@ -297,14 +297,14 @@ describe("When Testing Vendor Navigation Component: ", () => {
       expect(screen.getByTestId("new orders")).toBeOnTheScreen();
     });
     it("should not render the order type initially", () => {
-      expect(screen.queryByTestId('order type')).toBeNull();
+      expect(screen.queryByTestId("order type")).toBeNull();
     });
     it("should render the order type at a progress value of 80", () => {
       render(<OrderBar initVal={80} />);
       expect(screen.getByTestId("order type")).toBeOnTheScreen();
     });
     it("should not render the order cta initially", () => {
-      expect(screen.queryByTestId('order cta')).toBeNull();
+      expect(screen.queryByTestId("order cta")).toBeNull();
     });
     it("should render the order cta at a progress value of 96", () => {
       render(<OrderBar initVal={96} />);

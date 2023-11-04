@@ -384,7 +384,7 @@ describe("When Testing the User Vendor Containers: ", () => {
       expect(screen.getByTestId("item side element")).toBeOnTheScreen();
     });
     it("should render the side description", () => {
-      expect(screen.getByText(`${side.description} ${side.isRequired && '(Required)'}`)).toBeOnTheScreen();
+      expect(screen.getByText(`${side.description} ${side.isRequired && "(Required)"}`)).toBeOnTheScreen();
     });
     it("should render the side options list", () => {
       const newProps = { ...side2, extras: [], setExtras };
