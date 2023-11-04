@@ -473,10 +473,7 @@ describe("When Testing Authentication Screens: ", () => {
     it("should submit the form when the submit button is pressed if user is not a vendor and not signed in", async () => {
       const navigate = jest.fn();
       (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
-      (useAppSelector as jest.Mock).mockImplementation(selector => {
-        if (selector === getEntity) return null;
-        if (selector === getVendorStatus) return false;
-      });
+      (useAppSelector as jest.Mock).mockReturnValue(false);
       (useRoute as jest.Mock).mockReturnValue({ params: { entityId: "123" } });
       renderApollo(<SetPasswordScreen />, MOCK_SET_PASSWORD);
       const submitButton = screen.getByTestId("submit button");
@@ -492,10 +489,7 @@ describe("When Testing Authentication Screens: ", () => {
     it("should submit the form when the submit button is pressed if user is a vendor and signed in", async () => {
       const navigate = jest.fn();
       (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
-      (useAppSelector as jest.Mock).mockImplementation(selector => {
-        if (selector === getEntity) return { id: "123" };
-        if (selector === getVendorStatus) return true;
-      });
+      (useAppSelector as jest.Mock).mockReturnValue(true);
       (useRoute as jest.Mock).mockReturnValue({ params: { entityId: "123" } });
       renderApollo(<SetPasswordScreen />, MOCK_SET_PASSWORD);
       const submitButton = screen.getByTestId("submit button");

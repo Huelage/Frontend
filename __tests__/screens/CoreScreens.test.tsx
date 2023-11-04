@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AboutScreen, CartScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, CartScreen, ChangePasswordScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
-import { MOCK_ADD_LOCATION, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
+import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
 import { entity, initialState, renderApollo, renderNavigator } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
@@ -165,6 +165,62 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       });
       it("should render the go back button", () => {
         expect(screen.getByTestId("go back")).toBeOnTheScreen();
+      });
+    });
+
+    describe("<ChangePasswordScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<ChangePasswordScreen />, []);
+      });
+      // Testing UI
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("change password screen")).toBeOnTheScreen();
+      });
+      it("should not render the screen if user is not logged in", () => {
+        (useAppSelector as jest.Mock).mockReturnValue(null);
+        renderApollo(<ChangePasswordScreen />, []);
+        expect(screen.queryByTestId("change password screen")).toBeNull();
+      });
+      it("should render the header box", () => {
+        expect(screen.getByTestId("header box")).toBeOnTheScreen();
+      });
+      it("should render the screen main icon", () => {
+        expect(screen.getByTestId("screen icon")).toBeOnTheScreen();
+      });
+      it("should render the info text", () => {
+        expect(screen.getByText(/your new password must be/i)).toBeOnTheScreen();
+      });
+      it("should render the SetPasswordInputs component", () => {
+        expect(screen.getByTestId("set password inputs")).toBeOnTheScreen();
+      });
+      it("should render the SubmitButton component", () => {
+        expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+      });
+      // Testing Functionality
+      it("should dismiss the keyboard when the screen is touched", () => {
+        const dismissKeyboard = jest.spyOn(Keyboard, "dismiss");
+        renderApollo(<ChangePasswordScreen />, []);
+        const screenContainer = screen.getByTestId("change password screen");
+        fireEvent(screenContainer, "onTouchStart");
+        expect(dismissKeyboard).toBeCalled();
+      });
+      it("should submit the form when the submit button is pressed", async () => {
+        const goBack = jest.fn();
+        (useNavigation as jest.Mock).mockReturnValue({ goBack });
+        renderApollo(<ChangePasswordScreen />, MOCK_CHANGE_PASSWORD);
+        const submitButton = screen.getByTestId("submit button");
+        const oldPasswordInput = screen.getByPlaceholderText("Old Password");
+        const newPasswordInput = screen.getByPlaceholderText("New Password");
+        const confirmPasswordInput = screen.getByPlaceholderText("Confirm Password");
+        fireEvent.changeText(oldPasswordInput, "pass1&onlY");
+        fireEvent.changeText(newPasswordInput, "pass1&onlY");
+        fireEvent.changeText(confirmPasswordInput, "pass1&onlY");
+        fireEvent.press(submitButton);
+        await waitFor(() => {
+          expect(showSuccess).toBeCalledWith("Your password has been changed successfully");
+          expect(goBack).toBeCalled();
+        });
       });
     });
 

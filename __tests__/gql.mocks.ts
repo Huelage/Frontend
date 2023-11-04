@@ -1,4 +1,4 @@
-import { EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
@@ -67,10 +67,7 @@ export const MOCK_VERIFY_EMAIL = [
     request: {
       query: VERIFY_EMAIL,
       variables: {
-        input: {
-          email: "mail@mail.com",
-          otp: 1234
-        }
+        input: { email: "mail@mail.com", otp: 1234 }
       }
     },
     result: {
@@ -86,10 +83,7 @@ export const MOCK_VERIFY_PHONE = [
     request: {
       query: VERIFY_PHONE,
       variables: {
-        input: {
-          phone: "+2349058731812",
-          otp: 1234
-        }
+        input: { phone: "+2349058731812", otp: 1234 }
       }
     },
     result: {
@@ -105,10 +99,7 @@ export const MOCK_SET_PASSWORD = [
     request: {
       query: SET_PASSWORD,
       variables: {
-        input: {
-          password: "pass1&onlY",
-          entityId: "123"
-        }
+        input: { password: "pass1&onlY", entityId: "123" }
       }
     },
     result: {
@@ -123,15 +114,28 @@ export const MOCK_SET_PASSWORD = [
   }
 ];
 
+export const MOCK_CHANGE_PASSWORD = [
+  {
+    request: {
+      query: CHANGE_PASSWORD,
+      variables: {
+        input: { oldPassword: "pass1&onlY", password: "pass1&onlY", confirmPassword: "pass1&onlY", entityId: "123" }
+      }
+    },
+    result: {
+      data: {
+        updatePassword: { entityId: "123" }
+      }
+    }
+  }
+];
+
 export const MOCK_VERIFY_OTP = [
   {
     request: {
       query: VERIFY_OTP,
       variables: {
-        input: {
-          phone: "+2349058731812",
-          otp: 1234
-        }
+        input: { phone: "+2349058731812", otp: 1234 }
       }
     },
     result: {
@@ -159,10 +163,7 @@ export const MOCK_REFRESH_OTP = [
     request: {
       query: REFRESH_OTP,
       variables: {
-        input: {
-          phone: "+2349058731812",
-          entityId: "123"
-        }
+        input: { phone: "+2349058731812", entityId: "123" }
       }
     },
     result: {
@@ -178,10 +179,7 @@ export const MOCK_LOGIN_USER = [
     request: {
       query: LOGIN_USER,
       variables: {
-        input: {
-          password: "pass1&onlY",
-          email: "mail@mail.com"
-        }
+        input: { password: "pass1&onlY", email: "mail@mail.com" }
       }
     },
     result: {
@@ -212,10 +210,7 @@ export const MOCK_LOGIN_USER_SAVED = [
     request: {
       query: LOGIN_USER,
       variables: {
-        input: {
-          entityId: "123",
-          password: "pass1&onlY",
-        }
+        input: { entityId: "123", password: "pass1&onlY", }
       }
     },
     result: {
@@ -246,10 +241,7 @@ export const MOCK_LOGIN_VENDOR = [
     request: {
       query: LOGIN_VENDOR,
       variables: {
-        input: {
-          password: "pass1&onlY",
-          vendorKey: "123456",
-        }
+        input: { password: "pass1&onlY", vendorKey: "123456", }
       }
     },
     result: {
@@ -280,10 +272,7 @@ export const MOCK_LOGIN_VENDOR_SAVED = [
     request: {
       query: LOGIN_VENDOR,
       variables: {
-        input: {
-          entityId: "123",
-          password: "pass1&onlY",
-        }
+        input: { entityId: "123", password: "pass1&onlY", }
       }
     },
     result: {
@@ -315,10 +304,7 @@ export const MOCK_ADD_LOCATION = [
     request: {
       query: EDIT_LOCATIONS,
       variables: {
-        input: {
-          locationId: "123",
-          name: "123 Main St"
-        }
+        input: { locationId: "123", name: "123 Main St" }
       }
     },
     result: {
@@ -338,9 +324,7 @@ export const MOCK_REMOVE_LOCATION = [
     request: {
       query: EDIT_LOCATIONS,
       variables: {
-        input: {
-          locationId: "123"
-        }
+        input: { locationId: "123" }
       }
     },
     result: {

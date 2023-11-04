@@ -78,6 +78,7 @@ export type UserOrdersTabStackParamList = {
 export type UserProfileTabStackParamList = {
   Main: undefined;
   UserDetails: undefined;
+  ChangePass: undefined;
   Location: undefined;
   VerifyEmail: undefined;
   VerifyPhone: undefined;

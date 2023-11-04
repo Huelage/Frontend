@@ -144,6 +144,14 @@ export const SET_PASSWORD = gql(`
   }
 `);
 
+export const CHANGE_PASSWORD = gql(`
+  mutation UpdatePassword ($input: UpdatePasswordInput!) {
+    updatePassword(input: $input) {
+      entityId
+    }
+  }
+`);
+
 export const REFRESH_ACCESS_TOKEN = gql(`
   mutation RefreshAccessToken {
     refreshAccessToken

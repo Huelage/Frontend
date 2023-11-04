@@ -27,8 +27,7 @@ export default AboutScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    gap: 20
+    flex: 1
   },
   headerBox: {
     alignItems: "center",
