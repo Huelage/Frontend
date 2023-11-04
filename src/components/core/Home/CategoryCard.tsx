@@ -99,7 +99,7 @@ const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCard
             <Text style={[styles.itemPrice, { color: color.mainText }]} testID="item price">{numberToCurrency(price)}</Text>
           </View>
           <View style={styles.itemGetBox}>
-            <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede"s joint</Text>
+            <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
             <TouchableOpacity testID={"addToCart"} style={styles.itemBuyIcon} onPress={() => addToCart(category.id)}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
