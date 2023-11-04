@@ -1,6 +1,6 @@
 import { UserProfileTabStackParamList } from "@interfaces";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AboutScreen, ChangePasswordScreen, FAQScreen, HelpScreen, LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import React from "react";
 
 const Stack = createNativeStackNavigator<UserProfileTabStackParamList>();
@@ -11,6 +11,7 @@ const UserProfileTabStack = () => {
       <Stack.Screen name="Main" component={ProfileScreen} />
       <Stack.Screen name="About" component={AboutScreen} />
       <Stack.Screen name="ChangePass" component={ChangePasswordScreen} />
+      <Stack.Screen name="ChangePhone" component={ChangePhoneScreen} />
       <Stack.Screen name="FAQ" component={FAQScreen} />
       <Stack.Screen name="Help" component={HelpScreen} />
       <Stack.Screen name="Referral" component={ReferralScreen} />
