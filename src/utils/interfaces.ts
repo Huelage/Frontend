@@ -24,6 +24,7 @@ export interface SignUpInfoInterface {
 }
 export interface ResetPasswordInterface {
   email?: string;
+  newPhone?: string;
   password?: string;
   oldPassword?: string;
   confirmPassword?: string;
@@ -79,6 +80,7 @@ export type UserProfileTabStackParamList = {
   Main: undefined;
   UserDetails: undefined;
   ChangePass: undefined;
+  ChangePhone: undefined;
   Location: undefined;
   VerifyEmail: undefined;
   VerifyPhone: undefined;
