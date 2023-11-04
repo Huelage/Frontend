@@ -32,7 +32,7 @@ describe("When Testing Authentication Components: ", () => {
     it("should try to navigate to the sign up page when pressed", () => {
       render(<AuthNavigate page="SI" />);
       fireEvent.press(screen.getByText("Sign Up"));
-      expect(navigate).toBeCalledWith("SignUp");
+      expect(navigate).toBeCalledWith("SignupSelect");
     });
   });
 
@@ -108,7 +108,7 @@ describe("When Testing Authentication Components: ", () => {
   });
 
   describe("<LoginInputs />: ", () => {
-    let props = { isVendor: false, loginwithsaved: false };
+    let props = { loginwithsaved: false };
     const setFocus = jest.fn();
     const submit = jest.fn();
     const ControlledInput = () => {
@@ -116,6 +116,7 @@ describe("When Testing Authentication Components: ", () => {
       return <LoginInputs {...props} control={control} errors={{}} setFocus={setFocus} submit={submit} />;
     };
     beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(false);
       render(<ControlledInput />);
     });
     it("should render the component correctly", () => {
@@ -142,7 +143,7 @@ describe("When Testing Authentication Components: ", () => {
     });
     describe("When user is a vendor: ", () => {
       beforeEach(() => {
-        props.isVendor = true;
+        (useAppSelector as jest.Mock).mockReturnValue(true);
         render(<ControlledInput />);
       });
       it("should render the vendor key input in place of the email input", () => {
@@ -223,14 +224,14 @@ describe("When Testing Authentication Components: ", () => {
   });
 
   describe("<SignupInputs />: ", () => {
-    let props = { isVendor: false };
     const setFocus = jest.fn();
     const submit = jest.fn();
     const ControlledInput = () => {
       const { control } = useForm<SignUpInfoInterface>();
-      return <SignupInputs {...props} control={control} errors={{}} setFocus={setFocus} submit={submit} />;
+      return <SignupInputs control={control} errors={{}} setFocus={setFocus} submit={submit} />;
     };
     beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(false);
       render(<ControlledInput />);
     });
     it("should render the component correctly", () => {
@@ -281,7 +282,7 @@ describe("When Testing Authentication Components: ", () => {
     });
     describe("When user is signing up as a vendor: ", () => {
       beforeEach(() => {
-        props.isVendor = true;
+        (useAppSelector as jest.Mock).mockReturnValue(true);
         render(<ControlledInput />);
       });
       it("should not render the first and last name inputs", () => {

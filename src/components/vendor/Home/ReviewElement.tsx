@@ -1,23 +1,23 @@
-import { StarRating } from '@components/misc';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { ReviewInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StarRating } from "@components/misc";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { ReviewInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 const ReviewElement = ({ name, avatar, rating, date, message }: ReviewInterface) => {
 	const { color } = useAppTheme();
-	const colors = ['#92828D', '#95BF74', '#2A1A1F', '#F1A208', '#FE7F2D'];
+	const colors = ["#92828D", "#95BF74", "#2A1A1F", "#F1A208", "#FE7F2D"];
 	const backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 	return (
-		<View style={styles.container} testID='review element'>
+		<View style={styles.container} testID="review element">
 			<View style={styles.header}>
 				<View style={styles.userBox}>
 					<View style={[styles.avatarBox, { backgroundColor }]}>
-						<Text testID='backup avatar' style={styles.avatarText}>{name[0].toUpperCase()}</Text>
+						<Text testID="backup avatar" style={styles.avatarText}>{name[0].toUpperCase()}</Text>
 						{avatar && (
-							<Image testID='reviewer image' style={styles.avatar} source={{ uri: avatar }} />
+							<Image testID="reviewer image" style={styles.avatar} source={{ uri: avatar }} />
 						)}
 					</View>
 					<Text style={[styles.userName, { color: color.mainText }]}>{name}</Text>
@@ -40,32 +40,32 @@ const styles = StyleSheet.create({
 		gap: 10
 	},
 	header: {
-		alignItems: 'center',
-		flexDirection: 'row',
+		alignItems: "center",
+		flexDirection: "row",
 		gap: 30,
-		justifyContent: 'space-between'
+		justifyContent: "space-between"
 	},
 	userBox: {
-		alignItems: 'center',
-		flexDirection: 'row',
+		alignItems: "center",
+		flexDirection: "row",
 		gap: 10,
-		justifyContent: 'center'
+		justifyContent: "center"
 	},
 	avatarBox: {
-		alignItems: 'center',
+		alignItems: "center",
 		borderRadius: 20,
 		height: 35,
-		justifyContent: 'center',
+		justifyContent: "center",
 		width: 35
 	},
 	avatar: {
 		borderRadius: 20,
 		height: 35,
-		position: 'absolute',
+		position: "absolute",
 		width: 35
 	},
 	avatarText: {
-		color: 'white',
+		color: "white",
 		fontFamily: fonts.I_700,
 		fontSize: 16
 	},
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
 		fontSize: 15
 	},
 	ratingBox: {
-		alignItems: 'center',
-		flexDirection: 'row',
+		alignItems: "center",
+		flexDirection: "row",
 		gap: 20
 	},
 	date: {

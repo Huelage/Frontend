@@ -1,16 +1,15 @@
-import { useAppTheme } from '@hooks';
-import { SettingElementInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import SettingOptionBox from './SettingOptionBox';
-
+import { useAppTheme } from "@hooks";
+import { SettingElementInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import SettingOptionBox from "./SettingOptionBox";
 
 const SettingElement = ({ title, Icon, options }: SettingElementInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container} testID='setting element'>
-      <View style={[styles.iconBox, { backgroundColor: color.mainGreen }]} testID='setting icon'>
+    <View style={styles.container} testID="setting element">
+      <View style={[styles.iconBox, { backgroundColor: color.mainGreen }]} testID="setting icon">
         <Icon />
       </View>
       <View style={styles.detailBox}>
@@ -21,7 +20,7 @@ const SettingElement = ({ title, Icon, options }: SettingElementInterface) => {
           scrollEnabled={false}
           keyExtractor={(_, idx) => idx.toString()}
           renderItem={({ item }) => <SettingOptionBox {...item} />}
-          testID='setting box list'
+          testID="setting box list"
         />
       </View>
     </View>
@@ -32,7 +31,7 @@ export default React.memo(SettingElement);
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 15,
     padding: 20
   },
@@ -40,10 +39,10 @@ const styles = StyleSheet.create({
     gap: 10
   },
   iconBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 20,
     height: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 40
   },
   detailBox: {

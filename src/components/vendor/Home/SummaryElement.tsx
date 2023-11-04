@@ -1,7 +1,7 @@
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 interface SummaryElementProps {
   value: number;
@@ -12,10 +12,10 @@ interface SummaryElementProps {
 const SummaryElement = ({ value, label, iconColor }: SummaryElementProps) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.summaryElement} testID='summary element'>
+    <View style={styles.summaryElement} testID="summary element">
       <Text style={[styles.summaryElementValue, { color: color.mainText }]}>{value}</Text>
       <View style={styles.summaryElementLabel}>
-        <View testID='status icon' style={[styles.summaryElementLabelIcon, { backgroundColor: iconColor }]} />
+        <View testID="status icon" style={[styles.summaryElementLabelIcon, { backgroundColor: iconColor }]} />
         <Text style={[styles.summaryElementLabelText, { color: color.mainText }]}>{label}</Text>
       </View>
     </View>
@@ -26,19 +26,19 @@ export default SummaryElement;
 
 const styles = StyleSheet.create({
   summaryElement: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 5,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   summaryElementValue: {
     fontFamily: fonts.I_600,
     fontSize: 20
   },
   summaryElementLabel: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 8,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   summaryElementLabelIcon: {
     borderRadius: 6,

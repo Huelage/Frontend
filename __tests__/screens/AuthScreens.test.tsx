@@ -1,11 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getEntity, getVendorStatus } from "@api/slices/globalSlice";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswordScreen, SignUpScreen, SignupSelectScreen, VerifyEmailScreen } from "@screens/auth";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { enableBiometrics, getBiometrics, getItem, loginWithBiometrics } from "@utils";
 import { Alert, Keyboard } from "react-native";
-import { MOCK_LOGIN_USER, MOCK_LOGIN_VENDOR_SAVED, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_SET_PASSWORD, MOCK_SIGNUP_USER, MOCK_SIGNUP_VENDOR, MOCK_VERIFY_EMAIL, MOCK_VERIFY_OTP } from "../gql.mocks";
+import { MOCK_LOGIN_USER, MOCK_LOGIN_VENDOR_SAVED, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_SET_PASSWORD, MOCK_SIGNUP_USER, MOCK_SIGNUP_VENDOR, MOCK_VERIFY_EMAIL, MOCK_VERIFY_OTP } from "../gql.mocks";
 import { renderApollo } from "../testhelpers";
 
 describe("When Testing Authentication Screens: ", () => {
@@ -227,8 +226,8 @@ describe("When Testing Authentication Screens: ", () => {
         await waitFor(() => {
           expect(mockedAlert).toBeCalled();
           if (mockedAlert.mock.calls[0][2]) {
-            const enableButton = mockedAlert.mock.calls[0][2].find(button => button.text === 'Enable');
-            const notNowButton = mockedAlert.mock.calls[0][2].find(button => button.text === 'Not now');
+            const enableButton = mockedAlert.mock.calls[0][2].find(button => button.text === "Enable");
+            const notNowButton = mockedAlert.mock.calls[0][2].find(button => button.text === "Not now");
             expect(enableButton).toBeDefined();
             expect(notNowButton).toBeDefined();
             if (enableButton?.onPress) {
@@ -684,7 +683,7 @@ describe("When Testing Authentication Screens: ", () => {
       expect(screen.getByTestId("custom pin input")).toBeOnTheScreen();
     });
     it("should render the resend code timer", () => {
-      expect(screen.getByText(/didn't receive a code/i)).toBeOnTheScreen();
+      expect(screen.getByText(/didn"t receive a code/i)).toBeOnTheScreen();
     });
     it("should render the SubmitButton component", () => {
       expect(screen.getByTestId("submit button")).toBeOnTheScreen();
@@ -732,7 +731,7 @@ describe("When Testing Authentication Screens: ", () => {
       await waitFor(() => {
         const resendCodeButton = screen.getByText(/resend code/i);
         fireEvent.press(resendCodeButton);
-        expect(screen.getByText(/didn't receive a code/i)).toBeOnTheScreen();
+        expect(screen.getByText(/didn"t receive a code/i)).toBeOnTheScreen();
       });
       await waitFor(() => {
         expect(screen.getByText(/59/i)).toBeOnTheScreen();

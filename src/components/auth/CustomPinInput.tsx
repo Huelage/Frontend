@@ -1,8 +1,8 @@
-import { useAppTheme } from '@hooks';
-import { shadowStyle } from '@utils';
-import React, { useEffect } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
+import { useAppTheme } from "@hooks";
+import { shadowStyle } from "@utils";
+import React, { useEffect } from "react";
+import { StyleSheet, Text } from "react-native";
+import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from "react-native-confirmation-code-field";
 
 const CELL_COUNT = 4;
 interface CustomPinInputInterface {
@@ -21,7 +21,7 @@ const CustomPinInput = ({ value, onChange, onSubmit }: CustomPinInputInterface) 
       ref={ref}
       {...props}
       value={value}
-      testID='custom pin input'
+      testID="custom pin input"
       onChangeText={onChange}
       cellCount={CELL_COUNT}
       rootStyle={styles.inputRoot}
@@ -45,23 +45,23 @@ export default CustomPinInput;
 
 const styles = StyleSheet.create({
   inputRoot: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginBottom: 20,
     marginTop: 10,
-    width: '100%'
+    width: "100%"
   },
   inputCell: {
-    alignItems: 'center',
-    borderColor: '#93b1a4',
+    alignItems: "center",
+    borderColor: "#93b1a4",
     borderRadius: 11,
     borderWidth: 2,
     fontSize: 28,
     height: 65,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingVertical: 14,
-    textAlign: 'center',
+    textAlign: "center",
     width: 65
   },
   activeInputCell: {

@@ -1,13 +1,13 @@
-import { store } from '@api/app/store';
-import { REFRESH_ACCESS_TOKEN } from '@api/graphql';
-import { clearCredentials, setCredentials } from '@api/slices/globalSlice';
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Operation, fromPromise } from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
+import { store } from "@api/app/store";
+import { REFRESH_ACCESS_TOKEN } from "@api/graphql";
+import { clearCredentials, setCredentials } from "@api/slices/globalSlice";
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Operation, fromPromise } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
-import { getItem, showError } from '@utils';
+import { getItem, showError } from "@utils";
 
 const isRefreshing = (operation: Operation) => {
-  return operation.operationName === 'RefreshAccessToken';
+  return operation.operationName === "RefreshAccessToken";
 };
 const getToken = async (operation: Operation) => {
   if (isRefreshing(operation)) {
@@ -30,10 +30,10 @@ const getNewAccessToken = async () => {
 
 const httpLink = new HttpLink({ uri: process.env.EXPO_PUBLIC_GRAPHQL_URL });
 const authMiddleware = new ApolloLink((operation, forward) => {
-  return fromPromise(getToken(operation)).flatMap(token => {
+  return fromPromise(getToken(operation)).flatMap((token) => {
     operation.setContext({
       headers: {
-        authorization: token ? `Bearer ${token}` : ''
+        authorization: token ? `Bearer ${token}` : ""
       }
     });
     return forward(operation);
@@ -42,7 +42,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
   if (graphQLErrors) {
     graphQLErrors.map(({ message }) => {
-      if (message === 'Unauthorized') {
+      if (message === "Unauthorized") {
         if (isRefreshing(operation)) return forward(operation);
         return fromPromise(getNewAccessToken().then(token => {
           operation.setContext(({ headers = {} }) => ({
@@ -63,7 +63,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
 });
 const retryLink = new RetryLink({
   attempts: (count, operation, error) => {
-    return error.message === 'Unauthorized';
+    return error.message === "Unauthorized";
   },
   delay: (count, operation, error) => {
     return count * 1000;

@@ -21,8 +21,8 @@ const SettingScreen = () => {
       title: "General", Icon: () => <Fontisto name="equalizer" size={20} color="white" style={{ transform: [{ rotate: "-90deg" }] }} />, options: [
         {
           description: "Theme", options: [
-            { title: "Match device setting", isToggle: true, initVal: globalState.themeType === 'system', onPress: () => dispatch(toggleThemeType()) },
-            { title: "Dark Mode", isToggle: true, initVal: globalState.theme === 'dark', disabled: globalState.themeType === 'system', onPress: () => dispatch(toggleTheme()) },
+            { title: "Match device setting", isToggle: true, initVal: globalState.themeType === "system", onPress: () => dispatch(toggleThemeType()) },
+            { title: "Dark Mode", isToggle: true, initVal: globalState.theme === "dark", disabled: globalState.themeType === "system", onPress: () => dispatch(toggleTheme()) },
           ]
         }
       ]

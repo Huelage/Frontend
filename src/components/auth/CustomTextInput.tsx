@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React, { useState } from 'react';
-import { FieldError, RefCallBack } from 'react-hook-form';
-import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React, { useState } from "react";
+import { FieldError, RefCallBack } from "react-hook-form";
+import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from "react-native";
 import PhoneInput from "react-native-phone-input";
 
 interface CustomTextInputProps extends TextInputProps {
@@ -20,7 +20,7 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
 
   const toggleShowText = () => setShowText(show => !show);
   return (
-    <View style={styles.container} testID='custom text input'>
+    <View style={styles.container} testID="custom text input">
       {isPhone ? (
         <Text style={[styles.placeholder, { color: color.mainTextDim }]}>{label}</Text>
       ) : null}
@@ -29,7 +29,7 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
           {isPhone ? (
             <PhoneInput
               autoFormat
-              initialCountry='ng'
+              initialCountry="ng"
               onChangePhoneNumber={inputProps.onChangeText}
               ref={inputProps.innerRef || undefined}
               textProps={{
@@ -59,11 +59,11 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
           )}
           {isPass && (
             showText ? (
-              <TouchableOpacity testID='pass-visibility toggle' onPress={toggleShowText}>
+              <TouchableOpacity testID="pass-visibility toggle" onPress={toggleShowText}>
                 <Ionicons size={24} color={color.mainText} name="eye-off" style={{ opacity: .7 }} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity testID='pass-visibility toggle' onPress={toggleShowText}>
+              <TouchableOpacity testID="pass-visibility toggle" onPress={toggleShowText}>
                 <Ionicons size={24} color={color.mainText} name="eye" style={{ opacity: .7 }} />
               </TouchableOpacity>
             )
@@ -97,21 +97,21 @@ const styles = StyleSheet.create({
     borderColor: "#d24343"
   },
   input: {
-    alignItems: 'center',
-    alignSelf: 'center',
+    alignItems: "center",
+    alignSelf: "center",
     flex: 1,
     flexDirection: "row",
     gap: 10,
     width: "100%"
   },
   errorBox: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     borderRadius: 10,
     padding: 10,
     zIndex: 10
   },
   errorText: {
-    color: 'white',
+    color: "white",
     fontFamily: fonts.I_500,
     fontSize: 14
   },

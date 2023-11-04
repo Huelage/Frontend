@@ -1,9 +1,9 @@
-import { VendorTabBar, VendorTabHeader } from '@components/navigation';
-import { VendorTabParamList } from '@interfaces';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen } from '@screens/Vendor';
-import React from 'react';
-import { VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack } from './VendorTabStacks';
+import { VendorTabBar, VendorTabHeader } from "@components/navigation";
+import { VendorTabParamList } from "@interfaces";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { HomeScreen } from "@screens/Vendor";
+import React from "react";
+import { VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack } from "./VendorTabStacks";
 
 const Tab = createBottomTabNavigator<VendorTabParamList>();
 

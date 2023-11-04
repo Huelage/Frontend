@@ -1,8 +1,8 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts, shadowStyle } from '@utils';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts, shadowStyle } from "@utils";
+import React, { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface PromoBoxInterface {
   handleApply: (val: string) => void;
@@ -12,14 +12,14 @@ const PromoBox = ({ handleApply }: PromoBoxInterface) => {
   const [code, setCode] = useState<string>("");
   const { color } = useAppTheme();
   return (
-    <View testID='promo box' style={[styles.promoBox, { backgroundColor: color.cardBg }]}>
+    <View testID="promo box" style={[styles.promoBox, { backgroundColor: color.cardBg }]}>
       <MaterialCommunityIcons name="ticket-percent-outline" size={26} color={color.searchText} />
       <TextInput
-        autoCapitalize='none'
+        autoCapitalize="none"
         autoCorrect={false}
         style={[styles.promoInput, { color: color.searchText }]}
-        placeholder='Promo Code'
-        testID='promo input'
+        placeholder="Promo Code"
+        testID="promo input"
         onChangeText={setCode}
         onSubmitEditing={() => handleApply(code)}
         selectionColor={color.mainGreen}
@@ -36,11 +36,11 @@ export default PromoBox;
 
 const styles = StyleSheet.create({
   promoBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginHorizontal: 20,
     padding: 10,
     paddingLeft: 15
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
     letterSpacing: .8
   },
   promoButton: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
     paddingVertical: 10,
     ...shadowStyle

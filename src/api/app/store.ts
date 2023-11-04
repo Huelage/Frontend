@@ -1,8 +1,8 @@
 import globalReducer from "@api/slices/globalSlice";
 import { globalStateInterface } from "@interfaces";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import * as SecureStore from 'expo-secure-store';
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, createTransform, persistReducer, persistStore } from 'redux-persist';
+import * as SecureStore from "expo-secure-store";
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, createTransform, persistReducer, persistStore } from "redux-persist";
 
 const CustomSecureStore = {
   getItem: async (key: string) => {
@@ -29,11 +29,11 @@ const globalTransform = createTransform(
     };
   },
   (outboundState: any) => outboundState,
-  { whitelist: ['global'] }
+  { whitelist: ["global"] }
 );
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage: CustomSecureStore,
   transforms: [globalTransform]
 };

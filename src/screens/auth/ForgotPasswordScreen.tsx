@@ -3,7 +3,7 @@ import { REQUEST_EMAIL_VERIFICATION } from "@api/graphql";
 import { setVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomTextInput, SubmitButton } from "@components/auth";
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, ResetPasswordInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import { fonts } from "@utils";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -44,7 +45,7 @@ const ForgotPasswordScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Forgot Password</Text>
       </View>
-      <View style={styles.mainBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
           <MaterialCommunityIcons name="lock-reset" size={100} color="white" />
         </Animated.View>
@@ -77,7 +78,7 @@ const ForgotPasswordScreen = () => {
           }}
         />
         <SubmitButton label="Send code" isLoading={loading} onSubmit={handleSubmit(onSubmit)} />
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

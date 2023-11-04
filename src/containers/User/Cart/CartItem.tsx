@@ -19,17 +19,17 @@ const CartItem = ({ item_id, quantity, portion, size, extras }: OrderItemInterfa
   const increase = () => setItemQuantity(itemQuantity + 1);
   const decrease = () => { if (itemQuantity > 1) setItemQuantity(itemQuantity - 1); };
   return (
-    <View style={styles.container} testID='cart item'>
-      <CustomBox width={wp('100%') - 30} height={110} r={20} pad={6} left={-4} />
-      <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID='cart item image' />
+    <View style={styles.container} testID="cart item">
+      <CustomBox width={wp("100%") - 30} height={110} r={20} pad={6} left={-4} />
+      <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID="cart item image" />
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID='cart item name'>{item.name}</Text>
-        <Text style={styles.itemExtras} numberOfLines={1} testID='cart item extras'>{extras?.map(item => item.name).join(", ")}</Text>
-        <Text style={[styles.itemPrice, { color: color.mainText }]} testID='cart item price'>{numberToCurrency(price)}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID="cart item name">{item.name}</Text>
+        <Text style={[styles.itemExtras, { color: color.mainTextDim }]} numberOfLines={1} testID="cart item extras">{extras?.map(item => item.name).join(", ")}</Text>
+        <Text style={[styles.itemPrice, { color: color.mainText }]} testID="cart item price">{numberToCurrency(price)}</Text>
       </View>
       <View style={styles.quatityBox}>
         <QuantityController quantity={itemQuantity} increase={increase} decrease={decrease} />
-        <Text style={styles.totalPrice} testID='cart item total'>{numberToCurrency(totalPrice)}</Text>
+        <Text style={[styles.totalPrice, { color: color.mainTextDim }]} testID="cart item total">{numberToCurrency(totalPrice)}</Text>
       </View>
     </View>
   );
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   totalPrice: {
-    color: "#626262",
     fontFamily: fonts.I_600,
     fontSize: 14,
   },

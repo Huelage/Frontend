@@ -1,20 +1,22 @@
-import { SignUpInfoInterface } from '@interfaces';
-import React from 'react';
-import { Control, Controller, FieldErrors, UseFormSetFocus } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
-import CustomTextInput from './CustomTextInput';
+import { useAppSelector } from "@api/app/appHooks";
+import { getVendorStatus } from "@api/slices/globalSlice";
+import { SignUpInfoInterface } from "@interfaces";
+import React from "react";
+import { Control, Controller, FieldErrors, UseFormSetFocus } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import CustomTextInput from "./CustomTextInput";
 
 interface signupInputsProps {
-  isVendor: boolean;
   control: Control<SignUpInfoInterface, any>;
   errors: FieldErrors<SignUpInfoInterface>;
   setFocus: UseFormSetFocus<SignUpInfoInterface>;
   submit: () => void;
 }
 
-const SignupInputs = ({ isVendor, control, errors, setFocus, submit }: signupInputsProps) => {
+const SignupInputs = ({ control, errors, setFocus, submit }: signupInputsProps) => {
+  const isVendor = useAppSelector(getVendorStatus);
   return (
-    <View style={styles.container} testID='signup inputs'>
+    <View style={styles.container} testID="signup inputs">
       {isVendor ? (
         <>
           <Controller

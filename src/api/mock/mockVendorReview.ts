@@ -1,10 +1,10 @@
-import { Image } from 'react-native';
+import { Image } from "react-native";
 
 const reviews = [
 	{
 		id: "1",
 		name: "Ella Mia",
-		avatar: Image.resolveAssetSource(require('@images/beejay_dp.png')).uri,
+		avatar: Image.resolveAssetSource(require("@images/beejay_dp.png")).uri,
 		rating: 5,
 		date: "15/02/23",
 		message: "The food from this restaurant is amazing. I would definitely order again."

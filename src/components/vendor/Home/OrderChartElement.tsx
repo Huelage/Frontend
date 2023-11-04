@@ -1,8 +1,8 @@
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from 'react-native-reanimated';
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
 
 interface ChartProps {
   value: number;
@@ -30,10 +30,10 @@ const OrderChartElement = ({ iconColor, idx, label, total, value }: ChartProps) 
     }));
   }, [value]);
   return (
-    <View style={styles.container} testID='order chart element'>
-      <View testID='chart bar' style={styles.barChartContainer}>
+    <View style={styles.container} testID="order chart element">
+      <View testID="chart bar" style={styles.barChartContainer}>
         <View style={[styles.barChartBg, { backgroundColor: color.chartBg }]} />
-        <Animated.View testID='bar progress' style={[styles.barChart, animatedWidth, { backgroundColor: iconColor }]} />
+        <Animated.View testID="bar progress" style={[styles.barChart, animatedWidth, { backgroundColor: iconColor }]} />
       </View>
       <View style={styles.barChartLabel}>
         <Text style={[styles.barChartValue, { color: color.mainText }]}>{percentage}%</Text>
@@ -47,29 +47,29 @@ export default OrderChartElement;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 15,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   barChartContainer: {
     flex: 7
   },
   barChartBg: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 4,
-    width: '100%',
+    width: "100%",
     height: 5
   },
   barChart: {
     borderRadius: 4,
     height: 5,
-    position: 'absolute'
+    position: "absolute"
   },
   barChartLabel: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 3,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8
   },
   barChartLabelText: {

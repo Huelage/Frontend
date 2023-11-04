@@ -1,11 +1,11 @@
-import { CustomBox } from '@components/misc';
-import { useAppTheme } from '@hooks';
-import { SideOptionsInterface, extraInterface } from '@interfaces';
-import { fonts, numberToCurrency } from '@utils';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { QuantityController } from '../Cart';
+import { CustomBox } from "@components/misc";
+import { useAppTheme } from "@hooks";
+import { SideOptionsInterface, extraInterface } from "@interfaces";
+import { fonts, numberToCurrency } from "@utils";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { QuantityController } from "../Cart";
 
 interface SideOptionElementInterface extends SideOptionsInterface {
   optionSelected: boolean;
@@ -45,8 +45,8 @@ const SideOptionElement = ({ name, price, isSingle, groupId, optionSelected, inc
     else setQuantity(0);
   }, [optionSelected]);
   return (
-    <View style={styles.container} testID='side option element'>
-      <CustomBox bgColor={color.cardBg2} width={wp('100%') - 30} height={95} pad={6} r={10} left={-4} />
+    <View style={styles.container} testID="side option element">
+      <CustomBox bgColor={color.cardBg2} width={wp("100%") - 30} height={95} pad={6} r={10} left={-4} />
       <Text style={[styles.mainText, { color: color.mainText }]}>
         {name}
         <Text style={[styles.accentText, { color: color.mainGreen }]}> +{numberToCurrency(price * (quantity || 1))}</Text>
@@ -66,9 +66,9 @@ export default SideOptionElement;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 30
   },
   mainText: {
@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   radioButton: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 13,
     borderWidth: 2,
     height: 26,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 26
   },
   radioButtonInner: {

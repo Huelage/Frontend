@@ -1,18 +1,19 @@
-import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { REQUEST_PHONE_VERIFICATION, VERIFY_PHONE } from '@api/graphql';
-import { getEntity, setCredentials } from '@api/slices/globalSlice';
-import { useMutation } from '@apollo/client';
-import { CustomPinInput, SubmitButton } from '@components/auth';
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { REQUEST_PHONE_VERIFICATION, VERIFY_PHONE } from "@api/graphql";
+import { getEntity, setCredentials } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
+import { CustomPinInput, SubmitButton } from "@components/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useAppTheme } from '@hooks';
-import { UserProfileTabProps } from '@interfaces';
-import { useNavigation } from '@react-navigation/native';
-import { fonts, setItem, showSuccess } from '@utils';
-import React, { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CountDown from 'react-native-countdown-fixed';
-import Animated from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAppTheme } from "@hooks";
+import { UserProfileTabProps } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { fonts, setItem, showSuccess } from "@utils";
+import React, { useEffect, useState } from "react";
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CountDown from "react-native-countdown-fixed";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Animated from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const VerifyPhoneScreen = () => {
   const entity = useAppSelector(getEntity);
@@ -60,7 +61,7 @@ const VerifyPhoneScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Verify Phone Number</Text>
       </View>
-      <View style={styles.mainBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.Image
           sharedTransitionTag="huelageLogo"
           style={styles.logoImage}
@@ -80,8 +81,8 @@ const VerifyPhoneScreen = () => {
               onFinish={() => setIsTimerActive(false)}
               separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
               showSeparator
-              timeToShow={['M', 'S']}
-              timeLabels={{ s: '' }}
+              timeToShow={["M", "S"]}
+              timeLabels={{ s: "" }}
               until={59}
             />
             <Text style={[styles.resendText, { color: color.mainText }]}>s</Text>
@@ -91,8 +92,8 @@ const VerifyPhoneScreen = () => {
             <Text style={[styles.resendTimer, { color: color.mainGreen }]}>Resend Code</Text>
           </TouchableOpacity>
         )}
-        <SubmitButton label='Verify' isLoading={loading} onSubmit={verifyOTP} />
-      </View>
+        <SubmitButton label="Verify" isLoading={loading} onSubmit={verifyOTP} />
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     paddingTop: 70
   },
   logoImage: {
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 40,
     height: 80,
     marginBottom: 40,
@@ -136,23 +137,23 @@ const styles = StyleSheet.create({
   infoText: {
     fontFamily: fonts.I_600,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   resendTextBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 30
   },
   resendText: {
     fontFamily: fonts.I_500,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   resendTimer: {
     fontFamily: fonts.I_500,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   countdownTimer: {
     height: "auto",

@@ -1,8 +1,8 @@
 import { store } from "@api/app/store";
 import { render } from "@testing-library/react-native";
 import dayjs from "dayjs";
-import * as BioAuth from 'expo-local-authentication';
-import * as SecureStore from 'expo-secure-store';
+import * as BioAuth from "expo-local-authentication";
+import * as SecureStore from "expo-secure-store";
 import React from "react";
 import { Platform } from "react-native";
 import * as toasts from "react-native-flash-message";
@@ -13,13 +13,13 @@ const utils = jest.requireActual("@utils");
 describe("miscs.ts: ", () => {
   it("should return the correct value when getItem is called", async () => {
     const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
-    mockedGetItem.mockReturnValueOnce(Promise.resolve('"test"'));
+    mockedGetItem.mockReturnValueOnce(Promise.resolve("test"));
     const res = await utils.getItem("test");
     expect(res).toEqual("test");
   });
   it("should return null when getItem is called and SecureStore.getItemAsync throws an error", async () => {
     const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
-    mockedGetItem.mockReturnValueOnce(Promise.resolve(''));
+    mockedGetItem.mockReturnValueOnce(Promise.resolve(""));
     const res = await utils.getItem("test");
     expect(res).toBeNull();
   });
@@ -112,7 +112,7 @@ describe("biometrics.ts: ", () => {
   });
   it("should not do anything if authenticateAsync fails when loginWithBiometrics is called", async () => {
     const spy = jest.spyOn(BioAuth, "authenticateAsync");
-    spy.mockReturnValueOnce(Promise.resolve({ success: false, error: 'no bio details' }));
+    spy.mockReturnValueOnce(Promise.resolve({ success: false, error: "no bio details" }));
     const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
     mockedGetItem.mockReturnValueOnce(Promise.resolve("biometrics"));
     const res = await utils.loginWithBiometrics();

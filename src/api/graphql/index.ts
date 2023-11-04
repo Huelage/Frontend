@@ -1,2 +1,2 @@
-export * from './auth.queries';
-export * from './user.queries';
+export * from "./auth.queries";
+export * from "./user.queries";

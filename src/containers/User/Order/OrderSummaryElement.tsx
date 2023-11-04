@@ -1,19 +1,20 @@
-import { StatusProgressBar } from '@components/core/Order';
-import { CustomBox } from '@components/misc';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { OrderInterface } from '@interfaces';
-import { fonts, numberToCurrency, orderStatInfo } from '@utils';
-import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeInUp, SlideOutLeft } from 'react-native-reanimated';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { StatusProgressBar } from "@components/core/Order";
+import { CustomBox } from "@components/misc";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { OrderInterface } from "@interfaces";
+import { fonts, numberToCurrency, orderStatInfo } from "@utils";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAmount }: OrderInterface) => {
   const { color } = useAppTheme();
   const [height, setHeight] = useState<number>(105);
   const [isBarVisible, setIsBarVisible] = useState<boolean>(true);
+
   useEffect(() => {
     if (status === "COMPLETED") setIsBarVisible(false);
   }, []);
@@ -28,9 +29,9 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
       entering={FadeInUp.delay(100)}
       exiting={SlideOutLeft.duration(100)}
       style={styles.container}
-      testID='order summary element'
+      testID="order summary element"
     >
-      <CustomBox bgColor={color.cardBg2} height={height} r={10} pad={6} width={wp('100%') - 30} left={-4} />
+      <CustomBox bgColor={color.cardBg2} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
       {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is 1 hour</Text> : null}
       <View style={styles.detailBox}>
         <View style={styles.detailHeader}>
@@ -38,7 +39,7 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
           <Text style={[styles.subTotal, { color: color.mainText }]}>{numberToCurrency(totalAmount)}</Text>
         </View>
         <View style={styles.detailHeader}>
-          <Text style={[styles.orderedAt, { color: isBarVisible ? color.accentText : color.mainGreen }]} testID='formatted date'>{dayjs(orderedAt).format('D MMM, YYYY | hh:mma')}</Text>
+          <Text style={[styles.orderedAt, { color: isBarVisible ? color.accentText : color.mainGreen }]} testID="formatted date">{dayjs(orderedAt).format("D MMM, YYYY | hh:mma")}</Text>
           {!isBarVisible ? (
             <View style={styles.orderResolved}>
               <Text style={[styles.orderStatInfo, { color: status === "CANCELLED" ? color.danger : color.mainGreen }]}>Order {status.toLowerCase()}</Text>
@@ -54,8 +55,8 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
             <Text style={[styles.barBoxText, { color: color.mainGreen }]}>{status}</Text>
           </View>
           <View style={styles.detailHeader}>
-            <Text style={[styles.orderStatTime, { color: color.mainText }]} testID='order info text'>
-              {dayjs(updatedAt).format('hh:mma')} -
+            <Text style={[styles.orderStatTime, { color: color.mainText }]} testID="order info text">
+              {dayjs(updatedAt).format("hh:mma")} -
               <Text style={[styles.orderStatInfo, { color: color.accentText }]}> {orderStatInfo[status]}</Text>
             </Text>
             <MaterialIcons name="navigate-next" size={24} color={color.mainGreen} />
@@ -81,10 +82,10 @@ const styles = StyleSheet.create({
     gap: 10
   },
   detailHeader: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 20,
-    justifyContent: 'space-between'
+    justifyContent: "space-between"
   },
   resName: {
     fontFamily: fonts.I_600,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   barBoxText: {
     fontFamily: fonts.I_600,
     fontSize: 12,
-    textAlign: 'right'
+    textAlign: "right"
   },
   orderStatTime: {
     fontFamily: fonts.I_500,
@@ -114,8 +115,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_500I
   },
   orderResolved: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center"
   }
 });

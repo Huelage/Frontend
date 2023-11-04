@@ -1,9 +1,9 @@
-import { SideOptionElement } from '@components/core/Vendor';
-import { useAppTheme } from '@hooks';
-import { SideInterface, extraInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React, { useCallback } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { SideOptionElement } from "@components/core/Vendor";
+import { useAppTheme } from "@hooks";
+import { SideInterface, extraInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React, { useCallback } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 interface ItemSideElementInterface extends SideInterface {
   extras: extraInterface[];
@@ -39,7 +39,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
   }, [extras]);
 
   return (
-    <View style={styles.container} testID='item side element'>
+    <View style={styles.container} testID="item side element">
       <Text style={[styles.description, { color: color.mainText }]}>{`${description} ${isRequired ? "(Required)" : ""}`}</Text>
       <FlatList
         style={styles.optionList}
@@ -49,7 +49,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
         renderItem={({ item }) => (
           <SideOptionElement {...item} optionSelected={!!extras.find(ext => ext.name === item.name)} increase={increaseExtra} decrease={decreaseExtra} />
         )}
-        testID='side option list'
+        testID="side option list"
       />
     </View>
   );

@@ -16,10 +16,10 @@ import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ChangePasswordScreen = () => {
-  const insets = useSafeAreaInsets();
-  const { color } = useAppTheme();
   const entity = useAppSelector(getEntity);
   if (!entity) return null;
+  const insets = useSafeAreaInsets();
+  const { color } = useAppTheme();
   const [setPassword, { data, loading }] = useMutation(CHANGE_PASSWORD);
   const { goBack } = useNavigation<AuthNavigationProps>();
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });

@@ -1,15 +1,15 @@
-import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_PHONE_VERIFICATION, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
   {
     request: {
       query: REQUEST_EMAIL_VERIFICATION,
-      variables: { email: 'mail@mail.com' }
+      variables: { email: "mail@mail.com" }
     },
     result: {
       data: {
-        requestEmailVerification: { entityType: 'VENDOR', email: 'mail@mail.com' }
+        requestEmailVerification: { entityType: "VENDOR", email: "mail@mail.com" }
       }
     }
   }
@@ -21,18 +21,18 @@ export const MOCK_SIGNUP_USER = [
       query: SIGNUP_USER,
       variables: {
         input: {
-          email: 'mail@mail.com',
-          password: 'pass1&onlY',
-          confirmPassword: 'pass1&onlY',
-          phone: '+2349058731812',
-          firstName: 'John',
-          lastName: 'Doe'
+          email: "mail@mail.com",
+          password: "pass1&onlY",
+          confirmPassword: "pass1&onlY",
+          phone: "+2349058731812",
+          firstName: "John",
+          lastName: "Doe"
         }
       }
     },
     result: {
       data: {
-        signUpUser: { userId: '123', firstName: 'John', lastName: 'Doe' }
+        signUpUser: { userId: "123", firstName: "John", lastName: "Doe" }
       }
     }
   }
@@ -44,19 +44,19 @@ export const MOCK_SIGNUP_VENDOR = [
       query: SIGNUP_VENDOR,
       variables: {
         input: {
-          email: 'mail@mail.com',
-          password: 'pass1&onlY',
-          confirmPassword: 'pass1&onlY',
-          phone: '+2349058731812',
-          businessName: 'John Doe',
-          businessAddress: '123 Main St',
-          repName: 'John Doe'
+          email: "mail@mail.com",
+          password: "pass1&onlY",
+          confirmPassword: "pass1&onlY",
+          phone: "+2349058731812",
+          businessName: "John Doe",
+          businessAddress: "123 Main St",
+          repName: "John Doe"
         }
       }
     },
     result: {
       data: {
-        signUpVendor: { vendorId: '123', businessName: 'John Doe' }
+        signUpVendor: { vendorId: "123", businessName: "John Doe" }
       }
     }
   }

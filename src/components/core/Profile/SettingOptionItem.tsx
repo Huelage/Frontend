@@ -1,9 +1,9 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { SettingOptionInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React, { useState } from 'react';
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { SettingOptionInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React, { useState } from "react";
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 
 const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress }: SettingOptionInterface) => {
   const { color } = useAppTheme();
@@ -19,7 +19,7 @@ const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress
         {isToggle ? (
           <Switch
             disabled={disabled}
-            trackColor={{ false: 'rgba(188, 181, 181, .3)', true: color.mainGreenOpaque }}
+            trackColor={{ false: "rgba(188, 181, 181, .3)", true: color.mainGreenOpaque }}
             thumbColor={isToggleEnabled ? color.mainGreen : "rgb(188, 181, 181)"}
             ios_backgroundColor="rgba(188, 181, 181, .3)"
             onValueChange={toggleSwitch}
@@ -28,7 +28,7 @@ const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress
             testID={`${title} toggle switch`}
           />
         ) : (
-          <MaterialCommunityIcons testID='chevron icon' name="chevron-right" size={30} color={danger ? color.danger : color.mainText} />
+          <MaterialCommunityIcons testID="chevron icon" name="chevron-right" size={30} color={danger ? color.danger : color.mainText} />
         )}
       </View>
     </TouchableOpacity>
@@ -39,7 +39,7 @@ export default React.memo(SettingOptionItem);
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     flexDirection: "row",
     gap: 20,
     justifyContent: "space-between",

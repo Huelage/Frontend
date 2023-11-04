@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { getShowOnboard, setShowOnboard } from "@api/slices/globalSlice";
+import { useAppTheme } from "@hooks";
 import { AuthNavigationProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, shadowStyle } from "@utils";
@@ -10,6 +11,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 
 const OnBoardScreen = () => {
   const { navigate } = useNavigation<AuthNavigationProps>();
+  const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const showOnboard = useAppSelector(getShowOnboard);
   const progress = useSharedValue(0);
@@ -33,11 +35,11 @@ const OnBoardScreen = () => {
     );
   }, []);
   useEffect(() => {
-    if (!showOnboard) setTimeout(() => navigate('Login'), 0);
+    if (!showOnboard) setTimeout(() => navigate("Login"), 0);
     else dispatch(setShowOnboard(false));
-  });
+  }, []);
   return (
-    <View style={styles.container} testID="onboard screen">
+    <View style={[styles.container, { backgroundColor: color.mainGreen }]} testID="onboard screen">
       <View style={styles.logoWrapper}>
         <Animated.Image
           sharedTransitionTag="huelageLogo"
@@ -68,7 +70,6 @@ export default OnBoardScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#4CAF50",
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: wp("10%"),
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 15,
     justifyContent: "center",
-    width: '100%',
+    width: "100%",
     height: 200
   },
   logoImage: {
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "700",
     color: "#fff",
-    textShadowColor: 'rgba(0, 0, 0, .3)',
+    textShadowColor: "rgba(0, 0, 0, .3)",
     textShadowOffset: { width: 2, height: 5 },
     textShadowRadius: 5
   },

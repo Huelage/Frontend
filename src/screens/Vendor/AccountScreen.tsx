@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 const AccountScreen = () => {
   return (
-    <View testID='account screen'>
+    <View testID="account screen">
       <Text>AccountScreen</Text>
     </View>
   );

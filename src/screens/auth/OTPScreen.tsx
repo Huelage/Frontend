@@ -1,18 +1,19 @@
-import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { REQUEST_PHONE_VERIFICATION, VERIFY_OTP } from '@api/graphql';
-import { getVendorStatus, setCredentials } from '@api/slices/globalSlice';
-import { useMutation } from '@apollo/client';
-import { CustomPinInput, SubmitButton } from '@components/auth';
-import { AntDesign } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { AuthNavigationProps, OTPRouteProps, entityInterface } from '@interfaces';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts, getItem, setItem } from '@utils';
-import React, { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CountDown from 'react-native-countdown-fixed';
-import Animated from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { REQUEST_PHONE_VERIFICATION, VERIFY_OTP } from "@api/graphql";
+import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
+import { useMutation } from "@apollo/client";
+import { CustomPinInput, SubmitButton } from "@components/auth";
+import { AntDesign } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { AuthNavigationProps, OTPRouteProps, entityInterface } from "@interfaces";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { fonts, getItem, setItem } from "@utils";
+import React, { useEffect, useState } from "react";
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CountDown from "react-native-countdown-fixed";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Animated from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const OTPScreen = () => {
   const { color } = useAppTheme();
@@ -78,7 +79,7 @@ const OTPScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>OTP Code Verification</Text>
       </View>
-      <View style={styles.mainBox}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
         <Text style={[styles.infoText, { color: color.mainText }]}>Code has been sent to {formattedNumber}</Text>
         <CustomPinInput value={phoneOtp} onChange={onChange} onSubmit={verifyOTP} />
@@ -91,8 +92,8 @@ const OTPScreen = () => {
               onFinish={() => setIsTimerActive(false)}
               separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
               showSeparator
-              timeToShow={['M', 'S']}
-              timeLabels={{ s: '' }}
+              timeToShow={["M", "S"]}
+              timeLabels={{ s: "" }}
               until={59}
             />
             <Text style={[styles.resendText, { color: color.mainText }]}>s</Text>
@@ -103,7 +104,7 @@ const OTPScreen = () => {
           </TouchableOpacity>
         )}
         <SubmitButton label="Verify" isLoading={loading} onSubmit={verifyOTP} />
-      </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
@@ -147,20 +148,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   resendTextBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 30
   },
   resendText: {
     fontFamily: fonts.I_500,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   resendTimer: {
     fontFamily: fonts.I_500,
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: "center"
   },
   countdownTimer: {
     height: "auto",

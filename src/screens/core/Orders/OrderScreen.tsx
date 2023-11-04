@@ -1,14 +1,14 @@
-import { mockOrderItems } from '@api/mock';
-import { SubmitButton } from '@components/auth';
-import { CustomFilterBox } from '@components/misc';
-import { OrderSummaryElement } from '@containers/User';
-import { useAppTheme } from '@hooks';
-import { FilterGroup, OrderInterface, UserOrdersTabProps } from '@interfaces';
-import { useNavigation } from '@react-navigation/native';
-import { fonts, getDateDiff, getStatus } from '@utils';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { Layout } from 'react-native-reanimated';
+import { mockOrderItems } from "@api/mock";
+import { SubmitButton } from "@components/auth";
+import { CustomFilterBox } from "@components/misc";
+import { OrderSummaryElement } from "@containers/User";
+import { useAppTheme } from "@hooks";
+import { FilterGroup, OrderInterface, UserOrdersTabProps } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { fonts, getDateDiff, getStatus } from "@utils";
+import React, { useEffect, useMemo, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { Layout } from "react-native-reanimated";
 
 interface OrderScreenInterface {
   testEmpty?: boolean;
@@ -56,18 +56,18 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
     setFilteredOrder(newFiltered);
   }, [filterByDate, filterByStatus, sortedOrders]);
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID='order screen'>
+    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="order screen">
       {testEmpty || !mockOrderItems.length ? (
         <View style={styles.noOrdersBox}>
-          <Image source={require("@images/myorderscreen.png")} testID='order empty image' />
-          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven't made any order with Huelage</Text>
-          <SubmitButton label='Order Now' onSubmit={orderNow} />
+          <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
+          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven"t made any order with Huelage</Text>
+          <SubmitButton label="Order Now" onSubmit={orderNow} />
         </View>
       ) : (
         <View style={styles.ordersBox}>
-          <View style={styles.subHeader} testID='order box header'>
+          <View style={styles.subHeader} testID="order box header">
             <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have made {mockOrderItems.length} orders in total</Text>
-            <CustomFilterBox defaultFilter='Status' filterItems={filterItems} />
+            <CustomFilterBox defaultFilter="Status" filterItems={filterItems} />
           </View>
           <Animated.FlatList
             contentContainerStyle={styles.statusList}
@@ -75,7 +75,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
             itemLayoutAnimation={Layout.springify().damping(15).delay(150)}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID='order element'>
+              <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID="order element">
                 <OrderSummaryElement {...item} />
               </TouchableOpacity>
             )}
@@ -91,13 +91,13 @@ export default OrderScreen;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   noOrdersBox: {
     gap: 30,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
   },
   noOrdersBoxText: {
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   subHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     flexDirection: "row",
     gap: 20,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     zIndex: 2
   },
   subHeaderText: {

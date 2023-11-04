@@ -3,7 +3,7 @@ import { REQUEST_PHONE_VERIFICATION } from "@api/graphql";
 import { getEntity, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomTextInput, SubmitButton } from "@components/auth";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { ResetPasswordInterface, UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +23,7 @@ const ChangePhoneScreen = () => {
   const insets = useSafeAreaInsets();
   const { navigate, goBack } = useNavigation<UserProfileTabProps>();
   const [requestVerification, { data, loading }] = useMutation(REQUEST_PHONE_VERIFICATION);
-  const { handleSubmit, control, setFocus, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
+  const { handleSubmit, control, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
   const onSubmit = async (data: ResetPasswordInterface) => {
     const input = { entityId: entity.id, phone: data.phone?.replace(/[\s-.]/g, "") };
     await requestVerification({ variables: { input } });

@@ -17,7 +17,7 @@ const SignupSelectScreen = () => {
   };
   return (
     <View style={styles.container} testID="signup select screen">
-      <ImageBackground style={styles.containerBg} source={require('@images/SignupSelectBg.png')} resizeMode="cover">
+      <ImageBackground style={styles.containerBg} source={require("@images/SignupSelectBg.png")} resizeMode="cover">
         <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} source={require("@images/onboard_logo.png")} testID="logo image" />
         <Text style={styles.infoText}>Select account option</Text>
         <View style={styles.authSelectWrapper}>
@@ -71,37 +71,37 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   authSelectWrapper: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 25,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginTop: 20,
     marginHorizontal: wp("15%")
   },
   authSelect: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     gap: 20,
     padding: 20,
     ...shadowStyle
   },
   authSelectImageWrapper: {
-    alignItems: 'center',
-    width: wp('50%'),
-    justifyContent: 'center'
+    alignItems: "center",
+    width: wp("50%"),
+    justifyContent: "center"
   },
   authSelectImage: {
     height: 130,
     width: 130
   },
   authSelectButton: {
-    alignItems: 'center',
-    backgroundColor: '#4CAF50',
+    alignItems: "center",
+    backgroundColor: "#4CAF50",
     borderRadius: 10,
     paddingVertical: 10,
     ...shadowStyle
   },
   authSelectText: {
-    color: '#FFF',
+    color: "#FFF",
     fontFamily: fonts.I_700,
     fontSize: 16
   }

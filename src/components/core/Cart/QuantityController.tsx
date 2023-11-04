@@ -1,8 +1,8 @@
-import { AntDesign } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts, shadowStyle } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { AntDesign } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts, shadowStyle } from "@utils";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ControllerInterface {
   quantity: number;
@@ -13,12 +13,12 @@ interface ControllerInterface {
 const QuantityController = ({ quantity, increase, decrease }: ControllerInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID='quantity controller'>
-      <TouchableOpacity onPress={decrease} testID='decrease quantity' style={[styles.buttonBox, { backgroundColor: color.mainGreen }]} >
+    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID="quantity controller">
+      <TouchableOpacity onPress={decrease} testID="decrease quantity" style={[styles.buttonBox, { backgroundColor: color.mainGreen }]} >
         <AntDesign name="minus" size={12} color="white" />
       </TouchableOpacity>
-      <Text style={[styles.quantity, { color: color.mainText }]} testID='quantity value'>{quantity}</Text>
-      <TouchableOpacity onPress={increase} testID='increase quantity' style={[styles.buttonBox, { backgroundColor: color.mainGreen }]} >
+      <Text style={[styles.quantity, { color: color.mainText }]} testID="quantity value">{quantity}</Text>
+      <TouchableOpacity onPress={increase} testID="increase quantity" style={[styles.buttonBox, { backgroundColor: color.mainGreen }]} >
         <AntDesign name="plus" size={12} color="white" />
       </TouchableOpacity>
     </View>
@@ -29,11 +29,11 @@ export default QuantityController;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 5,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
-    justifyContent: 'center',
+    justifyContent: "center",
     ...shadowStyle
   },
   buttonBox: {

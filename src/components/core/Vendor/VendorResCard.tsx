@@ -1,26 +1,26 @@
-import { mockRestaurants } from '@api/mock';
-import { CustomBox } from '@components/misc';
-import { useAppTheme } from '@hooks';
-import { UserVendorTabProps } from '@interfaces';
-import { useNavigation } from '@react-navigation/native';
-import { fonts } from '@utils';
-import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { mockRestaurants } from "@api/mock";
+import { CustomBox } from "@components/misc";
+import { useAppTheme } from "@hooks";
+import { UserVendorTabProps } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { fonts } from "@utils";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const VendorResCard = ({ resId }: { resId: string; }) => {
 	const { color } = useAppTheme();
 	const { navigate } = useNavigation<UserVendorTabProps>();
 	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
-		<View style={[styles.container]} testID='vendor res card'>
-			<CustomBox height={100} width={wp('100%') - 30} pad={6} r={10} />
-			<Image testID='restaurant image' style={styles.image} source={{ uri: restaurant?.imgUrl }} />
+		<View style={[styles.container]} testID="vendor res card">
+			<CustomBox height={100} width={wp("100%") - 30} pad={6} r={10} />
+			<Image testID="restaurant image" style={styles.image} source={{ uri: restaurant?.imgUrl }} />
 			<View style={styles.details}>
 				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
 				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{restaurant?.location}</Text>
 			</View>
-			<TouchableOpacity onPress={() => navigate("VendorHome", { vendorId: resId })} style={styles.buttonBox} testID='view vendor'>
+			<TouchableOpacity onPress={() => navigate("VendorHome", { vendorId: resId })} style={styles.buttonBox} testID="view vendor">
 				<Text style={styles.button}>View</Text>
 			</TouchableOpacity>
 		</View>
@@ -31,10 +31,10 @@ export default VendorResCard;
 
 const styles = StyleSheet.create({
 	container: {
-		alignItems: 'center',
-		flexDirection: 'row',
+		alignItems: "center",
+		flexDirection: "row",
 		gap: 15,
-		justifyContent: 'center',
+		justifyContent: "center",
 		paddingLeft: 20,
 		paddingRight: 10,
 		paddingVertical: 10
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	details: {
 		flex: 1,
 		gap: 5,
-		justifyContent: 'center'
+		justifyContent: "center"
 	},
 	image: {
 		borderRadius: 35,
@@ -58,15 +58,15 @@ const styles = StyleSheet.create({
 		fontSize: 12
 	},
 	buttonBox: {
-		alignItems: 'center',
+		alignItems: "center",
 		backgroundColor: "#4CAF50",
 		borderRadius: 10,
-		justifyContent: 'center',
+		justifyContent: "center",
 		paddingHorizontal: 25,
 		paddingVertical: 8
 	},
 	button: {
-		color: '#fff',
+		color: "#fff",
 		fontFamily: fonts.I_500,
 	}
 });

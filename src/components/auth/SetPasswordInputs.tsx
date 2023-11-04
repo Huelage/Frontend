@@ -1,10 +1,10 @@
-import { useAppSelector } from '@api/app/appHooks';
-import { getEntity } from '@api/slices/globalSlice';
-import { ResetPasswordInterface } from '@interfaces';
-import React from 'react';
-import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from 'react-hook-form';
-import { StyleSheet, View } from 'react-native';
-import CustomTextInput from './CustomTextInput';
+import { useAppSelector } from "@api/app/appHooks";
+import { getEntity } from "@api/slices/globalSlice";
+import { ResetPasswordInterface } from "@interfaces";
+import React from "react";
+import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import CustomTextInput from "./CustomTextInput";
 
 interface setPasswordInputsProps {
   control: Control<ResetPasswordInterface, any>;
@@ -18,7 +18,7 @@ interface setPasswordInputsProps {
 const SetPasswordInputs = ({ control, errors, setFocus, watch, submit }: setPasswordInputsProps) => {
   const isSignedIn = useAppSelector(getEntity);
   return (
-    <View style={styles.container} testID='set password inputs'>
+    <View style={styles.container} testID="set password inputs">
       {!!isSignedIn && (
         <Controller
           control={control}

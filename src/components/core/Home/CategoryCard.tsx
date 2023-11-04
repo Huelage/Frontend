@@ -1,12 +1,12 @@
-import { CustomBox, CustomImage } from '@components/misc';
-import { Feather } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { UserFoodInterface } from '@interfaces';
-import { fonts, numberToCurrency, withAnchorPoint } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { Extrapolate, interpolate, useAnimatedStyle } from 'react-native-reanimated';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CustomBox, CustomImage } from "@components/misc";
+import { Feather } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { UserFoodInterface } from "@interfaces";
+import { fonts, numberToCurrency, withAnchorPoint } from "@utils";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 interface CategoryCardInterface {
   category: UserFoodInterface;
@@ -16,10 +16,10 @@ interface CategoryCardInterface {
 }
 const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCardInterface) => {
   const { color } = useAppTheme();
-  const WIDTH = wp('67%');
-  const HEIGHT = hp('35%');
-  const p_method = category.pricingMethod === 'PRICE' ? 'Min Price' : 'Price';
-  const price = category.pricingMethod === 'PACKAGE' ? category.packageSizes[0].price : category.price;
+  const WIDTH = wp("67%");
+  const HEIGHT = hp("35%");
+  const p_method = category.pricingMethod === "PRICE" ? "Min Price" : "Price";
+  const price = category.pricingMethod === "PACKAGE" ? category.packageSizes[0].price : category.price;
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
       animationValue.value,
@@ -83,9 +83,9 @@ const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCard
   }, [idx]);
 
   return (
-    <Animated.View style={styles.container} testID='category card'>
+    <Animated.View style={styles.container} testID="category card">
       <Animated.View style={[styles.itemBox, cardStyle]}>
-        <CustomBox height={hp('40%')} width={wp('67%')} pad={6} r={15} />
+        <CustomBox height={hp("40%")} width={wp("67%")} pad={6} r={15} />
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
           <Text style={[styles.itemName, { color: color.mainText }]}>{category.name}</Text>
@@ -96,18 +96,18 @@ const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCard
           </View>
           <View style={styles.priceBox}>
             <Text style={[styles.itemPrice, { color: color.mainGreen }]}>{p_method}: </Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]} testID='item price'>{numberToCurrency(price)}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]} testID="item price">{numberToCurrency(price)}</Text>
           </View>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
-            <TouchableOpacity testID={'addToCart'} style={styles.itemBuyIcon} onPress={() => addToCart(category.id)}>
+            <TouchableOpacity testID={"addToCart"} style={styles.itemBuyIcon} onPress={() => addToCart(category.id)}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
           </View>
         </View>
       </Animated.View>
       <Animated.View testID="categoryImage" style={[styles.itemImageContainer, blockStyle]}>
-        <CustomImage imgUrl={category.imgUrl} imgSize={hp('25%') - 10} imgPad={5} imgFit='contain' style={styles.itemImage} shadowBlur={8} shadowColor={color.cardShadow} shadowHeight={10} />
+        <CustomImage imgUrl={category.imgUrl} imgSize={hp("25%") - 10} imgPad={5} imgFit="contain" style={styles.itemImage} shadowBlur={8} shadowColor={color.cardShadow} shadowHeight={10} />
       </Animated.View>
     </Animated.View>
   );
@@ -120,56 +120,56 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: hp('10%'),
+    marginTop: hp("10%"),
     marginBottom: 20
   },
   itemBox: {
-    width: wp('67%'),
-    height: hp('40%'),
+    width: wp("67%"),
+    height: hp("40%"),
   },
   resBox: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: wp('67%'),
-    height: hp('40%')
+    width: wp("67%"),
+    height: hp("40%")
   },
   itemBoxImgPlaceholder: {
     flex: 1
   },
   itemImageContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 60,
-    justifyContent: 'center',
-    position: 'absolute',
-    width: hp('25%'),
+    justifyContent: "center",
+    position: "absolute",
+    width: hp("25%"),
     zIndex: 9999
   },
   itemImage: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: hp('25%'),
-    borderRadius: hp('12.5%'),
-    height: hp('25%'),
+    alignItems: "center",
+    justifyContent: "center",
+    width: hp("25%"),
+    borderRadius: hp("12.5%"),
+    height: hp("25%"),
   },
   itemDetails: {
-    alignItems: 'center',
+    alignItems: "center",
     gap: 10,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingHorizontal: 10,
     paddingBottom: 8,
-    width: '100%'
+    width: "100%"
   },
   itemName: {
     fontFamily: fonts.I_700,
     fontSize: 22,
-    textAlign: 'center',
+    textAlign: "center",
     paddingHorizontal: 15
   },
   priceBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 15,
     width: "100%"
   },
@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   itemGetBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 15,
     paddingTop: 0,
-    width: '100%',
+    width: "100%",
   },
   itemPrice: {
     fontFamily: fonts.I_700,
@@ -191,11 +191,11 @@ const styles = StyleSheet.create({
     letterSpacing: .5
   },
   itemBuyIcon: {
-    alignItems: 'center',
-    backgroundColor: '#47CA4C',
+    alignItems: "center",
+    backgroundColor: "#47CA4C",
     borderRadius: 25,
     height: 40,
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 40
   }
 });
