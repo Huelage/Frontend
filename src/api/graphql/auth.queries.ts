@@ -93,10 +93,11 @@ export const VERIFY_OTP = gql(`
   }
 `);
 
-export const REFRESH_OTP = gql(`
+export const REQUEST_PHONE_VERIFICATION = gql(`
   mutation RefreshOTP ($input: UpdatePhoneInput!) {
     updatePhone(input: $input) {
       entityId
+      phone
     }
   }
 `);

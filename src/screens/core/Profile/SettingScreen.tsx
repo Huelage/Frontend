@@ -50,7 +50,7 @@ const SettingScreen = () => {
       title: "Account", Icon: () => <MaterialCommunityIcons name="account-cog-outline" size={24} color="white" />, options: [
         {
           options: [
-            { title: "Change Phone Number", isToggle: false, onPress: () => console.log("pressed") },
+            { title: "Change Phone Number", isToggle: false, onPress: () => navigate("ChangePhone") },
             { title: "Change Password", isToggle: false, onPress: () => navigate("ChangePass") },
             { title: "Delete Account", isToggle: false, danger: true, onPress: () => console.log("pressed") },
             { title: "Logout", isToggle: false, danger: true, onPress: () => dispatch(clearCredentials()) }
@@ -81,8 +81,7 @@ export default SettingScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    gap: 20
+    flex: 1
   },
   headerBox: {
     alignItems: "center",

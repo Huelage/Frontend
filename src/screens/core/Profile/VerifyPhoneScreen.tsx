@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { REFRESH_OTP, VERIFY_PHONE } from '@api/graphql';
+import { REQUEST_PHONE_VERIFICATION, VERIFY_PHONE } from '@api/graphql';
 import { getEntity, setCredentials } from '@api/slices/globalSlice';
 import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
@@ -22,9 +22,9 @@ const VerifyPhoneScreen = () => {
   if (!entity) return null;
   const phoneno = entity.phone;
   const [verifyCode, { data, loading }] = useMutation(VERIFY_PHONE);
-  const [refreshOTP] = useMutation(REFRESH_OTP);
+  const [refreshOTP] = useMutation(REQUEST_PHONE_VERIFICATION);
   const [phoneOtp, setPhoneOtp] = useState<string>("");
-  const { goBack } = useNavigation<UserProfileTabProps>();
+  const { goBack, navigate } = useNavigation<UserProfileTabProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const formattedNumber = `${phoneno?.slice(0, 4)} ${phoneno?.slice(4, 6)}******${phoneno?.slice(-2)}`;
 
@@ -49,7 +49,7 @@ const VerifyPhoneScreen = () => {
       (async () => await setItem("huelageRefreshToken", res.refreshToken))();
       dispatch(setCredentials({ entity: updatedEntity, accessToken: res.accessToken }));
       showSuccess("Phone number verified successfully");
-      goBack();
+      navigate("Setting");
     }
   }, [data, loading]);
   return (

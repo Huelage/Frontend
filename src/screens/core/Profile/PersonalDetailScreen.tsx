@@ -1,5 +1,5 @@
 import { useAppSelector } from "@api/app/appHooks";
-import { REFRESH_OTP, REQUEST_EMAIL_VERIFICATION } from "@api/graphql";
+import { REQUEST_PHONE_VERIFICATION, REQUEST_EMAIL_VERIFICATION } from "@api/graphql";
 import { getEntity } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { DetailElement } from "@components/core/Profile";
@@ -18,7 +18,7 @@ const PersonalDetailScreen = () => {
   if (!entity) return null;
   const insets = useSafeAreaInsets();
   const dismissKeyboard = () => Keyboard.dismiss();
-  const [sendPhoneOTP] = useMutation(REFRESH_OTP);
+  const [sendPhoneOTP] = useMutation(REQUEST_PHONE_VERIFICATION);
   const [sendEmailOTP] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const { goBack, navigate } = useNavigation<UserProfileTabProps>();
   const verifyEmail = async () => {
