@@ -1,12 +1,12 @@
-import { CustomBox } from '@components/misc';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { UserFoodInterface } from '@interfaces';
-import { fonts, numberToCurrency, priceMethod } from '@utils';
-import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeInUp, SlideOutLeft } from 'react-native-reanimated';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CustomBox } from "@components/misc";
+import { Feather, FontAwesome } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { UserFoodInterface } from "@interfaces";
+import { fonts, numberToCurrency, priceMethod } from "@utils";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const MenuItem = ({ item }: { item: UserFoodInterface; }) => {
   const { color } = useAppTheme();
@@ -19,8 +19,8 @@ const MenuItem = ({ item }: { item: UserFoodInterface; }) => {
       style={styles.container}
       testID="menu item"
     >
-      <CustomBox bgColor={color.cardBg2} width={wp('100%') - 30} height={110} r={20} pad={6} left={-4} />
-      <Image source={{ uri: item.imgUrl }} style={styles.itemImage} testID='menu item image' />
+      <CustomBox bgColor={color.cardBg2} width={wp("100%") - 30} height={110} r={20} pad={6} left={-4} />
+      <Image source={{ uri: item.imgUrl }} style={styles.itemImage} testID="menu item image" />
       <View style={styles.itemInfo} testID="menu item info">
         <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1}>{item.name}</Text>
         <Text style={[styles.itemPrice, { color: color.mainGreen }]} numberOfLines={1}>{numberToCurrency(price)} {priceMethod(item.pricingMethod, size)}</Text>

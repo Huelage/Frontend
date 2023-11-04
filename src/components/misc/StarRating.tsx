@@ -1,6 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
 type IconName = keyof typeof Ionicons.glyphMap;
 type IconProps = {
@@ -26,7 +26,7 @@ const StarRating = ({ color, gap, rating }: RatingProps) => {
     0: "ios-star-outline"
   };
   return (
-    <View style={[styles.container, { gap: gap || 3 }]} testID='star rating'>
+    <View style={[styles.container, { gap: gap || 3 }]} testID="star rating">
       {ratingArray.map((item: keyof IconProps, idx) => (
         <Ionicons testID={iconName[item]} key={idx} name={iconName[item]} size={16} color={color || "#F2DB06"} />
       ))}
@@ -38,8 +38,8 @@ export default StarRating;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center'
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center"
   }
 });

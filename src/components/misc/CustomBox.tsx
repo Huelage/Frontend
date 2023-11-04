@@ -1,7 +1,7 @@
-import { useAppTheme } from '@hooks';
-import { Canvas, RoundedRect, Shadow } from '@shopify/react-native-skia';
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import { useAppTheme } from "@hooks";
+import { Canvas, RoundedRect, Shadow } from "@shopify/react-native-skia";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 interface CustomBoxInterface {
   height: number;
@@ -27,7 +27,7 @@ export default React.memo(CustomBox);
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     top: 0
   }
 });

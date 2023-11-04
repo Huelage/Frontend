@@ -1,8 +1,8 @@
-import { BlurView } from 'expo-blur';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import RNModal from 'react-native-modal';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { BlurView } from "expo-blur";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import RNModal from "react-native-modal";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 interface ModalProps {
   isVisible: boolean;
@@ -15,7 +15,7 @@ const CustomModal = ({ isVisible, children }: ModalProps) => {
       isVisible={isVisible}
       animationIn="zoomIn"
       animationOut="zoomOut"
-      testID='custom modal'
+      testID="custom modal"
       backdropOpacity={0}
       backdropTransitionInTiming={500}
       backdropTransitionOutTiming={500}
@@ -37,16 +37,16 @@ const styles = StyleSheet.create({
     margin: 0
   },
   modalContainer: {
-    alignItems: 'center',
-    height: hp('100%'),
-    justifyContent: 'center',
-    width: wp('100%'),
+    alignItems: "center",
+    height: hp("100%"),
+    justifyContent: "center",
+    width: wp("100%"),
   },
   modalChildrenWrapper: {
-    alignItems: 'center',
-    height: hp('100%'),
-    justifyContent: 'center',
-    width: wp('100%'),
-    backgroundColor: 'rgba(0, 0, 0, .7)'
+    alignItems: "center",
+    height: hp("100%"),
+    justifyContent: "center",
+    width: wp("100%"),
+    backgroundColor: "rgba(0, 0, 0, .7)"
   }
 });

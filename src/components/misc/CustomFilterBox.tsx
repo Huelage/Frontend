@@ -1,12 +1,12 @@
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { FilterGroup, FilterItem } from '@interfaces';
-import { fonts } from '@utils';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import CustomBox from './CustomBox';
-import CustomPopupModal from './CustomPopupModal';
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { FilterGroup, FilterItem } from "@interfaces";
+import { fonts } from "@utils";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import CustomBox from "./CustomBox";
+import CustomPopupModal from "./CustomPopupModal";
 
 interface CustomFilterBoxInterface {
   filterItems: FilterGroup[];
@@ -45,8 +45,8 @@ const CustomFilterBox = ({ filterItems, defaultFilter }: CustomFilterBoxInterfac
     setCurrentGroupItems(filterItems.find(item => item.label === currentGroup)?.items || []);
   }, [currentGroup]);
   return (
-    <View testID='custom filter box'>
-      <TouchableOpacity style={styles.container} onPress={() => setIsFilterBoxVisible(!isFilterBoxVisible)} testID='toggle filter box'>
+    <View testID="custom filter box">
+      <TouchableOpacity style={styles.container} onPress={() => setIsFilterBoxVisible(!isFilterBoxVisible)} testID="toggle filter box">
         <CustomBox bgColor={color.cardBg2} height={50} r={50} pad={6} width={120} left={-6} />
         <Text style={[styles.titleText, { color: color.mainText }]}>Filter by</Text>
         <FontAwesome name="angle-down" size={18} color={color.mainText} />
@@ -59,25 +59,25 @@ const CustomFilterBox = ({ filterItems, defaultFilter }: CustomFilterBoxInterfac
             contentContainerStyle={styles.filterHeader}
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => setCurrentGroup(item)} style={[styles.filterHeaderButton, { borderColor: item === currentGroup ? color.mainGreen : "transparent" }]} testID='filter header item'>
+              <TouchableOpacity onPress={() => setCurrentGroup(item)} style={[styles.filterHeaderButton, { borderColor: item === currentGroup ? color.mainGreen : "transparent" }]} testID="filter header item">
                 <Text style={[styles.filterHeaderText, { color: item === currentGroup ? color.mainGreen : color.mainText }]}>{item}</Text>
               </TouchableOpacity>
             )}
-            testID='filter header list'
+            testID="filter header list"
           />
           <FlatList
             data={currentGroupItems}
             ItemSeparatorComponent={() => <View style={styles.filterItemSeperator} />}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleCheck(item)} testID='filter item'>
+              <TouchableOpacity onPress={() => handleCheck(item)} testID="filter item">
                 <View style={styles.filterItem}>
                   <Text style={[styles.filterItemText, { color: isChecked(item.id) ? color.mainGreen : color.mainText }]}>{item.name}</Text>
                   {isChecked(item.id) ? <Ionicons name="checkmark" size={24} color={color.mainGreen} testID={`${item.name} checkmark`} /> : null}
                 </View>
               </TouchableOpacity>
             )}
-            testID='filter items list'
+            testID="filter items list"
           />
         </View>
       </CustomPopupModal>
@@ -89,11 +89,11 @@ export default CustomFilterBox;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 50,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 5,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingHorizontal: 15,
     paddingVertical: 12,
     width: 110
@@ -103,16 +103,16 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   filterBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 20,
     padding: 20,
-    width: wp('100%')
+    width: wp("100%")
   },
   filterHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     borderColor: "#BCB5B5",
     borderBottomWidth: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 20,
     marginBottom: 10,
     width: "100%"
@@ -125,16 +125,16 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_700,
     fontSize: 16,
     letterSpacing: 1,
-    textTransform: 'capitalize'
+    textTransform: "capitalize"
   },
   filterItem: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     height: 45,
-    width: wp('100%') - 60,
+    width: wp("100%") - 60,
   },
   filterItemSeperator: {
     height: 1,
