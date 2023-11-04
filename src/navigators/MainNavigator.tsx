@@ -17,12 +17,12 @@ const MainNavigator = () => {
   const nativeTheme = useColorScheme();
 
   useEffect(() => {
-    if (themeType === 'system')
+    if (themeType === "system")
       dispatch(switchTheme(nativeTheme || "dark"));
   }, [nativeTheme]);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
+      <StatusBar style={theme === "dark" ? "light" : "dark"} />
       <NavigationContainer theme={theme === "dark" ? DarkTheme : DefaultTheme}>
         {!!isSignedIn ? <StackNavigator /> : <AuthStackNavigator />}
       </NavigationContainer>
