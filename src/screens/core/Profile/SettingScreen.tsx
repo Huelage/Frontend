@@ -15,7 +15,7 @@ const SettingScreen = () => {
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
   const globalState = useAppSelector(getGlobalState);
-  const { goBack } = useNavigation<UserProfileTabProps>();
+  const { goBack, navigate } = useNavigation<UserProfileTabProps>();
   const settings: SettingElementInterface[] = useMemo(() => ([
     {
       title: "General", Icon: () => <Fontisto name="equalizer" size={20} color="white" style={{ transform: [{ rotate: "-90deg" }] }} />, options: [
@@ -51,7 +51,7 @@ const SettingScreen = () => {
         {
           options: [
             { title: "Change Phone Number", isToggle: false, onPress: () => console.log("pressed") },
-            { title: "Change Password", isToggle: false, onPress: () => console.log("pressed") },
+            { title: "Change Password", isToggle: false, onPress: () => navigate("ChangePass") },
             { title: "Delete Account", isToggle: false, danger: true, onPress: () => console.log("pressed") },
             { title: "Logout", isToggle: false, danger: true, onPress: () => dispatch(clearCredentials()) }
           ]

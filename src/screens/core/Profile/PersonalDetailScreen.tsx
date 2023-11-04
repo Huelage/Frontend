@@ -38,13 +38,11 @@ const PersonalDetailScreen = () => {
         </TouchableOpacity>
         <Text style={[styles.headerText, { color: color.mainText }]}>Personal Details</Text>
       </View>
-      <ScrollView>
-        <View style={styles.detailBody}>
-          <DetailElement label="First Name" value={entity.firstName as string} />
-          <DetailElement label="Last Name" value={entity.lastName as string} />
-          <DetailElement label="Phone Number" value={entity.phone} verifible isVerified={entity.isPhoneVerified} verify={verifyPhone} />
-          <DetailElement label="Email Address" value={entity.email} verifible isVerified={entity.isEmailVerified} verify={verifyEmail} />
-        </View>
+      <ScrollView contentContainerStyle={styles.detailBody}>
+        <DetailElement label="First Name" value={entity.firstName as string} />
+        <DetailElement label="Last Name" value={entity.lastName as string} />
+        <DetailElement label="Phone Number" value={entity.phone} verifible isVerified={entity.isPhoneVerified} verify={verifyPhone} />
+        <DetailElement label="Email Address" value={entity.email} verifible isVerified={entity.isEmailVerified} verify={verifyEmail} />
       </ScrollView>
     </View>
   );
@@ -54,8 +52,7 @@ export default PersonalDetailScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    gap: 20
+    flex: 1
   },
   headerBox: {
     alignItems: "center",
@@ -77,7 +74,8 @@ const styles = StyleSheet.create({
   detailBody: {
     flex: 1,
     gap: 25,
+    paddingBottom: 30,
     paddingHorizontal: 20,
-    paddingVertical: 30
+    paddingTop: 50
   }
 });
