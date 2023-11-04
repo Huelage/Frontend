@@ -1,4 +1,4 @@
-import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REFRESH_OTP, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_PHONE_VERIFICATION, REQUEST_EMAIL_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
@@ -158,17 +158,17 @@ export const MOCK_VERIFY_OTP = [
   }
 ];
 
-export const MOCK_REFRESH_OTP = [
+export const MOCK_REQUEST_PHONE_VERIFICATION = [
   {
     request: {
-      query: REFRESH_OTP,
+      query: REQUEST_PHONE_VERIFICATION,
       variables: {
         input: { phone: "+2349058731812", entityId: "123" }
       }
     },
     result: {
       data: {
-        updatePhone: { entityId: "123" }
+        updatePhone: { entityId: "123", phone: "+2349058731812" }
       }
     }
   }
