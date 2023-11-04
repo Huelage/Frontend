@@ -24,7 +24,7 @@ export interface SignUpInfoInterface {
 }
 export interface ResetPasswordInterface {
   email?: string;
-  newPhone?: string;
+  phone?: string;
   password?: string;
   oldPassword?: string;
   confirmPassword?: string;

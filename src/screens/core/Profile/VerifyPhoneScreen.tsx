@@ -15,11 +15,11 @@ import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const VerifyPhoneScreen = () => {
+  const entity = useAppSelector(getEntity);
+  if (!entity) return null;
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
-  const entity = useAppSelector(getEntity);
-  if (!entity) return null;
   const phoneno = entity.phone;
   const [verifyCode, { data, loading }] = useMutation(VERIFY_PHONE);
   const [refreshOTP] = useMutation(REQUEST_PHONE_VERIFICATION);
