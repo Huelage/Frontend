@@ -5,7 +5,7 @@ import { ForgotPasswordScreen, LoginScreen, OTPScreen, OnBoardScreen, SetPasswor
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { enableBiometrics, getBiometrics, getItem, loginWithBiometrics } from "@utils";
 import { Alert, Keyboard } from "react-native";
-import { MOCK_LOGIN_USER, MOCK_LOGIN_VENDOR_SAVED, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_SET_PASSWORD, MOCK_SIGNUP_USER, MOCK_SIGNUP_VENDOR, MOCK_VERIFY_EMAIL, MOCK_VERIFY_OTP } from "../gql.mocks";
+import { MOCK_LOGIN_USER, MOCK_LOGIN_VENDOR_SAVED, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_SET_PASSWORD, MOCK_SIGNUP_USER, MOCK_SIGNUP_VENDOR, MOCK_VERIFY_EMAIL, MOCK_VERIFY_OTP } from "../gql.mocks";
 import { renderApollo } from "../testhelpers";
 
 describe("When Testing Authentication Screens: ", () => {
@@ -423,7 +423,7 @@ describe("When Testing Authentication Screens: ", () => {
       (getItem as jest.Mock).mockReturnValue("123");
       (useRoute as jest.Mock).mockReturnValue({ params: { phoneno: "+234 905 873 1812" } });
       (useNavigation as jest.Mock).mockReturnValue({ goBack: jest.fn() });
-      renderApollo(<OTPScreen />, MOCK_REFRESH_OTP);
+      renderApollo(<OTPScreen />, MOCK_REQUEST_PHONE_VERIFICATION);
       jest.advanceTimersByTime(58000);
       await waitFor(() => {
         const resendCodeButton = screen.getByText("Resend Code");

@@ -21,6 +21,9 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
   const toggleShowText = () => setShowText(show => !show);
   return (
     <View style={styles.container} testID='custom text input'>
+      {isPhone ? (
+        <Text style={[styles.placeholder, { color: color.mainTextDim }]}>{label}</Text>
+      ) : null}
       <View style={[styles.inputContainer, error && styles.inputContainerError]}>
         <View style={styles.input}>
           {isPhone ? (
@@ -31,8 +34,8 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
               ref={inputProps.innerRef || undefined}
               textProps={{
                 style: [styles.textInput, { color: color.mainText }],
-                placeholder: label, placeholderTextColor: "#BCB5B5",
-                selectionColor: error ? "#d24343" : "#47CA4C",
+                placeholder: label, placeholderTextColor: color.mainTextDim,
+                selectionColor: error ? color.danger : color.mainGreen,
                 secureTextEntry: !showText,
                 autoCapitalize: inputProps.autoCapitalize || "none",
                 autoCorrect: inputProps.autoCorrect || false,
@@ -48,8 +51,8 @@ const CustomTextInput = ({ label, isPhone, isPass, error, ...inputProps }: Custo
               secureTextEntry={!showText}
               style={[styles.textInput, { color: color.mainText }]}
               placeholder={label}
-              placeholderTextColor="#BCB5B5"
-              selectionColor={error ? "#d24343" : "#47CA4C"}
+              placeholderTextColor={color.mainTextDim}
+              selectionColor={error ? color.danger : color.mainGreen}
               ref={inputProps.innerRef || undefined}
               {...inputProps}
             />
@@ -117,5 +120,9 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_400,
     fontSize: 16,
     height: 30
+  },
+  placeholder: {
+    fontFamily: fonts.I_400,
+    fontSize: 14
   }
 });

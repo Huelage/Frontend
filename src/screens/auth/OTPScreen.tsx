@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@api/app/appHooks';
-import { REFRESH_OTP, VERIFY_OTP } from '@api/graphql';
+import { REQUEST_PHONE_VERIFICATION, VERIFY_OTP } from '@api/graphql';
 import { getVendorStatus, setCredentials } from '@api/slices/globalSlice';
 import { useMutation } from '@apollo/client';
 import { CustomPinInput, SubmitButton } from '@components/auth';
@@ -21,7 +21,7 @@ const OTPScreen = () => {
   const isVendor = useAppSelector(getVendorStatus);
   const { params: { phoneno } } = useRoute<OTPRouteProps>();
   const [verifyCode, { data, loading }] = useMutation(VERIFY_OTP);
-  const [refreshOTP] = useMutation(REFRESH_OTP);
+  const [refreshOTP] = useMutation(REQUEST_PHONE_VERIFICATION);
   const [phoneOtp, setPhoneOtp] = useState<string>("");
   const { goBack } = useNavigation<AuthNavigationProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);

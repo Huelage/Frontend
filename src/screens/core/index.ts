@@ -6,6 +6,7 @@ export { default as OrderScreen } from "./Orders/OrderScreen";
 // Profile Screens
 export { default as AboutScreen } from "./Profile/AboutScreen";
 export { default as ChangePasswordScreen } from "./Profile/ChangePasswordScreen";
+export { default as ChangePhoneScreen } from "./Profile/ChangePhoneScreen";
 export { default as FAQScreen } from "./Profile/FAQScreen";
 export { default as HelpScreen } from "./Profile/HelpScreen";
 export { default as LocationScreen } from "./Profile/LocationScreen";
@@ -19,4 +20,3 @@ export { default as WalletScreen } from "./Profile/WalletScreen";
 // Vendor Screens
 export { default as ItemDetailScreen } from "./Vendors/ItemDetailScreen";
 export { default as VendorScreen } from "./Vendors/VendorScreen";
-

@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AboutScreen, CartScreen, ChangePasswordScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, CartScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
-import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REFRESH_OTP, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
+import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
 import { entity, initialState, renderApollo, renderNavigator } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
@@ -224,6 +224,55 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       });
     });
 
+    describe("<ChangePhoneScreen />: ", () => {
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        renderApollo(<ChangePhoneScreen />, []);
+      });
+      // Testing UI
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("change phone screen")).toBeOnTheScreen();
+      });
+      it("should not render the screen if the user is not authenticated", () => {
+        (useAppSelector as jest.Mock).mockReturnValue(null);
+        renderApollo(<ChangePhoneScreen />, []);
+        expect(screen.queryByTestId("change phone screen")).toBeNull();
+      });
+      it("should render the header box", () => {
+        expect(screen.getByTestId("header box")).toBeOnTheScreen();
+      });
+      it("should render the phone number input using the CustomTextInput component", () => {
+        expect(screen.getByTestId("custom text input")).toBeOnTheScreen();
+        expect(screen.getByPlaceholderText("Phone Number")).toBeOnTheScreen();
+      });
+      it("should render the SubmitButton component", () => {
+        expect(screen.getByTestId("submit button")).toBeOnTheScreen();
+      });
+      // Testing Functionality
+      it("should dismiss the keyboard when the screen is touched", () => {
+        const dismissKeyboard = jest.spyOn(Keyboard, "dismiss");
+        renderApollo(<ChangePhoneScreen />, []);
+        const screenContainer = screen.getByTestId("change phone screen");
+        fireEvent(screenContainer, "onTouchStart");
+        expect(dismissKeyboard).toBeCalled();
+      });
+      it("should call the submit function when the submit button is pressed", async () => {
+        const navigate = jest.fn(), dispatch = jest.fn();
+        (useAppSelector as jest.Mock).mockReturnValue(entity);
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+        (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
+        renderApollo(<ChangePhoneScreen />, MOCK_REQUEST_PHONE_VERIFICATION);
+        const button = screen.getByTestId("submit button");
+        const input = screen.getByPlaceholderText("Phone Number");
+        fireEvent.changeText(input, "+234 905 873 1812");
+        fireEvent.press(button);
+        await waitFor(() => {
+          expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity } });
+          expect(navigate).toBeCalledWith("VerifyPhone");
+        });
+      });
+    });
+
     describe("<FAQScreen />: ", () => {
       beforeEach(() => {
         render(<FAQScreen />);
@@ -313,7 +362,7 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         renderApollo(<PersonalDetailScreen />, []);
       });
       // Testing UI
-      it("should render the component correctly", () => {
+      it("should render the screen correctly", () => {
         expect(screen.getByTestId("personal detail screen")).toBeOnTheScreen();
       });
       it("should not render component if user is not logged in", () => {
@@ -351,12 +400,12 @@ describe("When Testing Core(User Flow) Screens: ", () => {
           expect(navigate).toBeCalledWith("VerifyEmail");
         });
       });
-      it("should call the VerifyEmail function when the email element is pressed and email is not verified", async () => {
+      it("should call the VerifyPhone function when the phone element is pressed and phone is not verified", async () => {
         const navigate = jest.fn();
         (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
         const user = { ...entity, isPhoneVerified: false };
         (useAppSelector as jest.Mock).mockReturnValue(user);
-        renderApollo(<PersonalDetailScreen />, MOCK_REFRESH_OTP);
+        renderApollo(<PersonalDetailScreen />, MOCK_REQUEST_PHONE_VERIFICATION);
         const phoneElement = screen.getByTestId("unverified");
         fireEvent.press(phoneElement);
         await waitFor(() => {
@@ -399,9 +448,10 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     });
 
     describe("<SettingScreen />: ", () => {
-      const dispatch = jest.fn();
+      const dispatch = jest.fn(), navigate = jest.fn();
       const logSpy = jest.spyOn(console, "log");
       beforeEach(() => {
+        (useNavigation as jest.Mock).mockReturnValue({ navigate });
         (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
         (useAppSelector as jest.Mock).mockReturnValue(initialState);
         render(<SettingScreen />);
@@ -451,12 +501,12 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       it("should call the appropriate onPress function when the change phone number option is pressed", () => {
         const changePhoneOption = screen.getByTestId(/change phone number setting option item/i);
         fireEvent.press(changePhoneOption);
-        expect(logSpy).toBeCalledWith("pressed");
+        expect(navigate).toBeCalledWith("ChangePhone");
       });
       it("should call the appropriate onPress function when the change password option is pressed", () => {
         const changePasswordOption = screen.getByTestId(/change password setting option item/i);
         fireEvent.press(changePasswordOption);
-        expect(logSpy).toBeCalledWith("pressed");
+        expect(navigate).toBeCalledWith("ChangePass");
       });
       it("should call the appropriate onPress function when the delete account option is pressed", () => {
         const deleteAccountOption = screen.getByTestId(/delete account setting option item/i);
@@ -622,11 +672,11 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         expect(dismissKeyboard).toBeCalled();
       });
       it("should run the verifyOtp function when the submit button is pressed and user is not a vendor", async () => {
-        const dispatch = jest.fn(), goBack = jest.fn();
+        const dispatch = jest.fn(), navigate = jest.fn();
         (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
         const user = { ...entity, isPhoneVerified: false };
         (useAppSelector as jest.Mock).mockReturnValue(user);
-        (useNavigation as jest.Mock).mockReturnValue({ goBack });
+        (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
         renderApollo(<VerifyPhoneScreen />, MOCK_VERIFY_PHONE);
         const button = screen.getByTestId("submit button");
         const input = screen.getByTestId("custom pin input");
@@ -636,21 +686,21 @@ describe("When Testing Core(User Flow) Screens: ", () => {
           expect(setItem).toBeCalledWith("huelageRefreshToken", "123");
           expect(dispatch).toBeCalledWith({ type: "global/setCredentials", payload: { entity: { ...user, isPhoneVerified: true }, accessToken: "123" } });
           expect(showSuccess).toBeCalledWith("Phone number verified successfully");
-          expect(goBack).toBeCalled();
+          expect(navigate).toBeCalledWith("Setting");
         });
       });
       it("should not run the submit function if the otp code is not 4 digits", async () => {
-        const goBack = jest.fn();
+        const navigate = jest.fn();
         const user = { ...entity, isPhoneVerified: false };
         (useAppSelector as jest.Mock).mockReturnValue(user);
-        (useNavigation as jest.Mock).mockReturnValue({ goBack });
+        (useNavigation as jest.Mock).mockReturnValue({ navigate });
         renderApollo(<VerifyPhoneScreen />, MOCK_VERIFY_PHONE);
         const submitButton = screen.getByTestId("submit button");
         const input = screen.getByTestId("custom pin input");
         fireEvent.changeText(input, "123");
         fireEvent.press(submitButton);
         await waitFor(() => {
-          expect(goBack).not.toBeCalled();
+          expect(navigate).not.toBeCalled();
         });
       });
       it("should call the resend code function when the resend code button is pressed", async () => {
@@ -659,7 +709,7 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         const user = { ...entity, isPhoneVerified: false };
         (useAppSelector as jest.Mock).mockReturnValue(user);
         (useNavigation as jest.Mock).mockReturnValue({ goBack });
-        renderApollo(<VerifyPhoneScreen />, MOCK_REFRESH_OTP);
+        renderApollo(<VerifyPhoneScreen />, MOCK_REQUEST_PHONE_VERIFICATION);
         jest.advanceTimersByTime(58000);
         await waitFor(() => {
           const resendCodeButton = screen.getByText("Resend Code");
