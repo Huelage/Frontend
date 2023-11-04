@@ -1,16 +1,16 @@
-import { REQUEST_EMAIL_VERIFICATION, VERIFY_EMAIL } from '@api/graphql';
-import { useMutation } from '@apollo/client';
-import { CustomPinInput, SubmitButton } from '@components/auth';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { AuthNavigationProps, VerifyEmailRouteProps } from '@interfaces';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { fonts } from '@utils';
-import React, { useEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import CountDown from 'react-native-countdown-fixed';
-import Animated from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { REQUEST_EMAIL_VERIFICATION, VERIFY_EMAIL } from "@api/graphql";
+import { useMutation } from "@apollo/client";
+import { CustomPinInput, SubmitButton } from "@components/auth";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { AuthNavigationProps, VerifyEmailRouteProps } from "@interfaces";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { fonts } from "@utils";
+import React, { useEffect, useState } from "react";
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CountDown from "react-native-countdown-fixed";
+import Animated from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const VerifyEmailScreen = () => {
   const { color } = useAppTheme();
@@ -56,7 +56,7 @@ const VerifyEmailScreen = () => {
         <CustomPinInput value={otpcode} onChange={onChange} onSubmit={onSubmit} />
         <SubmitButton label="Verify" isLoading={loading} onSubmit={onSubmit} />
         <View style={styles.resendBox}>
-          <Text style={[styles.resendText, { color: color.mainText }]}>Didn't receive a code?</Text>
+          <Text style={[styles.resendText, { color: color.mainText }]}>Didn"t receive a code?</Text>
           {isTimerActive ? (
             <CountDown
               digitStyle={styles.countdownTimer}
@@ -64,8 +64,8 @@ const VerifyEmailScreen = () => {
               onFinish={() => setIsTimerActive(false)}
               separatorStyle={{ ...styles.resendTimer, color: color.mainGreen }}
               showSeparator
-              timeToShow={['M', 'S']}
-              timeLabels={{ s: '' }}
+              timeToShow={["M", "S"]}
+              timeLabels={{ s: "" }}
               until={59}
             />
           ) : (
@@ -120,25 +120,25 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   resendBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 4,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingTop: 20
   },
   resendText: {
     fontFamily: fonts.I_500,
     fontSize: 14,
-    textAlign: 'center'
+    textAlign: "center"
   },
   resendTimer: {
     fontFamily: fonts.I_600,
     fontSize: 14
   },
   resendTextBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 30
   },
   countdownTimer: {

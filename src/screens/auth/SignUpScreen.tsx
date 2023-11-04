@@ -56,27 +56,25 @@ const SignUpScreen = () => {
           <Text style={[styles.welcomeInfoText, { color: color.mainGreen }]}>Please fill in your details</Text>
         </View>
       </View>
-      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer}>
-        <View style={styles.inputBox}>
-          <SignupInputs control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
-          {isVendor && (
-            <CheckBox
-              checked={acceptTerms}
-              center
-              onPress={() => setAcceptTerms(!acceptTerms)}
-              iconType="material-community"
-              checkedIcon="checkbox-marked"
-              uncheckedIcon="checkbox-blank-outline"
-              checkedColor={color.mainGreen}
-              title="I accept all terms and condition"
-              testID="terms and condition"
-              textStyle={[styles.termsText, { color: color.mainText }]}
-              containerStyle={styles.termsContainer}
-            />
-          )}
-          <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
-          {!isVendor && <SocialLogin page="SU" />}
-        </View>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} extraScrollHeight={50} style={styles.inputContainer} contentContainerStyle={styles.inputBox}>
+        <SignupInputs control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
+        {isVendor && (
+          <CheckBox
+            checked={acceptTerms}
+            center
+            onPress={() => setAcceptTerms(!acceptTerms)}
+            iconType="material-community"
+            checkedIcon="checkbox-marked"
+            uncheckedIcon="checkbox-blank-outline"
+            checkedColor={color.mainGreen}
+            title="I accept all terms and condition"
+            testID="terms and condition"
+            textStyle={[styles.termsText, { color: color.mainText }]}
+            containerStyle={styles.termsContainer}
+          />
+        )}
+        <SubmitButton label="CREATE ACCOUNT" onSubmit={handleSubmit(onSubmit)} />
+        {!isVendor && <SocialLogin page="SU" />}
       </KeyboardAwareScrollView>
       <AuthNavigate page="SU" />
     </View>
@@ -114,7 +112,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
-    gap: 25,
     paddingHorizontal: wp("8%") + 8,
     paddingVertical: hp("4%"),
     width: "100%",
