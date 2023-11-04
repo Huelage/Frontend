@@ -1,8 +1,8 @@
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 
 interface OrderDetailDeliveryInterface {
   fromAddress: string;
@@ -12,7 +12,7 @@ interface OrderDetailDeliveryInterface {
 const OrderDetailDelivery = ({ fromAddress, toAddress }: OrderDetailDeliveryInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container} testID='order detail delivery'>
+    <View style={styles.container} testID="order detail delivery">
       <Text style={[styles.elementHeader, { color: color.mainText }]}>Delivery details</Text>
       <View style={styles.elementBody}>
         <View style={styles.element}>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   container: {
     gap: 15,
     paddingHorizontal: 20,
-    width: widthPercentageToDP('100%') - 40
+    width: widthPercentageToDP("100%") - 40
   },
   elementHeader: {
     fontFamily: fonts.I_700,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
     gap: 5
   },
   element: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 10,
   },
   elementIcon: {

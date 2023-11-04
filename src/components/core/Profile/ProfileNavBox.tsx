@@ -1,9 +1,9 @@
-import { CustomBox } from '@components/misc';
-import { ProfileElementInterface } from '@interfaces';
-import React, { useState } from 'react';
-import { FlatList, LayoutChangeEvent, StyleSheet, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import ProfileBoxElement from './ProfileBoxElement';
+import { CustomBox } from "@components/misc";
+import { ProfileElementInterface } from "@interfaces";
+import React, { useState } from "react";
+import { FlatList, LayoutChangeEvent, StyleSheet, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import ProfileBoxElement from "./ProfileBoxElement";
 
 interface ProfileNavBoxInterface {
   elements: ProfileElementInterface[];
@@ -16,8 +16,8 @@ const ProfileNavBox = ({ elements }: ProfileNavBoxInterface) => {
     setHeight(height + 30);
   };
   return (
-    <View style={styles.container} testID='profile nav box'>
-      <CustomBox width={wp('100%') - 15} height={height} pad={6} r={10} />
+    <View style={styles.container} testID="profile nav box">
+      <CustomBox width={wp("100%") - 15} height={height} pad={6} r={10} />
       <FlatList
         data={elements}
         scrollEnabled={false}
@@ -25,7 +25,7 @@ const ProfileNavBox = ({ elements }: ProfileNavBoxInterface) => {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         onLayout={handleLayout}
         renderItem={({ item }) => <ProfileBoxElement {...item} />}
-        testID='profile nav list'
+        testID="profile nav list"
       />
     </View>
   );
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   separator: {
-    backgroundColor: 'rgba(136, 136, 136, 0.3)',
+    backgroundColor: "rgba(136, 136, 136, 0.3)",
     height: 1,
     marginHorizontal: 20
   }

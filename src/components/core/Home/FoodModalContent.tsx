@@ -1,12 +1,12 @@
-import restuarants from '@api/mock/mockRestaurants';
-import { CustomImage } from '@components/misc';
-import { Ionicons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import FoodModalResCard from './FoodModalResCard';
+import restuarants from "@api/mock/mockRestaurants";
+import { CustomImage } from "@components/misc";
+import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import FoodModalResCard from "./FoodModalResCard";
 
 interface ModalInterface {
   name: string;
@@ -18,12 +18,12 @@ interface ModalInterface {
 const FoodModalContent = ({ imgUrl, name, description, close }: ModalInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: color.modalBg }]} testID='food modal content'>
+    <View style={[styles.container, { backgroundColor: color.modalBg }]} testID="food modal content">
       <View style={styles.foodImageBox}>
-        <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)} testID='close button'>
+        <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)} testID="close button">
           <Ionicons name="close" size={30} color="white" />
         </TouchableOpacity>
-        <CustomImage imgUrl={imgUrl} imgSize={wp('65%')} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor='rgba(76, 175, 80, 0.4)' />
+        <CustomImage imgUrl={imgUrl} imgSize={wp("65%")} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor="rgba(76, 175, 80, 0.4)" />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
@@ -36,7 +36,7 @@ const FoodModalContent = ({ imgUrl, name, description, close }: ModalInterface) 
         renderItem={({ item }) => (
           <FoodModalResCard resId={item.id} />
         )}
-        testID='available at list'
+        testID="available at list"
         contentContainerStyle={styles.foodBuyFromSection}
       />
     </View>
@@ -46,32 +46,32 @@ export default FoodModalContent;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: "white",
     borderRadius: 10,
     maxHeight: hp("70%"),
-    justifyContent: 'center',
+    justifyContent: "center",
     width: wp("90%")
   },
   foodImageBox: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: "#4CAF50",
     borderRadius: 10,
     height: 100,
-    justifyContent: 'center',
-    width: '100%'
+    justifyContent: "center",
+    width: "100%"
   },
   closeIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10
   },
   foodImage: {
     flex: 1,
-    height: wp('65%'),
-    position: 'absolute',
+    height: wp("65%"),
+    position: "absolute",
     top: -50,
-    width: wp('65%')
+    width: wp("65%")
   },
   foodDetailsBox: {
     gap: 10,
@@ -81,13 +81,13 @@ const styles = StyleSheet.create({
   foodName: {
     fontFamily: fonts.I_700,
     fontSize: 25,
-    textAlign: 'center'
+    textAlign: "center"
   },
   foodDesc: {
-    color: '#626262',
+    color: "#626262",
     fontFamily: fonts.I_500I,
     fontSize: 13,
-    textAlign: 'center'
+    textAlign: "center"
   },
   foodBuyFromSection: {
     gap: 10,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingBottom: 10,
     paddingHorizontal: 20,
-    textAlign: 'left',
-    width: '100%'
+    textAlign: "left",
+    width: "100%"
   }
 });

@@ -1,10 +1,10 @@
-import { CustomBox } from '@components/misc';
-import { MaterialIcons, Octicons } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { fonts } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { CustomBox } from "@components/misc";
+import { MaterialIcons, Octicons } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { fonts } from "@utils";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 interface DetailElementInterface {
   label: string;
@@ -17,19 +17,19 @@ interface DetailElementInterface {
 const DetailElement = ({ label, value, verifible, isVerified, verify }: DetailElementInterface) => {
   const { color } = useAppTheme();
   return (
-    <View style={styles.container} testID='detail element'>
+    <View style={styles.container} testID="detail element">
       <Text style={[styles.elementHeader, { color: color.mainText }]}>{label}</Text>
       <View style={styles.elementBody}>
-        <CustomBox width={wp('100%') - 30} height={90} pad={6} r={10} />
+        <CustomBox width={wp("100%") - 30} height={90} pad={6} r={10} />
         <Text style={[styles.elementText, { color: color.mainText }]}>{value}</Text>
         {verifible ? (
           isVerified ? (
-            <View testID='verified'>
+            <View testID="verified">
               <MaterialIcons name="verified" size={24} color="#1A30FF" />
             </View>
           ) : (
-            <TouchableOpacity onPress={verify} testID='unverified'>
-              <Octicons name="unverified" size={24} color="#E93223" />
+            <TouchableOpacity onPress={verify} testID="unverified">
+              <Octicons name="unverified" size={24} color={color.danger} />
             </TouchableOpacity>
           )
         ) : null}
@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     left: 10
   },
   elementBody: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 30
   },
   elementText: {

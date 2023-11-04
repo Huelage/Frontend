@@ -1,14 +1,14 @@
-import { CustomBox } from '@components/misc';
-import { FontAwesome } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { OrderInterface } from '@interfaces';
-import { OrderDelivered, OrderEnRoute, OrderPreparing, OrderReady, OrderReceived, fonts } from '@utils';
-import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, LayoutChangeEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import TrackItem from './TrackItem';
+import { CustomBox } from "@components/misc";
+import { FontAwesome } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { OrderInterface } from "@interfaces";
+import { OrderDelivered, OrderEnRoute, OrderPreparing, OrderReady, OrderReceived, fonts } from "@utils";
+import dayjs from "dayjs";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { FlatList, LayoutChangeEvent, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import TrackItem from "./TrackItem";
 
 interface TrackOrderInterface {
   order: OrderInterface;
@@ -44,24 +44,24 @@ const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderI
     progress.value = withTiming(showTrackBox ? 1 : 0, { duration: 500 });
   }, [showTrackBox]);
   return (
-    <View style={styles.container} testID='track order'>
-      <TouchableOpacity onPress={() => setShowTrackBox(!showTrackBox)} style={styles.toggleBox} testID='toggle box'>
+    <View style={styles.container} testID="track order">
+      <TouchableOpacity onPress={() => setShowTrackBox(!showTrackBox)} style={styles.toggleBox} testID="toggle box">
         <CustomBox width={150} height={65} r={10} pad={6} />
         <Text style={[styles.toggleText, { color: color.mainText }]}>Track order</Text>
         <Animated.View style={animatedIcon}>
           <FontAwesome name="angle-up" size={22} color={color.mainText} />
         </Animated.View>
       </TouchableOpacity>
-      <Animated.View style={[styles.trackBox, animatedTrackBox]} testID='track box'>
-        <CustomBox bgColor={color.cardBg2} width={wp('100%') - 33} height={trackHeight + 220} r={10} pad={6} />
+      <Animated.View style={[styles.trackBox, animatedTrackBox]} testID="track box">
+        <CustomBox bgColor={color.cardBg2} width={wp("100%") - 33} height={trackHeight + 220} r={10} pad={6} />
         <View style={[styles.trackHeader, { borderColor: color.mainGreen }]}>
           <View style={styles.orderInfo}>
             <Text style={[styles.orderId, { color: color.mainText }]}>Order ID: {id}</Text>
             <Text style={[styles.statusBox, { color: color.mainGreen, borderColor: color.mainGreen }]}>{status}</Text>
           </View>
           <View style={styles.orderTimeInfo}>
-            <Text style={[styles.orderTime, { color: color.mainText }]}>Order Date: {dayjs(orderedAt).format('D MMM, YYYY | hh:mma')}</Text>
-            <Text style={[styles.orderEstimate, { color: color.mainGreen }]}>Estimated delivery: {dayjs(orderedAt).add(1, 'h').format('D MMM, YYYY | hh:mma')}</Text>
+            <Text style={[styles.orderTime, { color: color.mainText }]}>Order Date: {dayjs(orderedAt).format("D MMM, YYYY | hh:mma")}</Text>
+            <Text style={[styles.orderEstimate, { color: color.mainGreen }]}>Estimated delivery: {dayjs(orderedAt).add(1, "h").format("D MMM, YYYY | hh:mma")}</Text>
           </View>
         </View>
         <View>
@@ -75,9 +75,9 @@ const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderI
             renderItem={({ item }) => (
               <TrackItem {...item} status={status} updatedAt={updatedAt} />
             )}
-            testID='track item list'
+            testID="track item list"
           />
-          <View style={[styles.trackLine, { borderColor: color.mainGreen, height: trackHeight }]} testID='track line' />
+          <View style={[styles.trackLine, { borderColor: color.mainGreen, height: trackHeight }]} testID="track line" />
         </View>
       </Animated.View>
     </View>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   trackBox: {
     gap: 20,
-    overflow: 'hidden',
+    overflow: "hidden",
     paddingHorizontal: 20
   },
   trackHeader: {

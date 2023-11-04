@@ -1,9 +1,9 @@
-import { useAppTheme } from '@hooks';
-import { fonts, numberToCurrency, shadowStyle } from '@utils';
-import React from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAppTheme } from "@hooks";
+import { fonts, numberToCurrency, shadowStyle } from "@utils";
+import React from "react";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface OverviewBoxProps {
   totals: { name: string, amount: number; }[];
@@ -15,7 +15,7 @@ const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
   const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
   return (
-    <View style={[styles.overviewBox, { backgroundColor: color.cardBg, paddingBottom: insets.bottom }]} testID='overview box'>
+    <View style={[styles.overviewBox, { backgroundColor: color.cardBg, paddingBottom: insets.bottom }]} testID="overview box">
       <View style={styles.overviewList}>
         {totals.map((total, idx) => (
           <View key={idx} style={[styles.overviewItem, idx !== 2 && styles.overviewItemSeperator]}>
@@ -25,7 +25,7 @@ const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
         ))}
       </View>
       {paymentMethod ? (
-        <View style={styles.paymentBox} testID='payment box'>
+        <View style={styles.paymentBox} testID="payment box">
           <Image style={styles.paymentIcon} source={require("@icons/orderPaidMan.png")} />
           <FlatList
             contentContainerStyle={styles.paymentList}
@@ -38,7 +38,7 @@ const OverviewBox = ({ totals, paymentMethod, checkout }: OverviewBoxProps) => {
           />
         </View>
       ) : (
-        <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]} testID='checkout button'>
+        <TouchableOpacity onPress={checkout} style={[styles.overviewButton, { backgroundColor: color.mainGreen }]} testID="checkout button">
           <Text style={styles.overviewButtonText}>Proceed to Checkout</Text>
         </TouchableOpacity>
       )}
@@ -50,11 +50,11 @@ export default OverviewBox;
 
 const styles = StyleSheet.create({
   overviewBox: {
-    alignItems: 'center',
+    alignItems: "center",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     gap: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
     paddingTop: 30
   },
@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   overviewItem: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
     paddingBottom: 10,
   },
   overviewItemSeperator: {
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   overviewButton: {
-    alignItems: 'center',
+    alignItems: "center",
     borderRadius: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 20,
     paddingVertical: 15,
     width: wp("80%"),
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   paymentBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     gap: 20
   },
   paymentIcon: {

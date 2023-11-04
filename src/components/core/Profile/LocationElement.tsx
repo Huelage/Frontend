@@ -1,10 +1,10 @@
-import { Feather } from '@expo/vector-icons';
-import { useAppTheme } from '@hooks';
-import { LocationInterface } from '@interfaces';
-import { fonts } from '@utils';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Animated, { FadeInUp, SlideOutLeft } from 'react-native-reanimated';
+import { Feather } from "@expo/vector-icons";
+import { useAppTheme } from "@hooks";
+import { LocationInterface } from "@interfaces";
+import { fonts } from "@utils";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 
 interface LocationElementInterface {
   location: LocationInterface;
@@ -34,11 +34,11 @@ export default LocationElement;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     borderBottomWidth: 2,
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 15,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     paddingBottom: 25,
     paddingRight: 10,
     paddingTop: 10
