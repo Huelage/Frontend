@@ -7,10 +7,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { enableBiometrics, fonts, getBiometricType, getBiometrics, getItem, loginWithBiometrics, setItem, } from "@utils";
+import { enableBiometrics, fonts, getBiometricType, getBiometrics, getItem, loginWithBiometrics, outline, setItem, } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -116,7 +117,7 @@ const LoginScreen = () => {
           <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
         </View>
       </View>
-      <View style={styles.inputContainer}>
+      <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} style={styles.inputContainer} contentContainerStyle={styles.inputContentContainer}>
         <UserVendor />
         <View style={styles.inputs}>
           <LoginInputs loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
@@ -149,17 +150,11 @@ const LoginScreen = () => {
             <AuthNavigate page="SI" />
           </>
         )}
+      </KeyboardAwareScrollView>
+      <View style={styles.contactBox}>
+        <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
+        <Text style={[styles.contactText, { color: color.mainText }]}>Need help? <Text style={{ color: color.mainGreen }}>Chat with Huelage Support</Text></Text>
       </View>
-      <Text style={[styles.contactText, { color: color.mainText }]}>
-        <View style={{ marginTop: -7 }}>
-          <MaterialCommunityIcons name="message-processing-outline" size={24} color={color.mainText} />
-        </View>{" "}
-        Need help?
-        <Text style={{ color: color.mainGreen }}>
-          {" "}
-          Chat with Huelage Support
-        </Text>
-      </Text>
     </View>
   );
 };
@@ -197,10 +192,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 1,
+    width: "100%"
+  },
+  inputContentContainer: {
     gap: 20,
     paddingHorizontal: wp("8%") + 8,
     paddingVertical: hp("3%"),
-    width: "100%",
   },
   inputs: {
     gap: 20,
@@ -247,4 +244,10 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_400,
     fontSize: 14,
   },
+  contactBox: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 5,
+    justifyContent: "center"
+  }
 });
