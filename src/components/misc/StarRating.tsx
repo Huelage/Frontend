@@ -11,10 +11,11 @@ type IconProps = {
 interface RatingProps {
   color?: string;
   gap?: number;
+  size?: number;
   rating: number;
 }
 
-const StarRating = ({ color, gap, rating }: RatingProps) => {
+const StarRating = ({ color, gap, rating, size }: RatingProps) => {
   const rate = Math.floor(rating);
   const ratemantissa = rating - rate;
   const ratingArray = Array(rate).fill(1);
@@ -28,7 +29,7 @@ const StarRating = ({ color, gap, rating }: RatingProps) => {
   return (
     <View style={[styles.container, { gap: gap || 3 }]} testID="star rating">
       {ratingArray.map((item: keyof IconProps, idx) => (
-        <Ionicons testID={iconName[item]} key={idx} name={iconName[item]} size={16} color={color || "#F2DB06"} />
+        <Ionicons testID={iconName[item]} key={idx} name={iconName[item]} size={size || 16} color={color || "#F2DB06"} />
       ))}
     </View>
   );
