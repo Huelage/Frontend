@@ -151,7 +151,7 @@ describe("When Testing the Navigators: ", () => {
     describe("<UserVendorsTabStack />: ", () => {
       it("should render the VendorScreen", () => {
         renderNavigator(<UserVendorsTabStack />);
-        expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
+        expect(screen.getByTestId("vendor list screen")).toBeOnTheScreen();
       });
     });
   });

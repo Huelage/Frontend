@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AboutScreen, CartScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
+import { AboutScreen, CartScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorListScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
 import { Keyboard } from "react-native";
@@ -127,12 +127,12 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       });
     });
 
-    describe("<VendorScreen />: ", () => {
+    describe("<VendorListScreen />: ", () => {
       beforeEach(() => {
-        render(<VendorScreen />);
+        render(<VendorListScreen />);
       });
       it("should render the component correctly", () => {
-        expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
+        expect(screen.getByTestId("vendor list screen")).toBeOnTheScreen();
       });
       it("should render the MainSearchBar component", () => {
         expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
@@ -142,6 +142,48 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       });
       it("should render the vendors using the VendorResCard component", () => {
         expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
+      });
+      it("should call the search function when the search bar is used", () => {
+        const logSpy = jest.spyOn(console, "log");
+        render(<VendorListScreen />);
+        testSearchFunc(logSpy);
+      });
+    });
+
+    describe("<VendorScreen />: ", () => {
+      beforeEach(() => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { vendorId: "1" } });
+        render(<VendorScreen />);
+      });
+      it("should render the component correctly", () => {
+        expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
+      });
+      it("should not render the screen if vendorId is not provided", () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: {} });
+        render(<VendorScreen />);
+        expect(screen.queryByTestId("vendor screen")).toBeNull();
+      });
+      it("should render the vendor screen header", () => {
+        expect(screen.getByTestId("vendor screen header")).toBeOnTheScreen();
+      });
+      it("should render the main search bar", () => {
+        expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
+      });
+      it("should render the vendor info box", () => {
+        expect(screen.getByTestId("vendor info box")).toBeOnTheScreen();
+      });
+      it("should render the vendor category list items using the CustomButton component", () => {
+        expect(screen.getByTestId("vendor category list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("custom button")).not.toBeNull();
+      });
+      it("should render the vendor product list items using the VendorProduct component", () => {
+        expect(screen.getByTestId("vendor product list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("vendor product")).not.toBeNull();
+      });
+      it("should change categories when any of the category buttons are pressed", () => {
+        const categoryButton = screen.getAllByTestId("custom button")[1];
+        fireEvent.press(categoryButton);
+        expect(categoryButton.props.inactive).toBeFalsy();
       });
       it("should call the search function when the search bar is used", () => {
         const logSpy = jest.spyOn(console, "log");
