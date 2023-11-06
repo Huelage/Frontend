@@ -64,7 +64,7 @@ const VerifyEmailScreen = () => {
         <CustomPinInput value={otpcode} onChange={onChange} onSubmit={onSubmit} />
         <SubmitButton label="Verify" isLoading={loading} onSubmit={onSubmit} />
         <View style={styles.resendBox}>
-          <Text style={[styles.resendText, { color: color.mainText }]}>Didn"t receive a code?</Text>
+          <Text style={[styles.resendText, { color: color.mainText }]}>Didn't receive a code?</Text>
           {isTimerActive ? (
             <>
               <CountDown
