@@ -60,7 +60,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
       {testEmpty || !mockOrderItems.length ? (
         <View style={styles.noOrdersBox}>
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
-          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven"t made any order with Huelage</Text>
+          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven't made any order with Huelage</Text>
           <SubmitButton label="Order Now" onSubmit={orderNow} />
         </View>
       ) : (
