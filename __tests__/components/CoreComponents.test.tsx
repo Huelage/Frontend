@@ -4,7 +4,7 @@ import { RatingCard } from "@components/core/Detail";
 import { CategoryCard, CustomButton, CustomCarousel, FoodCard, FoodModalContent, FoodModalResCard, MainSearchBar, RestaurantCard } from "@components/core/Home";
 import { OrderDetailDelivery, StatusProgressBar, TrackItem, TrackOrder } from "@components/core/Order";
 import { DetailElement, LocationElement, LocationInput, ProfileBoxElement, ProfileNavBox, SettingElement, SettingOptionBox, SettingOptionItem } from "@components/core/Profile";
-import { SideOptionElement, VendorResCard } from "@components/core/Vendor";
+import { SideOptionElement, VendorProduct, VendorResCard } from "@components/core/Vendor";
 import { OrderStatus, ProfileElementInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
@@ -710,6 +710,32 @@ describe("When Testing Core Vendor Components: ", () => {
       expect(increase).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 2 });
       fireEvent.press(decreaseButton);
       expect(decrease).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 1 });
+    });
+  });
+
+  describe("<VendorProduct />: ", () => {
+    beforeEach(() => {
+      render(<VendorProduct item={foodData} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("vendor product")).toBeOnTheScreen();
+    });
+    it("should render the vendor product image", () => {
+      expect(screen.getByTestId("vendor product image")).toBeOnTheScreen();
+    });
+    it("should render the vendor product info", () => {
+      expect(screen.getByTestId("vendor product info")).toBeOnTheScreen();
+    });
+    it("should render the vendor product price", () => {
+      expect(screen.getByTestId("vendor product price")).toBeOnTheScreen();
+    });
+    it("should navigate to the product detail when the product is pressed", () => {
+      const navigate = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ navigate });
+      render(<VendorProduct item={mockFoods[6]} />);
+      const product = screen.getByTestId("vendor product");
+      fireEvent.press(product);
+      expect(navigate).toBeCalledWith("ItemDetail", { itemId: mockFoods[6].id });
     });
   });
 

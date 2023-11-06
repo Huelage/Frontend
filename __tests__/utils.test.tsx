@@ -13,7 +13,7 @@ const utils = jest.requireActual("@utils");
 describe("miscs.ts: ", () => {
   it("should return the correct value when getItem is called", async () => {
     const mockedGetItem = jest.spyOn(SecureStore, "getItemAsync");
-    mockedGetItem.mockReturnValueOnce(Promise.resolve("test"));
+    mockedGetItem.mockReturnValueOnce(Promise.resolve(JSON.stringify("test")));
     const res = await utils.getItem("test");
     expect(res).toEqual("test");
   });

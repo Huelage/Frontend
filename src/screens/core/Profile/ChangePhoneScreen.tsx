@@ -33,7 +33,6 @@ const ChangePhoneScreen = () => {
   useEffect(() => {
     if (data) {
       const phone = data.updatePhone.phone;
-      console.log({ phone });
       const updatedEntity = { ...entity, phone };
       dispatch(setCredentials({ entity: updatedEntity }));
       navigate("VerifyPhone");

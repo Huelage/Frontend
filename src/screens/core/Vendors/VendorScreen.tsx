@@ -1,40 +1,124 @@
-import restuarants from "@api/mock/mockRestaurants";
-import { MainSearchBar } from "@components/core/Home";
-import { VendorResCard } from "@components/core/Vendor";
+import { mockFoods, mockRestaurants } from "@api/mock";
+import { CustomButton, MainSearchBar } from "@components/core/Home";
+import { VendorProduct } from "@components/core/Vendor";
+import { StarRating } from "@components/misc";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { UserFoodInterface, UserVendorTabProps, UserVendorsTabVendorRouteProps } from "@interfaces";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { fonts, foodCategories } from "@utils";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import { FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { Layout } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const VendorScreen = () => {
+  const { params: { vendorId } } = useRoute<UserVendorsTabVendorRouteProps>();
+  const vendor = mockRestaurants.find(res => res.id === vendorId);
+  if (!vendor) return null;
+  const { goBack } = useNavigation<UserVendorTabProps>();
+  const [currCategory, setCurrCategory] = useState<string>("ALL");
+  const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
+  const insets = useSafeAreaInsets();
   const { color } = useAppTheme();
   const handleSearch = (val: string) => { console.log(val); };
+
+  useEffect(() => {
+    if (currCategory === "ALL") return setFilteredMenu(mockFoods);
+    setFilteredMenu(mockFoods.filter(food => food.category === currCategory));
+  }, [currCategory]);
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor screen">
-      <FlatList
-        data={restuarants}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<MainSearchBar searchFunc={handleSearch} />}
-        keyExtractor={item => item.id}
-        testID="vendors list"
-        renderItem={({ item }) => (
-          <View style={styles.vendorCard}>
-            <VendorResCard resId={item.id} />
+    <>
+      <StatusBar style="light" />
+      <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor.imgUrl }} testID="vendor screen header">
+        <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen }]} onPress={goBack} testID="go back">
+          <MaterialCommunityIcons name="chevron-left" size={35} color="black" style={{ left: -1 }} />
+        </TouchableOpacity>
+        <MainSearchBar searchFunc={handleSearch} />
+      </ImageBackground>
+      <View style={[styles.mainBox, { backgroundColor: color.mainBg }]} testID="vendor screen">
+        <View style={styles.infoBox} testID="vendor info box">
+          <Text style={[styles.resName, { color: color.mainText }]}>{vendor.name}</Text>
+          <View style={styles.ratingBox}>
+            <StarRating rating={vendor.rating} size={18} />
+            <Text style={[styles.ratingText, { color: color.mainText }]}>({vendor.rating} Ratings)</Text>
           </View>
-        )}
-        contentContainerStyle={styles.vendorList}
-      />
-    </View>
+          <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor.location}</Text>
+        </View>
+        <FlatList
+          data={foodCategories}
+          horizontal
+          keyExtractor={item => item}
+          renderItem={({ item }) => (
+            <View style={styles.categoryItem}>
+              <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
+            </View>
+          )}
+          testID="vendor category list"
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoryContainer}
+        />
+        <Animated.FlatList
+          contentContainerStyle={styles.vendorProductList}
+          data={filteredMenu}
+          itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <VendorProduct item={item} />
+          )}
+          testID="vendor product list"
+        />
+      </View>
+    </>
   );
 };
 
 export default VendorScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    flex: 1,
+  headerBox: {
+    gap: 20,
     justifyContent: "center"
+  },
+  backButton: {
+    alignItems: "center",
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    marginLeft: 20,
+    width: 40
+  },
+  mainBox: {
+    flex: 1,
+    gap: 10,
+    paddingTop: 20
+  },
+  infoBox: {
+    gap: 5,
+    paddingBottom: 10,
+    paddingHorizontal: 20
+  },
+  resName: {
+    color: "#F0FFF0",
+    fontFamily: fonts.I_700,
+    fontSize: 26
+  },
+  ratingBox: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 5
+  },
+  ratingText: {
+
+  },
+  emojiCon: {
+    fontSize: 16
+  },
+  locationText: {
+    fontFamily: fonts.I_600I,
+    fontSize: 16
   },
   vendorList: {
     gap: 15,
@@ -43,5 +127,27 @@ const styles = StyleSheet.create({
   },
   vendorCard: {
     paddingHorizontal: 20
+  },
+  order: {
+    flex: 1,
+    gap: 15,
+    paddingTop: 20
+  },
+  categoriesText: {
+    fontFamily: fonts.I_700,
+    fontSize: 20,
+    paddingBottom: 5,
+    paddingHorizontal: 20
+  },
+  categoryItem: {
+    paddingLeft: 20
+  },
+  categoryContainer: {
+    flexGrow: 0,
+    paddingBottom: 20
+  },
+  vendorProductList: {
+    gap: 15,
+    paddingBottom: 20
   }
 });

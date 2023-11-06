@@ -19,4 +19,5 @@ export { default as VerifyPhoneScreen } from "./Profile/VerifyPhoneScreen";
 export { default as WalletScreen } from "./Profile/WalletScreen";
 // Vendor Screens
 export { default as ItemDetailScreen } from "./Vendors/ItemDetailScreen";
+export { default as VendorListScreen } from "./Vendors/VendorListScreen";
 export { default as VendorScreen } from "./Vendors/VendorScreen";
