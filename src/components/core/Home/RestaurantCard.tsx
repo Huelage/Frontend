@@ -7,14 +7,14 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const RestaurantCard = ({ name, imgUrl, rating, location }: RestaurantInterface) => {
+const RestaurantCard = ({ id, name, imgUrl, rating, location }: RestaurantInterface) => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<UserTabProps>();
   return (
     <View style={styles.container} testID="restaurant card">
       <CustomBox width={wp("60%")} height={230} pad={6} r={15} />
       <Image testID="restuarant image" style={styles.resImage} source={{ uri: imgUrl }} />
-      <TouchableWithoutFeedback onPress={() => navigate("Vendors", { screen: "VendorHome", params: { vendorId: "43435" } })} testID="details box">
+      <TouchableWithoutFeedback onPress={() => navigate("Vendors", { screen: "VendorHome", params: { vendorId: id }, initial: false })} testID="details box">
         <View style={styles.detailsBox}>
           <Text style={[styles.resName, { color: color.mainText }]}>{name}</Text>
           <StarRating rating={rating} />
