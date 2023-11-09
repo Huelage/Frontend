@@ -1,39 +1,51 @@
-import { OrderItemInterface } from "@interfaces";
-
-const data: OrderItemInterface[] = [
+const data = [
   {
     id: "1",
-    item_id: "8",
+    vendorId: "1",
+    item_id: "1",
     quantity: 1,
+    totalPrice: 3900,
     extras: [
-      { name: "Big Pack", price: 500 },
-      { name: "Amala", price: 300, quantity: 3 }
+      { groupId: "1", name: "Big Pack", price: 500 },
+      { groupId: "2", name: "Plantain", price: 200, quantity: 3 }
     ]
   },
   {
     id: "2",
-    item_id: "10",
+    vendorId: "1",
+    item_id: "2",
+    portion: 2,
     quantity: 3,
-  },
-  {
-    id: "3",
-    item_id: "12",
-    quantity: 1,
-  },
-  {
-    id: "4",
-    item_id: "1",
-    quantity: 1,
+    totalPrice: 500,
     extras: [
-      { name: "Big Pack", price: 500 },
-      { name: "Plantain", price: 200, quantity: 2 },
-      { name: "Bread", price: 300, quantity: 1 }
+      { groupId: "1", name: "Big Pack", price: 500 }
     ]
   },
   {
-    id: "5",
-    item_id: "11",
+    id: "3",
+    vendorId: "1",
+    item_id: "3",
+    price: 500,
     quantity: 1,
+    totalPrice: 600,
+    extras: [
+      { groupId: "1", name: "Big Pack", price: 500 }
+    ]
+  },
+  {
+    id: "4",
+    vendorId: "1",
+    item_id: "9",
+    size: "large",
+    quantity: 1,
+    totalPrice: 1000
+  },
+  {
+    id: "5",
+    vendorId: "2",
+    item_id: "10",
+    quantity: 3,
+    totalPrice: 300,
   }
 ];
 

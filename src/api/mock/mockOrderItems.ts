@@ -18,8 +18,10 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "1",
         quantity: 1,
+        totalPrice: 3900,
         extras: [
           { name: "Big Pack", price: 500 },
           { name: "Plantain", price: 200, quantity: 2 },
@@ -28,8 +30,10 @@ const orders: OrderInterface[] = [
       },
       {
         id: "3",
+        vendorId: "8",
         item_id: "11",
         quantity: 1,
+        totalPrice: 300,
       }
     ]
   },
@@ -50,8 +54,10 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "1",
         quantity: 1,
+        totalPrice: 3900,
         extras: [
           { name: "Big Pack", price: 500 },
           { name: "Plantain", price: 200, quantity: 2 },
@@ -60,8 +66,10 @@ const orders: OrderInterface[] = [
       },
       {
         id: "2",
+        vendorId: "8",
         item_id: "12",
         quantity: 3,
+        totalPrice: 600
       }
     ]
   },
@@ -82,9 +90,11 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "9",
         quantity: 1,
         size: "large",
+        totalPrice: 5500,
         extras: [
           { name: "Chicken", price: 1400, quantity: 2 },
           { name: "Plantain", price: 200, quantity: 3 }
@@ -109,8 +119,10 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "8",
         quantity: 1,
+        totalPrice: 3900,
         extras: [
           { name: "Big Pack", price: 500 },
           { name: "Amala", price: 300, quantity: 3 }
@@ -118,13 +130,17 @@ const orders: OrderInterface[] = [
       },
       {
         id: "2",
+        vendorId: "8",
         item_id: "10",
         quantity: 3,
+        totalPrice: 500
       },
       {
         id: "3",
+        vendorId: "8",
         item_id: "12",
         quantity: 1,
+        totalPrice: 600
       }
     ]
   },
@@ -145,14 +161,18 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "7",
         quantity: 1,
-        size: "large"
+        size: "large",
+        totalPrice: 5500
       },
       {
         id: "2",
+        vendorId: "8",
         item_id: "12",
         quantity: 2,
+        totalPrice: 700
       }
     ]
   },
@@ -173,8 +193,10 @@ const orders: OrderInterface[] = [
     orderItems: [
       {
         id: "1",
+        vendorId: "8",
         item_id: "4",
         quantity: 2,
+        totalPrice: 6000
       }
     ]
   },
