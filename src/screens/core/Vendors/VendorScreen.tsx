@@ -7,7 +7,6 @@ import { useAppTheme } from "@hooks";
 import { UserFoodInterface, UserVendorTabProps, UserVendorsTabVendorRouteProps } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, foodCategories } from "@utils";
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
@@ -31,7 +30,6 @@ const VendorScreen = () => {
   }, [currCategory]);
   return (
     <>
-      <StatusBar style="light" />
       <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor.imgUrl }} testID="vendor screen header">
         <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen }]} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color="black" style={{ left: -1 }} />
@@ -66,7 +64,7 @@ const VendorScreen = () => {
           itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <VendorProduct item={item} />
+            <VendorProduct item={item} vendorId={vendorId} />
           )}
           testID="vendor product list"
         />
