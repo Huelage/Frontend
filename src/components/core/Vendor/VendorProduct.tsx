@@ -8,12 +8,17 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const VendorProduct = ({ item }: { item: UserFoodInterface; }) => {
+interface VendorProductInterface {
+  item: UserFoodInterface;
+  vendorId: string;
+}
+
+const VendorProduct = ({ item, vendorId }: VendorProductInterface) => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<UserVendorTabProps>();
   const price = item.pricingMethod === "PACKAGE" ? item.packageSizes[0]?.price : item.price;
   return (
-    <TouchableOpacity onPress={() => navigate("ItemDetail", { itemId: item.id })} testID="vendor product">
+    <TouchableOpacity onPress={() => navigate("ItemDetail", { itemId: item.id, vendorId })} testID="vendor product">
       <Animated.View
         entering={FadeInUp.delay(200)}
         exiting={SlideOutLeft.duration(300)}
