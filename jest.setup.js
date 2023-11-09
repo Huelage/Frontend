@@ -61,3 +61,6 @@ jest.mock("react-native-flash-message", () => ({
   ...jest.requireActual("react-native-flash-message"),
   showMessage: jest.fn()
 }));
+jest.mock("@react-native-async-storage/async-storage", () =>
+  require("@react-native-async-storage/async-storage/jest/async-storage-mock")
+);

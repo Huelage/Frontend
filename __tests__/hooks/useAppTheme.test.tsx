@@ -1,8 +1,8 @@
+import { useAppSelector } from "@api/app/appHooks";
 import { useAppTheme } from "@hooks";
 import { renderHook } from "@testing-library/react-native";
-import { store } from "../testhelpers";
 import { Provider } from "react-redux";
-import { useAppSelector } from "@api/app/appHooks";
+import { store } from "../testhelpers";
 
 describe("When Testing useAppTheme Custom Hook", () => {
   beforeEach(() => {
@@ -32,7 +32,8 @@ describe("When Testing useAppTheme Custom Hook", () => {
       cardBg2: "#F5F5F5",
       cardShadow: "rgba(76, 175, 80, 0.61)",
       chartBg: "#D9D9D9",
-      danger: "#E93223",
+      danger: "#E93525",
+      dangerDim: "rgba(233, 53, 37, .61)",
       filterBg: "#F3F3F3",
       main: "#FFF",
       defaultBg: "#F2F2F2",

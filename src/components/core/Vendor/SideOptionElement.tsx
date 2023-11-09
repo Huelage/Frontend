@@ -8,12 +8,12 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { QuantityController } from "../Cart";
 
 interface SideOptionElementInterface extends SideOptionsInterface {
-  optionSelected: boolean;
+  extras?: extraInterface[];
   increase: (extra: extraInterface) => void;
   decrease: (extra: extraInterface) => void;
 }
 
-const SideOptionElement = ({ name, price, isSingle, groupId, optionSelected, increase, decrease }: SideOptionElementInterface) => {
+const SideOptionElement = ({ name, price, extras, isSingle, groupId, increase, decrease }: SideOptionElementInterface) => {
   const { color } = useAppTheme();
   const [quantity, setQuantity] = useState<number>(0);
   const [selected, setSelected] = useState<boolean>(false);
@@ -41,9 +41,10 @@ const SideOptionElement = ({ name, price, isSingle, groupId, optionSelected, inc
     else setSelected(false);
   }, [quantity]);
   useEffect(() => {
-    if (optionSelected) setQuantity(1);
+    const optionSelected = extras?.find(ext => ext.name === name);
+    if (optionSelected) setQuantity(optionSelected.quantity ?? 1);
     else setQuantity(0);
-  }, [optionSelected]);
+  }, [extras]);
   return (
     <View style={styles.container} testID="side option element">
       <CustomBox bgColor={color.cardBg2} width={wp("100%") - 30} height={95} pad={6} r={10} left={-4} />

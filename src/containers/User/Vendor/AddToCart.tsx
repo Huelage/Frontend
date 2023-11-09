@@ -1,25 +1,64 @@
+import { useAppDispatch } from "@api/app/appHooks";
+import { mockFoods } from "@api/mock";
+import { addItemToCart } from "@api/slices/globalSlice";
 import { useAppTheme } from "@hooks";
-import { itemExtraInterface } from "@interfaces";
-import { fonts, numberToCurrency } from "@utils";
+import { OrderItemInterface, UserVendorTabProps, extraInterface } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
+import { fonts, numberToCurrency, showError } from "@utils";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import uuid from "react-native-uuid";
 
 interface AddToCartInterface {
+  amount: number;
+  extras: extraInterface[];
+  itemId: string;
   price: number;
-  extras: itemExtraInterface[];
+  vendorId: string;
   quantity: number;
+  size?: string;
 }
 
-const AddToCart = ({ price, extras, quantity }: AddToCartInterface) => {
+const AddToCart = ({ amount, price, itemId, extras, vendorId, quantity, size }: AddToCartInterface) => {
   const { color } = useAppTheme();
-  const totalPrice = price + extras.reduce((acc, curr) => acc + (curr.price * (curr.quantity ?? 1)), 0);
+  const dispatch = useAppDispatch();
+  const { goBack } = useNavigation<UserVendorTabProps>();
+  const item = mockFoods.find(food => food.id === itemId);
+
+  let totalPrice = 0;
+  if (item?.pricingMethod === "PACKAGE")
+    totalPrice += item.packageSizes.find(pack => pack.name === size)?.price ?? 0;
+  else if (item?.pricingMethod === "PRICE")
+    totalPrice += amount;
+  else
+    totalPrice += price * amount;
+  totalPrice += extras.reduce((acc, curr) => acc + (curr.price * (curr.quantity ?? 1)), 0);
+
+  const addToCart = () => {
+    const cartItem: OrderItemInterface = {
+      id: uuid.v4().toString(), item_id: itemId,
+      quantity, totalPrice, vendorId, extras
+    };
+    if (size) cartItem.size = size;
+    if (item?.pricingMethod === "PORTION") cartItem.portion = amount;
+    if (item?.pricingMethod === "PRICE") cartItem.price = amount;
+    const requiredSides = item?.sides?.filter(side => side.isRequired).map(side => side.id) ?? [];
+    const extraGroups = extras.map(extra => extra.groupId);
+    if (!requiredSides?.every(side => extraGroups.includes(side))) {
+      showError("Please select all required sides");
+    } else if (item?.pricingMethod === "PRICE" && amount < item.price) {
+      showError(`The minimum price for this item is ${numberToCurrency(item.price)}`);
+    } else {
+      dispatch(addItemToCart(cartItem));
+      goBack();
+    }
+  };
   return (
-    <View style={[styles.container, { backgroundColor: color.mainGreen }]} testID="add to cart">
-      <Text style={styles.mainText}>Add {quantity} for {numberToCurrency(totalPrice)}</Text>
-    </View>
+    <TouchableOpacity onPress={addToCart} style={[styles.container, { backgroundColor: color.mainGreen }]} testID="add to cart">
+      <Text style={styles.mainText}>Add {quantity} for {numberToCurrency(totalPrice * quantity)}</Text>
+    </TouchableOpacity>
   );
 };
-
 export default AddToCart;
 
 const styles = StyleSheet.create({

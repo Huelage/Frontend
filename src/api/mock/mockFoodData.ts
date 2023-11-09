@@ -150,7 +150,26 @@ const food: UserFoodInterface[] = [
       { name: "medium", price: 2500 },
       { name: "large", price: 3500 },
     ],
-    isFavourite: false
+    isFavourite: false,
+    sides: [
+      {
+        id: "1", description: "Please select a pack", options: [
+          { groupId: "1", name: "Big Pack", price: 500, isSingle: true },
+          { groupId: "1", name: "Small Pack", price: 300, isSingle: true }
+        ], isRequired: true, isMultiple: false
+      }
+    ]
+  },
+  {
+    id: "13",
+    name: "Jollof Spaghetti",
+    description: "Jollof Spaghetti eunde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa.",
+    imgUrl: Image.resolveAssetSource(require("@images/jollofSpag.png")).uri,
+    category: "MAIN",
+    availability: "AVAILABLE",
+    pricingMethod: "PRICE",
+    price: 500,
+    isFavourite: true
   },
   {
     id: "8",
@@ -167,7 +186,7 @@ const food: UserFoodInterface[] = [
         id: "1", description: "Please select a pack", options: [
           { groupId: "1", name: "Big Pack", price: 500, isSingle: true },
           { groupId: "1", name: "Small Pack", price: 300, isSingle: true }
-        ], isRequired: false, isMultiple: false
+        ], isRequired: true, isMultiple: false
       },
       {
         id: "2", description: "Please select your preferred swallow", options: [

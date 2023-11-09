@@ -1,16 +1,19 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { mockCartItems, mockFoods, mockOrderItems } from "@api/mock";
 import { AddToCart, CartItem, CartOverview, Categories, ItemSideElement, LocationList, OrderDetailItem, OrderSummaryElement, PopularFood, PopularRestaurant, ProfileHeader } from "@containers/User";
-import { SideInterface } from "@interfaces";
+import { SideInterface, extraInterface } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
-import { numberToCurrency } from "@utils";
+import { numberToCurrency, showError } from "@utils";
 import { MOCK_GET_KNOWN_LOCATIONS, MOCK_REMOVE_LOCATION } from "../gql.mocks";
 import { entity, renderApollo } from "../testhelpers";
 
 describe("When Testing User Cart Containers: ", () => {
   describe("<CartItem />: ", () => {
-    const itemProp = { id: "1", item_id: "1", quantity: 2, extras: [{ name: "test", price: 100, quantity: 2 }] };
+    const dispatch = jest.fn();
+    const itemProp = mockCartItems[0];
     beforeEach(() => {
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       render(<CartItem {...itemProp} />);
     });
     it("should render the container correctly", () => {
@@ -37,7 +40,7 @@ describe("When Testing User Cart Containers: ", () => {
       expect(view.props.children).toBeDefined();
     });
     it("should render the price for the specified package size if the item has package sizes", () => {
-      const item = { ...itemProp, item_id: "7", size: "small" };
+      const item = mockCartItems[3];
       render(<CartItem {...item} />);
       const view = screen.getByTestId("cart item price");
       expect(view).toBeOnTheScreen();
@@ -48,31 +51,24 @@ describe("When Testing User Cart Containers: ", () => {
       expect(view).toBeOnTheScreen();
       expect(view.props.children).toBeDefined();
     });
-    it("should render the item quantity using the QunatityController component", () => {
+    it("should render the item quantity using the QuantityController component", () => {
       expect(screen.getByTestId("quantity controller")).toBeOnTheScreen();
     });
     it("should increase the quantity when the increase button is pressed", () => {
       const increaseButton = screen.getByTestId("increase quantity");
-      const value = screen.getByTestId("quantity value");
-      expect(value.props.children).toEqual(2);
       fireEvent.press(increaseButton);
-      expect(value.props.children).toEqual(3);
+      expect(dispatch).toBeCalledWith({ type: "global/updateCart", payload: { id: itemProp.id, quantity: 2 } });
     });
-    it("should decrease the quantity when the decrease button is pressed", () => {
+    it("should decrease the quantity when the decrease button is pressed and quantity is greater than 1", () => {
+      render(<CartItem {...itemProp} quantity={2} />);
       const decreaseButton = screen.getByTestId("decrease quantity");
-      const value = screen.getByTestId("quantity value");
-      expect(value.props.children).toEqual(2);
       fireEvent.press(decreaseButton);
-      expect(value.props.children).toEqual(1);
+      expect(dispatch).toBeCalledWith({ type: "global/updateCart", payload: { id: itemProp.id, quantity: 1 } });
     });
-    it("should not decrease the quantity below 1", () => {
+    it("should remove an item from the cart when the decrease button is pressed and the quantity is 1", () => {
       const decreaseButton = screen.getByTestId("decrease quantity");
-      const value = screen.getByTestId("quantity value");
-      expect(value.props.children).toEqual(2);
       fireEvent.press(decreaseButton);
-      expect(value.props.children).toEqual(1);
-      fireEvent.press(decreaseButton);
-      expect(value.props.children).toEqual(1);
+      expect(dispatch).toBeCalledWith({ type: "global/removeFromCart", payload: itemProp.id });
     });
     it("should render null if item_id is not found", () => {
       render(<CartItem {...itemProp} item_id="20" />);
@@ -216,7 +212,7 @@ describe("When Testing User Order Containers: ", () => {
       expect(screen.getByTestId("order item extras")).toBeOnTheScreen();
     });
     it("should render the total item price", () => {
-      const cart = { id: "3", item_id: "8", quantity: 1, size: "small" };
+      const cart = mockCartItems[3];
       render(<OrderDetailItem {...cart} />);
       expect(screen.getByTestId("order item total")).toBeOnTheScreen();
     });
@@ -358,12 +354,69 @@ describe("When Testing User Profile Containers: ", () => {
 
 describe("When Testing the User Vendor Containers: ", () => {
   describe("<AddToCart />: ", () => {
-    const props = { price: 1000, extras: [{ name: "test", price: 100, quantity: 2 }, { name: "test", price: 100 }], quantity: 2 };
+    const extras = mockCartItems[0].extras as extraInterface[];
+    const props = { amount: 1, extras, itemId: "1", vendorId: "1", quantity: 1, price: 1000 };
     beforeEach(() => {
       render(<AddToCart {...props} />);
     });
     it("should render the container correctly", () => {
       expect(screen.getByTestId("add to cart")).toBeOnTheScreen();
+    });
+    it("should add a new Item to the cart when the addToCart function is called for an item of fixed pricing method", () => {
+      const dispatch = jest.fn(), goBack = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ goBack });
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(dispatch).toBeCalledWith({ type: "global/addItemToCart", payload: { id: expect.any(String), item_id: "1", vendorId: "1", quantity: 1, totalPrice: 2100, extras } });
+      expect(goBack).toBeCalled();
+    });
+    it("should add a new Item to the cart when the addToCart function is called for an item of portion pricing method", () => {
+      const extras = mockCartItems[1].extras as extraInterface[];
+      const props = { amount: 2, extras, itemId: "2", vendorId: "1", quantity: 1, price: 1000 };
+      const dispatch = jest.fn(), goBack = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ goBack });
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(dispatch).toBeCalledWith({ type: "global/addItemToCart", payload: { id: expect.any(String), item_id: "2", vendorId: "1", quantity: 1, totalPrice: 2500, extras, portion: 2 } });
+    });
+    it("should add a new Item to the cart when the addToCart function is called for an item of price pricing method", () => {
+      const extras = mockCartItems[2].extras as extraInterface[];
+      const props = { amount: 500, extras, itemId: "3", vendorId: "1", quantity: 1, price: 300 };
+      const dispatch = jest.fn(), goBack = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ goBack });
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(dispatch).toBeCalledWith({ type: "global/addItemToCart", payload: { id: expect.any(String), item_id: "3", vendorId: "1", quantity: 1, totalPrice: 1000, extras, price: 500 } });
+    });
+    it("should add a new Item to the cart when the addToCart function is called for an item of package pricing method", () => {
+      const props = { amount: 1, extras: [], itemId: "9", vendorId: "1", quantity: 1, price: 3000, size: "large" };
+      const dispatch = jest.fn(), goBack = jest.fn();
+      (useNavigation as jest.Mock).mockReturnValue({ goBack });
+      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(dispatch).toBeCalledWith({ type: "global/addItemToCart", payload: { id: expect.any(String), item_id: "9", vendorId: "1", quantity: 1, totalPrice: 3500, extras: [], size: "large" } });
+    });
+    it("should call the showError function if a required side is not selected", () => {
+      const props = { amount: 1, extras: [], itemId: "7", vendorId: "1", quantity: 1, price: 3000, size: "enormous" };
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(showError).toBeCalledWith("Please select all required sides");
+    });
+    it("should call the showError function if an item of price pricing method has a price lower than the minimum", () => {
+      const props = { amount: 200, extras: [], itemId: "13", vendorId: "1", quantity: 1, price: 500 };
+      render(<AddToCart {...props} />);
+      const addToCart = screen.getByTestId("add to cart");
+      fireEvent.press(addToCart);
+      expect(showError).toBeCalledWith("The minimum price for this item is ₦500.00");
     });
   });
 

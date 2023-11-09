@@ -37,7 +37,6 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
     }
     setExtras(newExtras);
   }, [extras]);
-
   return (
     <View style={styles.container} testID="item side element">
       <Text style={[styles.description, { color: color.mainText }]}>{`${description} ${isRequired ? "(Required)" : ""}`}</Text>
@@ -47,7 +46,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
         keyExtractor={(_, idx) => idx.toString()}
         scrollEnabled={false}
         renderItem={({ item }) => (
-          <SideOptionElement {...item} optionSelected={!!extras.find(ext => ext.name === item.name)} increase={increaseExtra} decrease={decreaseExtra} />
+          <SideOptionElement {...item} extras={extras} increase={increaseExtra} decrease={decreaseExtra} />
         )}
         testID="side option list"
       />
