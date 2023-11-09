@@ -3,7 +3,7 @@ import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserFoodInterface } from "@interfaces";
 import { fonts, numberToCurrency, priceMethod } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -37,7 +37,7 @@ const MenuItem = ({ item }: { item: UserFoodInterface; }) => {
   );
 };
 
-export default MenuItem;
+export default memo(MenuItem);
 
 const styles = StyleSheet.create({
   container: {

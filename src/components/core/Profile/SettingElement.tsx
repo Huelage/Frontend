@@ -1,7 +1,7 @@
 import { useAppTheme } from "@hooks";
 import { SettingElementInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import SettingOptionBox from "./SettingOptionBox";
 
@@ -27,7 +27,7 @@ const SettingElement = ({ title, Icon, options }: SettingElementInterface) => {
   );
 };
 
-export default React.memo(SettingElement);
+export default memo(SettingElement);
 
 const styles = StyleSheet.create({
   container: {

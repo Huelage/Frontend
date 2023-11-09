@@ -2,7 +2,7 @@ import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { SettingOptionsInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { FlatList, LayoutChangeEvent, StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import SettingOptionItem from "./SettingOptionItem";
@@ -33,7 +33,7 @@ const SettingOptionBox = ({ description, options }: SettingOptionsInterface) => 
   );
 };
 
-export default React.memo(SettingOptionBox);
+export default memo(SettingOptionBox);
 
 const styles = StyleSheet.create({
   container: {

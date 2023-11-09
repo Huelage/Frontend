@@ -46,13 +46,12 @@ const VendorScreen = () => {
           <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor.location}</Text>
         </View>
         <FlatList
+          contentContainerStyle={styles.categoryItemList}
           data={foodCategories}
           horizontal
           keyExtractor={item => item}
           renderItem={({ item }) => (
-            <View style={styles.categoryItem}>
-              <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
-            </View>
+            <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
           )}
           testID="vendor category list"
           showsHorizontalScrollIndicator={false}
@@ -137,8 +136,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingHorizontal: 20
   },
-  categoryItem: {
-    paddingLeft: 20
+  categoryItemList: {
+    gap: 20,
+    paddingHorizontal: 20
   },
   categoryContainer: {
     flexGrow: 0,

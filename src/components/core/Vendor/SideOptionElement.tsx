@@ -2,7 +2,7 @@ import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { SideOptionsInterface, extraInterface } from "@interfaces";
 import { fonts, numberToCurrency } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { QuantityController } from "../Cart";
@@ -63,7 +63,7 @@ const SideOptionElement = ({ name, price, extras, isSingle, groupId, increase, d
   );
 };
 
-export default SideOptionElement;
+export default memo(SideOptionElement);
 
 const styles = StyleSheet.create({
   container: {

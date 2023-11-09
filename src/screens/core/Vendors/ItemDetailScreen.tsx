@@ -10,7 +10,7 @@ import { useAppTheme } from "@hooks";
 import { UserTabProps, UserVendorsTabItemDetailRouteProps, extraInterface } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, numberToCurrency, priceMethod } from "@utils";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -31,8 +31,8 @@ const ItemDetailScreen = () => {
   const itemInCart = useMemo(() => cartItems.filter(item => (item.item_id === itemId) && (item.vendorId === vendorId))[0], [cartItems]);
 
   const increaseAmount = () => setAmount(amount + 1);
-  const increaseQuantity = () => setQuantity(quantity + 1);
   const decreaseAmount = () => (amount > 1) && setAmount(amount - 1);
+  const increaseQuantity = () => setQuantity(quantity + 1);
   const decreaseQuantity = () => (quantity > 1) && setQuantity(quantity - 1);
 
   useEffect(() => {

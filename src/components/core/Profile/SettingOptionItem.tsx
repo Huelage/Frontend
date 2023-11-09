@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { SettingOptionInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 
 const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress }: SettingOptionInterface) => {
@@ -35,7 +35,7 @@ const SettingOptionItem = ({ title, isToggle, initVal, disabled, danger, onPress
   );
 };
 
-export default React.memo(SettingOptionItem);
+export default memo(SettingOptionItem);
 
 const styles = StyleSheet.create({
   container: {

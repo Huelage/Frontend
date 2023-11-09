@@ -8,10 +8,9 @@ import CategoryCard from "./CategoryCard";
 
 interface CustomCarouselInterface {
   items: UserFoodInterface[];
-  addToCart: (id: string) => void;
 }
 
-const CustomCarousel = ({ items, addToCart }: CustomCarouselInterface) => {
+const CustomCarousel = ({ items }: CustomCarouselInterface) => {
   const carouselRef = useRef<ICarouselInstance>(null);
   const isNewSwap = useRef<boolean>(false);
   const [itemIdx, setItemIdx] = useState<number>(0);
@@ -61,7 +60,7 @@ const CustomCarousel = ({ items, addToCart }: CustomCarouselInterface) => {
         onProgressChange={onProgressChange}
         onSnapToItem={idx => setItemIdx(idx)}
         renderItem={({ item, index, animationValue }) => (
-          <CategoryCard category={item} animationValue={animationValue} key={index} idx={index} addToCart={addToCart} />
+          <CategoryCard category={item} animationValue={animationValue} key={index} idx={index} />
         )}
       />
       <FlatList

@@ -7,12 +7,10 @@ const HomeScreen = () => {
   const { color } = useAppTheme();
   return (
     <View style={{ backgroundColor: color.mainBg }} testID="vendor home screen">
-      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true}>
-        <View style={styles.container}>
-          <OrderOverview />
-          <OrderSummary />
-          <ReviewList />
-        </View>
+      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true} contentContainerStyle={styles.container}>
+        <OrderOverview />
+        <OrderSummary />
+        <ReviewList />
       </ScrollView>
     </View>
   );

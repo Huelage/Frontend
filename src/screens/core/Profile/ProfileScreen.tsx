@@ -6,21 +6,22 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+const nav1: ProfileElementInterface[] = [
+  { label: "Profile Details", icon: "account-circle-outline", nav: "UserDetails" },
+  { label: "Locations", icon: "map-marker-outline", nav: "Location" },
+  { label: "My Wallet", icon: "wallet-outline", nav: "Wallet" },
+  { label: "Referrals", icon: "account-group", nav: "Referral" },
+];
+const nav2: ProfileElementInterface[] = [
+  { label: "Settings", icon: "cog-outline", nav: "Setting" },
+  { label: "FAQs", icon: "frequently-asked-questions", nav: "FAQ" },
+  { label: "Help", icon: "help-circle-outline", nav: "Help" },
+  { label: "About Us", icon: "information-outline", nav: "About" },
+];
+
 const ProfileScreen = () => {
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
-  const nav1: ProfileElementInterface[] = [
-    { label: "Profile Details", icon: "account-circle-outline", nav: "UserDetails" },
-    { label: "Locations", icon: "map-marker-outline", nav: "Location" },
-    { label: "My Wallet", icon: "wallet-outline", nav: "Wallet" },
-    { label: "Referrals", icon: "account-group", nav: "Referral" },
-  ];
-  const nav2: ProfileElementInterface[] = [
-    { label: "Settings", icon: "cog-outline", nav: "Setting" },
-    { label: "FAQs", icon: "frequently-asked-questions", nav: "FAQ" },
-    { label: "Help", icon: "help-circle-outline", nav: "Help" },
-    { label: "About Us", icon: "information-outline", nav: "About" },
-  ];
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="profile screen">
       <ScrollView contentContainerStyle={styles.innerContainer}>

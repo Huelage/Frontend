@@ -16,12 +16,11 @@ interface MenuScreenInterface {
 const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
   const [currCategory, setCurrCategory] = useState<string>("ALL");
   const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
-  const foods = mockFoods;
   const { color } = useAppTheme();
 
   useEffect(() => {
-    if (currCategory === "ALL") return setFilteredMenu(foods);
-    setFilteredMenu(foods.filter(food => food.category === currCategory));
+    if (currCategory === "ALL") return setFilteredMenu(mockFoods);
+    setFilteredMenu(mockFoods.filter(food => food.category === currCategory));
   }, [currCategory]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="menu screen">
@@ -34,13 +33,12 @@ const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
         <View style={styles.order}>
           <Text style={[styles.categoriesText, { color: color.mainText }]}>Categories</Text>
           <FlatList
+            contentContainerStyle={styles.categoryItemList}
             data={foodCategories}
             horizontal
             keyExtractor={item => item}
             renderItem={({ item }) => (
-              <View style={styles.categoryItem}>
-                <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
-              </View>
+              <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
             )}
             testID="category list"
             showsHorizontalScrollIndicator={false}
@@ -94,8 +92,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingHorizontal: 20
   },
-  categoryItem: {
-    paddingLeft: 20
+  categoryItemList: {
+    gap: 20,
+    paddingHorizontal: 20
   },
   categoryContainer: {
     flexGrow: 0,

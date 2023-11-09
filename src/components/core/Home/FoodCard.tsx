@@ -3,7 +3,7 @@ import { useAppTheme } from "@hooks";
 import { UserFoodInterface } from "@interfaces";
 import { CheckBox } from "@rneui/themed";
 import { fonts } from "@utils";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import FoodModalContent from "./FoodModalContent";
@@ -46,7 +46,7 @@ const FoodCard = ({ imgUrl, name, isFavourite, description }: UserFoodInterface)
   );
 };
 
-export default FoodCard;
+export default memo(FoodCard);
 
 const styles = StyleSheet.create({
   container: {
