@@ -1,25 +1,40 @@
+import { useAppDispatch } from "@api/app/appHooks";
 import { mockFoods } from "@api/mock";
+import { removeFromCart, updateCart } from "@api/slices/globalSlice";
 import { QuantityController } from "@components/core/Cart";
 import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { OrderItemInterface } from "@interfaces";
 import { fonts, numberToCurrency } from "@utils";
-import React, { useState } from "react";
+import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const CartItem = ({ item_id, quantity, portion, size, extras }: OrderItemInterface) => {
+const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItemInterface) => {
   const item = mockFoods.find((item) => item.id === item_id);
   if (!item) return null;
   const { color } = useAppTheme();
-  const [itemQuantity, setItemQuantity] = useState<number>(quantity);
+  const dispatch = useAppDispatch();
   const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
-  const totalPrice = ((extras?.reduce((acc, curr) => acc + (curr.price * (curr.quantity ?? 1)), 0) ?? 0) + price) * quantity;
+  const fullPrice = totalPrice * quantity;
 
-  const increase = () => setItemQuantity(itemQuantity + 1);
-  const decrease = () => { if (itemQuantity > 1) setItemQuantity(itemQuantity - 1); };
+  const increase = () => {
+    dispatch(updateCart({ id, quantity: quantity + 1 }));
+  };
+  const decrease = () => {
+    if (quantity > 1)
+      dispatch(updateCart({ id, quantity: quantity - 1 }));
+    else
+      dispatch(removeFromCart(id));
+  };
   return (
-    <View style={styles.container} testID="cart item">
+    <Animated.View
+      entering={FadeInUp.delay(200)}
+      exiting={SlideOutLeft.duration(300)}
+      style={styles.container}
+      testID="cart item"
+    >
       <CustomBox width={wp("100%") - 30} height={110} r={20} pad={6} left={-4} />
       <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID="cart item image" />
       <View style={styles.detailBox}>
@@ -28,10 +43,10 @@ const CartItem = ({ item_id, quantity, portion, size, extras }: OrderItemInterfa
         <Text style={[styles.itemPrice, { color: color.mainText }]} testID="cart item price">{numberToCurrency(price)}</Text>
       </View>
       <View style={styles.quatityBox}>
-        <QuantityController quantity={itemQuantity} increase={increase} decrease={decrease} />
-        <Text style={[styles.totalPrice, { color: color.mainTextDim }]} testID="cart item total">{numberToCurrency(totalPrice)}</Text>
+        <QuantityController quantity={quantity} increase={increase} decrease={decrease} />
+        <Text style={[styles.totalPrice, { color: color.mainTextDim }]} testID="cart item total">{numberToCurrency(fullPrice)}</Text>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
