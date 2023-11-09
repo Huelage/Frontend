@@ -70,7 +70,7 @@ export type VendorTabParamList = {
 export type UserVendorsTabStackParamList = {
   Main: undefined;
   VendorHome: { vendorId: string; };
-  ItemDetail: { itemId: string; };
+  ItemDetail: { itemId: string; vendorId: string; };
 };
 export type UserOrdersTabStackParamList = {
   Main: undefined;
@@ -281,12 +281,14 @@ export interface OrderInterface {
 }
 export interface OrderItemInterface {
   id: string;
+  vendorId: string;
   item_id: string;
   quantity: number;
   portion?: number;
   price?: number;
   size?: string;
   extras?: itemExtraInterface[];
+  totalPrice: number;
 }
 export interface itemExtraInterface {
   name: string;
