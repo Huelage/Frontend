@@ -1,27 +1,49 @@
+import { useAppSelector } from "@api/app/appHooks";
 import { mockFoods } from "@api/mock";
+import { getCart } from "@api/slices/globalSlice";
+import { QuantityController } from "@components/core/Cart";
 import { CustomButton } from "@components/core/Home";
 import { CustomImage } from "@components/misc";
 import { AddToCart, ItemSideElement } from "@containers/User";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserTabProps, UserVendorsTabItemDetailRouteProps, extraInterface } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, numberToCurrency, priceMethod } from "@utils";
-import React, { useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ItemDetailScreen = () => {
-  const { params: { itemId } } = useRoute<UserVendorsTabItemDetailRouteProps>();
+  const { params: { itemId, vendorId } } = useRoute<UserVendorsTabItemDetailRouteProps>();
   const item = mockFoods.find(food => food.id === itemId);
   if (!item) return null;
   const { color } = useAppTheme();
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<UserTabProps>();
+  const cartItems = useAppSelector(getCart);
   const [packSize, setPackSize] = useState<string | undefined>(item.pricingMethod === "PACKAGE" ? item.packageSizes[0].name : undefined);
   const [extras, setExtras] = useState<extraInterface[]>([]);
   const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item.price;
+  const [amount, setAmount] = useState<number>(item.pricingMethod === "PRICE" ? price : 1);
+  const [quantity, setQuantity] = useState<number>(1);
+  const itemInCart = useMemo(() => cartItems.filter(item => (item.item_id === itemId) && (item.vendorId === vendorId))[0], [cartItems]);
+
+  const increaseAmount = () => setAmount(amount + 1);
+  const increaseQuantity = () => setQuantity(quantity + 1);
+  const decreaseAmount = () => (amount > 1) && setAmount(amount - 1);
+  const decreaseQuantity = () => (quantity > 1) && setQuantity(quantity - 1);
+
+  useEffect(() => {
+    if (!!itemInCart) {
+      setQuantity(itemInCart.quantity);
+      if (itemInCart.price) setAmount(itemInCart.price);
+      if (itemInCart.portion) setAmount(itemInCart.portion);
+      if (itemInCart.size) setPackSize(itemInCart.size);
+      if (itemInCart.extras) setExtras(itemInCart.extras as extraInterface[]);
+    }
+  }, []);
   return (
     <>
       <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen, top }]} onPress={goBack} testID="go back">
@@ -50,6 +72,22 @@ const ItemDetailScreen = () => {
               />
             ) : null}
           </View>
+          {["PRICE", "PORTION"].includes(item.pricingMethod) ? (
+            <View style={styles.amountBox} testID="amount box">
+              <Text style={[styles.itemAmount, { color: color.mainText }]}>{item.pricingMethod}:</Text>
+              {item.pricingMethod === "PRICE" ? (
+                <TextInput
+                  style={[styles.amountInput, { color: color.searchText }]}
+                  placeholder={amount.toString()}
+                  onChangeText={val => setAmount(parseInt(val))}
+                  placeholderTextColor={color.searchText}
+                  selectionColor={color.mainGreen}
+                />
+              ) : (
+                <QuantityController quantity={amount} increase={increaseAmount} decrease={decreaseAmount} />
+              )}
+            </View>
+          ) : null}
           {!!item.sides ? (
             <FlatList
               contentContainerStyle={styles.sidesList}
@@ -60,9 +98,18 @@ const ItemDetailScreen = () => {
               testID="item side list"
             />
           ) : null}
+          <View style={styles.quantityBox} testID="quantity box">
+            <TouchableOpacity disabled={quantity <= 1} onPress={decreaseQuantity} style={[styles.quantityButton, { borderColor: quantity <= 1 ? color.mainGreenOpaque : color.mainGreen }]} testID="decrease quantity button">
+              <AntDesign name="minus" size={20} color={quantity <= 1 ? color.mainGreenOpaque : color.mainGreen} />
+            </TouchableOpacity>
+            <Text style={[styles.quantityText, { color: color.mainText }]} testID="quantity value text">{quantity}</Text>
+            <TouchableOpacity onPress={increaseQuantity} style={[styles.quantityButton, { borderColor: color.mainGreen }]} testID="increase quantity button">
+              <AntDesign name="plus" size={20} color={color.mainGreen} />
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
-      <AddToCart price={price} extras={extras} quantity={1} />
+      <AddToCart amount={amount} itemId={itemId} quantity={quantity} vendorId={vendorId} price={price} extras={extras} size={packSize} />
     </>
   );
 };
@@ -98,7 +145,7 @@ const styles = StyleSheet.create({
   },
   itemBody: {
     gap: 30,
-    paddingBottom: 70
+    paddingBottom: 90
   },
   itemInfo: {
     alignItems: "center",
@@ -125,7 +172,44 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   sidesList: {
-    gap: 30,
-    paddingBottom: 20
+    gap: 30
+  },
+  amountBox: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "center",
+    paddingHorizontal: 20
+  },
+  itemAmount: {
+    fontFamily: fonts.I_600,
+    fontSize: 18,
+    textTransform: "capitalize"
+  },
+  amountInput: {
+    alignItems: "center",
+    borderBottomWidth: 2,
+    fontFamily: fonts.I_600,
+    justifyContent: "center",
+    paddingBottom: 3,
+    paddingHorizontal: 10
+  },
+  quantityBox: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 20,
+    justifyContent: "center"
+  },
+  quantityButton: {
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 20,
+    height: 40,
+    justifyContent: "center",
+    width: 40
+  },
+  quantityText: {
+    fontFamily: fonts.I_600,
+    fontSize: 18
   }
 });
