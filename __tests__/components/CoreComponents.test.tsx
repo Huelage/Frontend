@@ -665,7 +665,11 @@ describe("When Testing Core Profile Components: ", () => {
 describe("When Testing Core Vendor Components: ", () => {
   describe("<SideOptionElement />: ", () => {
     const increase = jest.fn(), decrease = jest.fn();
-    const props = { groupId: "1", name: "test", price: 1000, isSingle: false, optionSelected: false, increase, decrease };
+    const extras = [
+      { name: "Big Pack", price: 500, groupId: "1" },
+      { name: "Plantain", price: 200, quantity: 3, groupId: "2" }
+    ];
+    const props = { groupId: "1", name: "test", price: 1000, isSingle: false, extras, increase, decrease };
     beforeEach(() => {
       render(<SideOptionElement {...props} />);
     });
@@ -674,14 +678,13 @@ describe("When Testing Core Vendor Components: ", () => {
       expect(screen.getByTestId("side option element")).toBeOnTheScreen();
     });
     it("should render the item name", () => {
-      render(<SideOptionElement {...props} />);
       expect(screen.getByText(/test/i)).toBeOnTheScreen();
     });
     it("should render the radio button initially", () => {
       expect(screen.getByTestId("test radio button")).toBeOnTheScreen();
     });
     it("should render the quantity controller component", () => {
-      const newProps = { ...props, optionSelected: true };
+      const newProps = { ...props, name: "Big Pack" };
       render(<SideOptionElement {...newProps} />);
       expect(screen.getByTestId("quantity controller")).toBeOnTheScreen();
     });
@@ -702,20 +705,20 @@ describe("When Testing Core Vendor Components: ", () => {
       expect(decrease).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId });
     });
     it("should alter the item quantity when the quantity controller is used", () => {
-      const newProps = { ...props, optionSelected: true };
+      const newProps = { ...props, name: "Plantain" };
       render(<SideOptionElement {...newProps} />);
       const increaseButton = screen.getByTestId("increase quantity");
       const decreaseButton = screen.getByTestId("decrease quantity");
       fireEvent.press(increaseButton);
-      expect(increase).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 2 });
+      expect(increase).toBeCalledWith({ name: "Plantain", price: props.price, groupId: props.groupId, quantity: 4 });
       fireEvent.press(decreaseButton);
-      expect(decrease).toBeCalledWith({ name: props.name, price: props.price, groupId: props.groupId, quantity: 1 });
+      expect(decrease).toBeCalledWith({ name: "Plantain", price: props.price, groupId: props.groupId, quantity: 3 });
     });
   });
 
   describe("<VendorProduct />: ", () => {
     beforeEach(() => {
-      render(<VendorProduct item={foodData} />);
+      render(<VendorProduct item={foodData} vendorId="1" />);
     });
     it("should render the component correctly", () => {
       expect(screen.getByTestId("vendor product")).toBeOnTheScreen();
@@ -732,10 +735,10 @@ describe("When Testing Core Vendor Components: ", () => {
     it("should navigate to the product detail when the product is pressed", () => {
       const navigate = jest.fn();
       (useNavigation as jest.Mock).mockReturnValue({ navigate });
-      render(<VendorProduct item={mockFoods[6]} />);
+      render(<VendorProduct item={mockFoods[6]} vendorId="1" />);
       const product = screen.getByTestId("vendor product");
       fireEvent.press(product);
-      expect(navigate).toBeCalledWith("ItemDetail", { itemId: mockFoods[6].id });
+      expect(navigate).toBeCalledWith("ItemDetail", { itemId: mockFoods[6].id, vendorId: "1" });
     });
   });
 

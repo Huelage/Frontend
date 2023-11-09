@@ -44,39 +44,39 @@ describe("When testing the individual reducers", () => {
     expect(reducer).toEqual({ ...initialState, theme: "light" });
   });
   it("should add an item to the cart when the addToCart action is dispatched", () => {
-    const action = "global/addItemToCart", payload = { item_id: "test", quantity: 4 };
+    const action = "global/addItemToCart", payload = { id: "1234", vendorId: "1", item_id: "test", quantity: 4 };
     const reducer = setupReducer({ action, payload });
-    expect(reducer).toEqual({ ...initialState, cart: [{ id: expect.stringMatching(uuidRegex), item_id: "test", quantity: 4 }] });
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }] });
   });
-  it("should increase the quantity of an item in the cart when the addToCart action is dispatched with an item that already exists in the cart", () => {
-    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/addItemToCart", payload = { item_id: "test", quantity: 4 };
+  it("should replace the cart item with the new item when the addToCart action is dispatched with an item that already exists in the cart", () => {
+    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", vendorId: "1", quantity: 4 }] };
+    const action = "global/addItemToCart", payload = { id: "1234", item_id: "test", vendorId: "1", quantity: 5 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 8 }] });
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", vendorId: "1", quantity: 5 }] });
   });
   it("should remove an item from the cart when the removeFromCart action is dispatched", () => {
-    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
+    const previousState = { ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }] };
     const action = "global/removeFromCart", payload = "1234";
     const reducer = setupReducer({ previousState, action, payload });
     expect(reducer).toEqual(initialState);
   });
   it("should update an item in the cart when the updateCart action is dispatched", () => {
-    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/updateCart", payload = { id: "1234", item_id: "test", quantity: 2 };
+    const previousState = { ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }] };
+    const action = "global/updateCart", payload = { id: "1234", vendorId: "1", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 2 }] });
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 2 }] });
   });
   it("should return the previous state when the updateCart action is dispatched with an item that does not exist in the cart", () => {
-    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/updateCart", payload = { id: "1235", item_id: "test", quantity: 2 };
+    const previousState = { ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }] };
+    const action = "global/updateCart", payload = { id: "1235", vendorId: "1", item_id: "test", quantity: 2 };
     const reducer = setupReducer({ previousState, action, payload });
-    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] });
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }] });
   });
   it("should clear the cart when the clearCart action is dispatched", () => {
-    const previousState = { ...initialState, cart: [{ id: "1234", item_id: "test", quantity: 4 }] };
-    const action = "global/clearCart";
-    const reducer = setupReducer({ previousState, action });
-    expect(reducer).toEqual(initialState);
+    const previousState = { ...initialState, cart: [{ id: "1234", vendorId: "1", item_id: "test", quantity: 4 }, { id: "1234", vendorId: "2", item_id: "test", quantity: 4 }] };
+    const action = "global/clearCart", payload = "1";
+    const reducer = setupReducer({ previousState, action, payload });
+    expect(reducer).toEqual({ ...initialState, cart: [{ id: "1234", vendorId: "2", item_id: "test", quantity: 4 }] });
   });
   it("should set the showOnboard state to false when the setShowOnboard action is dispatched", () => {
     const action = "global/setShowOnboard", payload = false;

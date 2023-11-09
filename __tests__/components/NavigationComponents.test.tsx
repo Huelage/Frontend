@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { getEntity, getTheme, getThemeType } from "@api/slices/globalSlice";
+import { mockCartItems } from "@api/mock";
+import { getCart, getEntity, getTheme, getThemeType } from "@api/slices/globalSlice";
 import { OrderBar, UserTabBar, UserTabHeader, VendorTabBar, VendorTabHeader } from "@components/navigation";
 import { UserTabParamList, VendorTabParamList } from "@interfaces";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -34,6 +35,7 @@ describe("When Testing User Navigation Components: ", () => {
       (useAppSelector as jest.Mock).mockImplementation(selector => {
         if (selector === getEntity) return entity;
         if (selector === getThemeType) return "manual";
+        if (selector === getCart) return mockCartItems;
       });
       renderNav();
     });
@@ -89,6 +91,7 @@ describe("When Testing User Navigation Components: ", () => {
         if (selector === getEntity) return entity;
         if (selector === getThemeType) return "manual";
         if (selector === getTheme) return "light";
+        if (selector === getCart) return mockCartItems;
       });
       renderNav();
     });
@@ -107,6 +110,7 @@ describe("When Testing User Navigation Components: ", () => {
         if (selector === getEntity) return { ...entity, imgUrl: "" };
         if (selector === getThemeType) return "manual";
         if (selector === getTheme) return "light";
+        if (selector === getCart) return [];
       });
       renderNav();
       expect(screen.getByTestId("user image text")).toBeOnTheScreen();
@@ -123,6 +127,7 @@ describe("When Testing User Navigation Components: ", () => {
         if (selector === getEntity) return entity;
         if (selector === getThemeType) return "system";
         if (selector === getTheme) return "light";
+        if (selector === getCart) return mockCartItems;
       });
       renderNav();
       expect(screen.queryByTestId("theme toggle")).toBeNull();
@@ -132,12 +137,16 @@ describe("When Testing User Navigation Components: ", () => {
         if (selector === getEntity) return entity;
         if (selector === getThemeType) return "manual";
         if (selector === getTheme) return "dark";
+        if (selector === getCart) return mockCartItems;
       });
       renderNav();
       expect(screen.getByTestId("theme toggle")).toBeOnTheScreen();
     });
     it("should render the cart button", () => {
       expect(screen.getByTestId("cart button")).toBeOnTheScreen();
+    });
+    it("should render the cart item length badge", () => {
+      expect(screen.getByTestId("cart item length")).toBeOnTheScreen();
     });
     // Testing Functionality
     it("should greet the user with the correct time of day", () => {
@@ -167,6 +176,7 @@ describe("When Testing User Navigation Components: ", () => {
         if (selector === getEntity) return entity;
         if (selector === getThemeType) return "manual";
         if (selector === getTheme) return "dark";
+        if (selector === getCart) return mockCartItems;
       });
       (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       renderNav();
