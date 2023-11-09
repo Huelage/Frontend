@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { ReviewInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 const ReviewElement = ({ name, avatar, rating, date, message }: ReviewInterface) => {
@@ -33,7 +33,7 @@ const ReviewElement = ({ name, avatar, rating, date, message }: ReviewInterface)
 	);
 };
 
-export default ReviewElement;
+export default memo(ReviewElement);
 
 const styles = StyleSheet.create({
 	container: {

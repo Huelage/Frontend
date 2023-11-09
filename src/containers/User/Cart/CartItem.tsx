@@ -6,7 +6,7 @@ import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { OrderItemInterface } from "@interfaces";
 import { fonts, numberToCurrency } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -50,7 +50,7 @@ const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItem
   );
 };
 
-export default CartItem;
+export default memo(CartItem);
 
 const styles = StyleSheet.create({
   container: {

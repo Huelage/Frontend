@@ -4,10 +4,10 @@ import { clearCart, getCart } from "@api/slices/globalSlice";
 import { CartItem } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { OrderItemInterface, UserTabProps } from "@interfaces";
+import { OrderItemInterface, RestaurantInterface, UserTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency, shadowStyle } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -22,8 +22,14 @@ const CartScreen = () => {
   const [currVendor, setCurrVendor] = useState<string>(vendorCartIds[0]);
   const [vendorCartItem, setVendorCartItem] = useState<OrderItemInterface[]>([]);
   const vendorWithCarts = [...mockRestaurants].filter(res => vendorCartIds.includes(res.id));
-  const subtotal = vendorCartItem.reduce((acc, curr) => acc + curr.totalPrice * curr.quantity, 0);
+  const subtotal = useMemo(() => vendorCartItem.reduce((acc, curr) => acc + curr.totalPrice * curr.quantity, 0), [vendorCartItem]);
 
+  const renderVendorCartItems = useCallback(({ item }: { item: RestaurantInterface; }) => (
+    <TouchableOpacity onPress={() => setCurrVendor(item.id)} style={[styles.vendorCartItem, { borderColor: item.id === currVendor ? color.mainGreen : "transparent" }]} testID="vendor cart item">
+      <Image source={{ uri: item.imgUrl }} style={styles.vendorCartImage} />
+      <Text style={[styles.vendorCartText, { color: color.mainText }]}>{item.name}</Text>
+    </TouchableOpacity>
+  ), [vendorWithCarts]);
   const clearCartItems = () => {
     dispatch(clearCart(currVendor));
     const idx = vendorCartIds.findIndex(id => id === currVendor);
@@ -52,12 +58,7 @@ const CartScreen = () => {
             horizontal
             contentContainerStyle={styles.vendorCartList}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => setCurrVendor(item.id)} style={[styles.vendorCartItem, { borderColor: item.id === currVendor ? color.mainGreen : "transparent" }]} testID="vendor cart item">
-                <Image source={{ uri: item.imgUrl }} style={styles.vendorCartImage} />
-                <Text style={[styles.vendorCartText, { color: color.mainText }]}>{item.name}</Text>
-              </TouchableOpacity>
-            )}
+            renderItem={renderVendorCartItems}
             showsHorizontalScrollIndicator={false}
             style={styles.vendorCartBox}
             testID="vendor cart list"

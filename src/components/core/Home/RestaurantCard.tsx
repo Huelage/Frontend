@@ -3,7 +3,7 @@ import { useAppTheme } from "@hooks";
 import { RestaurantInterface, UserTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
@@ -25,7 +25,7 @@ const RestaurantCard = ({ id, name, imgUrl, rating, location }: RestaurantInterf
   );
 };
 
-export default RestaurantCard;
+export default memo(RestaurantCard);
 
 const styles = StyleSheet.create({
   container: {

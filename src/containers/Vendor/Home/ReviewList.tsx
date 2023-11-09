@@ -17,9 +17,7 @@ const ReviewList = () => {
       <FlatList
         data={mockReviews}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <ReviewElement {...item} />
-        )}
+        renderItem={({ item }) => <ReviewElement {...item} />}
         testID="review elements"
         scrollEnabled={false}
         contentContainerStyle={styles.reviewBox}

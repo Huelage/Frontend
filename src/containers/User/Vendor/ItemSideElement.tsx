@@ -2,7 +2,7 @@ import { SideOptionElement } from "@components/core/Vendor";
 import { useAppTheme } from "@hooks";
 import { SideInterface, extraInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React, { useCallback } from "react";
+import React, { memo, useCallback } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 interface ItemSideElementInterface extends SideInterface {
@@ -54,7 +54,7 @@ const ItemSideElement = ({ description, options, isMultiple, isRequired, extras,
   );
 };
 
-export default ItemSideElement;
+export default memo(ItemSideElement);
 
 const styles = StyleSheet.create({
   container: {

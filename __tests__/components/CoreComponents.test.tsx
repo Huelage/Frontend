@@ -136,7 +136,7 @@ describe("When Testing Core Detail Components: ", () => {
 
 describe("When Testing Core Home Components: ", () => {
   describe("<CategoryCard />: ", () => {
-    const category = { category: foodData, idx: 1, addToCart: jest.fn(), animationValue: { value: 1 } };
+    const category = { category: foodData, idx: 1, animationValue: { value: 1 } };
     beforeEach(() => {
       render(<CategoryCard {...category} />);
     });
@@ -171,9 +171,11 @@ describe("When Testing Core Home Components: ", () => {
       expect(screen.getByTestId("addToCart")).toBeOnTheScreen();
     });
     it("should allow user to add to cart", () => {
+      const logSpy = jest.spyOn(console, "log");
+      render(<CategoryCard {...category} />);
       const addToCartButton = screen.getByTestId("addToCart");
       fireEvent.press(addToCartButton);
-      expect(category.addToCart).toBeCalled();
+      expect(logSpy).toBeCalledWith(category.category.id);
     });
   });
 
@@ -202,7 +204,7 @@ describe("When Testing Core Home Components: ", () => {
   describe("<CustomCarousel />: ", () => {
     const items = [foodData];
     beforeEach(() => {
-      render(<CustomCarousel items={items} addToCart={jest.fn()} />);
+      render(<CustomCarousel items={items} />);
     });
     it("should render the carousel", () => {
       expect(screen.getByTestId("carousel")).toBeOnTheScreen();

@@ -12,9 +12,8 @@ interface CategoryCardInterface {
   category: UserFoodInterface;
   idx: number;
   animationValue: Animated.SharedValue<number>;
-  addToCart: (id: string) => void;
 }
-const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCardInterface) => {
+const CategoryCard = ({ category, idx, animationValue }: CategoryCardInterface) => {
   const { color } = useAppTheme();
   const WIDTH = wp("67%");
   const HEIGHT = hp("35%");
@@ -100,7 +99,7 @@ const CategoryCard = ({ category, idx, animationValue, addToCart }: CategoryCard
           </View>
           <View style={styles.itemGetBox}>
             <Text style={[styles.itemVendorName, { color: color.mainText }]}>Korede's joint</Text>
-            <TouchableOpacity testID={"addToCart"} style={styles.itemBuyIcon} onPress={() => addToCart(category.id)}>
+            <TouchableOpacity testID={"addToCart"} style={styles.itemBuyIcon} onPress={() => console.log(category.id)}>
               <Feather name="plus" size={26} color="white" />
             </TouchableOpacity>
           </View>

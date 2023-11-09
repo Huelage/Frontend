@@ -3,7 +3,7 @@ import { useAppTheme } from "@hooks";
 import { UserFoodInterface, UserVendorTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -39,7 +39,7 @@ const VendorProduct = ({ item, vendorId }: VendorProductInterface) => {
   );
 };
 
-export default VendorProduct;
+export default memo(VendorProduct);
 
 const styles = StyleSheet.create({
   container: {

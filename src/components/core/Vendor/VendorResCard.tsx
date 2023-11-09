@@ -4,7 +4,7 @@ import { useAppTheme } from "@hooks";
 import { UserVendorTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
@@ -27,7 +27,7 @@ const VendorResCard = ({ resId }: { resId: string; }) => {
 	);
 };
 
-export default VendorResCard;
+export default memo(VendorResCard);
 
 const styles = StyleSheet.create({
 	container: {

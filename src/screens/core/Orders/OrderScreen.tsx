@@ -6,7 +6,7 @@ import { useAppTheme } from "@hooks";
 import { FilterGroup, OrderInterface, UserOrdersTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, getDateDiff, getStatus } from "@utils";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 
@@ -25,12 +25,12 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
   const sortedOrders = useMemo(() => (
     [...mockOrderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
   ), [mockOrderItems]);
-  const filterStatus = (checked: boolean, status: string) => {
+  const filterStatus = useCallback((checked: boolean, status: string) => {
     if (checked) setFilterByStatus(prev => [...prev, status]);
     else setFilterByStatus(prev => prev.filter(item => item !== status));
-  };
-  const filterDate = (date: string) => setFilterByDate(prev => prev === date ? "" : date);
-  const filterItems: FilterGroup[] = [
+  }, []);
+  const filterDate = useCallback((date: string) => setFilterByDate(prev => prev === date ? "" : date), []);
+  const filterItems: FilterGroup[] = useMemo(() => [
     {
       id: "status", label: "Status", type: "MULTIPLE", items: [
         { id: "1", groupId: "status", name: "Pending", onPress: checked => filterStatus(checked, "Pending") },
@@ -46,7 +46,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
         { id: "7", groupId: "date", name: "Last month", onPress: () => filterDate("Last month") }
       ]
     }
-  ];
+  ], []);
 
   useEffect(() => {
     const newFiltered = sortedOrders.filter(order =>
@@ -72,6 +72,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
           <Animated.FlatList
             contentContainerStyle={styles.statusList}
             data={filteredOrder}
+            showsVerticalScrollIndicator={false}
             itemLayoutAnimation={Layout.springify().damping(15).delay(150)}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
     opacity: 0.7
   },
   statusList: {
-    gap: 15
+    gap: 15,
+    paddingBottom: 20
   }
 });

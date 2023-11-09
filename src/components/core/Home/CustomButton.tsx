@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ButtonProps {
@@ -25,7 +25,7 @@ const CustomButton = ({ label, icon, height, fontSize, inactive, onPress }: Butt
   );
 };
 
-export default CustomButton;
+export default memo(CustomButton);
 
 const styles = StyleSheet.create({
   buttonBox: {
