@@ -1,7 +1,6 @@
 import { RootState } from "@api/app/store";
 import { OrderItemInterface, entityInterface, globalStateInterface } from "@interfaces";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import uuid from "react-native-uuid";
 
 const initialState: globalStateInterface = {
   isVendor: false,
@@ -39,22 +38,25 @@ const globalSlice = createSlice({
       state.theme = action.payload;
     },
     addItemToCart: (state, action: PayloadAction<OrderItemInterface>) => {
-      const idx = state.cart.findIndex((item) => item.item_id === action.payload.item_id);
+      const idx = state.cart.findIndex((item) => (item.item_id === action.payload.item_id) && (item.vendorId === action.payload.vendorId));
       if (idx !== -1) {
-        state.cart[idx].quantity += action.payload.quantity;
+        state.cart[idx] = action.payload;
         return;
       }
-      state.cart.push({ ...action.payload, id: uuid.v4().toString() });
+      state.cart = [...state.cart, action.payload];
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
-    updateCart: (state, action: PayloadAction<OrderItemInterface>) => {
-      const index = state.cart.findIndex(item => item.id === action.payload.id);
-      if (index === -1) return;
-      state.cart[index] = action.payload;
+    updateCart: (state, action: PayloadAction<Partial<OrderItemInterface>>) => {
+      const { id, ...update } = action.payload;
+      const idx = state.cart.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      state.cart[idx] = { ...state.cart[idx], ...update };
     },
-    clearCart: state => { state.cart = []; },
+    clearCart: (state, action: PayloadAction<string>) => {
+      state.cart = state.cart.filter(item => item.vendorId !== action.payload);
+    },
     toggleThemeType: (state) => {
       state.themeType = state.themeType === "system" ? "manual" : "system";
     },
