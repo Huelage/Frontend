@@ -84,7 +84,7 @@ const CategoryCard = ({ category, idx, animationValue }: CategoryCardInterface) 
   return (
     <Animated.View style={styles.container} testID="category card">
       <Animated.View style={[styles.itemBox, cardStyle]}>
-        <CustomBox height={hp("40%")} width={wp("67%")} pad={6} r={15} />
+        <CustomBox bgColor={color.cardBg2} height={hp("40%")} width={wp("67%")} pad={6} r={15} />
         <View style={styles.itemBoxImgPlaceholder} />
         <View style={styles.itemDetails}>
           <Text style={[styles.itemName, { color: color.mainText }]}>{category.name}</Text>

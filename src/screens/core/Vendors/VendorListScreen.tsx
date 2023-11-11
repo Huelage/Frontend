@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   vendorList: {
     gap: 15,
+    paddingBottom: 30,
     paddingHorizontal: 20,
     paddingTop: 0,
     width: wp("100%")

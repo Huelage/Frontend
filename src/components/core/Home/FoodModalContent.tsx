@@ -3,7 +3,7 @@ import { CustomImage } from "@components/misc";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import FoodModalResCard from "./FoodModalResCard";
@@ -23,7 +23,7 @@ const FoodModalContent = ({ imgUrl, name, description, close }: ModalInterface) 
         <TouchableOpacity style={styles.closeIcon} onPress={() => close(false)} testID="close button">
           <Ionicons name="close" size={30} color="white" />
         </TouchableOpacity>
-        <CustomImage imgUrl={imgUrl} imgSize={wp("65%")} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor="rgba(76, 175, 80, 0.4)" />
+        <CustomImage imgUrl={imgUrl} imgSize={wp("60%")} imgPad={0} style={styles.foodImage} shadowBlur={8} shadowHeight={10} shadowColor="rgba(76, 175, 80, 0.4)" />
       </View>
       <View style={styles.foodDetailsBox}>
         <Text style={[styles.foodName, { color: color.mainText }]}>{name}</Text>
@@ -42,7 +42,7 @@ const FoodModalContent = ({ imgUrl, name, description, close }: ModalInterface) 
     </View>
   );
 };
-export default FoodModalContent;
+export default memo(FoodModalContent);
 
 const styles = StyleSheet.create({
   container: {
@@ -68,10 +68,10 @@ const styles = StyleSheet.create({
   },
   foodImage: {
     flex: 1,
-    height: wp("65%"),
+    height: wp("60%"),
     position: "absolute",
     top: -50,
-    width: wp("65%")
+    width: wp("60%")
   },
   foodDetailsBox: {
     gap: 10,
