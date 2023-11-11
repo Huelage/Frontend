@@ -14,7 +14,7 @@ const VendorResCard = ({ resId }: { resId: string; }) => {
 	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
 		<View style={[styles.container]} testID="vendor res card">
-			<CustomBox height={100} width={wp("100%") - 30} pad={6} r={10} />
+			<CustomBox bgColor={color.cardBg2} height={100} width={wp("100%") - 30} pad={6} r={10} />
 			<Image testID="restaurant image" style={styles.image} source={{ uri: restaurant?.imgUrl }} />
 			<View style={styles.details}>
 				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>

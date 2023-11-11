@@ -1,37 +1,36 @@
 import restuarants from "@api/mock/mockRestaurants";
 import { useAppTheme } from "@hooks";
 import { fonts } from "@utils";
-import React from "react";
+import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const FoodModalResCard = ({ resId }: { resId: string; }) => {
   const { color } = useAppTheme();
   const restaurant = restuarants.find(res => res.id === resId);
   return (
-    <View style={[styles.container, { backgroundColor: color.cardBg }]} testID="food modal res card">
+    <View style={[styles.container, { backgroundColor: color.cardBg2 }]} testID="food modal res card">
       <Image testID="restaurant image" style={styles.image} source={{ uri: restaurant?.imgUrl }} />
       <Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
-      <TouchableOpacity style={styles.buttonBox}>
+      <TouchableOpacity style={[styles.buttonBox, { backgroundColor: color.mainGreen }]}>
         <Text style={styles.button}>Select</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default FoodModalResCard;
+export default memo(FoodModalResCard);
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#F0FFF0",
     borderRadius: 10,
     flexDirection: "row",
     gap: 10,
     justifyContent: "center",
-    padding: 5
+    padding: 10
   },
   image: {
-    borderRadius: 5,
+    borderRadius: 10,
     height: 50,
     width: 50
   },
@@ -42,7 +41,6 @@ const styles = StyleSheet.create({
   },
   buttonBox: {
     alignItems: "center",
-    backgroundColor: "#4CAF50",
     borderRadius: 10,
     justifyContent: "center",
     paddingHorizontal: 20,

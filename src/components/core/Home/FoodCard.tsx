@@ -16,7 +16,7 @@ const FoodCard = ({ imgUrl, name, isFavourite, description }: UserFoodInterface)
   return (
     <>
       <View style={styles.container} testID="food card">
-        <CustomBox height={160} pad={6} width={wp("60%")} r={10} />
+        <CustomBox bgColor={color.cardBg2} height={160} pad={6} width={wp("60%")} r={10} />
         <View style={styles.foodDetails}>
           <View style={styles.foodIntro}>
             <CustomImage imgUrl={imgUrl} imgSize={110} imgPad={5} style={styles.foodImageContainer} />

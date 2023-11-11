@@ -31,15 +31,15 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
       style={styles.container}
       testID="order summary element"
     >
-      <CustomBox bgColor={color.cardBg2} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
+      <CustomBox bgColor={status === "CANCELLED" ? "rgb(253, 246, 244)" : color.cardBg2} shadowColor={status === "CANCELLED" ? "rgba(233, 50, 35, 0.25)" : undefined} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
       {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is 1 hour</Text> : null}
       <View style={styles.detailBox}>
         <View style={styles.detailHeader}>
-          <Text style={[styles.resName, { color: color.mainText }]}>{vendorName}</Text>
-          <Text style={[styles.subTotal, { color: color.mainText }]}>{numberToCurrency(totalAmount)}</Text>
+          <Text style={[styles.resName, { color: status === "CANCELLED" ? color.danger : color.mainText }]}>{vendorName}</Text>
+          <Text style={[styles.subTotal, { color: status === "CANCELLED" ? color.danger : color.mainText }]}>{numberToCurrency(totalAmount)}</Text>
         </View>
         <View style={styles.detailHeader}>
-          <Text style={[styles.orderedAt, { color: isBarVisible ? color.accentText : color.mainGreen }]} testID="formatted date">{dayjs(orderedAt).format("D MMM, YYYY | hh:mma")}</Text>
+          <Text style={[styles.orderedAt, { color: isBarVisible ? color.accentText : status === "CANCELLED" ? color.danger : color.mainGreen }]} testID="formatted date">{dayjs(orderedAt).format("D MMM, YYYY | hh:mma")}</Text>
           {!isBarVisible ? (
             <View style={styles.orderResolved}>
               <Text style={[styles.orderStatInfo, { color: status === "CANCELLED" ? color.danger : color.mainGreen }]}>Order {status.toLowerCase()}</Text>
