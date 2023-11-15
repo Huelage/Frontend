@@ -33,4 +33,19 @@ export enum orderStatRank {
   "CANCELLED"
 }
 
-export const foodCategories = ["ALL", "MAIN", "PROTEIN", "SOUPS", "SNACKS", "DRINKS"];
+export const categories = [
+  { key: "1", value: "MAIN" },
+  { key: "2", value: "PROTEIN" },
+  { key: "3", value: "SOUPS" },
+  { key: "4", value: "SNACKS" },
+  { key: "5", value: "DRINKS" }
+];
+
+export const pricingMethods = [
+  { key: "1", value: "PRICE" },
+  { key: "2", value: "PORTION" },
+  { key: "3", value: "FIXED" },
+  { key: "4", value: "PACKAGE" }
+];
+
+export const foodCategories = ["ALL", ...categories.map((c) => c.value)];
