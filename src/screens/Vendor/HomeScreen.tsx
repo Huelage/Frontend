@@ -7,10 +7,12 @@ const HomeScreen = () => {
   const { color } = useAppTheme();
   return (
     <View style={{ backgroundColor: color.mainBg }} testID="vendor home screen">
-      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true} contentContainerStyle={styles.container}>
-        <OrderOverview />
-        <OrderSummary />
-        <ReviewList />
+      <ScrollView showsVerticalScrollIndicator={false} removeClippedSubviews={true}>
+        <View style={styles.container}>
+          <OrderOverview />
+          <OrderSummary />
+          <ReviewList />
+        </View>
       </ScrollView>
     </View>
   );
@@ -20,6 +22,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     gap: 30,
     paddingHorizontal: 20,
     paddingVertical: 30
