@@ -30,6 +30,18 @@ export interface ResetPasswordInterface {
   confirmPassword?: string;
 }
 
+export interface AddFoodInterface {
+  name: string;
+  description: string;
+  imgUrl: string;
+  category: FoodCategory;
+  pricingMethod: PricingMethod;
+  price?: number;
+  packageSizes?: { name: string; price: number; }[];
+  preparationTime?: string;
+  sides?: SideInterface[];
+}
+
 // NAVIGATION INTERFACES
 // // Main Stacks
 export type AuthStackParamList = {
@@ -241,7 +253,7 @@ interface UserFoodPrice extends UserFoodBase {
 }
 interface UserFoodPackage extends UserFoodBase {
   pricingMethod: "PACKAGE";
-  packageSizes: { name: string; price: number; }[];
+  packageSizes: PackageSize[];
 }
 export interface SideInterface {
   id: string;
@@ -260,7 +272,7 @@ export type UserFoodInterface = UserFoodPrice | UserFoodPackage;
 export type FoodCategory = "MAIN" | "PROTEIN" | "SOUPS" | "SNACKS" | "DRINKS";
 export type FoodAvailability = "AVAILABLE" | "TEMPORARILY_UNAVAILABLE" | "UNAVAILABLE";
 export type PricingMethod = "PRICE" | "PORTION" | "FIXED" | "PACKAGE";
-
+export interface PackageSize { name: string; price: number; }
 
 // // Order Interfaces
 export interface OrderInterface {

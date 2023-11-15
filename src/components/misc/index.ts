@@ -1,4 +1,5 @@
 export { default as CustomBox } from "./CustomBox";
+export { default as CustomDropdown } from "./CustomDropdown";
 export { default as CustomFilterBox } from "./CustomFilterBox";
 export { default as CustomImage } from "./CustomImage";
 export { default as CustomModal } from "./CustomModal";

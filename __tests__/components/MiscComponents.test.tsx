@@ -1,9 +1,38 @@
-import { CustomFilterBox, CustomModal, CustomPopupModal, StarRating } from "@components/misc";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { CustomDropdown, CustomFilterBox, CustomModal, CustomPopupModal, StarRating } from "@components/misc";
 import { FilterGroup } from "@interfaces";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { Text } from "react-native";
 
 describe("When Testing Miscellaneous Components: ", () => {
+  describe("<CustomDropdown />: ", () => {
+    const data = [
+      { key: "testkey1", value: "testValue1", disabled: true },
+      { key: "testKey2", value: "testValue2", disabled: false },
+      { key: "testKey3", value: "testValue3", disabled: false }
+    ];
+    const onChange = jest.fn();
+    beforeEach(() => {
+      render(<CustomDropdown data={data} label="Test dropdown" onChange={onChange} />);
+    });
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("custom dropdown")).toBeOnTheScreen();
+    });
+    it("should render the label", () => {
+      expect(screen.getByText("Test dropdown")).toBeOnTheScreen();
+    });
+    it("should render the dropdown", () => {
+      render(<CustomDropdown data={data} label="Test dropdown" onChange={onChange} isError />);
+      expect(screen.getByText("Select option")).toBeOnTheScreen();
+    });
+    it("should call the onChange function when the dropdown is used", () => {
+      const dropdown = screen.getByText("Select option");
+      fireEvent.press(dropdown);
+      const dropItem = screen.getByText("testValue2");
+      fireEvent.press(dropItem);
+      expect(onChange).toBeCalled();
+    });
+  });
+
   describe("<CustomFilterBox />: ", () => {
     const onPress = jest.fn();
     const props = {

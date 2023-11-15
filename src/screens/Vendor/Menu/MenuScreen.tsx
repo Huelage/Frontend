@@ -3,7 +3,8 @@ import { CustomButton } from "@components/core/Home";
 import { MenuItem } from "@components/vendor/Menu";
 import { Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserFoodInterface } from "@interfaces";
+import { UserFoodInterface, VendorMenuTabProps } from "@interfaces";
+import { useNavigation } from "@react-navigation/native";
 import { fonts, foodCategories } from "@utils";
 import React, { useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -17,6 +18,7 @@ const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
   const [currCategory, setCurrCategory] = useState<string>("ALL");
   const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
   const { color } = useAppTheme();
+  const { navigate } = useNavigation<VendorMenuTabProps>();
 
   useEffect(() => {
     if (currCategory === "ALL") return setFilteredMenu(mockFoods);
@@ -56,7 +58,7 @@ const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
           />
         </View>
       )}
-      <TouchableOpacity style={[styles.addItem, { backgroundColor: color.mainGreen }]} testID="add item button">
+      <TouchableOpacity onPress={() => navigate("AddItem")} style={[styles.addItem, { backgroundColor: color.mainGreen }]} testID="add item button">
         <Feather name="plus" size={34} color="white" />
       </TouchableOpacity>
     </View>
