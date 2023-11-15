@@ -87,6 +87,10 @@ describe("When Testing Authentication Components: ", () => {
       render(<CustomTextInput placeholder="test" label="test" isPhone />);
       expect(screen.getByTestId("phone input")).toBeOnTheScreen();
     });
+    it("should render the custom drop down if isDrop is true", () => {
+      render(<CustomTextInput placeholder="test" label="test" isDrop />);
+      expect(screen.getByTestId("custom dropdown")).toBeOnTheScreen();
+    });
     it("should allow user to type in text input", () => {
       const onChangeText = jest.fn();
       render(<CustomTextInput onChangeText={onChangeText} placeholder="test" label="test" isPass />);
