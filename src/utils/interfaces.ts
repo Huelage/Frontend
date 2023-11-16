@@ -224,9 +224,9 @@ export interface entityInterface {
   walletId: string;
   email: string;
   phone: string;
-  imgUrl: string | null;
   isPhoneVerified: boolean,
   isEmailVerified: boolean,
+  imgUrl?: string;
   knownLocation?: LocationInterface[];
   firstName?: string;
   lastName?: string;
