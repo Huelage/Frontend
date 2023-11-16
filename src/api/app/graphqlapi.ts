@@ -1,10 +1,11 @@
 import { store } from "@api/app/store";
 import { REFRESH_ACCESS_TOKEN } from "@api/graphql";
 import { clearCredentials, setCredentials } from "@api/slices/globalSlice";
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, Operation, fromPromise } from "@apollo/client";
+import { ApolloClient, ApolloLink, InMemoryCache, Operation, fromPromise } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { RetryLink } from "@apollo/client/link/retry";
 import { getItem, showError } from "@utils";
+import { createUploadLink } from "apollo-upload-client";
 
 const isRefreshing = (operation: Operation) => {
   return operation.operationName === "RefreshAccessToken";
@@ -28,7 +29,10 @@ const getNewAccessToken = async () => {
   }
 };
 
-const httpLink = new HttpLink({ uri: process.env.EXPO_PUBLIC_GRAPHQL_URL });
+const httpLink = createUploadLink({
+  uri: process.env.EXPO_PUBLIC_GRAPHQL_URL,
+  headers: { "Apollo-Require-Preflight": "true" }
+});
 const authMiddleware = new ApolloLink((operation, forward) => {
   return fromPromise(getToken(operation)).flatMap((token) => {
     operation.setContext({
@@ -54,7 +58,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
         })).flatMap(() => forward(operation));
       }
       else
-        showError(message);
+        showError(message); console.log(message);
     });
   }
   if (networkError) {
