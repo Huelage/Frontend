@@ -2,10 +2,13 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { mockCartItems } from "@api/mock";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { AboutScreen, CartScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, HomeScreen, ItemDetailScreen, LocationScreen, OrderDetailScreen, OrderScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, VendorListScreen, VendorScreen, VerifyEmailScreen, VerifyPhoneScreen, WalletScreen } from "@screens/core";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { setItem, showError, showSuccess } from "@utils";
+import { launchImageLibraryAsync } from "expo-image-picker";
 import { Keyboard } from "react-native";
-import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
+import { extension, lookup } from "react-native-mime-types";
+import uuid from "react-native-uuid";
+import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_UPLOAD_IMAGE, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
 import { entity, initialState, renderApollo } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
@@ -559,11 +562,24 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       it("should render the screen correctly", () => {
         expect(screen.getByTestId("profile screen")).toBeOnTheScreen();
       });
-      it("should render the ProfileHeader container", () => {
-        expect(screen.getByTestId("profile header")).toBeOnTheScreen();
+      it("should render the ImageUploader container", () => {
+        expect(screen.getByTestId("image uploader")).toBeOnTheScreen();
       });
       it("should render 2 profile nav boxes", () => {
         expect(screen.getAllByTestId("profile nav box")).toHaveLength(2);
+      });
+      it("should call addImage function when the image uploader is pressed", async () => {
+        (launchImageLibraryAsync as jest.Mock).mockImplementation(() => Promise.resolve(({ canceled: false, assets: [{ uri: "123" }] })));
+        (useAppSelector as jest.Mock).mockReturnValue(undefined);
+        (lookup as jest.Mock).mockReturnValue("image");
+        (extension as jest.Mock).mockReturnValue("");
+        jest.spyOn(uuid, "v4").mockReturnValue("123");
+        const logSpy = jest.spyOn(console, "log");
+        renderApollo(<ProfileScreen />, MOCK_UPLOAD_IMAGE);
+        await act(() => fireEvent.press(screen.getByTestId("add image button")));
+        const upload = screen.getByTestId("upload button");
+        fireEvent.press(upload);
+        await waitFor(() => expect(logSpy).toBeCalledWith("image"));
       });
     });
 

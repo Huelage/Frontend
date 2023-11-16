@@ -23,6 +23,16 @@ export const renderApollo = (ui: React.ReactNode, mocks: any) => {
   );
 };
 
+export const renderApolloNavigator = (ui: React.ReactNode, mocks: any) => {
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <NavigationContainer>
+        {ui}
+      </NavigationContainer>
+    </MockedProvider>
+  );
+};
+
 export const initialState: globalStateInterface = {
   isVendor: false,
   entity: null,

@@ -1,9 +1,13 @@
+import { useAppSelector } from "@api/app/appHooks";
+import { getEntity } from "@api/slices/globalSlice";
 import { ProfileNavBox } from "@components/core/Profile";
-import { ProfileHeader } from "@containers/User";
+import { ImageUploader } from "@containers/Misc";
 import { useAppTheme } from "@hooks";
 import { ProfileElementInterface } from "@interfaces";
+import { fonts } from "@utils";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const nav1: ProfileElementInterface[] = [
@@ -20,12 +24,18 @@ const nav2: ProfileElementInterface[] = [
 ];
 
 const ProfileScreen = () => {
+  const entity = useAppSelector(getEntity);
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
+
+  const addImage = (imgUrl: string) => console.log(imgUrl);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="profile screen">
       <ScrollView contentContainerStyle={styles.innerContainer}>
-        <ProfileHeader />
+        <View style={styles.profileHeader}>
+          <ImageUploader prevImage={entity?.imgUrl} onUpload={addImage} />
+          <Text style={[styles.nameText, { color: color.mainText }]}>{`${entity?.firstName} ${entity?.lastName}`}</Text>
+        </View>
         <View style={styles.navBox}>
           <ProfileNavBox elements={nav1} />
           <ProfileNavBox elements={nav2} />
@@ -47,5 +57,15 @@ const styles = StyleSheet.create({
   },
   navBox: {
     gap: 15,
+  },
+  profileHeader: {
+    alignItems: "center",
+    gap: 20,
+    marginTop: hp("5%")
+  },
+  nameText: {
+    fontFamily: fonts.I_700,
+    fontSize: 20,
+    textAlign: "center"
   }
 });

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { AddItemScreen, HomeScreen, MenuScreen, NotificationScreen } from "@screens/Vendor";
 import { act, fireEvent, render, screen } from "@testing-library/react-native";
+import { renderApollo } from "__tests__/testhelpers";
 
 describe("When Testing Vendor Screens: ", () => {
   describe("<HomeScreen />: ", () => {
@@ -25,7 +26,7 @@ describe("When Testing Vendor Screens: ", () => {
   describe("Menu Screens: ", () => {
     describe("<AddItemScreen />: ", () => {
       beforeEach(() => {
-        render(<AddItemScreen />);
+        renderApollo(<AddItemScreen />, []);
       });
       // Testing UI
       it("should render the component correctly", () => {
@@ -34,23 +35,16 @@ describe("When Testing Vendor Screens: ", () => {
       it("should render the header box", () => {
         expect(screen.getByTestId("header box")).toBeOnTheScreen();
       });
-      it("should render the user image alt initially", () => {
-        expect(screen.getByTestId("user image alt")).toBeOnTheScreen();
-      });
-      it("should render the add image button", () => {
-        expect(screen.getByTestId("add image button")).toBeOnTheScreen();
+      it("should render the ImageUploader component", () => {
+        expect(screen.getByTestId("image uploader")).toBeOnTheScreen();
       });
       it("should render the AddMenuInputs component", () => {
         expect(screen.getByTestId("add menu inputs")).toBeOnTheScreen();
       });
       // Testing Functionality
-      it("should render the user image when an image is added", () => {
-        fireEvent.press(screen.getByTestId("add image button"));
-        expect(screen.getByTestId("user image")).toBeOnTheScreen();
-      });
       it("should call onSubmit when the form is submitted", async () => {
         const logSpy = jest.spyOn(console, "log");
-        render(<AddItemScreen />);
+        renderApollo(<AddItemScreen />, []);
         const submitButton = screen.getByTestId("submit button");
         const nameInput = screen.getByPlaceholderText("Food Name *");
         const descriptionInput = screen.getByPlaceholderText("Food Description *");
