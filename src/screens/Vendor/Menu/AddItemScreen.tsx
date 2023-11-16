@@ -1,4 +1,5 @@
 import { AddMenuInputs } from "@components/vendor/Menu";
+import { ImageUploader } from "@containers/Misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AddFoodInterface, VendorMenuTabProps } from "@interfaces";
@@ -6,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,7 +20,6 @@ const AddItemScreen = () => {
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<AddFoodInterface>({ mode: "onChange" });
 
   const onSubmit = (data: AddFoodInterface) => { console.log(data); reset(); };
-  const addImage = () => setImage(Image.resolveAssetSource(require("@images/prawnImg.png")).uri);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="add item screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
@@ -29,16 +29,7 @@ const AddItemScreen = () => {
         <Text style={[styles.headerText, { color: color.mainText }]}>Create Food</Text>
       </View>
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
-        <View style={[styles.imageBox, { backgroundColor: color.cardBg2 }]}>
-          {!!image ? (
-            <Image style={styles.image} source={{ uri: image }} testID="user image" />
-          ) : (
-            <Text style={[styles.imageText, { color: color.mainText }]} testID="user image alt">Add an image</Text>
-          )}
-          <TouchableOpacity style={styles.editImage} onPress={addImage} testID="add image button">
-            <MaterialCommunityIcons name="camera" size={30} color={color.mainGreen} />
-          </TouchableOpacity>
-        </View>
+        <ImageUploader prevImage={image} onUpload={setImage} />
         <AddMenuInputs control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} watch={watch} />
       </KeyboardAwareScrollView>
     </View>
