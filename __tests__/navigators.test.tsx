@@ -3,7 +3,7 @@ import { getAccessToken, getTheme, getVendorStatus } from "@api/slices/globalSli
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
 import { render, screen } from "@testing-library/react-native";
 import { useColorScheme } from "react-native";
-import { renderNavigator } from "./testhelpers";
+import { renderApollo, renderApolloNavigator, renderNavigator } from "./testhelpers";
 
 describe("When Testing the Navigators: ", () => {
   describe("<AuthStackNavigator />: ", () => {
@@ -144,7 +144,7 @@ describe("When Testing the Navigators: ", () => {
     });
     describe("<UserProfileTabStack />: ", () => {
       it("should render the ProfileScreen", () => {
-        renderNavigator(<UserProfileTabStack />);
+        renderApolloNavigator(<UserProfileTabStack />, []);
         expect(screen.getByTestId("profile screen")).toBeOnTheScreen();
       });
     });

@@ -1,4 +1,4 @@
-import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
@@ -348,6 +348,22 @@ export const MOCK_GET_KNOWN_LOCATIONS = [
           }
         }
       }
+    }
+  }
+];
+
+// General Queries
+export const MOCK_UPLOAD_IMAGE = [
+  {
+    // delay: 1,
+    request: {
+      query: UPLOAD_IMAGE,
+      variables: {
+        input: { id: "123", image: { uri: "123", name: "image-123.", type: "image" } }
+      }
+    },
+    result: {
+      data: { uploadImage: "image" }
     }
   }
 ];

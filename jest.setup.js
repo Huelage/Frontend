@@ -64,3 +64,12 @@ jest.mock("react-native-flash-message", () => ({
 jest.mock("@react-native-async-storage/async-storage", () =>
   require("@react-native-async-storage/async-storage/jest/async-storage-mock")
 );
+jest.mock("react-native-mime-types", () => ({
+  ...jest.requireActual("react-native-mime-types"),
+  lookup: jest.fn(), extension: jest.fn()
+}));
+jest.mock("expo-image-picker", () => ({
+  ...jest.requireActual("expo-image-picker"),
+  launchImageLibraryAsync: jest.fn(),
+  launchCameraAsync: jest.fn(() => Promise.resolve({ cancelled: false, uri: "image" })),
+}));
