@@ -1,7 +1,7 @@
 import { CustomTextInput, SubmitButton } from "@components/auth";
 import { AddFoodInterface } from "@interfaces";
 import { categories, pricingMethods } from "@utils";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import PackageSizeInput from "./PackageSizeInput";
@@ -10,6 +10,7 @@ import SideInput from "./SideInput";
 interface addFoodInputsProps {
   control: Control<AddFoodInterface, any>;
   errors: FieldErrors<AddFoodInterface>;
+  isSubmitted: boolean;
   setFocus: UseFormSetFocus<AddFoodInterface>;
   watch: UseFormWatch<AddFoodInterface>;
   submit: () => void;
@@ -21,13 +22,10 @@ const pricePlaceholder = (pricingMethod: string) => {
   return "Price";
 };
 
-const AddMenuInputs = ({ control, errors, setFocus, submit, watch }: addFoodInputsProps) => {
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const addFood = () => {
-    submit();
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 1000);
-  };
+const AddMenuInputs = ({ control, errors, isSubmitted, setFocus, submit, watch }: addFoodInputsProps) => {
+  useEffect(() => {
+    if (isSubmitted) setFocus("name");
+  }, [isSubmitted]);
   return (
     <View style={styles.container} testID="add menu inputs">
       <Controller
@@ -138,6 +136,7 @@ const AddMenuInputs = ({ control, errors, setFocus, submit, watch }: addFoodInpu
               label={`${pricePlaceholder(watch("pricingMethod"))} *`}
               onBlur={onBlur}
               onChangeText={onChange}
+              onSubmitEditing={() => setFocus("preparationTime")}
               innerRef={ref}
               returnKeyType="next"
               value={value?.toString()}
@@ -149,12 +148,28 @@ const AddMenuInputs = ({ control, errors, setFocus, submit, watch }: addFoodInpu
       ) : null}
       <Controller
         control={control}
+        render={({ field: { onChange, onBlur, value, ref } }) => (
+          <CustomTextInput
+            autoCorrect={false}
+            error={errors.name}
+            label="Preparation Time (in minutes)"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            innerRef={ref}
+            returnKeyType="next"
+            value={value?.toString()}
+          />
+        )}
+        name="preparationTime"
+      />
+      <Controller
+        control={control}
         render={({ field: { onChange, value } }) => (
           <SideInput sides={value ?? []} onChange={onChange} isSubmitted={isSubmitted} />
         )}
         name="sides"
       />
-      <SubmitButton label="Create Food" onSubmit={addFood} />
+      <SubmitButton label="Create Food" onSubmit={submit} />
     </View>
   );
 };
