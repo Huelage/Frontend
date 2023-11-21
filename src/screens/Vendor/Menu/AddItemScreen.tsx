@@ -1,11 +1,13 @@
+import { ADD_FOOD_ITEM } from "@api/graphql";
+import { useMutation } from "@apollo/client";
 import { AddMenuInputs } from "@components/vendor/Menu";
 import { ImageUploader } from "@containers/Misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AddFoodInterface, VendorMenuTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { fonts } from "@utils";
-import React, { useState } from "react";
+import { fonts, showError, showSuccess } from "@utils";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -14,12 +16,30 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AddItemScreen = () => {
   const { color } = useAppTheme();
-  const [image, setImage] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>("");
   const insets = useSafeAreaInsets();
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const { goBack } = useNavigation<VendorMenuTabProps>();
+  const [addFood, { data }] = useMutation(ADD_FOOD_ITEM);
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<AddFoodInterface>({ mode: "onChange" });
 
-  const onSubmit = (data: AddFoodInterface) => { console.log(data); reset(); };
+  const onSubmit = async (data: AddFoodInterface) => {
+    if (!imgUrl) return showError("Please upload an image");
+    const input = { ...data, imgUrl };
+    if (data.price) input.price = Number(data.price);
+    if (data.preparationTime) input.preparationTime = Number(data.preparationTime);
+    await addFood({ variables: { input } });
+  };
+
+  useEffect(() => {
+    if (data) {
+      showSuccess("Food added to your menu successfully");
+      reset();
+      setImgUrl("");
+      setIsSubmitted(true);
+      setTimeout(() => setIsSubmitted(false), 500);
+    }
+  }, [data]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="add item screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
@@ -29,8 +49,8 @@ const AddItemScreen = () => {
         <Text style={[styles.headerText, { color: color.mainText }]}>Create Food</Text>
       </View>
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
-        <ImageUploader prevImage={image} onUpload={setImage} />
-        <AddMenuInputs control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} watch={watch} />
+        <ImageUploader prevImage={imgUrl} onUpload={setImgUrl} />
+        <AddMenuInputs isSubmitted={isSubmitted} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} watch={watch} />
       </KeyboardAwareScrollView>
     </View>
   );

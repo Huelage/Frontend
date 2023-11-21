@@ -38,7 +38,7 @@ export interface AddFoodInterface {
   pricingMethod: PricingMethod;
   price?: number;
   packageSizes?: { name: string; price: number; }[];
-  preparationTime?: string;
+  preparationTime?: number;
   sides?: SideInterface[];
 }
 

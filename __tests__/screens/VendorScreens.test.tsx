@@ -1,7 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { AddItemScreen, HomeScreen, MenuScreen, NotificationScreen } from "@screens/Vendor";
-import { act, fireEvent, render, screen } from "@testing-library/react-native";
-import { renderApollo } from "__tests__/testhelpers";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import { showError, showSuccess } from "@utils";
+import { launchImageLibraryAsync } from "expo-image-picker";
+import { extension, lookup } from "react-native-mime-types";
+import uuid from "react-native-uuid";
+import { MOCK_ADD_FOOD_ITEM, MOCK_ADD_FOOD_PACKAGE_ITEM, MOCK_UPLOAD_IMAGE } from "../gql.mocks";
+import { renderApollo } from "../testhelpers";
 
 describe("When Testing Vendor Screens: ", () => {
   describe("<HomeScreen />: ", () => {
@@ -25,6 +30,42 @@ describe("When Testing Vendor Screens: ", () => {
 
   describe("Menu Screens: ", () => {
     describe("<AddItemScreen />: ", () => {
+      const inputFoodData = () => {
+        const nameInput = screen.getByPlaceholderText("Food Name *");
+        const descriptionInput = screen.getByPlaceholderText("Food Description *");
+        const categoryInput = screen.getAllByText("Select option")[0];
+        const pricingMethodInput = screen.getAllByText("Select option")[1];
+        fireEvent.changeText(nameInput, "test name");
+        fireEvent.changeText(descriptionInput, "test description");
+        fireEvent.press(categoryInput);
+        fireEvent.press(screen.getByText("MAIN"));
+        fireEvent.press(pricingMethodInput);
+        fireEvent.press(screen.getByText("FIXED"));
+        const priceInput = screen.getByPlaceholderText("Price *");
+        fireEvent.changeText(priceInput, "1000");
+      };
+      const inputFoodPackage = async () => {
+        const nameInput = screen.getByPlaceholderText("Food Name *");
+        const descriptionInput = screen.getByPlaceholderText("Food Description *");
+        const categoryInput = screen.getAllByText("Select option")[0];
+        const pricingMethodInput = screen.getAllByText("Select option")[1];
+        const preparationTimeInput = screen.getByPlaceholderText("Preparation Time (in minutes)");
+        fireEvent.changeText(nameInput, "test name");
+        fireEvent.changeText(descriptionInput, "test description");
+        fireEvent.press(categoryInput);
+        fireEvent.press(screen.getByText("MAIN"));
+        fireEvent.press(pricingMethodInput);
+        fireEvent.press(screen.getByText("PACKAGE"));
+        const button = screen.getAllByTestId("add package size");
+        fireEvent.changeText(screen.getAllByPlaceholderText("Enter package size")[0], "big pack");
+        fireEvent.changeText(screen.getAllByPlaceholderText("Enter package price")[0], "1000");
+        await act(() => fireEvent.press(button[0]));
+        fireEvent.changeText(screen.getByPlaceholderText("Enter package size"), "small pack");
+        fireEvent.changeText(screen.getByPlaceholderText("Enter package price"), "500");
+        await act(() => fireEvent.press(button[1]));
+        fireEvent.changeText(preparationTimeInput, 30);
+      };
+
       beforeEach(() => {
         renderApollo(<AddItemScreen />, []);
       });
@@ -42,26 +83,42 @@ describe("When Testing Vendor Screens: ", () => {
         expect(screen.getByTestId("add menu inputs")).toBeOnTheScreen();
       });
       // Testing Functionality
-      it("should call onSubmit when the form is submitted", async () => {
-        const logSpy = jest.spyOn(console, "log");
-        renderApollo(<AddItemScreen />, []);
+      it("should throw an error if an image is not added when creating the food", async () => {
         const submitButton = screen.getByTestId("submit button");
-        const nameInput = screen.getByPlaceholderText("Food Name *");
-        const descriptionInput = screen.getByPlaceholderText("Food Description *");
-        const categoryInput = screen.getAllByText("Select option")[0];
-        const pricingMethodInput = screen.getAllByText("Select option")[1];
-        fireEvent.changeText(nameInput, "test name");
-        fireEvent.changeText(descriptionInput, "test description");
-        fireEvent.press(categoryInput);
-        fireEvent.press(screen.getByText("MAIN"));
-        fireEvent.press(pricingMethodInput);
-        fireEvent.press(screen.getByText("FIXED"));
-        const priceInput = screen.getByPlaceholderText("Price *");
-        fireEvent.changeText(priceInput, "1000");
+        inputFoodData();
         await act(() => fireEvent.press(submitButton));
-        expect(logSpy).toBeCalledWith({
-          name: "test name", description: "test description", category: "MAIN", pricingMethod: "FIXED", price: "1000"
-        });
+        expect(showError).toBeCalledWith("Please upload an image");
+      });
+      it("should call onSubmit when the form is submitted", async () => {
+        (launchImageLibraryAsync as jest.Mock).mockImplementation(() => Promise.resolve(({ canceled: false, assets: [{ uri: "123" }] })));
+        (lookup as jest.Mock).mockReturnValue("");
+        (extension as jest.Mock).mockReturnValue("");
+        jest.spyOn(uuid, "v4").mockReturnValueOnce("123");
+        renderApollo(<AddItemScreen />, [...MOCK_UPLOAD_IMAGE, ...MOCK_ADD_FOOD_ITEM]);
+        const submitButton = screen.getByTestId("submit button");
+        await act(() => fireEvent.press(screen.getByTestId("add image button")));
+        const upload = screen.getByTestId("upload button");
+        fireEvent.press(upload);
+        await waitFor(() => expect(screen.queryByTestId("upload button")).toBeNull());
+        inputFoodData();
+        fireEvent.press(submitButton);
+        await waitFor(() => expect(showSuccess).toBeCalledWith("Food added to your menu successfully"));
+      }, 20000);
+      it("should call onSubmit when the form is submitted", async () => {
+        (launchImageLibraryAsync as jest.Mock).mockImplementation(() => Promise.resolve(({ canceled: false, assets: [{ uri: "123" }] })));
+        (lookup as jest.Mock).mockReturnValue("");
+        (extension as jest.Mock).mockReturnValue("");
+        jest.spyOn(uuid, "v4").mockReturnValueOnce("123");
+        renderApollo(<AddItemScreen />, [...MOCK_UPLOAD_IMAGE, ...MOCK_ADD_FOOD_PACKAGE_ITEM]);
+        const submitButton = screen.getByTestId("submit button");
+        await act(() => fireEvent.press(screen.getByTestId("add image button")));
+        const upload = screen.getByTestId("upload button");
+        fireEvent.press(upload);
+        await waitFor(() => expect(screen.queryByTestId("upload button")).toBeNull());
+        await inputFoodPackage();
+        fireEvent.press(submitButton);
+        await waitFor(() => expect(showSuccess).toBeCalledWith("Food added to your menu successfully"));
+        await act(() => jest.runAllTimers());
       });
     });
 

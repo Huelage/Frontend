@@ -126,9 +126,13 @@ describe("When Testing Authentication Screens: ", () => {
     it("should render the contact us text", () => {
       expect(screen.getByText(/Need help?/i)).toBeOnTheScreen();
     });
-    describe("When there is saved login details", () => {
+    describe("When there is saved login details and isType is true", () => {
       beforeEach(async () => {
-        (getItem as jest.Mock).mockImplementation(() => Promise.resolve("test key"));
+        (getItem as jest.Mock).mockImplementation(key => {
+          if (key === "huelageEntityType") return Promise.resolve("VENDOR");
+          else return Promise.resolve("test key");
+        });
+        (useAppSelector as jest.Mock).mockReturnValue(true);
         await waitFor(() => (
           renderApollo(<LoginScreen />, [])
         ));
@@ -143,6 +147,18 @@ describe("When Testing Authentication Screens: ", () => {
         const switchButton = screen.getByText(/Switch/i);
         fireEvent.press(switchButton);
         expect(screen.getByText(/login to continue/i)).toBeOnTheScreen();
+      });
+    });
+    describe("When there is saved login details and isType is false", () => {
+      beforeEach(async () => {
+        (getItem as jest.Mock).mockImplementation(() => "test key");
+        await waitFor(() => renderApollo(<LoginScreen />, []));
+      });
+      it("should render the login to continue text instead of the saved name", () => {
+        expect(screen.getByText(/login to continue/i)).toBeOnTheScreen();
+      });
+      it("should not render the switch account text cta", () => {
+        expect(screen.queryByText(/Switch/i)).toBeNull();
       });
     });
     describe("When the users biometric is enrolled", () => {
@@ -241,13 +257,17 @@ describe("When Testing Authentication Screens: ", () => {
       it("(use saved details and user is vendor)", async () => {
         (getBiometrics as jest.Mock).mockImplementation(() => Promise.resolve({ hasBiometrics: true, biometricType: [2], isEnrolled: true }));
         (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
-        (getItem as jest.Mock).mockImplementation(() => Promise.resolve("123"));
+        (getItem as jest.Mock).mockImplementation(key => {
+          if (key === "huelageEntityType") return Promise.resolve("VENDOR");
+          else return Promise.resolve("123");
+        });
         (useAppSelector as jest.Mock).mockReturnValue(true);
         await waitFor(() => (
           renderApollo(<LoginScreen />, MOCK_LOGIN_VENDOR_SAVED)
         ));
         const submitButton = screen.getByTestId("submit button");
         const passwordInput = screen.getByPlaceholderText("Password");
+        fireEvent.changeText(passwordInput, "pass1&onlY");
         fireEvent.changeText(passwordInput, "pass1&onlY");
         fireEvent.press(submitButton);
         await waitFor(() => {
@@ -261,7 +281,6 @@ describe("When Testing Authentication Screens: ", () => {
         await waitFor(() => (
           renderApollo(<LoginScreen />, MOCK_LOGIN_VENDOR_SAVED)
         ));
-        const submitButton = screen.getByTestId("submit button");
         const passwordInput = screen.getByPlaceholderText("Password");
         fireEvent.changeText(passwordInput, "pass1&onlY");
         fireEvent(passwordInput, "onSubmitEditing");

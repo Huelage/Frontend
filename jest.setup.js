@@ -73,3 +73,7 @@ jest.mock("expo-image-picker", () => ({
   launchImageLibraryAsync: jest.fn(),
   launchCameraAsync: jest.fn(() => Promise.resolve({ cancelled: false, uri: "image" })),
 }));
+jest.mock("apollo-upload-client", () => ({
+  ...jest.requireActual("apollo-upload-client"),
+  ReactNativeFile: jest.fn().mockImplementation(({ uri, name, type }) => ({ uri, name, type }))
+}));

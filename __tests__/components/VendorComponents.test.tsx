@@ -102,7 +102,7 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
     const submit = jest.fn();
     const ControlledInput = () => {
       const { control, watch } = useForm<AddFoodInterface>();
-      return <AddMenuInputs control={control} errors={{}} setFocus={setFocus} watch={watch} submit={submit} />;
+      return <AddMenuInputs control={control} errors={{}} isSubmitted={false} setFocus={setFocus} watch={watch} submit={submit} />;
     };
     beforeEach(() => {
       render(<ControlledInput />);
@@ -153,6 +153,15 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
       const name = screen.getByPlaceholderText("Food Name *");
       fireEvent(name, "onSubmitEditing");
       expect(setFocus).toBeCalledWith("description");
+    });
+    it("should set focus to the preparationTime input when price inputis submitted", () => {
+      const pricingMethodInput = screen.getAllByText("Select option")[1];
+      fireEvent.press(pricingMethodInput);
+      fireEvent.press(screen.getByText("PRICE"));
+      const priceInput = screen.getByPlaceholderText("Minimum Price *");
+      fireEvent.changeText(priceInput, "1000");
+      fireEvent(priceInput, "onSubmitEditing");
+      expect(setFocus).toBeCalledWith("preparationTime");
     });
     it("should call the submit function when the submit button is pressed", async () => {
       fireEvent.press(screen.getByTestId("submit button"));
