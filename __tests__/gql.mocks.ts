@@ -1,4 +1,5 @@
-import { CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { ADD_FOOD_ITEM, CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { ReactNativeFile } from "apollo-upload-client";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
@@ -352,10 +353,53 @@ export const MOCK_GET_KNOWN_LOCATIONS = [
   }
 ];
 
+// Vendor Queries
+export const MOCK_ADD_FOOD_ITEM = [
+  {
+    request: {
+      query: ADD_FOOD_ITEM,
+      variables: {
+        input: {
+          name: "test name",
+          description: "test description",
+          category: "MAIN",
+          price: 1000,
+          pricingMethod: "FIXED",
+          imgUrl: "image"
+        }
+      }
+    },
+    result: {
+      data: { addFood: { productId: "123" } }
+    }
+  }
+];
+
+export const MOCK_ADD_FOOD_PACKAGE_ITEM = [
+  {
+    request: {
+      query: ADD_FOOD_ITEM,
+      variables: {
+        input: {
+          name: "test name",
+          description: "test description",
+          category: "MAIN",
+          pricingMethod: "PACKAGE",
+          preparationTime: 30,
+          packageSizes: [{ "name": "big pack", "price": 1000 }, { "name": "small pack", "price": 500 }],
+          imgUrl: "image"
+        }
+      }
+    },
+    result: {
+      data: { addFood: { productId: "123" } }
+    }
+  }
+];
+
 // General Queries
 export const MOCK_UPLOAD_IMAGE = [
   {
-    // delay: 1,
     request: {
       query: UPLOAD_IMAGE,
       variables: {
