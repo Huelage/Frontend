@@ -7,8 +7,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { AuthNavigationProps, BiometricsInterface, LoginInfoInterface, entityInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { enableBiometrics, fonts, getBiometricType, getBiometrics, getItem, loginWithBiometrics, outline, setItem, } from "@utils";
-import React, { useCallback, useEffect, useState } from "react";
+import { enableBiometrics, fonts, getBiometricType, getBiometrics, getItem, loginWithBiometrics, setItem } from "@utils";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -26,8 +26,9 @@ const LoginScreen = () => {
   const [login_user, { data: uData, loading: uLoading }] = useMutation(LOGIN_USER);
   const [login_vendor, { data: vData, loading: vLoading }] = useMutation(LOGIN_VENDOR);
   const [useSaved, setUseSaved] = useState<boolean>(true);
+  const [isType, setIsType] = useState<boolean>(false);
   const [bioSpecs, setBioSpecs] = useState<BiometricsInterface | null>(null);
-  const [savedDetails, setSavedDetails] = useState<{ id: string, name: string; } | null>(null);
+  const [savedDetails, setSavedDetails] = useState<{ id: string, name: string, type: "VENDOR" | "USER"; } | null>(null);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<LoginInfoInterface>({ mode: "onChange" });
   let bioDetail: (typeof BiometricType)[keyof typeof BiometricType] | null = null;
   if (bioSpecs?.hasBiometrics && bioSpecs?.isEnrolled) {
@@ -37,12 +38,10 @@ const LoginScreen = () => {
 
   const onSubmit: SubmitHandler<LoginInfoInterface> = async (data) => {
     let input;
-    if (savedDetails && useSaved) {
-      const entityId = await getItem("huelageEntityId");
-      input = { entityId, password: data.password };
-    } else {
+    if (savedDetails && useSaved && isType)
+      input = { entityId: savedDetails.id, password: data.password };
+    else
       input = data;
-    }
     isVendor ? await login_vendor({ variables: { input } }) : await login_user({ variables: { input } });
     if (!bioDetail) {
       Alert.alert(
@@ -58,15 +57,15 @@ const LoginScreen = () => {
   };
   const dismissKeyboard = () => Keyboard.dismiss();
   const goToforgotPassword = () => navigate("ForgotPassword");
-  const submit = useCallback(() => handleSubmit(onSubmit)(), [handleSubmit, onSubmit]);
   const changeUseSaved = () => setUseSaved(!useSaved);
 
   useEffect(() => {
     const getData = async () => {
       const id = await getItem("huelageEntityId");
       const name = await getItem("huelageEntityName");
+      const type = await getItem("huelageEntityType");
       if (id && name) {
-        setSavedDetails({ id, name });
+        setSavedDetails({ id, name, type });
         const { hasBiometrics, isEnrolled, biometricType } = await getBiometrics();
         setBioSpecs({ hasBiometrics, isEnrolled, biometricType });
       }
@@ -74,9 +73,10 @@ const LoginScreen = () => {
     getData();
   }, []);
   useEffect(() => {
-    setTimeout(() => setFocus(!loginwithsaved ? (isVendor ? "vendorKey" : "email") : "password"), 0);
+    setIsType(savedDetails?.type === (isVendor ? "VENDOR" : "USER"));
+    setTimeout(() => setFocus(!loginwithsaved || !isType ? (isVendor ? "vendorKey" : "email") : "password"), 0);
     reset();
-  }, [isVendor, loginwithsaved]);
+  }, [isVendor, loginwithsaved, isType, savedDetails]);
   useEffect(() => {
     if (uData || vData) {
       const res = isVendor ? vData.signInVendor : uData.signInUser;
@@ -104,6 +104,7 @@ const LoginScreen = () => {
         await setItem("huelageRefreshToken", refreshToken);
         await setItem("huelageEntityId", res.entity.entityId);
         await setItem("huelageEntityName", name);
+        await setItem("huelageEntityType", isVendor ? "VENDOR" : "USER");
       })();
       dispatch(setCredentials({ entity, accessToken }));
     }
@@ -114,17 +115,17 @@ const LoginScreen = () => {
         <Animated.Image sharedTransitionTag="huelageLogo" style={styles.logoImage} testID="logo image" source={require("@images/onboard_logo.png")} />
         <View style={styles.welcomeBox}>
           <Text style={[styles.welcomeText, { color: color.mainGreen }]}>Welcome Back!</Text>
-          <Text style={[styles.welcomeName, { color: color.mainText }]}>{loginwithsaved ? savedDetails?.name : "Login to continue"}</Text>
+          <Text style={[styles.welcomeName, { color: color.mainText }]}>{(loginwithsaved && isType) ? savedDetails?.name : "Login to continue"}</Text>
         </View>
       </View>
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} style={styles.inputContainer} contentContainerStyle={styles.inputContentContainer}>
         <UserVendor />
         <View style={styles.inputs}>
-          <LoginInputs loginwithsaved={loginwithsaved} control={control} errors={errors} setFocus={setFocus} submit={submit} />
+          <LoginInputs loginwithsaved={loginwithsaved && isType} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} />
           <TouchableOpacity onPress={goToforgotPassword}>
             <Text style={[styles.forgotText, { color: color.mainText }]}>Forgot Password?</Text>
           </TouchableOpacity>
-          <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={submit} />
+          <SubmitButton label="LOG IN" isLoading={uLoading || vLoading} onSubmit={handleSubmit(onSubmit)} />
         </View>
         {loginwithsaved && bioDetail ? (
           <View style={styles.footer}>
@@ -140,7 +141,7 @@ const LoginScreen = () => {
           </View>
         ) : (
           <>
-            {loginwithsaved && (
+            {(loginwithsaved && isType) && (
               <View style={styles.footer}>
                 <TouchableOpacity onPress={changeUseSaved}>
                   <Text style={[styles.switchText, { color: color.mainGreen }]}>Switch account</Text>
