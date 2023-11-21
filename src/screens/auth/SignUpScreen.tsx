@@ -44,6 +44,7 @@ const SignUpScreen = () => {
       (async () => {
         await setItem("huelageEntityId", entityId);
         await setItem("huelageEntityName", name);
+        await setItem("huelageEntityType", isVendor ? "VENDOR" : "USER");
       })();
     }
   }, [uData, vData]);
