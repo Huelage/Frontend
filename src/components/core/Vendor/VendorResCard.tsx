@@ -8,19 +8,25 @@ import React, { memo } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const VendorResCard = ({ resId }: { resId: string; }) => {
+export interface VendorResCardInterface {
+	address: string;
+	id: string;
+	imgUrl: string;
+	name: string;
+}
+
+const VendorResCard = ({ address, id, imgUrl, name }: VendorResCardInterface) => {
 	const { color } = useAppTheme();
 	const { navigate } = useNavigation<UserVendorTabProps>();
-	const restaurant = mockRestaurants.find(res => res.id === resId);
 	return (
 		<View style={[styles.container]} testID="vendor res card">
 			<CustomBox bgColor={color.cardBg2} height={100} width={wp("100%") - 30} pad={6} r={10} />
-			<Image testID="restaurant image" style={styles.image} source={{ uri: restaurant?.imgUrl }} />
+			<Image testID="restaurant image" style={styles.image} source={{ uri: imgUrl }} />
 			<View style={styles.details}>
-				<Text style={[styles.name, { color: color.mainText }]}>{restaurant?.name}</Text>
-				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{restaurant?.location}</Text>
+				<Text style={[styles.name, { color: color.mainText }]}>{name}</Text>
+				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{address}</Text>
 			</View>
-			<TouchableOpacity onPress={() => navigate("VendorHome", { vendorId: resId })} style={styles.buttonBox} testID="view vendor">
+			<TouchableOpacity onPress={() => navigate("VendorHome", { vendorId: id })} style={styles.buttonBox} testID="view vendor">
 				<Text style={styles.button}>View</Text>
 			</TouchableOpacity>
 		</View>

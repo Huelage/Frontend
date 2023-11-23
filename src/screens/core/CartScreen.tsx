@@ -1,10 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { GET_MANY_VENDORS } from "@api/graphql";
 import { mockRestaurants } from "@api/mock";
 import { clearCart, getCart } from "@api/slices/globalSlice";
+import { useQuery } from "@apollo/client";
+import { FastImage } from "@components/misc";
 import { CartItem } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { OrderItemInterface, RestaurantInterface, UserTabProps } from "@interfaces";
+import { OrderItemInterface, RestaurantInterface, UserTabProps, VendorInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency, shadowStyle } from "@utils";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -18,22 +21,23 @@ const CartScreen = () => {
   const insets = useSafeAreaInsets();
   const { goBack, navigate } = useNavigation<UserTabProps>();
   const cartItems = useAppSelector(getCart);
-  const vendorCartIds = [... new Set(cartItems.map(item => item.vendorId))];
-  const [currVendor, setCurrVendor] = useState<string>(vendorCartIds[0]);
+  const vendorIds = [... new Set(cartItems.map(item => item.vendorId))];
+  const { data, loading } = useQuery(GET_MANY_VENDORS, { variables: { vendorIds } })
+  const [currVendor, setCurrVendor] = useState<string>(vendorIds[0]);
+  const [vendors, setVendors] = useState<VendorInterface[]>([]);
   const [vendorCartItem, setVendorCartItem] = useState<OrderItemInterface[]>([]);
-  const vendorWithCarts = [...mockRestaurants].filter(res => vendorCartIds.includes(res.id));
   const subtotal = useMemo(() => vendorCartItem.reduce((acc, curr) => acc + curr.totalPrice * curr.quantity, 0), [vendorCartItem]);
 
-  const renderVendorCartItems = useCallback(({ item }: { item: RestaurantInterface; }) => (
+  const renderVendorCartItems = useCallback(({ item }: { item: VendorInterface; }) => (
     <TouchableOpacity onPress={() => setCurrVendor(item.id)} style={[styles.vendorCartItem, { borderColor: item.id === currVendor ? color.mainGreen : "transparent" }]} testID="vendor cart item">
-      <Image source={{ uri: item.imgUrl }} style={styles.vendorCartImage} />
-      <Text style={[styles.vendorCartText, { color: color.mainText }]}>{item.name}</Text>
+      <FastImage src={item.imgUrl} style={styles.vendorCartImage} />
+      <Text style={[styles.vendorCartText, { color: color.mainText }]}>{item.businessName}</Text>
     </TouchableOpacity>
-  ), [vendorWithCarts]);
+  ), [vendors]);
   const clearCartItems = () => {
     dispatch(clearCart(currVendor));
-    const idx = vendorCartIds.findIndex(id => id === currVendor);
-    setCurrVendor(vendorCartIds[idx + 1] ?? vendorCartIds[idx - 1] ?? "");
+    const idx = vendorIds.findIndex(id => id === currVendor);
+    setCurrVendor(vendorIds[idx + 1] ?? vendorIds[idx - 1] ?? "");
   };
   const checkout = () => console.log("checkout");
   const continueShopping = () => {
@@ -43,6 +47,15 @@ const CartScreen = () => {
   useEffect(() => {
     setVendorCartItem([...cartItems].filter(item => item.vendorId === currVendor));
   }, [currVendor, cartItems]);
+  useEffect(() => {
+    if (data) {
+      const res = data.getVendorsById;
+      const vendors = res.map((item: any) => ({
+        id: item.vendorId, businessName: item.businessName, imgUrl: item.entity.imgUrl
+      }));
+      setVendors(vendors);
+    }
+  }, [data])
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="cart screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
@@ -54,7 +67,7 @@ const CartScreen = () => {
       <View style={styles.cartBody}>
         {cartItems.length ? (
           <FlatList
-            data={vendorWithCarts}
+            data={vendors}
             horizontal
             contentContainerStyle={styles.vendorCartList}
             keyExtractor={item => item.id}

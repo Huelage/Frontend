@@ -4,4 +4,5 @@ export { default as CustomFilterBox } from "./CustomFilterBox";
 export { default as CustomImage } from "./CustomImage";
 export { default as CustomModal } from "./CustomModal";
 export { default as CustomPopupModal } from "./CustomPopupModal";
+export { default as FastImage } from "./FastImage";
 export { default as StarRating } from "./StarRating";

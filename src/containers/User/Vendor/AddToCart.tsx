@@ -2,7 +2,7 @@ import { useAppDispatch } from "@api/app/appHooks";
 import { mockFoods } from "@api/mock";
 import { addItemToCart } from "@api/slices/globalSlice";
 import { useAppTheme } from "@hooks";
-import { OrderItemInterface, UserVendorTabProps, extraInterface } from "@interfaces";
+import { OrderItemInterface, UserFoodInterface, UserVendorTabProps, extraInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency, showError } from "@utils";
 import React from "react";
@@ -12,18 +12,17 @@ import uuid from "react-native-uuid";
 interface AddToCartInterface {
   amount: number;
   extras: extraInterface[];
-  itemId: string;
+  item?: UserFoodInterface;
   price: number;
   vendorId: string;
   quantity: number;
   size?: string;
 }
 
-const AddToCart = ({ amount, price, itemId, extras, vendorId, quantity, size }: AddToCartInterface) => {
+const AddToCart = ({ amount, price, item, extras, vendorId, quantity, size }: AddToCartInterface) => {
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
   const { goBack } = useNavigation<UserVendorTabProps>();
-  const item = mockFoods.find(food => food.id === itemId);
 
   let totalPrice = 0;
   if (item?.pricingMethod === "PACKAGE")
@@ -36,7 +35,7 @@ const AddToCart = ({ amount, price, itemId, extras, vendorId, quantity, size }: 
 
   const addToCart = () => {
     const cartItem: OrderItemInterface = {
-      id: uuid.v4().toString(), item_id: itemId,
+      id: uuid.v4().toString(), item_id: item?.id as string,
       quantity, totalPrice, vendorId, extras
     };
     if (size) cartItem.size = size;

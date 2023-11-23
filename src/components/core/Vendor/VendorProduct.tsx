@@ -1,12 +1,13 @@
-import { CustomBox } from "@components/misc";
+import { CustomBox, FastImage } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { UserFoodInterface, UserVendorTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency } from "@utils";
 import React, { memo } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { Image } from "expo-image";
 
 interface VendorProductInterface {
   item: UserFoodInterface;
@@ -25,7 +26,7 @@ const VendorProduct = ({ item, vendorId }: VendorProductInterface) => {
         style={styles.container}
       >
         <CustomBox bgColor={color.cardBg2} width={wp("100%") - 30} height={110} r={20} pad={6} left={-4} />
-        <Image source={{ uri: item.imgUrl }} style={styles.itemImage} testID="vendor product image" />
+        <FastImage src={item.imgUrl} style={styles.itemImage} testId="vendor product image" />
         <View style={styles.itemInfo} testID="vendor product info">
           <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1}>{item.name}</Text>
           <Text style={[styles.itemDescription, { color: color.mainTextDim }]} numberOfLines={2}>{item.description}</Text>
