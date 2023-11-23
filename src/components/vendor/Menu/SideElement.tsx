@@ -44,7 +44,7 @@ const SideElement = ({ side, onAdd, onRemove }: SideElementProps) => {
     if (!item.name) return showError("Option name is required");
     if (item.name.trim().length < 3) return showError("Option name should be a minimum of 3 characters");
     if (sideOptions.find(option => option.name === item.name)) return showError("Option name already exists");
-    if (!item.price) return showError("Option price is required");
+    if (Number.isNaN(item.price)) return showError("Option price is required");
     const newOptions = [...sideOptions!, item];
     setSideOptions(newOptions);
   };
