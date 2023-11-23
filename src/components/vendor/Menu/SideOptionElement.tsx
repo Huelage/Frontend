@@ -21,11 +21,10 @@ interface OptionInterface {
 
 const SideOptionElement = ({ option, isSide, onAdd, onRemove }: SideOptionElementProps) => {
   const { color } = useAppTheme();
-  const { handleSubmit, control, setFocus, reset } = useForm<OptionInterface>({ defaultValues: { isSingle: false } });
+  const { handleSubmit, control, setFocus } = useForm<OptionInterface>({ defaultValues: { isSingle: false } });
 
   const onSubmit = (data: OptionInterface) => {
     onAdd({ name: data.optionName, price: Number(data.optionPrice), isSingle: data.isSingle, groupId: "" });
-    reset();
   };
   return (
     <View style={styles.container} testID="side option element">

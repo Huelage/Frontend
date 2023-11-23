@@ -49,7 +49,7 @@ const AddItemScreen = () => {
         <Text style={[styles.headerText, { color: color.mainText }]}>Create Food</Text>
       </View>
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
-        <ImageUploader prevImage={imgUrl} onUpload={setImgUrl} />
+        <ImageUploader clear={isSubmitted} prevImage={imgUrl} onUpload={setImgUrl} />
         <AddMenuInputs isSubmitted={isSubmitted} control={control} errors={errors} setFocus={setFocus} submit={handleSubmit(onSubmit)} watch={watch} />
       </KeyboardAwareScrollView>
     </View>
