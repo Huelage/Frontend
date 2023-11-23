@@ -1,3 +1,3 @@
 export { default as SideOptionElement } from "./SideOptionElement";
 export { default as VendorProduct } from "./VendorProduct";
-export { default as VendorResCard } from "./VendorResCard";
+export { default as VendorResCard, VendorResCardInterface } from "./VendorResCard";

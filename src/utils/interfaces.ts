@@ -311,6 +311,18 @@ export type PaymentMethod = "CARD" | "HUENIT" | "CASH";
 export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELIVERED" | "COMPLETED" | "CANCELLED";
 
 // // Vendor
+export interface VendorInterface {
+  id: string,
+  businessName: string,
+  businessAddress: string,
+  repName: string,
+  avgResponseTime: string,
+  imgUrl: string,
+  rating: number,
+  noOfReviews: number,
+  products: UserFoodInterface[]
+}
+
 export interface ReviewInterface {
   id: string;
   name: string;

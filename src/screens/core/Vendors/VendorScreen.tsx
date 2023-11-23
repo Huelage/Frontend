@@ -1,10 +1,11 @@
-import { mockFoods, mockRestaurants } from "@api/mock";
+import { GET_VENDOR_INFO } from "@api/graphql";
+import { useQuery } from "@apollo/client";
 import { CustomButton, MainSearchBar } from "@components/core/Home";
 import { VendorProduct } from "@components/core/Vendor";
 import { StarRating } from "@components/misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserFoodInterface, UserVendorTabProps, UserVendorsTabVendorRouteProps } from "@interfaces";
+import { UserFoodInterface, UserVendorTabProps, UserVendorsTabVendorRouteProps, VendorInterface } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, foodCategories } from "@utils";
 import React, { useEffect, useState } from "react";
@@ -15,8 +16,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const VendorScreen = () => {
   const { params: { vendorId } } = useRoute<UserVendorsTabVendorRouteProps>();
-  const vendor = mockRestaurants.find(res => res.id === vendorId);
-  if (!vendor) return null;
+  const { data, loading } = useQuery(GET_VENDOR_INFO, { variables: { vendorId } })
+  const [vendor, setVendor] = useState<VendorInterface>()
   const { goBack } = useNavigation<UserVendorTabProps>();
   const [currCategory, setCurrCategory] = useState<string>("ALL");
   const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
@@ -25,12 +26,33 @@ const VendorScreen = () => {
   const handleSearch = (val: string) => { console.log(val); };
 
   useEffect(() => {
-    if (currCategory === "ALL") return setFilteredMenu(mockFoods);
-    setFilteredMenu(mockFoods.filter(food => food.category === currCategory));
-  }, [currCategory]);
+    if (vendor) {
+      if (currCategory === "ALL") return setFilteredMenu(vendor.products);
+      setFilteredMenu(vendor.products.filter(food => food.category === currCategory));
+    }
+  }, [currCategory, vendor]);
+  useEffect(() => {
+    if (data) {
+      const res = data.getVendorProfile
+      const formattedVendor: VendorInterface = {
+        id: res.vendorId, businessName: res.businessName, businessAddress: res.businessAddress,
+        repName: res.repName, avgResponseTime: res.avgResponseTime, imgUrl: res.entity.imgUrl,
+        products: res.products.map((item: any) => {
+          return ({
+            id: item.productId, name: item.name, description: item.description,
+            imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
+            availability: item.food.availability, pricingMethod: item.food.pricingMethod,
+            preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
+            price: item.food.price, sides: item.food.sides
+          });
+        }), rating: res.rating, noOfReviews: res.reviews.length
+      }
+      setVendor(formattedVendor);
+    }
+  }, [data])
   return (
     <>
-      <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor.imgUrl }} testID="vendor screen header">
+      <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor?.imgUrl }} testID="vendor screen header">
         <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen }]} onPress={goBack} testID="go back">
           <MaterialCommunityIcons name="chevron-left" size={35} color="black" style={{ left: -1 }} />
         </TouchableOpacity>
@@ -38,12 +60,12 @@ const VendorScreen = () => {
       </ImageBackground>
       <View style={[styles.mainBox, { backgroundColor: color.mainBg }]} testID="vendor screen">
         <View style={styles.infoBox} testID="vendor info box">
-          <Text style={[styles.resName, { color: color.mainText }]}>{vendor.name}</Text>
+          <Text style={[styles.resName, { color: color.mainText }]}>{vendor?.businessName}</Text>
           <View style={styles.ratingBox}>
-            <StarRating rating={vendor.rating} size={18} />
-            <Text style={[styles.ratingText, { color: color.mainText }]}>({vendor.rating} Ratings)</Text>
+            <StarRating rating={vendor?.rating ?? 0} size={18} />
+            <Text style={[styles.ratingText, { color: color.mainText }]}>({vendor?.noOfReviews} Reviews)</Text>
           </View>
-          <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor.location}</Text>
+          <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor?.businessAddress}</Text>
         </View>
         <FlatList
           contentContainerStyle={styles.categoryItemList}

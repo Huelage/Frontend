@@ -1,33 +1,45 @@
 import { useAppDispatch } from "@api/app/appHooks";
-import { mockFoods } from "@api/mock";
+import { GET_PRODUCT } from "@api/graphql";
 import { removeFromCart, updateCart } from "@api/slices/globalSlice";
+import { useQuery } from "@apollo/client";
 import { QuantityController } from "@components/core/Cart";
-import { CustomBox } from "@components/misc";
+import { CustomBox, FastImage } from "@components/misc";
 import { useAppTheme } from "@hooks";
-import { OrderItemInterface } from "@interfaces";
+import { OrderItemInterface, UserFoodInterface } from "@interfaces";
 import { fonts, numberToCurrency } from "@utils";
-import React, { memo } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { memo, useEffect, useMemo, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItemInterface) => {
-  const item = mockFoods.find((item) => item.id === item_id);
-  if (!item) return null;
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: item_id } })
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
-  const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
+  const [item, setItem] = useState<UserFoodInterface>()
   const fullPrice = totalPrice * quantity;
+  const price = useMemo(() => {
+    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === size)?.price as number : item?.price
+  }, [item, size])
 
-  const increase = () => {
-    dispatch(updateCart({ id, quantity: quantity + 1 }));
-  };
+  const increase = () => dispatch(updateCart({ id, quantity: quantity + 1 }));
   const decrease = () => {
-    if (quantity > 1)
-      dispatch(updateCart({ id, quantity: quantity - 1 }));
-    else
-      dispatch(removeFromCart(id));
+    if (quantity > 1) dispatch(updateCart({ id, quantity: quantity - 1 }));
+    else dispatch(removeFromCart(id));
   };
+
+  useEffect(() => {
+    if (data) {
+      const item = data.getProduct;
+      setItem({
+        id: item.productId, name: item.name, description: item.description,
+        imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
+        availability: item.food.availability, pricingMethod: item.food.pricingMethod,
+        preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
+        price: item.food.price, sides: item.food.sides
+      });
+    }
+  }, [data])
   return (
     <Animated.View
       entering={FadeInUp.delay(200)}
@@ -36,11 +48,11 @@ const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItem
       testID="cart item"
     >
       <CustomBox width={wp("100%") - 30} height={110} r={20} pad={6} left={-4} />
-      <Image source={{ uri: item?.imgUrl }} style={styles.itemImage} testID="cart item image" />
+      <FastImage src={item?.imgUrl!} style={styles.itemImage} testId="cart item image" />
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID="cart item name">{item.name}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID="cart item name">{item?.name}</Text>
         <Text style={[styles.itemExtras, { color: color.mainTextDim }]} numberOfLines={1} testID="cart item extras">{extras?.map(item => item.name).join(", ")}</Text>
-        <Text style={[styles.itemPrice, { color: color.mainText }]} testID="cart item price">{numberToCurrency(price)}</Text>
+        <Text style={[styles.itemPrice, { color: color.mainText }]} testID="cart item price">{numberToCurrency(price ?? 0)}</Text>
       </View>
       <View style={styles.quatityBox}>
         <QuantityController quantity={quantity} increase={increase} decrease={decrease} />

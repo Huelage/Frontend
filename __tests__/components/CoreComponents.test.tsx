@@ -748,7 +748,7 @@ describe("When Testing Core Vendor Components: ", () => {
     const navigate = jest.fn();
     beforeEach(() => {
       (useNavigation as jest.Mock).mockReturnValue({ navigate });
-      render(<VendorResCard resId={resData.id} />);
+      render(<VendorResCard address="123 main st" id="123" imgUrl="image" name="test" />);
     });
     it("should render the component", () => {
       expect(screen.getByTestId("vendor res card")).toBeOnTheScreen();
@@ -757,10 +757,10 @@ describe("When Testing Core Vendor Components: ", () => {
       expect(screen.getByTestId("restaurant image")).toBeOnTheScreen();
     });
     it("should render restaurant name", () => {
-      expect(screen.getByText(resData.name)).toBeOnTheScreen();
+      expect(screen.getByText("test")).toBeOnTheScreen();
     });
     it("should render restaurant location", () => {
-      expect(screen.getByText(resData.location)).toBeOnTheScreen();
+      expect(screen.getByText("123 main st")).toBeOnTheScreen();
     });
     it("should render view vendor button", () => {
       expect(screen.getByTestId("view vendor")).toBeOnTheScreen();
@@ -768,7 +768,7 @@ describe("When Testing Core Vendor Components: ", () => {
     it("should navigate to the vendor home when the view vendor button is pressed", () => {
       const viewButton = screen.getByTestId("view vendor");
       fireEvent.press(viewButton);
-      expect(navigate).toBeCalledWith("VendorHome", { vendorId: resData.id });
+      expect(navigate).toBeCalledWith("VendorHome", { vendorId: "123" });
     });
   });
 });

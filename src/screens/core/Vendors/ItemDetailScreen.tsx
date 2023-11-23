@@ -1,32 +1,35 @@
 import { useAppSelector } from "@api/app/appHooks";
-import { mockFoods } from "@api/mock";
+import { GET_PRODUCT } from "@api/graphql";
 import { getCart } from "@api/slices/globalSlice";
+import { useQuery } from "@apollo/client";
 import { QuantityController } from "@components/core/Cart";
 import { CustomButton } from "@components/core/Home";
-import { CustomImage } from "@components/misc";
+import { FastImage } from "@components/misc";
 import { AddToCart, ItemSideElement } from "@containers/User";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { UserTabProps, UserVendorsTabItemDetailRouteProps, extraInterface } from "@interfaces";
+import { UserFoodInterface, UserTabProps, UserVendorsTabItemDetailRouteProps, extraInterface } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, numberToCurrency, priceMethod } from "@utils";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ItemDetailScreen = () => {
   const { params: { itemId, vendorId } } = useRoute<UserVendorsTabItemDetailRouteProps>();
-  const item = mockFoods.find(food => food.id === itemId);
-  if (!item) return null;
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: itemId } })
+  const [item, setItem] = useState<UserFoodInterface>()
   const { color } = useAppTheme();
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<UserTabProps>();
   const cartItems = useAppSelector(getCart);
-  const [packSize, setPackSize] = useState<string | undefined>(item.pricingMethod === "PACKAGE" ? item.packageSizes[0].name : undefined);
+  const [packSize, setPackSize] = useState<string | undefined>(undefined);
   const [extras, setExtras] = useState<extraInterface[]>([]);
-  const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item.price;
-  const [amount, setAmount] = useState<number>(item.pricingMethod === "PRICE" ? price : 1);
+  const price = useMemo(() => {
+    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item?.price
+  }, [item, packSize])
+  const [amount, setAmount] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const itemInCart = useMemo(() => cartItems.filter(item => (item.item_id === itemId) && (item.vendorId === vendorId))[0], [cartItems]);
 
@@ -44,6 +47,21 @@ const ItemDetailScreen = () => {
       if (itemInCart.extras) setExtras(itemInCart.extras as extraInterface[]);
     }
   }, []);
+  useEffect(() => {
+    if (data) {
+      const item = data.getProduct;
+      const newItem = {
+        id: item.productId, name: item.name, description: item.description,
+        imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
+        availability: item.food.availability, pricingMethod: item.food.pricingMethod,
+        preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
+        price: item.food.price, sides: item.food.sides
+      }
+      setItem(newItem)
+      if (newItem.pricingMethod === "PRICE") setAmount(newItem.price);
+      if (item?.pricingMethod === "PACKAGE") setPackSize(item.packageSizes[0].name);
+    }
+  }, [data])
   return (
     <>
       <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen, top }]} onPress={goBack} testID="go back">
@@ -51,14 +69,14 @@ const ItemDetailScreen = () => {
       </TouchableOpacity>
       <ScrollView style={[styles.container, { backgroundColor: color.mainBg }]} testID="item detail screen">
         <View style={[styles.itemHeader, { backgroundColor: color.mainGreen, paddingTop: top }]} testID="item image">
-          <CustomImage imgUrl={item.imgUrl} imgSize={wp("60%")} imgPad={0} style={[styles.itemImage, { top: top + 10 }]} shadowBlur={8} shadowHeight={10} shadowColor="rgba(76, 175, 80, 0.4)" />
+          <FastImage src={item?.imgUrl!} style={[styles.itemImage, { top: top + 20 }]} />
         </View>
         <View style={styles.itemBody}>
           <View style={styles.itemInfo} testID="item info">
-            <Text style={[styles.itemName, { color: color.mainText }]}>{item.name}</Text>
-            <Text style={[styles.itemPrice, { color: color.mainText }]}>{numberToCurrency(price)} <Text style={{ color: color.mainGreen }}>{priceMethod(item.pricingMethod, packSize)}</Text></Text>
-            <Text style={[styles.itemDesc, { color: color.mainTextDim }]}>{item.description}</Text>
-            {item.pricingMethod === "PACKAGE" ? (
+            <Text style={[styles.itemName, { color: color.mainText }]}>{item?.name}</Text>
+            <Text style={[styles.itemPrice, { color: color.mainText }]}>{numberToCurrency(price ?? 0)} <Text style={{ color: color.mainGreen }}>{priceMethod(item?.pricingMethod!, packSize)}</Text></Text>
+            <Text style={[styles.itemDesc, { color: color.mainTextDim }]}>{item?.description}</Text>
+            {item?.pricingMethod === "PACKAGE" ? (
               <FlatList
                 data={item.packageSizes}
                 horizontal
@@ -72,10 +90,10 @@ const ItemDetailScreen = () => {
               />
             ) : null}
           </View>
-          {["PRICE", "PORTION"].includes(item.pricingMethod) ? (
+          {["PRICE", "PORTION"].includes(item?.pricingMethod!) ? (
             <View style={styles.amountBox} testID="amount box">
-              <Text style={[styles.itemAmount, { color: color.mainText }]}>{item.pricingMethod}:</Text>
-              {item.pricingMethod === "PRICE" ? (
+              <Text style={[styles.itemAmount, { color: color.mainText }]}>{item?.pricingMethod}:</Text>
+              {item?.pricingMethod === "PRICE" ? (
                 <TextInput
                   style={[styles.amountInput, { color: color.searchText }]}
                   placeholder={amount.toString()}
@@ -88,7 +106,7 @@ const ItemDetailScreen = () => {
               )}
             </View>
           ) : null}
-          {!!item.sides ? (
+          {!!item?.sides ? (
             <FlatList
               contentContainerStyle={styles.sidesList}
               data={item.sides}
@@ -109,7 +127,7 @@ const ItemDetailScreen = () => {
           </View>
         </View>
       </ScrollView>
-      <AddToCart amount={amount} itemId={itemId} quantity={quantity} vendorId={vendorId} price={price} extras={extras} size={packSize} />
+      <AddToCart amount={amount} item={item} quantity={quantity} vendorId={vendorId} price={price ?? 0} extras={extras} size={packSize} />
     </>
   );
 };
@@ -138,9 +156,9 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 1,
-    height: wp("60%"),
+    height: wp("55%"),
     position: "absolute",
-    width: wp("60%"),
+    width: wp("55%"),
     borderRadius: wp("30%")
   },
   itemBody: {
