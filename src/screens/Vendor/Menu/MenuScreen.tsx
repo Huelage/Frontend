@@ -1,35 +1,55 @@
-import { mockFoods } from "@api/mock";
+import { useAppSelector } from "@api/app/appHooks";
+import { GET_PRODUCTS } from "@api/graphql";
+import { getEntity } from "@api/slices/globalSlice";
+import { useQuery } from "@apollo/client";
 import { CustomButton } from "@components/core/Home";
 import { MenuItem } from "@components/vendor/Menu";
 import { Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserFoodInterface, VendorMenuTabProps } from "@interfaces";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { fonts, foodCategories } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 
-interface MenuScreenInterface {
-  testEmpty?: boolean;
-}
-
-const MenuScreen = ({ testEmpty }: MenuScreenInterface) => {
+const MenuScreen = () => {
+  const entity = useAppSelector(getEntity);
+  const { data, loading, refetch } = useQuery(GET_PRODUCTS, { variables: { vendorId: entity?.id } });
   const [currCategory, setCurrCategory] = useState<string>("ALL");
+  const [menuItems, setMenuItems] = useState<UserFoodInterface[]>([]);
   const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
   const { color } = useAppTheme();
   const { navigate } = useNavigation<VendorMenuTabProps>();
 
   useEffect(() => {
-    if (currCategory === "ALL") return setFilteredMenu(mockFoods);
-    setFilteredMenu(mockFoods.filter(food => food.category === currCategory));
-  }, [currCategory]);
+    if (currCategory === "ALL") return setFilteredMenu(menuItems);
+    setFilteredMenu(menuItems.filter(food => food.category === currCategory));
+  }, [currCategory, menuItems]);
+  useEffect(() => {
+    if (data) {
+      const items = data.getVendorProducts;
+      setMenuItems(items.map((item: any) => {
+        return ({
+          id: item.productId, name: item.name, description: item.description,
+          imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
+          availability: item.food.availability, pricingMethod: item.food.pricingMethod,
+          preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
+          price: item.food.price, sides: item.food.sides
+        });
+      }));
+    }
+  }, [data, loading]);
+  useFocusEffect(useCallback(() => {
+    refetch();
+  }, [refetch]));
+
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="menu screen">
-      {testEmpty || !mockFoods.length ? (
+      {!menuItems.length ? (
         <View style={styles.noOrdersBox}>
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
-          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You don"t have any item in your menu</Text>
+          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You don't have any item in your menu</Text>
         </View>
       ) : (
         <View style={styles.order}>
