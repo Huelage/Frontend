@@ -14,6 +14,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import uuid from "react-native-uuid";
 
 interface ImageUploaderInterface {
+  clear?: boolean;
   prevImage?: string;
   onUpload: (image: string) => void;
 }
@@ -24,7 +25,7 @@ const generateFile = (uri: string, name: string) => {
   return new ReactNativeFile({ uri, name: `${name}.${extension}`, type });
 };
 
-const ImageUploader = ({ prevImage, onUpload }: ImageUploaderInterface) => {
+const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) => {
   const entity = useAppSelector(getEntity);
   const { color } = useAppTheme();
   const [image, setImage] = useState<string>(prevImage ?? "");
@@ -39,11 +40,13 @@ const ImageUploader = ({ prevImage, onUpload }: ImageUploaderInterface) => {
       quality: 1
     });
     if (!res.canceled) {
-      setImage(res.assets[0].uri);
-      setIsSelected(true);
+      if (res.assets[0].fileSize! > 10000000) showError("Image shouldn't be greater than 10mb");
+      else {
+        setImage(res.assets[0].uri);
+        setIsSelected(true);
+      }
     } else showError("Image selection cancelled");
   };
-
   const upload = async () => {
     const name = entity?.firstName ?? entity?.businessName ?? "image", id = uuid.v4().toString();
     const file = generateFile(image, `${name}-${id}`), input = { id, image: file };
@@ -57,6 +60,9 @@ const ImageUploader = ({ prevImage, onUpload }: ImageUploaderInterface) => {
       setIsSelected(false);
     };
   }, [data]);
+  useEffect(() => {
+    if (clear) setImage("");
+  }, [clear]);
   return (
     <View style={styles.container} testID="image uploader">
       <View style={[styles.imageBox, { backgroundColor: color.cardBg2 }]}>
