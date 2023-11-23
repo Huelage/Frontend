@@ -1,5 +1,5 @@
-import { ADD_FOOD_ITEM, CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
-import { ReactNativeFile } from "apollo-upload-client";
+import { ADD_FOOD_ITEM, CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, GET_PRODUCTS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { mockFoods } from "./testhelpers";
 
 // AUTH QUERIES
 export const MOCK_REQUEST_EMAIL_VERIFICATION = [
@@ -354,6 +354,30 @@ export const MOCK_GET_KNOWN_LOCATIONS = [
 ];
 
 // Vendor Queries
+export const MOCK_GET_PRODUCTS = [
+  {
+    request: {
+      query: GET_PRODUCTS,
+      variables: { vendorId: "123" }
+    },
+    result: {
+      data: { getVendorProducts: mockFoods }
+    }
+  }
+];
+
+export const MOCK_GET_PRODUCTS_EMPTY = [
+  {
+    request: {
+      query: GET_PRODUCTS,
+      variables: { vendorId: "123" }
+    },
+    result: {
+      data: { getVendorProducts: [] }
+    }
+  }
+];
+
 export const MOCK_ADD_FOOD_ITEM = [
   {
     request: {

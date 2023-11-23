@@ -293,14 +293,10 @@ describe("When Testing Authentication Screens: ", () => {
       (getBiometrics as jest.Mock).mockImplementation(() => Promise.resolve({ hasBiometrics: true, biometricType: [3], isEnrolled: true }));
       (getItem as jest.Mock).mockImplementation(() => Promise.resolve("123"));
       (useAppSelector as jest.Mock).mockReturnValue(true);
-      await waitFor(() => (
-        renderApollo(<LoginScreen />, MOCK_LOGIN_VENDOR_SAVED)
-      ));
+      await waitFor(() => renderApollo(<LoginScreen />, MOCK_LOGIN_VENDOR_SAVED));
       const biometricButton = screen.getByTestId("biometric button");
       fireEvent.press(biometricButton);
-      await waitFor(() => {
-        expect(loginWithBiometrics).toBeCalled();
-      });
+      await waitFor(() => expect(loginWithBiometrics).toBeCalled());
     });
   });
 

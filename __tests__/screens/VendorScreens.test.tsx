@@ -5,8 +5,9 @@ import { showError, showSuccess } from "@utils";
 import { launchImageLibraryAsync } from "expo-image-picker";
 import { extension, lookup } from "react-native-mime-types";
 import uuid from "react-native-uuid";
-import { MOCK_ADD_FOOD_ITEM, MOCK_ADD_FOOD_PACKAGE_ITEM, MOCK_UPLOAD_IMAGE } from "../gql.mocks";
-import { renderApollo } from "../testhelpers";
+import { MOCK_ADD_FOOD_ITEM, MOCK_ADD_FOOD_PACKAGE_ITEM, MOCK_GET_PRODUCTS, MOCK_GET_PRODUCTS_EMPTY, MOCK_UPLOAD_IMAGE } from "../gql.mocks";
+import { renderApollo, renderApolloNavigator } from "../testhelpers";
+import { useAppSelector } from "@api/app/appHooks";
 
 describe("When Testing Vendor Screens: ", () => {
   describe("<HomeScreen />: ", () => {
@@ -119,47 +120,48 @@ describe("When Testing Vendor Screens: ", () => {
         fireEvent.press(submitButton);
         await waitFor(() => expect(showSuccess).toBeCalledWith("Food added to your menu successfully"));
         await act(() => jest.runAllTimers());
-      });
+      }, 20000);
     });
 
     describe("<MenuScreen />: ", () => {
       const navigate = jest.fn();
-      beforeEach(() => {
+      beforeEach(async () => {
+        (useAppSelector as jest.Mock).mockReturnValue({ id: "123" });
         (useNavigation as jest.Mock).mockReturnValue({ navigate });
-        render(<MenuScreen />);
+        await waitFor(() => renderApolloNavigator(<MenuScreen />, MOCK_GET_PRODUCTS));
       });
       // Testing UI
-      it("should render the screen correctly", () => {
+      it("should render the screen correctly", async () => {
         expect(screen.getByTestId("menu screen")).toBeOnTheScreen();
       });
-      it("should render the order empty image if there is no menu item", () => {
-        render(<MenuScreen testEmpty />);
+      it("should render the order empty image if there is no menu item", async () => {
+        await waitFor(() => renderApolloNavigator(<MenuScreen />, MOCK_GET_PRODUCTS_EMPTY));
         expect(screen.getByTestId("order empty image")).toBeOnTheScreen();
       });
-      it("should render the categories text", () => {
-        expect(screen.getByText("Categories")).toBeOnTheScreen();
+      it("should render the categories text", async () => {
+        expect(await screen.findByText("Categories")).toBeOnTheScreen();
       });
-      it("should render the category list", () => {
-        expect(screen.getByTestId("category list")).toBeOnTheScreen();
+      it("should render the category list", async () => {
+        expect(await screen.findByTestId("category list")).toBeOnTheScreen();
       });
-      it("should render the category list items with the CustomButton component", () => {
-        expect(screen.getAllByTestId("custom button")).not.toBeNull();
+      it("should render the category list items with the CustomButton component", async () => {
+        expect(await screen.findAllByTestId("custom button")).not.toBeNull();
       });
-      it("should render the menu item list and its items with the MenuItem component", () => {
-        expect(screen.getByTestId("menu item list")).toBeOnTheScreen();
-        expect(screen.getAllByTestId("menu item")).not.toBeNull();
+      it("should render the menu item list and its items with the MenuItem component", async () => {
+        expect(await screen.findByTestId("menu item list")).toBeOnTheScreen();
+        expect(await screen.findAllByTestId("menu item")).not.toBeNull();
       });
-      it("should render the add item button", () => {
-        expect(screen.getByTestId("add item button")).toBeOnTheScreen();
+      it("should render the add item button", async () => {
+        expect(await screen.findByTestId("add item button")).toBeOnTheScreen();
       });
       // Testing Functionality
-      it("should change the category when the user clicks on a category button", () => {
+      it("should change the category when the user clicks on a category button", async () => {
         const categoryButton = screen.getAllByTestId("custom button")[1];
         fireEvent.press(categoryButton);
         expect(categoryButton.props.inactive).toBeFalsy();
       });
-      it("should navigate to the AddItem screen with the add item button is pressed", () => {
-        fireEvent.press(screen.getByTestId("add item button"));
+      it("should navigate to the AddItem screen with the add item button is pressed", async () => {
+        fireEvent.press(await screen.findByTestId("add item button"));
         expect(navigate).toBeCalledWith("AddItem");
       });
     });

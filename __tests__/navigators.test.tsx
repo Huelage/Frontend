@@ -1,9 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { getAccessToken, getTheme, getVendorStatus } from "@api/slices/globalSlice";
 import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, UserProfileTabStack, UserStackNavigator, UserTabNavigator, UserVendorsTabStack, VendorAccountTabStack, VendorMenuTabStack, VendorOrdersTabStack, VendorStackNavigator, VendorTabNavigator } from "@navigators";
-import { render, screen } from "@testing-library/react-native";
+import { render, screen, waitFor } from "@testing-library/react-native";
 import { useColorScheme } from "react-native";
 import { renderApollo, renderApolloNavigator, renderNavigator } from "./testhelpers";
+import { MOCK_GET_PRODUCTS } from "./gql.mocks";
 
 describe("When Testing the Navigators: ", () => {
   describe("<AuthStackNavigator />: ", () => {
@@ -164,9 +165,10 @@ describe("When Testing the Navigators: ", () => {
       });
     });
     describe("<VendorMenuTabScreen />: ", () => {
-      it("should render the MenuScreen", () => {
-        renderNavigator(<VendorMenuTabStack />);
-        expect(screen.getByTestId("menu screen")).toBeOnTheScreen();
+      it("should render the MenuScreen", async () => {
+        (useAppSelector as jest.Mock).mockReturnValue({ id: "123" });
+        renderApolloNavigator(<VendorMenuTabStack />, MOCK_GET_PRODUCTS);
+        await waitFor(() => expect(screen.getByTestId("menu screen")).toBeOnTheScreen());
       });
     });
     describe("<VendorOrdersTabStack />: ", () => {
