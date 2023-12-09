@@ -107,7 +107,7 @@ export type UserProfileTabStackParamList = {
 // // Vendor Tab Stacks
 export type VendorOrdersTabStackParamList = {
   Main: undefined;
-  OrderDetail: { orderId: string; };
+  OrderDetail: { order: OrderInterface; };
   TrackOrder: { orderId: string; };
 };
 export type VendorMenuTabStackParamList = {
@@ -158,6 +158,7 @@ export interface globalStateInterface {
   allowPush: boolean;
   allowToast: boolean;
   allowLocation: boolean;
+  orderItemRenderGrid: boolean;
 }
 
 // USER SCREEN INTERFACES
@@ -217,6 +218,12 @@ export interface extraInterface extends itemExtraInterface {
   groupId: string;
 }
 
+export interface DropDataInterface {
+  value: string;
+  imgUrl: string;
+  desc?: string;
+}
+
 // Server Interfaces
 // // Entity Interfaces
 export interface entityInterface {
@@ -244,7 +251,7 @@ interface UserFoodBase {
   category: FoodCategory;
   isFavourite: boolean;
   availability: FoodAvailability;
-  preparationTime?: string;
+  preparationTime?: number;
   sides?: SideInterface[];
 }
 interface UserFoodPrice extends UserFoodBase {
@@ -295,6 +302,7 @@ export interface OrderItemInterface {
   id: string;
   vendorId: string;
   item_id: string;
+  item_name: string;
   quantity: number;
   portion?: number;
   price?: number;
@@ -312,15 +320,15 @@ export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELI
 
 // // Vendor
 export interface VendorInterface {
-  id: string,
-  businessName: string,
-  businessAddress: string,
-  repName: string,
-  avgResponseTime: string,
-  imgUrl: string,
-  rating: number,
-  noOfReviews: number,
-  products: UserFoodInterface[]
+  id: string;
+  businessName: string;
+  businessAddress: string;
+  repName: string;
+  avgResponseTime: string;
+  imgUrl: string;
+  rating: number;
+  noOfReviews: number;
+  products: UserFoodInterface[];
 }
 
 export interface ReviewInterface {
