@@ -1,6 +1,7 @@
 import { CustomDropdown } from "@components/misc";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
+import { DropDataInterface } from "@interfaces";
 import { fonts } from "@utils";
 import React, { useState } from "react";
 import { FieldError, RefCallBack } from "react-hook-form";
@@ -9,7 +10,7 @@ import PhoneInput from "react-native-phone-input";
 
 interface CustomTextInputProps extends TextInputProps {
   label: string;
-  data?: { key: string, value: string, disabled?: boolean; }[];
+  data?: DropDataInterface[];
   error?: FieldError;
   innerRef?: RefCallBack;
   isDrop?: boolean;
@@ -17,7 +18,7 @@ interface CustomTextInputProps extends TextInputProps {
   isPhone?: boolean;
 }
 
-const CustomTextInput = ({ data, label, isPhone, isDrop, isPass, error, ...inputProps }: CustomTextInputProps) => {
+const CustomTextInput = ({ data, label, isPhone, isDrop, isPass, error, value, ...inputProps }: CustomTextInputProps) => {
   const [showText, setShowText] = useState<boolean>(!isPass);
   const { color, theme } = useAppTheme();
 
@@ -28,7 +29,7 @@ const CustomTextInput = ({ data, label, isPhone, isDrop, isPass, error, ...input
         <Text style={[styles.placeholder, { color: color.mainTextDim }]}>{label}</Text>
       ) : null}
       {isDrop ? (
-        <CustomDropdown data={data ?? []} isError={!!error} label={label} onChange={inputProps.onChangeText!} />
+        <CustomDropdown data={data ?? []} isError={!!error} label={label} value={value} onChange={inputProps.onChangeText!} />
       ) : (
         <View style={[styles.inputContainer, { borderColor: error ? color.danger : color.mainGreen }]}>
           <View style={styles.input}>
@@ -60,6 +61,7 @@ const CustomTextInput = ({ data, label, isPhone, isDrop, isPass, error, ...input
                 placeholderTextColor={color.mainTextDim}
                 selectionColor={error ? color.danger : color.mainGreen}
                 ref={inputProps.innerRef || undefined}
+                value={value}
                 {...inputProps}
               />
             )}
