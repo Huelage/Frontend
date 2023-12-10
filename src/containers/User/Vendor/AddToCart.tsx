@@ -1,5 +1,4 @@
 import { useAppDispatch } from "@api/app/appHooks";
-import { mockFoods } from "@api/mock";
 import { addItemToCart } from "@api/slices/globalSlice";
 import { useAppTheme } from "@hooks";
 import { OrderItemInterface, UserFoodInterface, UserVendorTabProps, extraInterface } from "@interfaces";
@@ -26,7 +25,7 @@ const AddToCart = ({ amount, price, item, extras, vendorId, quantity, size }: Ad
 
   let totalPrice = 0;
   if (item?.pricingMethod === "PACKAGE")
-    totalPrice += item.packageSizes.find(pack => pack.name === size)?.price ?? 0;
+    totalPrice += item.packageSizes.find(pack => pack.name === size)?.price!;
   else if (item?.pricingMethod === "PRICE")
     totalPrice += amount;
   else
@@ -36,7 +35,7 @@ const AddToCart = ({ amount, price, item, extras, vendorId, quantity, size }: Ad
   const addToCart = () => {
     const cartItem: OrderItemInterface = {
       id: uuid.v4().toString(), item_id: item?.id as string,
-      quantity, totalPrice, vendorId, extras
+      item_name: item?.name!, quantity, totalPrice, vendorId, extras
     };
     if (size) cartItem.size = size;
     if (item?.pricingMethod === "PORTION") cartItem.portion = amount;
