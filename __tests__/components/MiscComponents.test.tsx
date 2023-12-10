@@ -6,9 +6,9 @@ import { Text } from "react-native";
 describe("When Testing Miscellaneous Components: ", () => {
   describe("<CustomDropdown />: ", () => {
     const data = [
-      { key: "testkey1", value: "testValue1", disabled: true },
-      { key: "testKey2", value: "testValue2", disabled: false },
-      { key: "testKey3", value: "testValue3", disabled: false }
+      { value: "testValue1", imgUrl: "image", desc: "test description 1" },
+      { value: "testValue2", imgUrl: "image" },
+      { value: "testValue3", imgUrl: "image", desc: "test description 3" }
     ];
     const onChange = jest.fn();
     beforeEach(() => {
@@ -22,13 +22,11 @@ describe("When Testing Miscellaneous Components: ", () => {
     });
     it("should render the dropdown", () => {
       render(<CustomDropdown data={data} label="Test dropdown" onChange={onChange} isError />);
-      expect(screen.getByText("Select option")).toBeOnTheScreen();
+      expect(screen.getByTestId("dropdown toggle")).toBeOnTheScreen();
     });
     it("should call the onChange function when the dropdown is used", () => {
-      const dropdown = screen.getByText("Select option");
-      fireEvent.press(dropdown);
-      const dropItem = screen.getByText("testValue2");
-      fireEvent.press(dropItem);
+      fireEvent.press(screen.getByTestId("dropdown toggle"));
+      fireEvent.press(screen.getByTestId("dropdown item testValue2"));
       expect(onChange).toBeCalled();
     });
   });

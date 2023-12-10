@@ -8,7 +8,7 @@ import { launchImageLibraryAsync } from "expo-image-picker";
 import { Keyboard } from "react-native";
 import { extension, lookup } from "react-native-mime-types";
 import uuid from "react-native-uuid";
-import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_UPLOAD_IMAGE, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
+import { MOCK_ADD_LOCATION, MOCK_CHANGE_PASSWORD, MOCK_GET_MANY_VENDORS, MOCK_GET_MANY_VENDORS_EMPTY, MOCK_GET_MANY_VENDORS_ONE, MOCK_GET_PRODUCT, MOCK_GET_VENDORS_LIST, MOCK_GET_VENDOR_INFO, MOCK_REQUEST_EMAIL_VERIFICATION, MOCK_REQUEST_PHONE_VERIFICATION, MOCK_UPLOAD_IMAGE, MOCK_VERIFY_EMAIL, MOCK_VERIFY_PHONE } from "../gql.mocks";
 import { entity, initialState, renderApollo } from "../testhelpers";
 
 describe("When Testing Core(User Flow) Screens: ", () => {
@@ -20,11 +20,12 @@ describe("When Testing Core(User Flow) Screens: ", () => {
 
   describe("<CartScreen />: ", () => {
     const dispatch = jest.fn(), navigate = jest.fn();
+    const CART_MOCKS = [...MOCK_GET_MANY_VENDORS, ...MOCK_GET_PRODUCT];
     beforeEach(() => {
       (useAppSelector as jest.Mock).mockReturnValue(mockCartItems);
       (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
       (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
-      render(<CartScreen />);
+      renderApollo(<CartScreen />, CART_MOCKS);
     });
     // Testing UI
     it("should render the component correctly", () => {
@@ -33,13 +34,14 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     it("should render the header box", () => {
       expect(screen.getByTestId("header box")).toBeOnTheScreen();
     });
-    it("should render the vendor cart list", () => {
+    it("should render the vendor cart list", async () => {
+      await waitFor(() => screen.getAllByTestId("vendor cart item"));
       expect(screen.getByTestId("vendor cart list")).toBeOnTheScreen();
       expect(screen.getAllByTestId("vendor cart item")).not.toBeNull();
     });
     it("should not render the vendor cart list if cart is empty", () => {
       (useAppSelector as jest.Mock).mockReturnValue([]);
-      render(<CartScreen />);
+      renderApollo(<CartScreen />, MOCK_GET_MANY_VENDORS_EMPTY);
       expect(screen.queryByTestId("vendor cart list")).toBeNull();
     });
     it("should render the cart info box", () => {
@@ -54,39 +56,47 @@ describe("When Testing Core(User Flow) Screens: ", () => {
     });
     it("should not render the continue shopping button if the cart is empty", () => {
       (useAppSelector as jest.Mock).mockReturnValue([]);
-      render(<CartScreen />);
+      renderApollo(<CartScreen />, MOCK_GET_MANY_VENDORS_EMPTY);
       expect(screen.queryByTestId("continue shopping")).toBeNull();
     });
     it("should render the overview box", () => {
       expect(screen.getByTestId("overview box")).toBeOnTheScreen();
     });
     // Testing Functionality
-    it("should switch between various vendor carts", () => {
+    it("should switch between various vendor carts", async () => {
+      await waitFor(() => screen.getAllByTestId("vendor cart item"));
       const vendorCartItems = screen.getAllByTestId("vendor cart item");
       vendorCartItems.forEach(item => {
         fireEvent.press(item);
       });
     });
-    it("should clear the vendor's cart when the clear cart button is pressed", () => {
+    it("should clear the vendor's cart when the clear cart button is pressed", async () => {
+      await waitFor(() => screen.getAllByTestId("vendor cart item"));
       const clearCartButton = screen.getByTestId("clear cart button");
+      const vendorCartItems = screen.getAllByTestId("vendor cart item");
       fireEvent.press(clearCartButton);
-      expect(dispatch).toBeCalledWith({ type: "global/clearCart", payload: "1" });
+      fireEvent.press(vendorCartItems[2]);
+      fireEvent.press(clearCartButton);
+      // Emulate 1 cart item
+      (useAppSelector as jest.Mock).mockReturnValue([mockCartItems[0]]);
+      renderApollo(<CartScreen />, [...MOCK_GET_MANY_VENDORS_ONE, ...MOCK_GET_PRODUCT]);
+      await waitFor(() => screen.getAllByTestId("vendor cart item"));
+      fireEvent.press(screen.getByTestId("clear cart button"));
+      expect(dispatch).toBeCalledWith({ type: "global/clearCart", payload: "123" });
     });
-    it("should call the continueShopping function when the continue shopping button is pressed", () => {
+    it("should call the continueShopping function when the continue shopping button is pressed", async () => {
+      await waitFor(() => expect(screen.getAllByTestId("vendor cart item")));
       const vendorCartItem = screen.getAllByTestId("vendor cart item")[1];
       const clearCartButton = screen.getByTestId("clear cart button");
       const continueShoppingButton = screen.getByTestId("continue shopping");
       fireEvent.press(vendorCartItem);
       fireEvent.press(clearCartButton);
       fireEvent.press(continueShoppingButton);
-      expect(navigate).toBeCalledWith("Vendors", { screen: "VendorHome", params: { vendorId: "1" }, initial: false });
+      expect(navigate).toBeCalledWith("Vendors", { screen: "VendorHome", params: { vendorId: expect.any(String) }, initial: false });
     });
     it("should call the checkout function when the checkout button is pressed", () => {
       const logSpy = jest.spyOn(console, "log");
-      (useAppSelector as jest.Mock).mockReturnValue([mockCartItems[0]]);
-      (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
-      (useNavigation as jest.Mock).mockReturnValue({ navigate, goBack: jest.fn() });
-      render(<CartScreen />);
+      renderApollo(<CartScreen />, CART_MOCKS);
       const clearCartButton = screen.getByTestId("clear cart button");
       const checkoutButton = screen.getByTestId("checkout button");
       fireEvent.press(clearCartButton);
@@ -129,80 +139,69 @@ describe("When Testing Core(User Flow) Screens: ", () => {
 
   describe("Vendor Screens: ", () => {
     describe("<ItemDetailScreen />: ", () => {
-      // Testing UI
-      it("should render the screen correctly", () => {
+      beforeEach(() => {
         (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1", vendorId: "1" } });
         (useAppSelector as jest.Mock).mockReturnValue(mockCartItems);
-        render(<ItemDetailScreen />);
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+      });
+      // Testing UI
+      it("should render the screen correctly", () => {
         expect(screen.getByTestId("item detail screen")).toBeOnTheScreen();
       });
-      it("should not render screen if itemId is not provided", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: {} });
-        render(<ItemDetailScreen />);
-        expect(screen.queryByTestId("item detail screen")).toBeNull();
-      });
       it("should render the go back button", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2", vendorId: "1" } });
-        render(<ItemDetailScreen />);
         expect(screen.getByTestId("go back")).toBeOnTheScreen();
       });
       it("should render the item image", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3", vendorId: "1" } });
-        render(<ItemDetailScreen />);
         expect(screen.getByTestId("item image")).toBeOnTheScreen();
       });
       it("should render the item info", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "6", vendorId: "1" } });
-        render(<ItemDetailScreen />);
         expect(screen.getByTestId("item info")).toBeOnTheScreen();
       });
-      it("should render the package size list items using the CustomButton component", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "9", vendorId: "1" } });
-        render(<ItemDetailScreen />);
-        expect(screen.getByTestId("package size list")).toBeOnTheScreen();
+      it("should render the package size list items using the CustomButton component", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "4", vendorId: "234" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("package size list")).toBeOnTheScreen());
         expect(screen.getAllByTestId("custom button")).not.toBeNull();
       });
-      it("should render the amount box with a quantityController component if item pricing method is portion", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2", vendorId: "1" } });
-        render(<ItemDetailScreen />);
-        expect(screen.getByTestId("amount box")).toBeOnTheScreen();
+      it("should render the amount box with a quantityController component if item pricing method is portion", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2", vendorId: "234" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("amount box")).toBeOnTheScreen());
         expect(screen.getByTestId("quantity controller")).toBeOnTheScreen();
       });
-      it("should render the amount box with a text input if item pricing method is price", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3", vendorId: "1" } });
-        render(<ItemDetailScreen />);
-        expect(screen.getByTestId("amount box")).toBeOnTheScreen();
-        expect(screen.getByPlaceholderText("500")).toBeOnTheScreen();
+      it("should render the amount box with a text input if item pricing method is price", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3", vendorId: "345" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("amount box")).toBeOnTheScreen());
+        expect(screen.getByPlaceholderText("300")).toBeOnTheScreen();
       });
-      it("should render the item side list items using the ItemSideElement component", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1", vendorId: "1" } });
-        render(<ItemDetailScreen />);
+      it("should render the item side list items using the ItemSideElement component", async () => {
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("item side list")));
         expect(screen.getByTestId("item side list")).toBeOnTheScreen();
         expect(screen.getAllByTestId("item side element")).not.toBeNull();
       });
       it("should render the quantity box", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1", vendorId: "1" } });
-        render(<ItemDetailScreen />);
         expect(screen.getByTestId("quantity box")).toBeOnTheScreen();
       });
       // Testing Functionality
-      it("should change the pack size when the item pricing method is package", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "9", vendorId: "1" } });
-        render(<ItemDetailScreen />);
+      it("should change the pack size when the item pricing method is package", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "4", vendorId: "234" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("package size list")));
         const packButtons = screen.getAllByTestId("custom button");
         packButtons.forEach(button => {
           fireEvent.press(button);
         });
       });
-      it("should allow user enter their preferred price if item pricing method is price", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3", vendorId: "1" } });
-        render(<ItemDetailScreen />);
-        const input = screen.getByPlaceholderText("500");
+      it("should allow user enter their preferred price if item pricing method is price", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "3", vendorId: "345" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByPlaceholderText("300")));
+        const input = screen.getByPlaceholderText("300");
         fireEvent.changeText(input, "500");
       });
       it("should alter the quantity when the increase or decrease quantity button is pressed", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "1", vendorId: "1" } });
-        render(<ItemDetailScreen />);
         const increaseButton = screen.getByTestId("increase quantity button");
         const decreaseButton = screen.getByTestId("decrease quantity button");
         const quantityText = screen.getByTestId("quantity value text");
@@ -211,9 +210,10 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         fireEvent.press(decreaseButton);
         expect(quantityText.props.children).toEqual(1);
       });
-      it("should alter the portion when the increase or decrease amount button is pressed and item is sold per portion", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2", vendorId: "1" } });
-        render(<ItemDetailScreen />);
+      it("should alter the portion when the increase or decrease amount button is pressed and item is sold per portion", async () => {
+        (useRoute as jest.Mock).mockReturnValue({ params: { itemId: "2", vendorId: "234" } });
+        renderApollo(<ItemDetailScreen />, MOCK_GET_PRODUCT);
+        await waitFor(() => expect(screen.getByTestId("quantity controller")));
         const increaseButton = screen.getByTestId("increase quantity");
         const decreaseButton = screen.getByTestId("decrease quantity");
         const amountText = screen.getByTestId("quantity value");
@@ -226,7 +226,7 @@ describe("When Testing Core(User Flow) Screens: ", () => {
 
     describe("<VendorListScreen />: ", () => {
       beforeEach(() => {
-        render(<VendorListScreen />);
+        renderApollo(<VendorListScreen />, MOCK_GET_VENDORS_LIST);
       });
       it("should render the component correctly", () => {
         expect(screen.getByTestId("vendor list screen")).toBeOnTheScreen();
@@ -234,34 +234,30 @@ describe("When Testing Core(User Flow) Screens: ", () => {
       it("should render the MainSearchBar component", () => {
         expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
       });
-      it("should render the vendors list", () => {
+      it("should render the vendors list items using the VendorResCard component", async () => {
+        await waitFor(() => expect(screen.getAllByTestId("vendor res card")));
         expect(screen.getByTestId("vendors list")).toBeOnTheScreen();
-      });
-      it("should render the vendors using the VendorResCard component", () => {
         expect(screen.getAllByTestId("vendor res card")).not.toBeNull();
       });
-      it("should call the search function when the search bar is used", () => {
+      it("should call the search function when the search bar is used", async () => {
         const logSpy = jest.spyOn(console, "log");
-        render(<VendorListScreen />);
+        renderApollo(<VendorListScreen />, MOCK_GET_VENDORS_LIST);
         testSearchFunc(logSpy);
       });
     });
 
     describe("<VendorScreen />: ", () => {
       beforeEach(() => {
-        (useRoute as jest.Mock).mockReturnValue({ params: { vendorId: "1" } });
-        render(<VendorScreen />);
+        (useRoute as jest.Mock).mockReturnValue({ params: { vendorId: "123" } });
+        renderApollo(<VendorScreen />, MOCK_GET_VENDOR_INFO);
       });
       it("should render the component correctly", () => {
         expect(screen.getByTestId("vendor screen")).toBeOnTheScreen();
       });
-      it("should not render the screen if vendorId is not provided", () => {
-        (useRoute as jest.Mock).mockReturnValue({ params: {} });
-        render(<VendorScreen />);
-        expect(screen.queryByTestId("vendor screen")).toBeNull();
-      });
-      it("should render the vendor screen header", () => {
-        expect(screen.getByTestId("vendor screen header")).toBeOnTheScreen();
+      it("should render the background image", () => {
+        const bgImg = screen.getByTestId("vendor screen header");
+        expect(bgImg).toBeOnTheScreen();
+        expect(bgImg.props.source).toBeDefined();
       });
       it("should render the main search bar", () => {
         expect(screen.getByTestId("main search bar")).toBeOnTheScreen();
@@ -273,18 +269,22 @@ describe("When Testing Core(User Flow) Screens: ", () => {
         expect(screen.getByTestId("vendor category list")).toBeOnTheScreen();
         expect(screen.getAllByTestId("custom button")).not.toBeNull();
       });
-      it("should render the vendor product list items using the VendorProduct component", () => {
+      it("should render the vendor product list items using the VendorProduct component", async () => {
+        await waitFor(() => screen.getAllByTestId("vendor product"));
         expect(screen.getByTestId("vendor product list")).toBeOnTheScreen();
         expect(screen.getAllByTestId("vendor product")).not.toBeNull();
       });
-      it("should change categories when any of the category buttons are pressed", () => {
-        const categoryButton = screen.getAllByTestId("custom button")[1];
-        fireEvent.press(categoryButton);
-        expect(categoryButton.props.inactive).toBeFalsy();
+      it("should change categories when any of the category buttons are pressed", async () => {
+        await waitFor(() => screen.getAllByTestId("vendor product"));
+        const categoryButton = screen.getAllByTestId("custom button");
+        categoryButton.forEach(btn => {
+          act(() => fireEvent.press(btn));
+          expect(btn.props.inactive).toBeFalsy();
+        });
       });
       it("should call the search function when the search bar is used", () => {
         const logSpy = jest.spyOn(console, "log");
-        render(<VendorScreen />);
+        renderApollo(<VendorScreen />, MOCK_GET_VENDOR_INFO);
         testSearchFunc(logSpy);
       });
     });

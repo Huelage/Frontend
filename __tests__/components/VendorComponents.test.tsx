@@ -1,6 +1,8 @@
-import { mockFoods } from "@api/mock";
+import { useAppSelector } from "@api/app/appHooks";
+import { mockCartItems, mockFoods, mockOrderItems } from "@api/mock";
 import { OrderChartElement, ReviewElement, StatElement, SummaryElement } from "@components/vendor/Home";
 import { AddMenuInputs, MenuItem, PackageSizeElement, PackageSizeInput, SideElement, SideInput, SideOptionElement } from "@components/vendor/Menu";
+import { OrderElement, OrderItemElement } from "@components/vendor/Orders";
 import { AddFoodInterface } from "@interfaces";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { showError } from "@utils";
@@ -104,6 +106,10 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
       const { control, watch } = useForm<AddFoodInterface>();
       return <AddMenuInputs control={control} errors={{}} isSubmitted={false} setFocus={setFocus} watch={watch} submit={submit} />;
     };
+    const useDropDown = (value: string) => {
+      fireEvent.press(screen.getAllByTestId("dropdown toggle")[1]);
+      fireEvent.press(screen.getByTestId(`dropdown item ${value}`));
+    };
     beforeEach(() => {
       render(<ControlledInput />);
     });
@@ -115,31 +121,19 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
       expect(screen.getAllByTestId("custom text input")).not.toBeNull();
     });
     it("should render the price field when pricingMethod is selected", () => {
-      const pricingMethod = screen.getAllByText("Select option")[1];
-      fireEvent.press(pricingMethod);
-      const portion = screen.getByText("PORTION");
-      fireEvent.press(portion);
+      useDropDown("PORTION");
       expect(screen.getByPlaceholderText("Price per portion *")).toBeOnTheScreen();
     });
     it("should render the PackageSizeInput component if package is selected as the pricingMethod", () => {
-      const pricingMethod = screen.getAllByText("Select option")[1];
-      fireEvent.press(pricingMethod);
-      const packageButton = screen.getByText("PACKAGE");
-      fireEvent.press(packageButton);
+      useDropDown("PACKAGE");
       expect(screen.getByTestId("package size input")).toBeOnTheScreen();
     });
     it("should render the Price input field if Price is selected as the pricingMethod", () => {
-      const pricingMethod = screen.getAllByText("Select option")[1];
-      fireEvent.press(pricingMethod);
-      const price = screen.getByText("PRICE");
-      fireEvent.press(price);
+      useDropDown("PRICE");
       expect(screen.getByPlaceholderText("Minimum Price *")).toBeOnTheScreen();
     });
     it("should render the Fixed price input field if FIXED is selected as the pricingMethod", () => {
-      const pricingMethod = screen.getAllByText("Select option")[1];
-      fireEvent.press(pricingMethod);
-      const fixed = screen.getByText("FIXED");
-      fireEvent.press(fixed);
+      useDropDown("FIXED");
       expect(screen.getByPlaceholderText("Price *")).toBeOnTheScreen();
     });
     it("should render the Sideinput component", () => {
@@ -155,9 +149,7 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
       expect(setFocus).toBeCalledWith("description");
     });
     it("should set focus to the preparationTime input when price inputis submitted", () => {
-      const pricingMethodInput = screen.getAllByText("Select option")[1];
-      fireEvent.press(pricingMethodInput);
-      fireEvent.press(screen.getByText("PRICE"));
+      useDropDown("PRICE");
       const priceInput = screen.getByPlaceholderText("Minimum Price *");
       fireEvent.changeText(priceInput, "1000");
       fireEvent(priceInput, "onSubmitEditing");
@@ -529,6 +521,61 @@ describe("When Testing Vendor Flow Menu Components: ", () => {
       const button = screen.getByTestId("add side option");
       fireEvent.press(button);
       expect(onRemove).toBeCalledWith(valueSideProp.option);
+    });
+  });
+});
+
+
+describe("When Testing Vendor Flow Order Components: ", () => {
+  describe("<OrderElement />: ", () => {
+    beforeEach(() => {
+      render(<OrderElement order={mockOrderItems[0]} />);
+    });
+    // Testing UI
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("order element")).toBeOnTheScreen();
+    });
+    it("should render the header box", () => {
+      expect(screen.getByTestId("header box")).toBeOnTheScreen();
+    });
+    it("should render the order item names as a summary", () => {
+      expect(screen.getByTestId("order items")).toBeOnTheScreen();
+    });
+    // Testing Functionality
+    it("should update the height of the custom box when the order Element is rendered", () => {
+      const element = screen.getByTestId("order element");
+      fireEvent(element, "onLayout", { nativeEvent: { layout: { height: 100 } } });
+    });
+  });
+
+  describe("<OrderItemElement />: ", () => {
+    beforeEach(() => {
+      (useAppSelector as jest.Mock).mockReturnValue(true);
+      render(<OrderItemElement {...mockCartItems[0]} />);
+    });
+    // Testing UI
+    it("should render the component correctly", () => {
+      expect(screen.getByTestId("order item element")).toBeOnTheScreen();
+    });
+    it("should render the header box", () => {
+      expect(screen.getByTestId("header box")).toBeOnTheScreen();
+    });
+    it("should render the table if isGrid is true", () => {
+      expect(screen.getByTestId("extra items table")).toBeOnTheScreen();
+    });
+    it("should render the list if isGrid is false", () => {
+      (useAppSelector as jest.Mock).mockReturnValue(false);
+      render(<OrderItemElement {...mockCartItems[0]} />);
+      expect(screen.getByTestId("extra items list")).toBeOnTheScreen();
+    });
+    it("should only render the extra list or table if the order item contain extras", () => {
+      render(<OrderItemElement {...mockCartItems[3]} />);
+      expect(screen.queryByText("Extras: ")).toBeNull();
+    });
+    // Testing Functionality
+    it("should update the height of the custom box when the order Element is rendered", () => {
+      const element = screen.getByTestId("order item element");
+      fireEvent(element, "onLayout", { nativeEvent: { layout: { height: 100 } } });
     });
   });
 });

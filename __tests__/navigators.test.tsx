@@ -4,7 +4,7 @@ import { AuthStackNavigator, MainNavigator, StackNavigator, UserOrdersTabStack, 
 import { render, screen, waitFor } from "@testing-library/react-native";
 import { useColorScheme } from "react-native";
 import { renderApollo, renderApolloNavigator, renderNavigator } from "./testhelpers";
-import { MOCK_GET_PRODUCTS } from "./gql.mocks";
+import { MOCK_GET_PRODUCTS, MOCK_GET_VENDORS_LIST } from "./gql.mocks";
 
 describe("When Testing the Navigators: ", () => {
   describe("<AuthStackNavigator />: ", () => {
@@ -151,7 +151,7 @@ describe("When Testing the Navigators: ", () => {
     });
     describe("<UserVendorsTabStack />: ", () => {
       it("should render the VendorScreen", () => {
-        renderNavigator(<UserVendorsTabStack />);
+        renderApolloNavigator(<UserVendorsTabStack />, MOCK_GET_VENDORS_LIST);
         expect(screen.getByTestId("vendor list screen")).toBeOnTheScreen();
       });
     });
@@ -174,7 +174,7 @@ describe("When Testing the Navigators: ", () => {
     describe("<VendorOrdersTabStack />: ", () => {
       it("should render the OrderScreen", () => {
         renderNavigator(<VendorOrdersTabStack />);
-        expect(screen.getByTestId("order screen")).toBeOnTheScreen();
+        expect(screen.getByTestId("vendor order screen")).toBeOnTheScreen();
       });
     });
   });

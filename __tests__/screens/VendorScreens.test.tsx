@@ -1,5 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import { AddItemScreen, HomeScreen, MenuScreen, NotificationScreen } from "@screens/Vendor";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { AddItemScreen, HomeScreen, MenuScreen, NotificationScreen, OrderDetailScreen, OrderScreen } from "@screens/Vendor";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { showError, showSuccess } from "@utils";
 import { launchImageLibraryAsync } from "expo-image-picker";
@@ -7,7 +7,14 @@ import { extension, lookup } from "react-native-mime-types";
 import uuid from "react-native-uuid";
 import { MOCK_ADD_FOOD_ITEM, MOCK_ADD_FOOD_PACKAGE_ITEM, MOCK_GET_PRODUCTS, MOCK_GET_PRODUCTS_EMPTY, MOCK_UPLOAD_IMAGE } from "../gql.mocks";
 import { renderApollo, renderApolloNavigator } from "../testhelpers";
-import { useAppSelector } from "@api/app/appHooks";
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { mockOrderItems } from "@api/mock";
+
+const useDropDown = (value: string) => {
+  const dropDownToggle = screen.getByTestId("dropdown toggle");
+  fireEvent.press(dropDownToggle);
+  const dropDownItem = screen.getByTestId(`dropdown item ${value}`);
+};
 
 describe("When Testing Vendor Screens: ", () => {
   describe("<HomeScreen />: ", () => {
@@ -34,29 +41,29 @@ describe("When Testing Vendor Screens: ", () => {
       const inputFoodData = () => {
         const nameInput = screen.getByPlaceholderText("Food Name *");
         const descriptionInput = screen.getByPlaceholderText("Food Description *");
-        const categoryInput = screen.getAllByText("Select option")[0];
-        const pricingMethodInput = screen.getAllByText("Select option")[1];
+        const categoryInput = screen.getAllByTestId("dropdown toggle")[0];
+        const pricingMethodInput = screen.getAllByTestId("dropdown toggle")[1];
         fireEvent.changeText(nameInput, "test name");
         fireEvent.changeText(descriptionInput, "test description");
         fireEvent.press(categoryInput);
-        fireEvent.press(screen.getByText("MAIN"));
+        fireEvent.press(screen.getByTestId("dropdown item MAIN"));
         fireEvent.press(pricingMethodInput);
-        fireEvent.press(screen.getByText("FIXED"));
+        fireEvent.press(screen.getByTestId("dropdown item FIXED"));
         const priceInput = screen.getByPlaceholderText("Price *");
         fireEvent.changeText(priceInput, "1000");
       };
       const inputFoodPackage = async () => {
         const nameInput = screen.getByPlaceholderText("Food Name *");
         const descriptionInput = screen.getByPlaceholderText("Food Description *");
-        const categoryInput = screen.getAllByText("Select option")[0];
-        const pricingMethodInput = screen.getAllByText("Select option")[1];
+        const categoryInput = screen.getAllByTestId("dropdown toggle")[0];
+        const pricingMethodInput = screen.getAllByTestId("dropdown toggle")[1];
         const preparationTimeInput = screen.getByPlaceholderText("Preparation Time (in minutes)");
         fireEvent.changeText(nameInput, "test name");
         fireEvent.changeText(descriptionInput, "test description");
         fireEvent.press(categoryInput);
-        fireEvent.press(screen.getByText("MAIN"));
+        fireEvent.press(screen.getByTestId("dropdown item MAIN"));
         fireEvent.press(pricingMethodInput);
-        fireEvent.press(screen.getByText("PACKAGE"));
+        fireEvent.press(screen.getByTestId("dropdown item PACKAGE"));
         const button = screen.getAllByTestId("add package size");
         fireEvent.changeText(screen.getAllByPlaceholderText("Enter package size")[0], "big pack");
         fireEvent.changeText(screen.getAllByPlaceholderText("Enter package price")[0], "1000");
@@ -129,6 +136,7 @@ describe("When Testing Vendor Screens: ", () => {
         (useAppSelector as jest.Mock).mockReturnValue({ id: "123" });
         (useNavigation as jest.Mock).mockReturnValue({ navigate });
         await waitFor(() => renderApolloNavigator(<MenuScreen />, MOCK_GET_PRODUCTS));
+        await waitFor(() => renderApolloNavigator(<MenuScreen />, MOCK_GET_PRODUCTS));
       });
       // Testing UI
       it("should render the screen correctly", async () => {
@@ -139,6 +147,7 @@ describe("When Testing Vendor Screens: ", () => {
         expect(screen.getByTestId("order empty image")).toBeOnTheScreen();
       });
       it("should render the categories text", async () => {
+        await waitFor(() => screen.getByTestId("main box"));
         expect(await screen.findByText("Categories")).toBeOnTheScreen();
       });
       it("should render the category list", async () => {
@@ -156,6 +165,7 @@ describe("When Testing Vendor Screens: ", () => {
       });
       // Testing Functionality
       it("should change the category when the user clicks on a category button", async () => {
+        expect(await screen.findByTestId("main box"));
         const categoryButton = screen.getAllByTestId("custom button")[1];
         fireEvent.press(categoryButton);
         expect(categoryButton.props.inactive).toBeFalsy();
@@ -163,6 +173,98 @@ describe("When Testing Vendor Screens: ", () => {
       it("should navigate to the AddItem screen with the add item button is pressed", async () => {
         fireEvent.press(await screen.findByTestId("add item button"));
         expect(navigate).toBeCalledWith("AddItem");
+      });
+    });
+  });
+
+
+  describe("Order Screens: ", () => {
+    describe("<OrderDetailScreen />: ", () => {
+      const dispatch = jest.fn();
+      beforeEach(() => {
+        (useAppSelector as jest.Mock).mockReturnValue(true);
+        (useAppDispatch as jest.Mock).mockReturnValue(dispatch);
+        (useRoute as jest.Mock).mockReturnValue({ params: { order: mockOrderItems[0] } });
+        render(<OrderDetailScreen />);
+      });
+      // Testing UI
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("vendor order detail screen")).toBeOnTheScreen();
+      });
+      it("should render the header box", () => {
+        expect(screen.getByTestId("general header box")).toBeOnTheScreen();
+      });
+      it("should render the main header box", () => {
+        expect(screen.getByTestId("main header box")).toBeOnTheScreen();
+      });
+      it("should render the order items header box", () => {
+        expect(screen.getByTestId("order items header box")).toBeOnTheScreen();
+      });
+      it("should render the order items list items using the OrderItemElement component", () => {
+        expect(screen.getByTestId("order items list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("order item element")).not.toBeNull();
+      });
+      it("should render the action buttons", () => {
+        (useAppSelector as jest.Mock).mockReturnValue(false);
+        render(<OrderDetailScreen />);
+        expect(screen.getByTestId("action buttons")).toBeOnTheScreen();
+      });
+      // Testing Functinality
+      it("should toggle the order item render type when the button is clicked", () => {
+        const button = screen.getByTestId("toggle order item render type");
+        fireEvent.press(button);
+        expect(dispatch).toBeCalledWith({ type: "global/setOrderItemRenderGrid", payload: false });
+      });
+    });
+
+    describe("<OrderScreen />: ", () => {
+      beforeEach(() => {
+        render(<OrderScreen />);
+      });
+      it("should render the screen correctly", () => {
+        expect(screen.getByTestId("vendor order screen")).toBeOnTheScreen();
+      });
+      it("should render the no order box if items is empty", () => {
+        render(<OrderScreen items={[]} />);
+        expect(screen.getByTestId("no orders box")).toBeOnTheScreen();
+      });
+      it("should render the order box header", () => {
+        expect(screen.getByTestId("order box header")).toBeOnTheScreen();
+      });
+      it("should render the order elements list items using the OrderElement component", () => {
+        expect(screen.getByTestId("order elements list")).toBeOnTheScreen();
+        expect(screen.getAllByTestId("order element")).not.toBeNull();
+      });
+      // Testing Functionality
+      it("should filter the items when a filter item is pressed", () => {
+        const filterItems = screen.getAllByTestId("filter item");
+        filterItems.forEach(item => {
+          fireEvent.press(item);
+          expect(screen.queryAllByTestId("order element")).toBeDefined();
+        });
+        filterItems.forEach(item => {
+          fireEvent.press(item);
+          expect(screen.queryAllByTestId("order element")).toBeDefined();
+        });
+      });
+      it("should filter by date when the date filter item is pressed", () => {
+        const filterHeaderItem = screen.getAllByTestId("filter header item")[1];
+        fireEvent.press(filterHeaderItem);
+        const filterItems = screen.getAllByTestId("filter item");
+        filterItems.forEach(item => {
+          fireEvent.press(item);
+          expect(screen.queryAllByTestId("order element")).toBeDefined();
+        });
+        fireEvent.press(filterItems[3]);
+        expect(screen.queryAllByTestId("order element")).toBeDefined();
+      });
+      it("should navigate to the order detail screen when an order is pressed", () => {
+        const navigate = jest.fn();
+        (useNavigation as jest.Mock).mockReturnValue({ navigate });
+        render(<OrderScreen />);
+        const orderItem = screen.getAllByTestId("order element")[0];
+        fireEvent.press(orderItem);
+        expect(navigate).toBeCalledWith("OrderDetail", { order: mockOrderItems[1] });
       });
     });
   });
