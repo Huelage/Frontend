@@ -13,14 +13,14 @@ import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItemInterface) => {
-  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: item_id } })
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: item_id } });
   const { color } = useAppTheme();
   const dispatch = useAppDispatch();
-  const [item, setItem] = useState<UserFoodInterface>()
+  const [item, setItem] = useState<UserFoodInterface>();
   const fullPrice = totalPrice * quantity;
   const price = useMemo(() => {
-    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === size)?.price as number : item?.price
-  }, [item, size])
+    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === size)?.price as number : item?.price;
+  }, [item, size]);
 
   const increase = () => dispatch(updateCart({ id, quantity: quantity + 1 }));
   const decrease = () => {
@@ -39,7 +39,7 @@ const CartItem = ({ id, item_id, quantity, totalPrice, size, extras }: OrderItem
         price: item.food.price, sides: item.food.sides
       });
     }
-  }, [data])
+  }, [data]);
   return (
     <Animated.View
       entering={FadeInUp.delay(200)}
