@@ -52,6 +52,19 @@ export const getStatus = (status: string) => {
   }
 };
 
+export const getStatusVendor = (status: string) => {
+  switch (status) {
+    case "PENDING":
+      return "Pending";
+    case "COMPLETED":
+      return "Completed";
+    case "CANCELLED":
+      return "Cancelled";
+    default:
+      return "Preparing"
+  }
+}
+
 export const priceMethod = (method: PricingMethod, size?: string) => {
   switch (method) {
     case "PORTION":
