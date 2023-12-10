@@ -26,12 +26,12 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
   }, [isBarVisible]);
   return (
     <Animated.View
-      entering={FadeInUp.delay(100)}
-      exiting={SlideOutLeft.duration(100)}
+      entering={FadeInUp.delay(200)}
+      exiting={SlideOutLeft.duration(300)}
       style={styles.container}
       testID="order summary element"
     >
-      <CustomBox bgColor={status === "CANCELLED" ? "rgb(253, 246, 244)" : color.cardBg2} shadowColor={status === "CANCELLED" ? "rgba(233, 50, 35, 0.25)" : undefined} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
+      <CustomBox bgColor={status === "CANCELLED" ? color.redBg : color.cardBg2} shadowColor={status === "CANCELLED" ? color.redShadow : undefined} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
       {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is 1 hour</Text> : null}
       <View style={styles.detailBox}>
         <View style={styles.detailHeader}>
