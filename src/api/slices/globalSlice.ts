@@ -12,7 +12,8 @@ const initialState: globalStateInterface = {
   cart: [],
   allowPush: true,
   allowToast: true,
-  allowLocation: true
+  allowLocation: true,
+  orderItemRenderGrid: true
 };
 
 const globalSlice = createSlice({
@@ -33,6 +34,9 @@ const globalSlice = createSlice({
     },
     setVendorStatus: (state, action: PayloadAction<boolean>) => {
       state.isVendor = action.payload;
+    },
+    setOrderItemRenderGrid: (state, action: PayloadAction<boolean>) => {
+      state.orderItemRenderGrid = action.payload;
     },
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
@@ -83,6 +87,7 @@ export const {
   removeFromCart,
   updateCart,
   setCredentials,
+  setOrderItemRenderGrid,
   setVendorStatus,
   setShowOnboard,
   switchTheme,
@@ -100,6 +105,7 @@ export const getAllowToast = (state: RootState) => state.global.allowToast;
 export const getCart = (state: RootState) => state.global.cart;
 export const getEntity = (state: RootState) => state.global.entity;
 export const getGlobalState = (state: RootState) => state.global;
+export const getOrderItemRenderType = (state: RootState) => state.global.orderItemRenderGrid;
 export const getShowOnboard = (state: RootState) => state.global.showOnboard;
 export const getTheme = (state: RootState) => state.global.theme;
 export const getThemeType = (state: RootState) => state.global.themeType;
