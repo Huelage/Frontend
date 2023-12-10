@@ -73,7 +73,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
             contentContainerStyle={styles.statusList}
             data={filteredOrder}
             showsVerticalScrollIndicator={false}
-            itemLayoutAnimation={Layout.springify().damping(15).delay(150)}
+            itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID="order element">
