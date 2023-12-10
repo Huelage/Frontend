@@ -1,8 +1,9 @@
 const data = [
   {
-    id: "1",
-    vendorId: "1",
+    id: "123",
+    vendorId: "123",
     item_id: "1",
+    item_name: "River stew",
     quantity: 1,
     totalPrice: 3900,
     extras: [
@@ -11,9 +12,10 @@ const data = [
     ]
   },
   {
-    id: "2",
-    vendorId: "1",
+    id: "234",
+    vendorId: "234",
     item_id: "2",
+    item_name: "Yamarita",
     portion: 2,
     quantity: 3,
     totalPrice: 500,
@@ -22,9 +24,10 @@ const data = [
     ]
   },
   {
-    id: "3",
-    vendorId: "1",
+    id: "345",
+    vendorId: "345",
     item_id: "3",
+    item_name: "Macaroni",
     price: 500,
     quantity: 1,
     totalPrice: 600,
@@ -33,19 +36,13 @@ const data = [
     ]
   },
   {
-    id: "4",
-    vendorId: "1",
-    item_id: "9",
+    id: "456",
+    vendorId: "234",
+    item_id: "4",
+    item_name: "Chicken and chips",
     size: "large",
     quantity: 1,
     totalPrice: 1000
-  },
-  {
-    id: "5",
-    vendorId: "2",
-    item_id: "10",
-    quantity: 3,
-    totalPrice: 300,
   }
 ];
 
