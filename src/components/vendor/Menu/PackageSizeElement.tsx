@@ -24,7 +24,6 @@ const PackageSizeElement = ({ value, onAdd, onRemove }: PackageSizeElementProps)
     onAdd({ name: data.name, price: Number(data.price) });
     reset();
   };
-
   return (
     <View style={styles.container} testID="package size element">
       {!!value ? (
@@ -44,7 +43,7 @@ const PackageSizeElement = ({ value, onAdd, onRemove }: PackageSizeElementProps)
               <TextInput
                 autoCapitalize="words"
                 autoCorrect={false}
-                style={[styles.input, { borderColor: color.mainGreen }]}
+                style={[styles.input, { borderColor: color.mainGreen, color: color.mainText }]}
                 selectionColor={color.mainGreen}
                 placeholder="Enter package size"
                 placeholderTextColor={color.mainTextDim}
@@ -61,7 +60,7 @@ const PackageSizeElement = ({ value, onAdd, onRemove }: PackageSizeElementProps)
             control={control}
             render={({ field: { onChange, onBlur, ref } }) => (
               <TextInput
-                style={[styles.input, { borderColor: color.mainGreen }]}
+                style={[styles.input, { borderColor: color.mainGreen, color: color.mainText }]}
                 selectionColor={color.mainGreen}
                 placeholder="Enter package price"
                 placeholderTextColor={color.mainTextDim}

@@ -76,7 +76,7 @@ const SideElement = ({ side, onAdd, onRemove }: SideElementProps) => {
             <TextInput
               autoCapitalize="sentences"
               autoCorrect={false}
-              style={[styles.input, { borderColor: color.mainGreen }]}
+              style={[styles.input, { borderColor: color.mainGreen, color: color.mainText }]}
               selectionColor={color.mainGreen}
               placeholder="Enter side description"
               placeholderTextColor={color.mainTextDim}
