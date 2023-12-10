@@ -10,7 +10,7 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 const VendorListScreen = () => {
   const { color } = useAppTheme();
   const { data, loading } = useQuery(GET_VENDORS_LIST);
-  const [vendors, setVendors] = useState<VendorResCardInterface[]>([])
+  const [vendors, setVendors] = useState<VendorResCardInterface[]>([]);
   const handleSearch = (val: string) => { console.log(val); };
 
   useEffect(() => {
@@ -19,9 +19,9 @@ const VendorListScreen = () => {
       setVendors(vendors.map((vendor: any) => ({
         id: vendor.vendorId, name: vendor.businessName,
         address: vendor.businessAddress, imgUrl: vendor.entity.imgUrl
-      })))
+      })));
     }
-  }, [data])
+  }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor list screen">
       <FlatList

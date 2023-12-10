@@ -18,8 +18,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ItemDetailScreen = () => {
   const { params: { itemId, vendorId } } = useRoute<UserVendorsTabItemDetailRouteProps>();
-  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: itemId } })
-  const [item, setItem] = useState<UserFoodInterface>()
+  const { data, loading } = useQuery(GET_PRODUCT, { variables: { productId: itemId } });
+  const [item, setItem] = useState<UserFoodInterface>();
   const { color } = useAppTheme();
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<UserTabProps>();
@@ -27,8 +27,8 @@ const ItemDetailScreen = () => {
   const [packSize, setPackSize] = useState<string | undefined>(undefined);
   const [extras, setExtras] = useState<extraInterface[]>([]);
   const price = useMemo(() => {
-    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item?.price
-  }, [item, packSize])
+    return item?.pricingMethod === "PACKAGE" ? item.packageSizes.find(pack => pack.name === packSize)?.price as number : item?.price;
+  }, [item, packSize]);
   const [amount, setAmount] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const itemInCart = useMemo(() => cartItems.filter(item => (item.item_id === itemId) && (item.vendorId === vendorId))[0], [cartItems]);
@@ -56,12 +56,12 @@ const ItemDetailScreen = () => {
         availability: item.food.availability, pricingMethod: item.food.pricingMethod,
         preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
         price: item.food.price, sides: item.food.sides
-      }
-      setItem(newItem)
+      };
+      setItem(newItem);
       if (newItem.pricingMethod === "PRICE") setAmount(newItem.price);
-      if (item?.pricingMethod === "PACKAGE") setPackSize(item.packageSizes[0].name);
+      if (newItem.pricingMethod === "PACKAGE") setPackSize(newItem.packageSizes[0].name);
     }
-  }, [data])
+  }, [data]);
   return (
     <>
       <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen, top }]} onPress={goBack} testID="go back">

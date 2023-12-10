@@ -1,17 +1,16 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { GET_MANY_VENDORS } from "@api/graphql";
-import { mockRestaurants } from "@api/mock";
 import { clearCart, getCart } from "@api/slices/globalSlice";
 import { useQuery } from "@apollo/client";
 import { FastImage } from "@components/misc";
 import { CartItem } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { OrderItemInterface, RestaurantInterface, UserTabProps, VendorInterface } from "@interfaces";
+import { OrderItemInterface, UserTabProps, VendorInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts, numberToCurrency, shadowStyle } from "@utils";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -33,7 +32,7 @@ const CartScreen = () => {
       <FastImage src={item.imgUrl} style={styles.vendorCartImage} />
       <Text style={[styles.vendorCartText, { color: color.mainText }]}>{item.businessName}</Text>
     </TouchableOpacity>
-  ), [vendors]);
+  ), [vendors, currVendor]);
   const clearCartItems = () => {
     dispatch(clearCart(currVendor));
     const idx = vendorIds.findIndex(id => id === currVendor);
