@@ -1,5 +1,5 @@
 import { RootState, store } from "@api/app/store";
-import globalReducer, { getAccessToken, getAllowLocation, getAllowPush, getAllowToast, getCart, getEntity, getGlobalState, getShowOnboard, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
+import globalReducer, { getAccessToken, getAllowLocation, getAllowPush, getAllowToast, getCart, getEntity, getGlobalState, getOrderItemRenderType, getShowOnboard, getTheme, getThemeType, getVendorStatus } from "@api/slices/globalSlice";
 import { initialState } from "../testhelpers";
 
 describe("When testing the individual reducers", () => {
@@ -112,6 +112,11 @@ describe("When testing the individual reducers", () => {
     const reducer = setupReducer({ action });
     expect(reducer).toEqual({ ...initialState, allowLocation: false });
   });
+  it("should toggle the order item render type when the setOrderItemRenderGrid action is dispatched", () => {
+    const action = "global/setOrderItemRenderGrid", payload = false;
+    const reducer = setupReducer({ action, payload });
+    expect(reducer).toEqual({ ...initialState, orderItemRenderGrid: false });
+  });
 });
 
 describe("When testing the individual selectors", () => {
@@ -136,6 +141,9 @@ describe("When testing the individual selectors", () => {
   });
   it("should return the current global state when the getGlobalState selector is called", () => {
     expect(getGlobalState(state)).toEqual(initialState);
+  });
+  it("should return the current order item render type value when the getOrderItemRenderType selector is called", () => {
+    expect(getOrderItemRenderType(state)).toBeTruthy();
   });
   it("should return the current value for showOnboard when the getShowOnboard selector is called", () => {
     expect(getShowOnboard(state)).toEqual(true);

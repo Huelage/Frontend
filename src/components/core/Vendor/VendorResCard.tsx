@@ -1,11 +1,10 @@
-import { mockRestaurants } from "@api/mock";
-import { CustomBox } from "@components/misc";
+import { CustomBox, FastImage } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { UserVendorTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React, { memo } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 export interface VendorResCardInterface {
@@ -21,7 +20,7 @@ const VendorResCard = ({ address, id, imgUrl, name }: VendorResCardInterface) =>
 	return (
 		<View style={[styles.container]} testID="vendor res card">
 			<CustomBox bgColor={color.cardBg2} height={100} width={wp("100%") - 30} pad={6} r={10} />
-			<Image testID="restaurant image" style={styles.image} source={{ uri: imgUrl }} />
+			<FastImage testId="restaurant image" style={styles.image} src={imgUrl} />
 			<View style={styles.details}>
 				<Text style={[styles.name, { color: color.mainText }]}>{name}</Text>
 				<Text numberOfLines={2} style={[styles.location, { color: color.mainText }]}>{address}</Text>

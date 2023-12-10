@@ -20,6 +20,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "1",
+        item_name: "River prawn spicy soup",
         quantity: 1,
         totalPrice: 3900,
         extras: [
@@ -32,6 +33,7 @@ const orders: OrderInterface[] = [
         id: "3",
         vendorId: "8",
         item_id: "11",
+        item_name: "Catfish",
         quantity: 1,
         totalPrice: 300,
       }
@@ -56,6 +58,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "1",
+        item_name: "River prawn spicy soup",
         quantity: 1,
         totalPrice: 3900,
         extras: [
@@ -68,6 +71,7 @@ const orders: OrderInterface[] = [
         id: "2",
         vendorId: "8",
         item_id: "12",
+        item_name: "Fried Chicken",
         quantity: 3,
         totalPrice: 600
       }
@@ -92,6 +96,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "9",
+        item_name: "Suya Rice",
         quantity: 1,
         size: "large",
         totalPrice: 5500,
@@ -121,6 +126,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "8",
+        item_name: "Egusi Soup",
         quantity: 1,
         totalPrice: 3900,
         extras: [
@@ -132,6 +138,7 @@ const orders: OrderInterface[] = [
         id: "2",
         vendorId: "8",
         item_id: "10",
+        item_name: "Ponmo",
         quantity: 3,
         totalPrice: 500
       },
@@ -139,6 +146,7 @@ const orders: OrderInterface[] = [
         id: "3",
         vendorId: "8",
         item_id: "12",
+        item_name: "Fried Chicken",
         quantity: 1,
         totalPrice: 600
       }
@@ -163,6 +171,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "7",
+        item_name: "Yamarita",
         quantity: 1,
         size: "large",
         totalPrice: 5500
@@ -171,6 +180,7 @@ const orders: OrderInterface[] = [
         id: "2",
         vendorId: "8",
         item_id: "12",
+        item_name: "Fried Chicken",
         quantity: 2,
         totalPrice: 700
       }
@@ -195,6 +205,7 @@ const orders: OrderInterface[] = [
         id: "1",
         vendorId: "8",
         item_id: "4",
+        item_name: "Chicken and Chips",
         quantity: 2,
         totalPrice: 6000
       }

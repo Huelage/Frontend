@@ -16,8 +16,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const VendorScreen = () => {
   const { params: { vendorId } } = useRoute<UserVendorsTabVendorRouteProps>();
-  const { data, loading } = useQuery(GET_VENDOR_INFO, { variables: { vendorId } })
-  const [vendor, setVendor] = useState<VendorInterface>()
+  const { data, loading } = useQuery(GET_VENDOR_INFO, { variables: { vendorId } });
+  const [vendor, setVendor] = useState<VendorInterface>();
   const { goBack } = useNavigation<UserVendorTabProps>();
   const [currCategory, setCurrCategory] = useState<string>("ALL");
   const [filteredMenu, setFilteredMenu] = useState<UserFoodInterface[]>([]);
@@ -33,7 +33,7 @@ const VendorScreen = () => {
   }, [currCategory, vendor]);
   useEffect(() => {
     if (data) {
-      const res = data.getVendorProfile
+      const res = data.getVendorProfile;
       const formattedVendor: VendorInterface = {
         id: res.vendorId, businessName: res.businessName, businessAddress: res.businessAddress,
         repName: res.repName, avgResponseTime: res.avgResponseTime, imgUrl: res.entity.imgUrl,
@@ -46,10 +46,10 @@ const VendorScreen = () => {
             price: item.food.price, sides: item.food.sides
           });
         }), rating: res.rating, noOfReviews: res.reviews.length
-      }
+      };
       setVendor(formattedVendor);
     }
-  }, [data])
+  }, [data]);
   return (
     <>
       <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor?.imgUrl }} testID="vendor screen header">

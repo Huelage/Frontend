@@ -1,38 +1,58 @@
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
+import { DropDataInterface } from "@interfaces";
 import { fonts } from "@utils";
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { Layout, interpolate, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import DropItem from "./DropItem";
 
 interface CustomDropdownProps {
-  data: { key: string, value: string, disabled?: boolean; }[];
+  data: DropDataInterface[];
   label: string,
   isError?: boolean;
+  value?: string;
   onChange: (val: string) => void;
 }
 
-const CustomDropdown = ({ data, label, isError, onChange }: CustomDropdownProps) => {
+const CustomDropdown = ({ data, label, isError, value, onChange }: CustomDropdownProps) => {
   const { color } = useAppTheme();
+  const dropHeight = useSharedValue(0);
+  const [isDropOpen, setIsDropOpen] = useState<boolean>(false);
   const [selected, setSelected] = useState("");
 
+  const animatedDropHeight = useAnimatedStyle(() => ({
+    height: interpolate(dropHeight.value, [0, 1], [0, 96 * data.length])
+  }));
+  const onSelect = (value: string) => {
+    setSelected(value);
+    onChange(value);
+    setIsDropOpen(false);
+  };
+
+  useEffect(() => {
+    dropHeight.value = withTiming(isDropOpen ? 1 : 0, { duration: 200 * data.length });
+  }, [data, isDropOpen]);
+  useEffect(() => {
+    setSelected(value || "");
+  }, [value]);
   return (
     <View style={styles.dropContainer} testID="custom dropdown">
       <Text style={[styles.dropLabel, { color: color.mainText }]}>{label}</Text>
-      <SelectList
-        setSelected={setSelected}
-        onSelect={() => onChange(selected)}
-        data={data}
-        save="value"
-        arrowicon={<FontAwesome name="angle-down" size={20} color={color.mainTextDim} />}
-        closeicon={<Ionicons name="close-outline" size={24} color={color.mainText} />}
-        searchicon={<Ionicons name="search-outline" size={20} color={color.mainText} style={{ marginRight: 10 }} />}
-        boxStyles={{ ...styles.dropBox, borderColor: isError ? color.danger : color.mainGreen }}
-        inputStyles={{ ...styles.dropInput, color: color.mainText }}
-        dropdownStyles={{ borderColor: color.mainGreen }}
-        dropdownTextStyles={{ color: color.mainText }}
-        disabledItemStyles={{ backgroundColor: color.cardBg2 }}
-        disabledTextStyles={{ color: color.mainTextDim }}
+      <TouchableOpacity onPress={() => setIsDropOpen(!isDropOpen)} style={[styles.mainBox, { borderColor: isError ? color.danger : color.mainGreen }]} testID="dropdown toggle">
+        <Text style={{ color: selected ? color.mainText : color.mainTextDim }}>{selected ? selected : "Select options..."}</Text>
+      </TouchableOpacity>
+      <Animated.FlatList
+        data={isDropOpen ? data : []}
+        keyExtractor={(item, idx) => `${item.value}-${idx}`}
+        itemLayoutAnimation={Layout.springify().damping(15).delay(150)}
+        scrollEnabled={false}
+        renderItem={({ item, index }) => (
+          <TouchableOpacity onPress={() => onSelect(item.value)} testID={`dropdown item ${item.value}`}>
+            <DropItem item={item} idx={index} totalItems={data.length - 1} />
+          </TouchableOpacity>
+        )}
+        contentContainerStyle={[styles.optionBox]}
+        style={animatedDropHeight}
       />
     </View>
   );
@@ -48,12 +68,21 @@ const styles = StyleSheet.create({
     fontFamily: fonts.I_600,
     fontSize: 16
   },
-  dropBox: {
+  mainBox: {
+    borderRadius: 10,
     borderWidth: 2,
-    paddingVertical: 10
+    height: 40,
+    justifyContent: "center",
+    paddingHorizontal: 15
   },
   dropInput: {
     fontFamily: fonts.I_400,
     fontSize: 16
-  }
+  },
+  optionBox: {
+    justifyContent: "center",
+    paddingHorizontal: 10,
+    paddingTop: 5
+  },
+
 });

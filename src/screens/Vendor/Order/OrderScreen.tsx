@@ -1,26 +1,25 @@
 import { mockOrderItems } from "@api/mock";
-import { SubmitButton } from "@components/auth";
 import { CustomFilterBox } from "@components/misc";
-import { OrderSummaryElement } from "@containers/User";
+import { OrderElement } from "@components/vendor/Orders";
 import { useAppTheme } from "@hooks";
-import { FilterGroup, OrderInterface, UserOrdersTabProps } from "@interfaces";
+import { FilterGroup, OrderInterface, VendorOrdersTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { fonts, getDateDiff, getStatus } from "@utils";
+import { fonts, getDateDiff, getStatusVendor } from "@utils";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 
 interface OrderScreenInterface {
-  testEmpty?: boolean;
+  items?: string[];
 }
 
-const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
+const OrderScreen = ({ items }: OrderScreenInterface) => {
+  const menuItems = items ?? ["hello"];
   const { color } = useAppTheme();
-  const { navigate } = useNavigation<UserOrdersTabProps>();
+  const { navigate } = useNavigation<VendorOrdersTabProps>();
   const [filteredOrder, setFilteredOrder] = useState<OrderInterface[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByDate, setFilterByDate] = useState<string>("");
-  const orderNow = () => navigate("Vendors", { screen: "Main" });
 
   const sortedOrders = useMemo(() => (
     [...mockOrderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
@@ -30,12 +29,14 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
     else setFilterByStatus(prev => prev.filter(item => item !== status));
   }, []);
   const filterDate = useCallback((date: string) => setFilterByDate(prev => prev === date ? "" : date), []);
+
   const filterItems: FilterGroup[] = useMemo(() => [
     {
       id: "status", label: "Status", type: "MULTIPLE", items: [
-        { id: "1", groupId: "status", name: "Pending", onPress: checked => filterStatus(checked, "Pending") },
-        { id: "2", groupId: "status", name: "Completed", onPress: checked => filterStatus(checked, "Completed") },
-        { id: "3", groupId: "status", name: "Cancelled", onPress: checked => filterStatus(checked, "Cancelled") }
+        { id: "1", groupId: "status", name: "New Orders", onPress: checked => filterStatus(checked, "Pending") },
+        { id: "2", groupId: "status", name: "Accepted Orders", onPress: checked => filterStatus(checked, "Preparing") },
+        { id: "3", groupId: "status", name: "Completed Orders", onPress: checked => filterStatus(checked, "Completed") },
+        { id: "8", groupId: "status", name: "Cancelled Orders", onPress: checked => filterStatus(checked, "Cancelled") },
       ]
     },
     {
@@ -50,37 +51,36 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
 
   useEffect(() => {
     const newFiltered = sortedOrders.filter(order =>
-      (!filterByStatus.length || filterByStatus.includes(getStatus(order.status))) &&
+      (!filterByStatus.length || filterByStatus.includes(getStatusVendor(order.status))) &&
       (!filterByDate || getDateDiff(filterByDate, order.orderedAt))
     );
     setFilteredOrder(newFiltered);
   }, [filterByDate, filterByStatus, sortedOrders]);
   return (
-    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="order screen">
-      {testEmpty || !mockOrderItems.length ? (
-        <View style={styles.noOrdersBox}>
+    <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor order screen">
+      {!menuItems.length ? (
+        <View style={styles.noOrdersBox} testID="no orders box">
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
-          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven't made any order with Huelage</Text>
-          <SubmitButton label="Order Now" onSubmit={orderNow} />
+          <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>No order has been made from your store</Text>
         </View>
       ) : (
         <View style={styles.ordersBox}>
           <View style={styles.subHeader} testID="order box header">
-            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have made {mockOrderItems.length} orders in total</Text>
+            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have {menuItems.length} orders in Huelage</Text>
             <CustomFilterBox defaultFilter="Status" filterItems={filterItems} />
           </View>
           <Animated.FlatList
-            contentContainerStyle={styles.statusList}
             data={filteredOrder}
-            showsVerticalScrollIndicator={false}
             itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID="order element">
-                <OrderSummaryElement {...item} />
+              <TouchableOpacity onPress={() => navigate("OrderDetail", { order: item })}>
+                <OrderElement order={item} />
               </TouchableOpacity>
             )}
-            testID="order summary elements list"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.orderElementList}
+            testID="order elements list"
           />
         </View>
       )}
@@ -104,12 +104,14 @@ const styles = StyleSheet.create({
   noOrdersBoxText: {
     fontFamily: fonts.I_600I,
     fontSize: 16,
-    paddingBottom: 30
+    paddingBottom: 30,
+    textAlign: "center"
   },
   ordersBox: {
     flex: 1,
-    gap: 20,
-    padding: 20,
+    gap: 10,
+    paddingHorizontal: 20,
+    paddingTop: 15,
     width: "100%"
   },
   subHeader: {
@@ -124,8 +126,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     opacity: 0.7
   },
-  statusList: {
-    gap: 15,
-    paddingBottom: 20
+  orderElementList: {
+    gap: 10,
+    paddingBottom: 30,
+    paddingTop: 10
   }
 });

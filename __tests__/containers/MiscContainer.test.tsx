@@ -42,6 +42,12 @@ describe("When Testing Miscellanous Containers: ", () => {
       expect(image).toBeOnTheScreen();
       expect(image.props.source[0].uri).toBe("123");
     });
+    it("should call showError if image size is larger than 10mb", async () => {
+      (launchImageLibraryAsync as jest.Mock).mockImplementation(() => Promise.resolve(({ canceled: false, assets: [{ uri: "123", fileSize: 100000000 }] })));
+      renderApollo(<ImageUploader onUpload={onUpload} />, []);
+      await act(() => fireEvent.press(screen.getByTestId("add image button")));
+      expect(showError).toBeCalledWith("Image shouldn't be greater than 10mb");
+    });
     it("should call showError if image selection is cancelled", async () => {
       (launchImageLibraryAsync as jest.Mock).mockImplementation(() => Promise.resolve(({ canceled: true, assets: [{ uri: "123" }] })));
       renderApollo(<ImageUploader onUpload={onUpload} />, []);

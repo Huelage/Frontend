@@ -1,10 +1,10 @@
+import { useAppSelector } from "@api/app/appHooks";
+import { getVendorStatus } from "@api/slices/globalSlice";
 import { LoginInfoInterface } from "@interfaces";
 import React from "react";
 import { Control, Controller, FieldErrors, UseFormSetFocus } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import CustomTextInput from "./CustomTextInput";
-import { useAppSelector } from "@api/app/appHooks";
-import { getVendorStatus } from "@api/slices/globalSlice";
 
 interface loginInputsProps {
   loginwithsaved: boolean;
@@ -29,7 +29,6 @@ const LoginInputs = ({ loginwithsaved, control, errors, setFocus, submit }: logi
                 error={errors.vendorKey}
                 innerRef={ref}
                 label="Vendor Key"
-                keyboardType="number-pad"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 onSubmitEditing={() => setFocus("password")}

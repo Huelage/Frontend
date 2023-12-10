@@ -13,6 +13,7 @@ const colors = {
     cardBg: "#141414",
     cardBg2: "#141414",
     cardShadow: "rgba(0, 0, 0, 0.61)",
+    redShadow: "rgba(18, 0, 0, 0.61)",
     chartBg: "#333333",
     danger: "#E93525",
     dangerDim: "rgba(233, 53, 37, .61)",
@@ -28,12 +29,14 @@ const colors = {
     searchBg: "#4F4F4F",
     searchText: "#FFF",
     tabBg: "#000",
+    redBg: "#170e0e"
   },
   light: {
     accentText: "#626262",
     cardBg: "#F0FFF0",
     cardBg2: "#F5F5F5",
     cardShadow: "rgba(76, 175, 80, 0.61)",
+    redShadow: "rgba(233, 50, 35, 0.25)",
     chartBg: "#D9D9D9",
     danger: "#E93525",
     dangerDim: "rgba(233, 53, 37, .61)",
@@ -48,7 +51,8 @@ const colors = {
     modalBg: "#FFF",
     searchBg: "#F3F3F3",
     searchText: "#626262",
-    tabBg: "#F5F5F5"
+    tabBg: "#F5F5F5",
+    redBg: "rgb(253, 246, 244)"
   }
 };
 

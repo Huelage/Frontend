@@ -29,21 +29,18 @@ const MenuScreen = () => {
   useEffect(() => {
     if (data) {
       const items = data.getVendorProducts;
-      setMenuItems(items.map((item: any) => {
-        return ({
-          id: item.productId, name: item.name, description: item.description,
-          imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
-          availability: item.food.availability, pricingMethod: item.food.pricingMethod,
-          preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
-          price: item.food.price, sides: item.food.sides
-        });
-      }));
+      setMenuItems(items.map((item: any) => ({
+        id: item.productId, name: item.name, description: item.description,
+        imgUrl: item.imgUrl, category: item.food.category, isFavourite: false,
+        availability: item.food.availability, pricingMethod: item.food.pricingMethod,
+        preparationTime: item.food.preparationTime, packageSizes: item.food.packageSizes,
+        price: item.food.price, sides: item.food.sides
+      })));
     }
   }, [data, loading]);
   useFocusEffect(useCallback(() => {
     refetch();
   }, [refetch]));
-
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="menu screen">
       {!menuItems.length ? (
@@ -52,7 +49,7 @@ const MenuScreen = () => {
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You don't have any item in your menu</Text>
         </View>
       ) : (
-        <View style={styles.order}>
+        <View style={styles.order} testID="main box">
           <Text style={[styles.categoriesText, { color: color.mainText }]}>Categories</Text>
           <FlatList
             contentContainerStyle={styles.categoryItemList}

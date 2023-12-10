@@ -1,4 +1,4 @@
-import { ADD_FOOD_ITEM, CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, GET_PRODUCTS, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
+import { ADD_FOOD_ITEM, CHANGE_PASSWORD, EDIT_LOCATIONS, GET_KNOWN_LOCATIONS, GET_MANY_VENDORS, GET_PRODUCT, GET_PRODUCTS, GET_VENDORS_LIST, GET_VENDOR_INFO, LOGIN_USER, LOGIN_VENDOR, REQUEST_EMAIL_VERIFICATION, REQUEST_PHONE_VERIFICATION, SET_PASSWORD, SIGNUP_USER, SIGNUP_VENDOR, UPLOAD_IMAGE, VERIFY_EMAIL, VERIFY_OTP, VERIFY_PHONE } from "@api/graphql";
 import { mockFoods } from "./testhelpers";
 
 // AUTH QUERIES
@@ -206,6 +206,16 @@ export const MOCK_LOGIN_USER = [
   }
 ];
 
+export const MOCK_LOGIN_ERROR = [
+  {
+    request: {
+      query: LOGIN_USER,
+      variables: { input: { password: "pass1&onlY", email: "mail@mail.com" } }
+    },
+    error: new Error("An error occurred")
+  }
+];
+
 export const MOCK_LOGIN_USER_SAVED = [
   {
     request: {
@@ -353,6 +363,136 @@ export const MOCK_GET_KNOWN_LOCATIONS = [
   }
 ];
 
+export const MOCK_GET_VENDOR_INFO = [
+  {
+    request: {
+      query: GET_VENDOR_INFO,
+      variables: { vendorId: "123" }
+    },
+    result: {
+      data: {
+        getVendorProfile: {
+          vendorId: "123",
+          businessName: "John Doe",
+          businessAddress: "123 Main St",
+          repName: "John cena",
+          avgResponseTime: 10,
+          rating: 5,
+          entity: { imgUrl: "image" },
+          products: mockFoods,
+          reviews: [{ reviewId: "1" }, { reviewId: "2" }]
+        }
+      }
+    }
+  }
+];
+
+export const MOCK_GET_VENDORS_LIST = [
+  {
+    request: {
+      query: GET_VENDORS_LIST,
+    },
+    result: {
+      data: {
+        getAllVendors: [
+          {
+            vendorId: "123", businessName: "John Doe",
+            businessAddress: "123 Main St", entity: { imgUrl: "image" }
+          },
+          {
+            vendorId: "1234", businessName: "John Cena",
+            businessAddress: "123 Second St", entity: { imgUrl: "image" }
+          },
+        ]
+      }
+    }
+  }
+];
+
+export const MOCK_GET_PRODUCT = [
+  {
+    request: {
+      query: GET_PRODUCT,
+      variables: { productId: "1" }
+    },
+    result: {
+      data: { getProduct: mockFoods[0] }
+    }
+  },
+  {
+    request: {
+      query: GET_PRODUCT,
+      variables: { productId: "2" }
+    },
+    result: {
+      data: { getProduct: mockFoods[1] }
+    }
+  },
+  {
+    request: {
+      query: GET_PRODUCT,
+      variables: { productId: "3" }
+    },
+    result: {
+      data: { getProduct: mockFoods[2] }
+    }
+  },
+  {
+    request: {
+      query: GET_PRODUCT,
+      variables: { productId: "4" }
+    },
+    result: {
+      data: { getProduct: mockFoods[3] }
+    }
+  }
+];
+
+
+export const MOCK_GET_MANY_VENDORS = [
+  {
+    request: {
+      query: GET_MANY_VENDORS,
+      variables: { vendorIds: ["123", "234", "345"] }
+    },
+    result: {
+      data: {
+        getVendorsById: [
+          { vendorId: "123", businessName: "John Doe", entity: { imgUrl: "image" } },
+          { vendorId: "234", businessName: "John Cena", entity: { imgUrl: "image" } },
+          { vendorId: "345", businessName: "John Mackleberry", entity: { imgUrl: "image" } }
+        ]
+      }
+    }
+  }
+];
+export const MOCK_GET_MANY_VENDORS_ONE = [
+  {
+    request: {
+      query: GET_MANY_VENDORS,
+      variables: { vendorIds: ["123"] }
+    },
+    result: {
+      data: {
+        getVendorsById: [
+          { vendorId: "123", businessName: "John Doe", entity: { imgUrl: "image" } },
+        ]
+      }
+    }
+  }
+];
+export const MOCK_GET_MANY_VENDORS_EMPTY = [
+  {
+    request: {
+      query: GET_MANY_VENDORS,
+      variables: { vendorIds: [] }
+    },
+    result: {
+      data: { getVendorsById: [] }
+    }
+  }
+];
+
 // Vendor Queries
 export const MOCK_GET_PRODUCTS = [
   {
@@ -388,6 +528,7 @@ export const MOCK_ADD_FOOD_ITEM = [
           description: "test description",
           category: "MAIN",
           price: 1000,
+          preparationTime: 0,
           pricingMethod: "FIXED",
           imgUrl: "image"
         }
@@ -411,7 +552,8 @@ export const MOCK_ADD_FOOD_PACKAGE_ITEM = [
           pricingMethod: "PACKAGE",
           preparationTime: 30,
           packageSizes: [{ "name": "big pack", "price": 1000 }, { "name": "small pack", "price": 500 }],
-          imgUrl: "image"
+          imgUrl: "image",
+          price: 0
         }
       }
     },

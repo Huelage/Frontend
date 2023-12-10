@@ -26,8 +26,8 @@ const AddItemScreen = () => {
   const onSubmit = async (data: AddFoodInterface) => {
     if (!imgUrl) return showError("Please upload an image");
     const input = { ...data, imgUrl };
-    if (data.price) input.price = Number(data.price);
-    if (data.preparationTime) input.preparationTime = Number(data.preparationTime);
+    input.price = data.price ? Number(data.price) : 0;
+    input.preparationTime = data.preparationTime ? Number(data.preparationTime) : 0;
     await addFood({ variables: { input } });
   };
 
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
   mainBox: {
     alignItems: "center",
     gap: 30,
-    padding: 20
+    padding: 20,
+    paddingBottom: 30
   },
   imageBox: {
     alignItems: "center",

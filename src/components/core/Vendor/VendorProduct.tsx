@@ -7,7 +7,6 @@ import React, { memo } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { Image } from "expo-image";
 
 interface VendorProductInterface {
   item: UserFoodInterface;

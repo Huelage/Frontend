@@ -46,7 +46,7 @@ const SideOptionElement = ({ option, isSide, onAdd, onRemove }: SideOptionElemen
                 <TextInput
                   autoCapitalize="words"
                   autoCorrect={false}
-                  style={[styles.input, { borderColor: color.mainGreen }]}
+                  style={[styles.input, { borderColor: color.mainGreen, color: color.mainText }]}
                   selectionColor={color.mainGreen}
                   placeholder="Enter option name"
                   placeholderTextColor={color.mainTextDim}
@@ -63,7 +63,7 @@ const SideOptionElement = ({ option, isSide, onAdd, onRemove }: SideOptionElemen
               control={control}
               render={({ field: { onChange, onBlur, ref } }) => (
                 <TextInput
-                  style={[styles.input, { borderColor: color.mainGreen }]}
+                  style={[styles.input, { borderColor: color.mainGreen, color: color.mainText }]}
                   selectionColor={color.mainGreen}
                   placeholder="Enter option price"
                   placeholderTextColor={color.mainTextDim}

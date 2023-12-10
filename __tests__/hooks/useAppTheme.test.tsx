@@ -31,6 +31,7 @@ describe("When Testing useAppTheme Custom Hook", () => {
       cardBg: "#F0FFF0",
       cardBg2: "#F5F5F5",
       cardShadow: "rgba(76, 175, 80, 0.61)",
+      redShadow: "rgba(233, 50, 35, 0.25)",
       chartBg: "#D9D9D9",
       danger: "#E93525",
       dangerDim: "rgba(233, 53, 37, .61)",
@@ -45,7 +46,8 @@ describe("When Testing useAppTheme Custom Hook", () => {
       modalBg: "#FFF",
       searchBg: "#F3F3F3",
       searchText: "#626262",
-      tabBg: "#F5F5F5"
+      tabBg: "#F5F5F5",
+      redBg: "rgb(253, 246, 244)"
     });
   });
 });
