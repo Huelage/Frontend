@@ -1,3 +1,6 @@
+import { DropDataInterface } from "@interfaces";
+import { Image } from "react-native";
+
 export enum fonts {
   I_200 = "Inter_200ExtraLight",
   I_200I = "InterTight_200ExtraLight_Italic",
@@ -33,19 +36,19 @@ export enum orderStatRank {
   "CANCELLED"
 }
 
-export const categories = [
-  { key: "1", value: "MAIN" },
-  { key: "2", value: "PROTEIN" },
-  { key: "3", value: "SOUPS" },
-  { key: "4", value: "SNACKS" },
-  { key: "5", value: "DRINKS" }
+export const categories: DropDataInterface[] = [
+  { value: "MAIN", imgUrl: Image.resolveAssetSource(require("@images/main_img.jpeg")).uri },
+  { value: "PROTEIN", imgUrl: Image.resolveAssetSource(require("@images/protein_img.jpeg")).uri },
+  { value: "SOUPS", imgUrl: Image.resolveAssetSource(require("@images/soups_img.webp")).uri },
+  { value: "SNACKS", imgUrl: Image.resolveAssetSource(require("@images/snacks_img.webp")).uri },
+  { value: "DRINKS", imgUrl: Image.resolveAssetSource(require("@images/drinks_img.png")).uri }
 ];
 
-export const pricingMethods = [
-  { key: "1", value: "PRICE" },
-  { key: "2", value: "PORTION" },
-  { key: "3", value: "FIXED" },
-  { key: "4", value: "PACKAGE" }
+export const pricingMethods: DropDataInterface[] = [
+  { value: "PRICE", desc: "Customers set their preferred price within your range.", imgUrl: Image.resolveAssetSource(require("@images/price_img.png")).uri },
+  { value: "PORTION", desc: "Sell by portion; set prices for flexibility.", imgUrl: Image.resolveAssetSource(require("@images/portion_img.png")).uri },
+  { value: "FIXED", desc: "Maintain consistency with a set, unalterable price.", imgUrl: Image.resolveAssetSource(require("@images/fixed_img.png")).uri },
+  { value: "PACKAGE", desc: "Offer meal options with various sizes and prices.", imgUrl: Image.resolveAssetSource(require("@images/package_img.png")).uri },
 ];
 
 export const foodCategories = ["ALL", ...categories.map((c) => c.value)];
