@@ -42,18 +42,20 @@ const LoginScreen = () => {
       input = { entityId: savedDetails.id, password: data.password };
     else
       input = data;
-    isVendor ? await login_vendor({ variables: { input } }) : await login_user({ variables: { input } });
-    if (!bioDetail) {
-      Alert.alert(
-        "Enable Biometric Login?",
-        "Enjoy quicker, secure access with biometric authentication. Enable it now?",
-        [
-          { text: "Enable", onPress: enableBiometrics },
-          { text: "Not now", onPress: () => {} },
-        ]
-      );
-    }
-    reset();
+    try {
+      isVendor ? await login_vendor({ variables: { input } }) : await login_user({ variables: { input } });
+      if (!bioDetail) {
+        Alert.alert(
+          "Enable Biometric Login?",
+          "Enjoy quicker, secure access with biometric authentication. Enable it now?",
+          [
+            { text: "Enable", onPress: enableBiometrics },
+            { text: "Not now", onPress: () => {} },
+          ]
+        );
+      }
+      reset();
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
   const goToforgotPassword = () => navigate("ForgotPassword");
