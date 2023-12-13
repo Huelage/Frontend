@@ -1,5 +1,7 @@
+import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { mockOrderItems } from "@api/mock";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { AddItemScreen, HomeScreen, MenuScreen, NotificationScreen, OrderDetailScreen, OrderScreen } from "@screens/Vendor";
+import { AddItemScreen, HomeScreen, MenuScreen, OrderDetailScreen, OrderScreen } from "@screens/Vendor";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { showError, showSuccess } from "@utils";
 import { launchImageLibraryAsync } from "expo-image-picker";
@@ -7,8 +9,6 @@ import { extension, lookup } from "react-native-mime-types";
 import uuid from "react-native-uuid";
 import { MOCK_ADD_FOOD_ITEM, MOCK_ADD_FOOD_PACKAGE_ITEM, MOCK_GET_PRODUCTS, MOCK_GET_PRODUCTS_EMPTY, MOCK_UPLOAD_IMAGE } from "../gql.mocks";
 import { renderApollo, renderApolloNavigator } from "../testhelpers";
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { mockOrderItems } from "@api/mock";
 
 const useDropDown = (value: string) => {
   const dropDownToggle = screen.getByTestId("dropdown toggle");
@@ -266,14 +266,6 @@ describe("When Testing Vendor Screens: ", () => {
         fireEvent.press(orderItem);
         expect(navigate).toBeCalledWith("OrderDetail", { order: mockOrderItems[1] });
       });
-    });
-  });
-
-
-  describe("<NotificationScreen />: ", () => {
-    it("should render the component correctly", () => {
-      render(<NotificationScreen />);
-      expect(screen.getByTestId("notification screen")).toBeOnTheScreen();
     });
   });
 });
