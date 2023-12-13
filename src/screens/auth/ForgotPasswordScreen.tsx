@@ -23,8 +23,10 @@ const ForgotPasswordScreen = () => {
   const [requestVerification, { data, loading }] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
   const onSubmit = async (data: ResetPasswordInterface) => {
-    reset();
-    await requestVerification({ variables: { email: data.email } });
+    try {
+      await requestVerification({ variables: { email: data.email } });
+      reset();
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 

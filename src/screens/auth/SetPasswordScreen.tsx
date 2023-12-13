@@ -24,9 +24,11 @@ const SetPasswordScreen = () => {
   const { goBack, navigate } = useNavigation<AuthNavigationProps>();
   const { handleSubmit, control, setFocus, watch, reset, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
   const onSubmit = async (data: ResetPasswordInterface) => {
-    reset();
     const input = { entityId, password: data.password };
-    await setPassword({ variables: { input } });
+    try {
+      await setPassword({ variables: { input } });
+      reset();
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 

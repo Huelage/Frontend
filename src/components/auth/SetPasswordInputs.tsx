@@ -1,5 +1,5 @@
 import { useAppSelector } from "@api/app/appHooks";
-import { getEntity } from "@api/slices/globalSlice";
+import { getAccessToken } from "@api/slices/globalSlice";
 import { ResetPasswordInterface } from "@interfaces";
 import React from "react";
 import { Control, Controller, FieldErrors, UseFormSetFocus, UseFormWatch } from "react-hook-form";
@@ -16,7 +16,7 @@ interface setPasswordInputsProps {
 
 
 const SetPasswordInputs = ({ control, errors, setFocus, watch, submit }: setPasswordInputsProps) => {
-  const isSignedIn = useAppSelector(getEntity);
+  const isSignedIn = useAppSelector(getAccessToken);
   return (
     <View style={styles.container} testID="set password inputs">
       {!!isSignedIn && (

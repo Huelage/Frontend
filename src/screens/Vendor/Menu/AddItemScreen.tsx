@@ -28,7 +28,9 @@ const AddItemScreen = () => {
     const input = { ...data, imgUrl };
     input.price = data.price ? Number(data.price) : 0;
     input.preparationTime = data.preparationTime ? Number(data.preparationTime) : 0;
-    await addFood({ variables: { input } });
+    try {
+      await addFood({ variables: { input } });
+    } catch {}
   };
 
   useEffect(() => {

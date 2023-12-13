@@ -27,3 +27,39 @@ export const ADD_FOOD_ITEM = gql(`
     }
   }
 `);
+
+export const GET_VENDOR_ORDERS = gql(`
+  query GetVendorOrder {
+    findVendorOrders {
+      orderId
+      vendor {
+        vendorId
+        businessName
+        businessAddress
+      }
+      status
+      deliveryAddress
+      estimatedDeliveryTime
+      subtotal
+      deliveryFee
+      paymentBreakdown
+      totalAmount
+      paymentStatus
+      orderItems {
+        itemId
+        product {
+          productId
+          name
+        }
+        quantity
+        portion
+        price
+        size
+        extras
+        totalPrice
+      }
+      orderedAt
+      updatedAt
+    }
+  }
+`);

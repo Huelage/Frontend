@@ -27,9 +27,11 @@ const SignUpScreen = () => {
   const { handleSubmit, control, setFocus, reset, formState: { errors } } = useForm<SignUpInfoInterface>({ mode: "onChange" });
   const onSubmit: SubmitHandler<SignUpInfoInterface> = async (data: SignUpInfoInterface) => {
     let input = { ...data, confirmPassword: data.password, phone: data.phone.replace(/[\s-.]/g, "") };
-    isVendor ? await signup_vendor({ variables: { input } }) : await sigup_user({ variables: { input } });
-    reset();
-    navigate("OTP", { phoneno: data.phone });
+    try {
+      isVendor ? await signup_vendor({ variables: { input } }) : await sigup_user({ variables: { input } });
+      reset();
+      navigate("OTP", { phoneno: data.phone });
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 

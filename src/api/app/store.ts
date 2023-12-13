@@ -8,8 +8,7 @@ const globalTransform = createTransform(
   (inboundState: globalStateInterface) => {
     return {
       ...inboundState,
-      showOnboard: true,
-      entity: { ...inboundState.entity, knownLocation: [] },
+      showOnboard: true
     };
   },
   (outboundState: any) => outboundState,

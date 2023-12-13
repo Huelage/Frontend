@@ -25,13 +25,17 @@ const VerifyEmailScreen = () => {
   const onSubmit = async () => {
     if (/\d{4}/.test(otpcode.trim())) {
       const input = { email, otp: parseInt(otpcode) };
-      await verifyEmail({ variables: { input } });
+      try {
+        await verifyEmail({ variables: { input } });
+      } catch {}
     }
   };
   const onChange = (code: string) => setOtpcode(code);
   const resendCode = async () => {
-    await resendOtp({ variables: { email } });
-    setIsTimerActive(true);
+    try {
+      await resendOtp({ variables: { email } });
+      setIsTimerActive(true);
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 

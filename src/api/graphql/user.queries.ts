@@ -27,7 +27,7 @@ export const GET_VENDORS_LIST = gql(`
       }
     }
   }
-`)
+`);
 
 export const GET_VENDOR_INFO = gql(`
   query GetVendorInfo ($vendorId: String!) {
@@ -61,7 +61,7 @@ export const GET_VENDOR_INFO = gql(`
       }
     }
   }
-`)
+`);
 
 export const GET_PRODUCT = gql(`
   query GetProduct ($productId: String!) {
@@ -81,7 +81,7 @@ export const GET_PRODUCT = gql(`
       }
     }
   }
-`)
+`);
 
 export const GET_MANY_VENDORS = gql(`
   query GetManyVendors ($vendorIds: [String!]!) {
@@ -93,4 +93,12 @@ export const GET_MANY_VENDORS = gql(`
       }
     }
   }
-`)
+`);
+
+export const CREATE_ORDER = gql(`
+  mutation CreateOrder ($input: CreateOrderInput!) {
+    createOrder (input: $input) {
+      orderId
+    }
+  }
+`);

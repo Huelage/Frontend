@@ -22,13 +22,17 @@ const PersonalDetailScreen = () => {
   const [sendEmailOTP] = useMutation(REQUEST_EMAIL_VERIFICATION);
   const { goBack, navigate } = useNavigation<UserProfileTabProps>();
   const verifyEmail = async () => {
-    await sendEmailOTP({ variables: { email: entity.email } });
-    navigate("VerifyEmail");
+    try {
+      await sendEmailOTP({ variables: { email: entity.email } });
+      navigate("VerifyEmail");
+    } catch {}
   };
   const verifyPhone = async () => {
     const input = { entityId: entity.id, phone: entity.phone };
-    await sendPhoneOTP({ variables: { input } });
-    navigate("VerifyPhone");
+    try {
+      await sendPhoneOTP({ variables: { input } });
+      navigate("VerifyPhone");
+    } catch {}
   };
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="personal detail screen">

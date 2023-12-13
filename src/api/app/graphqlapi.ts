@@ -58,11 +58,12 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
         })).flatMap(() => forward(operation));
       }
       else
-        showError(message); console.log(message);
+        showError(message); console.log(`[GraphQL Error] ${message}`);
     });
   }
   if (networkError) {
-    console.log(`[Network Error]: ${networkError}`);
+    showError(networkError.message);
+    console.log(`[Network Error]: ${networkError.message}`);
   }
 });
 const retryLink = new RetryLink({

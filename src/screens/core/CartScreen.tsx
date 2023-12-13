@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { GET_MANY_VENDORS } from "@api/graphql";
+import { CREATE_ORDER, GET_MANY_VENDORS } from "@api/graphql";
 import { clearCart, getCart } from "@api/slices/globalSlice";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { FastImage } from "@components/misc";
 import { CartItem } from "@containers/User";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -21,7 +21,8 @@ const CartScreen = () => {
   const { goBack, navigate } = useNavigation<UserTabProps>();
   const cartItems = useAppSelector(getCart);
   const vendorIds = [... new Set(cartItems.map(item => item.vendorId))];
-  const { data, loading } = useQuery(GET_MANY_VENDORS, { variables: { vendorIds } })
+  const { data } = useQuery(GET_MANY_VENDORS, { variables: { vendorIds } });
+  const [create_order, { data: order, loading }] = useMutation(CREATE_ORDER);
   const [currVendor, setCurrVendor] = useState<string>(vendorIds[0]);
   const [vendors, setVendors] = useState<VendorInterface[]>([]);
   const [vendorCartItem, setVendorCartItem] = useState<OrderItemInterface[]>([]);
@@ -38,7 +39,20 @@ const CartScreen = () => {
     const idx = vendorIds.findIndex(id => id === currVendor);
     setCurrVendor(vendorIds[idx + 1] ?? vendorIds[idx - 1] ?? "");
   };
-  const checkout = () => console.log("checkout");
+  const checkout = async () => {
+    const orderItems = vendorCartItem.map(item => ({
+      itemId: item.id, productId: item.item_id, totalPrice: item.totalPrice,
+      quantity: item.quantity, extras: item.extras, portion: item.portion,
+      price: item.price, size: item.size
+    }));
+    const input = {
+      vendorId: currVendor, orderItems, paymentMethod: "CASH",
+      subtotal, discount: 0, deliveryAddress: "123 main st"
+    };
+    try {
+      await create_order({ variables: { input } });
+    } catch {}
+  };
   const continueShopping = () => {
     navigate("Vendors", { screen: "VendorHome", params: { vendorId: currVendor }, initial: false });
   };
@@ -54,7 +68,12 @@ const CartScreen = () => {
       }));
       setVendors(vendors);
     }
-  }, [data])
+  }, [data]);
+  useEffect(() => {
+    if (order) {
+      console.log({ order });
+    }
+  }, [order]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="cart screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">

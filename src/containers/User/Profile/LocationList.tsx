@@ -12,11 +12,13 @@ const LocationList = () => {
   if (!entity) return null;
   const dispatch = useAppDispatch();
   const initialMode = useRef<boolean>(true);
-  const { data: locations } = useQuery(GET_KNOWN_LOCATIONS, { skip: entity.knownLocation?.length !== 0, fetchPolicy: "network-only" });
+  const { data: locations } = useQuery(GET_KNOWN_LOCATIONS, { fetchPolicy: "network-only" });
   const [deleteLocation, { data: removed }] = useMutation(EDIT_LOCATIONS);
 
   const removeLocation = async (locationId: string) => {
-    await deleteLocation({ variables: { input: { locationId } } });
+    try {
+      await deleteLocation({ variables: { input: { locationId } } });
+    } catch {}
   };
 
   useEffect(() => { initialMode.current = false; }, []);
@@ -54,9 +56,10 @@ const styles = StyleSheet.create({
   locationBody: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 30
+    paddingVertical: 30
   },
   locationList: {
-    gap: 40
+    gap: 30,
+    paddingBottom: 60
   },
 });

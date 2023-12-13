@@ -30,14 +30,18 @@ const VerifyPhoneScreen = () => {
   const formattedNumber = `${phoneno?.slice(0, 4)} ${phoneno?.slice(4, 6)}******${phoneno?.slice(-2)}`;
 
   const resendCode = async () => {
-    setIsTimerActive(true);
     const input = { entityId: entity.id, phone: phoneno };
-    await refreshOTP({ variables: { input } });
+    try {
+      await refreshOTP({ variables: { input } });
+      setIsTimerActive(true);
+    } catch {}
   };
   const verifyOTP = async () => {
     if (/\d{4}/.test(phoneOtp.trim())) {
       const input = { phone: phoneno, otp: parseInt(phoneOtp) };
-      await verifyCode({ variables: { input } });
+      try {
+        await verifyCode({ variables: { input } });
+      } catch {}
     }
   };
   const onChange = (otp: string) => setPhoneOtp(otp);

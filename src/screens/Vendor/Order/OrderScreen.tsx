@@ -1,4 +1,6 @@
+import { GET_VENDOR_ORDERS } from "@api/graphql";
 import { mockOrderItems } from "@api/mock";
+import { useQuery } from "@apollo/client";
 import { CustomFilterBox } from "@components/misc";
 import { OrderElement } from "@components/vendor/Orders";
 import { useAppTheme } from "@hooks";
@@ -17,6 +19,7 @@ const OrderScreen = ({ items }: OrderScreenInterface) => {
   const menuItems = items ?? ["hello"];
   const { color } = useAppTheme();
   const { navigate } = useNavigation<VendorOrdersTabProps>();
+  const { data, loading } = useQuery(GET_VENDOR_ORDERS);
   const [filteredOrder, setFilteredOrder] = useState<OrderInterface[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByDate, setFilterByDate] = useState<string>("");
@@ -56,6 +59,11 @@ const OrderScreen = ({ items }: OrderScreenInterface) => {
     );
     setFilteredOrder(newFiltered);
   }, [filterByDate, filterByStatus, sortedOrders]);
+  useEffect(() => {
+    if (data) {
+      console.log({ data });
+    }
+  }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor order screen">
       {!menuItems.length ? (

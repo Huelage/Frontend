@@ -50,7 +50,9 @@ const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) =
   const upload = async () => {
     const name = entity?.firstName ?? entity?.businessName ?? "image", id = uuid.v4().toString();
     const file = generateFile(image, `${name}-${id}`), input = { id, image: file };
-    await uploadImage({ variables: { input } });
+    try {
+      await uploadImage({ variables: { input } });
+    } catch {}
   };
 
   useEffect(() => {

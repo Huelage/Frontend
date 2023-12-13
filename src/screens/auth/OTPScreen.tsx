@@ -33,15 +33,19 @@ const OTPScreen = () => {
   const formattedNumber = `${countrycode} ${number.slice(0, 2)}******${number.slice(-2)}`;
 
   const resendCode = async () => {
-    setIsTimerActive(true);
-    const entityId = await getItem("huelageEntityId");
-    const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") };
-    await refreshOTP({ variables: { input } });
+    try {
+      const entityId = await getItem("huelageEntityId");
+      const input = { entityId, phone: phoneno.replace(/[\s\.-]/g, "") };
+      await refreshOTP({ variables: { input } });
+      setIsTimerActive(true);
+    } catch {}
   };
   const verifyOTP = async () => {
     if (/\d{4}/.test(phoneOtp.trim())) {
       const input = { phone: phoneno.replace(/[\s\.-]/g, ""), otp: parseInt(phoneOtp) };
-      await verifyCode({ variables: { input } });
+      try {
+        await verifyCode({ variables: { input } });
+      } catch {}
     }
   };
   const onChange = (otp: string) => setPhoneOtp(otp);

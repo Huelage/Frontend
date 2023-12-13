@@ -29,7 +29,9 @@ const LocationScreen = () => {
       showError(`${data.structured_formatting.main_text} is already a known location`);
     } else {
       const input = { locationId: data.place_id, name: data.description };
-      await addLocation({ variables: { input } });
+      try {
+        await addLocation({ variables: { input } });
+      } catch {}
     }
   };
   const onError = (error: string) => showError(error);

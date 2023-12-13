@@ -26,7 +26,9 @@ const ChangePhoneScreen = () => {
   const { handleSubmit, control, formState: { errors } } = useForm<ResetPasswordInterface>({ mode: "onChange" });
   const onSubmit = async (data: ResetPasswordInterface) => {
     const input = { entityId: entity.id, phone: data.phone?.replace(/[\s-.]/g, "") };
-    await requestVerification({ variables: { input } });
+    try {
+      await requestVerification({ variables: { input } });
+    } catch {}
   };
   const dismissKeyboard = () => Keyboard.dismiss();
 
