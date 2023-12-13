@@ -61,7 +61,6 @@ export type UserStackParamList = {
 };
 export type VendorStackParamList = {
   MainTabs: undefined;
-  Notifications: undefined;
 };
 
 // // Main Tabs
@@ -117,6 +116,16 @@ export type VendorMenuTabStackParamList = {
 };
 export type VendorAccountTabStackParamList = {
   Main: undefined;
+  AccountDetails: undefined;
+  ChangePass: undefined;
+  ChangePhone: undefined;
+  VerifyEmail: undefined;
+  VerifyPhone: undefined;
+  Wallet: undefined;
+  Setting: undefined;
+  FAQ: undefined;
+  Help: undefined;
+  About: undefined;
 };
 
 // SCREEN INTERFACES
@@ -178,7 +187,7 @@ export interface BiometricsInterface {
 }
 export interface ProfileElementInterface {
   label: string;
-  nav: keyof UserProfileTabStackParamList;
+  nav: keyof (UserProfileTabStackParamList & VendorAccountTabStackParamList);
   icon: keyof typeof MaterialCommunityIcons.glyphMap;
 }
 export interface SettingOptionInterface {
