@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
-import { clearCredentials, getGlobalState, toggleAllowLocation, toggleAllowPush, toggleAllowToast, toggleTheme, toggleThemeType } from "@api/slices/globalSlice";
+import { clearCredentials, getGlobalState, toggleAllowLocation, toggleAllowPush, toggleTheme, toggleThemeType } from "@api/slices/globalSlice";
 import { SettingElement } from "@components/core/Profile";
 import { Fontisto, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
@@ -32,7 +32,7 @@ const SettingScreen = () => {
         {
           options: [
             { title: "Push notifications", isToggle: true, initVal: globalState.allowPush, onPress: () => dispatch(toggleAllowPush()) },
-            { title: "In-app notifications", isToggle: true, initVal: globalState.allowToast, onPress: () => dispatch(toggleAllowToast()) },
+            { title: "In-app notifications", isToggle: false, onPress: () => navigate("Toast") },
           ]
         }
       ]
