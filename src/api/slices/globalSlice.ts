@@ -11,9 +11,9 @@ const initialState: globalStateInterface = {
   theme: "dark",
   cart: [],
   allowPush: true,
-  allowToast: true,
   allowLocation: true,
-  orderItemRenderGrid: true
+  orderItemRenderGrid: true,
+  toastType: "banner"
 };
 
 const globalSlice = createSlice({
@@ -37,6 +37,9 @@ const globalSlice = createSlice({
     },
     setOrderItemRenderGrid: (state, action: PayloadAction<boolean>) => {
       state.orderItemRenderGrid = action.payload;
+    },
+    setToastType: (state, action: PayloadAction<"banner" | "popup" | "none">) => {
+      state.toastType = action.payload;
     },
     switchTheme: (state, action: PayloadAction<"light" | "dark">) => {
       state.theme = action.payload;
@@ -70,9 +73,6 @@ const globalSlice = createSlice({
     toggleAllowPush: (state) => {
       state.allowPush = !state.allowPush;
     },
-    toggleAllowToast: (state) => {
-      state.allowToast = !state.allowToast;
-    },
     toggleAllowLocation: (state) => {
       state.allowLocation = !state.allowLocation;
     }
@@ -88,12 +88,12 @@ export const {
   updateCart,
   setCredentials,
   setOrderItemRenderGrid,
+  setToastType,
   setVendorStatus,
   setShowOnboard,
   switchTheme,
   toggleAllowLocation,
   toggleAllowPush,
-  toggleAllowToast,
   toggleTheme,
   toggleThemeType
 } = globalSlice.actions;
@@ -101,7 +101,6 @@ export const {
 export const getAccessToken = (state: RootState) => state.global.accessToken;
 export const getAllowLocation = (state: RootState) => state.global.allowLocation;
 export const getAllowPush = (state: RootState) => state.global.allowPush;
-export const getAllowToast = (state: RootState) => state.global.allowToast;
 export const getCart = (state: RootState) => state.global.cart;
 export const getEntity = (state: RootState) => state.global.entity;
 export const getGlobalState = (state: RootState) => state.global;
@@ -109,6 +108,7 @@ export const getOrderItemRenderType = (state: RootState) => state.global.orderIt
 export const getShowOnboard = (state: RootState) => state.global.showOnboard;
 export const getTheme = (state: RootState) => state.global.theme;
 export const getThemeType = (state: RootState) => state.global.themeType;
+export const getToastType = (state: RootState) => state.global.toastType;
 export const getVendorStatus = (state: RootState) => state.global.isVendor;
 // Reducer
 export default globalSlice.reducer;
