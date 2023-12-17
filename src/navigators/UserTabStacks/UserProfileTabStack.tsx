@@ -1,6 +1,6 @@
 import { UserProfileTabStackParamList } from "@interfaces";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AboutScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, VerifyEmailScreen, VerifyPhoneScreen } from "@screens/General";
+import { AboutScreen, ChangePasswordScreen, ChangePhoneScreen, FAQScreen, HelpScreen, ToastScreen, VerifyEmailScreen, VerifyPhoneScreen } from "@screens/General";
 import { LocationScreen, PersonalDetailScreen, ProfileScreen, ReferralScreen, SettingScreen, WalletScreen } from "@screens/core";
 import React from "react";
 
@@ -22,6 +22,7 @@ const UserProfileTabStack = () => {
       <Stack.Screen name="Location" component={LocationScreen} />
       <Stack.Screen name="VerifyPhone" component={VerifyPhoneScreen} />
       <Stack.Screen name="VerifyEmail" component={VerifyEmailScreen} />
+      <Stack.Screen name="Toast" component={ToastScreen} />
     </Stack.Navigator >
   );
 };
