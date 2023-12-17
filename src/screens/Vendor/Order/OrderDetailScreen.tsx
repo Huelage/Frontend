@@ -37,7 +37,7 @@ const OrderDetailScreen = () => {
             <Text style={[styles.headerDateText, { color: color.mainTextDim }]}>{dayjs(updatedAt).format("D MMM, YYYY | hh:mma")}</Text>
           </View>
           <View style={[styles.headerIdBox, { backgroundColor: color.cardBg, borderColor: color.mainGreen }]}>
-            <Text style={[styles.headerIdText, { color: color.mainText }]}>Order #{id}</Text>
+            <Text style={[styles.headerIdText, { color: color.mainText }]}>Order #{id.split("-")[0].toUpperCase()}</Text>
           </View>
         </View>
         <View style={styles.itemsHeader} testID="order items header box">
