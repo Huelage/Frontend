@@ -85,7 +85,7 @@ export type UserVendorsTabStackParamList = {
 };
 export type UserOrdersTabStackParamList = {
   Main: undefined;
-  OrderDetail: { orderId: string; };
+  OrderDetail: { order: OrderInterface; };
 };
 export type UserProfileTabStackParamList = {
   Main: undefined;
@@ -101,6 +101,7 @@ export type UserProfileTabStackParamList = {
   FAQ: undefined;
   Help: undefined;
   About: undefined;
+  Toast: undefined;
 };
 
 // // Vendor Tab Stacks
@@ -126,6 +127,7 @@ export type VendorAccountTabStackParamList = {
   FAQ: undefined;
   Help: undefined;
   About: undefined;
+  Toast: undefined;
 };
 
 // SCREEN INTERFACES
@@ -165,9 +167,9 @@ export interface globalStateInterface {
   cart: OrderItemInterface[];
   accessToken: string | null;
   allowPush: boolean;
-  allowToast: boolean;
   allowLocation: boolean;
   orderItemRenderGrid: boolean;
+  toastType: "banner" | "popup" | "none";
 }
 
 // USER SCREEN INTERFACES
