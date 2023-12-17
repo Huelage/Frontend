@@ -1,4 +1,3 @@
-import { mockOrderItems } from "@api/mock";
 import { OverviewBox } from "@components/core/Cart";
 import { OrderDetailDelivery, TrackOrder } from "@components/core/Order";
 import { OrderDetailItem } from "@containers/User";
@@ -7,28 +6,22 @@ import { useAppTheme } from "@hooks";
 import { UserOrdersTabOrderDetailRouteProps, UserOrdersTabProps } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { fonts, getStatus, orderStatRank } from "@utils";
-import React from "react";
+import React, { useMemo } from "react";
 import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const totals = [
-  { name: "Subtotal", amount: 7800 },
-  { name: "Delivery", amount: 1000 },
-  { name: "Total", amount: 8800 }
-];
-const paymentMethod = [
-  { name: "cash", amount: 8000 },
-  { name: "huenit wallet", amount: 800 }
-];
-
 const OrderDetailScreen = () => {
-  const { params: { orderId } } = useRoute<UserOrdersTabOrderDetailRouteProps>();
-  const order = mockOrderItems.find(order => order.id === orderId);
-  if (!order) return null;
+  const { params: { order } } = useRoute<UserOrdersTabOrderDetailRouteProps>();
   const { color } = useAppTheme();
   const insets = useSafeAreaInsets();
-  const canCancel = orderStatRank[order.status] >= 1;
   const { goBack } = useNavigation<UserOrdersTabProps>();
+
+  const canCancel = orderStatRank[order.status] >= 1;
+  const totals = useMemo(() => ([
+    { name: "Subtotal", amount: order.subTotal },
+    { name: "Delivery", amount: order.deliveryFee },
+    { name: "Total", amount: order.deliveryFee + order.subTotal }
+  ]), []);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="order detail screen">
       <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
@@ -73,7 +66,7 @@ const OrderDetailScreen = () => {
               ) : null}
             </>
           ) : null}
-          <OverviewBox totals={totals} paymentMethod={paymentMethod} />
+          <OverviewBox totals={totals} paymentMethod={order.paymentBreakdown} />
         </View>
       </ScrollView>
     </View>
