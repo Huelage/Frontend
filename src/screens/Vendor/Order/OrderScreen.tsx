@@ -1,5 +1,4 @@
 import { GET_VENDOR_ORDERS } from "@api/graphql";
-import { mockOrderItems } from "@api/mock";
 import { useQuery } from "@apollo/client";
 import { CustomFilterBox } from "@components/misc";
 import { OrderElement } from "@components/vendor/Orders";
@@ -11,22 +10,18 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 
-interface OrderScreenInterface {
-  items?: string[];
-}
-
-const OrderScreen = ({ items }: OrderScreenInterface) => {
-  const menuItems = items ?? ["hello"];
+const OrderScreen = () => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<VendorOrdersTabProps>();
   const { data, loading } = useQuery(GET_VENDOR_ORDERS);
+  const [orderItems, setOrderItems] = useState<OrderInterface[]>([]);
   const [filteredOrder, setFilteredOrder] = useState<OrderInterface[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByDate, setFilterByDate] = useState<string>("");
 
   const sortedOrders = useMemo(() => (
-    [...mockOrderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
-  ), [mockOrderItems]);
+    [...orderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  ), [orderItems]);
   const filterStatus = useCallback((checked: boolean, status: string) => {
     if (checked) setFilterByStatus(prev => [...prev, status]);
     else setFilterByStatus(prev => prev.filter(item => item !== status));
@@ -61,12 +56,28 @@ const OrderScreen = ({ items }: OrderScreenInterface) => {
   }, [filterByDate, filterByStatus, sortedOrders]);
   useEffect(() => {
     if (data) {
-      console.log({ data });
+      const orders = data.findVendorOrders;
+      const formattedOrders: OrderInterface[] = orders.map((order: any) => ({
+        id: order.orderId, vendorName: order.vendor.businessName, totalAmount: order.totalAmount,
+        status: order.status, deliveryAddress: order.deliveryAddress, paymentStatus: order.paymentStatus,
+        vendorAddress: order.vendor.businessAddress, estimatedDeliveryTime: order.estimatedDeliveryTime,
+        subTotal: order.subtotal, deliveryFee: order.deliveryFee, paymentBreakdown: order.paymentBreakdown,
+        orderedAt: order.orderedAt, updatedAt: order.updatedAt,
+        orderItems: order.orderItems.map((item: any) => ({
+          id: item.itemId, vendorId: order.vendor.vendorId,
+          item_id: item.product.productId, item_name: item.product.name,
+          quantity: item.quantity, portion: item.portion, price: item.price,
+          size: item.size, totalPrice: item.totalPrice, extras: item.extras.map((extra: any) => ({
+            name: extra.name, price: extra.price, quantity: extra.quantity ?? 1
+          }))
+        }))
+      }));
+      setOrderItems(formattedOrders);
     }
   }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor order screen">
-      {!menuItems.length ? (
+      {!orderItems.length ? (
         <View style={styles.noOrdersBox} testID="no orders box">
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>No order has been made from your store</Text>
@@ -74,7 +85,7 @@ const OrderScreen = ({ items }: OrderScreenInterface) => {
       ) : (
         <View style={styles.ordersBox}>
           <View style={styles.subHeader} testID="order box header">
-            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have {menuItems.length} orders in Huelage</Text>
+            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have {orderItems.length} orders in Huelage</Text>
             <CustomFilterBox defaultFilter="Status" filterItems={filterItems} />
           </View>
           <Animated.FlatList
