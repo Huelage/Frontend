@@ -18,6 +18,7 @@ import {
 } from "@expo-google-fonts/dev";
 import { MainNavigator } from "@navigators";
 import FlashMessage from "react-native-flash-message";
+import { RootSiblingParent } from "react-native-root-siblings";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
@@ -42,8 +43,10 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ApolloProvider client={client}>
-          <MainNavigator />
-          <FlashMessage />
+          <RootSiblingParent>
+            <MainNavigator />
+            <FlashMessage />
+          </RootSiblingParent>
         </ApolloProvider>
       </PersistGate>
     </Provider>
