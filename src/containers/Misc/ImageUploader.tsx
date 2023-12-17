@@ -6,9 +6,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { fonts, showError, showSuccess } from "@utils";
 import { ReactNativeFile } from "apollo-upload-client";
-import { MediaTypeOptions, launchImageLibraryAsync } from "expo-image-picker";
+import { MediaTypeOptions, launchCameraAsync, launchImageLibraryAsync, requestCameraPermissionsAsync } from "expo-image-picker";
 import React, { memo, useEffect, useState } from "react";
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as mime from "react-native-mime-types";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import uuid from "react-native-uuid";
@@ -32,6 +32,35 @@ const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) =
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [uploadImage, { data, loading }] = useMutation(UPLOAD_IMAGE);
 
+  const handleImageSelection = () => {
+    Alert.alert("Add an Image!", "",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Take Photo", onPress: takePicture },
+        { text: "Choose from Gallery", onPress: addImage }
+      ]
+    );
+  };
+  const takePicture = async () => {
+    const permissionResult = await requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+    const res = await launchCameraAsync({
+      mediaTypes: MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1
+    });
+    if (!res.canceled) {
+      if (res.assets[0].fileSize! > 10000000) showError("Image shouldn't be greater than 10mb");
+      else {
+        setImage(res.assets[0].uri);
+        setIsSelected(true);
+      }
+    } else showError("Camera usage cancelled");
+  };
   const addImage = async () => {
     let res = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.Images,
@@ -73,7 +102,7 @@ const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) =
         ) : (
           <Text style={[styles.imageText, { color: color.mainText }]} testID="user image alt">Add an image</Text>
         )}
-        <TouchableOpacity style={styles.editImage} onPress={addImage} testID="add image button">
+        <TouchableOpacity style={styles.editImage} onPress={handleImageSelection} testID="add image button">
           <MaterialCommunityIcons name="camera" size={30} color={color.mainGreen} />
         </TouchableOpacity>
       </View>
