@@ -31,7 +31,7 @@ const OrderItemElement = ({ extras, quantity, item_name, totalPrice }: OrderItem
         <Text style={[styles.headerText, { color: color.mainText, flex: 1 }]} testID="order item name">{item_name}</Text>
         <Text style={[styles.totalPrice, { color: color.mainText }]} testID="order item total">{numberToCurrency(totalPrice)}</Text>
       </View>
-      {!!extras ? (
+      {extras?.length ? (
         <>
           <Text style={[styles.extraHeader, { color: color.mainText }]}>Extras: </Text>
           {isGrid ? (
