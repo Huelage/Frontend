@@ -1,4 +1,5 @@
-import { mockOrderItems } from "@api/mock";
+import { GET_USER_ORDERS } from "@api/graphql";
+import { useQuery } from "@apollo/client";
 import { SubmitButton } from "@components/auth";
 import { CustomFilterBox } from "@components/misc";
 import { OrderSummaryElement } from "@containers/User";
@@ -10,21 +11,19 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Layout } from "react-native-reanimated";
 
-interface OrderScreenInterface {
-  testEmpty?: boolean;
-}
-
-const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
+const OrderScreen = () => {
   const { color } = useAppTheme();
   const { navigate } = useNavigation<UserOrdersTabProps>();
+  const { data, loading } = useQuery(GET_USER_ORDERS);
+  const [orderItems, setOrderItems] = useState<OrderInterface[]>([]);
   const [filteredOrder, setFilteredOrder] = useState<OrderInterface[]>([]);
   const [filterByStatus, setFilterByStatus] = useState<string[]>([]);
   const [filterByDate, setFilterByDate] = useState<string>("");
   const orderNow = () => navigate("Vendors", { screen: "Main" });
 
   const sortedOrders = useMemo(() => (
-    [...mockOrderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
-  ), [mockOrderItems]);
+    [...orderItems].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  ), [orderItems]);
   const filterStatus = useCallback((checked: boolean, status: string) => {
     if (checked) setFilterByStatus(prev => [...prev, status]);
     else setFilterByStatus(prev => prev.filter(item => item !== status));
@@ -55,9 +54,30 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
     );
     setFilteredOrder(newFiltered);
   }, [filterByDate, filterByStatus, sortedOrders]);
+  useEffect(() => {
+    if (data) {
+      const orders = data.findUserOrders;
+      const formattedOrders: OrderInterface[] = orders.map((order: any) => ({
+        id: order.orderId, vendorName: order.vendor.businessName, totalAmount: order.totalAmount,
+        status: order.status, deliveryAddress: order.deliveryAddress, paymentStatus: order.paymentStatus,
+        vendorAddress: order.vendor.businessAddress, estimatedDeliveryTime: order.estimatedDeliveryTime,
+        subTotal: order.subtotal, deliveryFee: order.deliveryFee, paymentBreakdown: order.paymentBreakdown,
+        orderedAt: order.orderedAt, updatedAt: order.updatedAt,
+        orderItems: order.orderItems.map((item: any) => ({
+          id: item.itemId, vendorId: order.vendor.vendorId,
+          item_id: item.product.productId, item_name: item.product.name,
+          quantity: item.quantity, portion: item.portion, price: item.price,
+          size: item.size, totalPrice: item.totalPrice, extras: item.extras.map((extra: any) => ({
+            name: extra.name, price: extra.price, quantity: extra.quantity ?? 1
+          }))
+        }))
+      }));
+      setOrderItems(formattedOrders);
+    }
+  }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="order screen">
-      {testEmpty || !mockOrderItems.length ? (
+      {!orderItems.length ? (
         <View style={styles.noOrdersBox}>
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven't made any order with Huelage</Text>
@@ -66,7 +86,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
       ) : (
         <View style={styles.ordersBox}>
           <View style={styles.subHeader} testID="order box header">
-            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have made {mockOrderItems.length} orders in total</Text>
+            <Text style={[styles.subHeaderText, { color: color.mainText }]}>You have made {orderItems.length} orders in total</Text>
             <CustomFilterBox defaultFilter="Status" filterItems={filterItems} />
           </View>
           <Animated.FlatList
@@ -76,7 +96,7 @@ const OrderScreen = ({ testEmpty }: OrderScreenInterface) => {
             itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => navigate("OrderDetail", { orderId: item.id })} testID="order element">
+              <TouchableOpacity onPress={() => navigate("OrderDetail", { order: item })} testID="order element">
                 <OrderSummaryElement {...item} />
               </TouchableOpacity>
             )}
