@@ -1,4 +1,3 @@
-import { mockFoods } from "@api/mock";
 import { CustomBox } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { OrderItemInterface } from "@interfaces";
@@ -7,21 +6,17 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const OrderDetailItem = ({ item_id, quantity, size, extras }: OrderItemInterface) => {
-  const item = mockFoods.find(item => item.id === item_id);
-  if (!item) return null;
+const OrderDetailItem = ({ quantity, extras, totalPrice, item_name }: OrderItemInterface) => {
   const { color } = useAppTheme();
-  const price = item.pricingMethod === "PACKAGE" ? item.packageSizes.find(sizes => sizes.name === size)?.price as number : item.price;
-  const totalPrice = (extras?.reduce((acc, curr) => acc + curr.price * (curr.quantity ?? 1), 0) ?? 0) + (price * quantity);
   return (
     <View style={styles.container} testID="order detail item">
       <CustomBox width={wp("100%") - 30} height={100} r={20} pad={6} left={-4} />
       <Text style={[styles.itemQuantity, { color: color.mainText }]} testID="order item quantity">x{quantity}</Text>
       <View style={styles.detailBox}>
-        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID="order item name">{item?.name}</Text>
+        <Text style={[styles.itemName, { color: color.mainText }]} numberOfLines={1} testID="order item name">{item_name}</Text>
         <Text style={[styles.itemExtras, { color: color.mainTextDim }]} numberOfLines={1} testID="order item extras">{extras?.map(item => item.name).join(", ")}</Text>
       </View>
-      <Text style={[styles.totalPrice, { color: color.mainText }]} testID="order item total">{numberToCurrency(totalPrice)}</Text>
+      <Text style={[styles.totalPrice, { color: color.mainText }]} testID="order item total">{numberToCurrency(totalPrice * quantity)}</Text>
     </View>
   );
 };
