@@ -10,10 +10,11 @@ import { StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInUp, SlideOutLeft } from "react-native-reanimated";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAmount }: OrderInterface) => {
+const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAmount, estimatedDeliveryTime }: OrderInterface) => {
   const { color } = useAppTheme();
   const [height, setHeight] = useState<number>(105);
   const [isBarVisible, setIsBarVisible] = useState<boolean>(true);
+  const estimateTime = dayjs(estimatedDeliveryTime).diff(dayjs(orderedAt), "m");
 
   useEffect(() => {
     if (status === "COMPLETED") setIsBarVisible(false);
@@ -32,7 +33,7 @@ const OrderSummaryElement = ({ vendorName, orderedAt, updatedAt, status, totalAm
       testID="order summary element"
     >
       <CustomBox bgColor={status === "CANCELLED" ? color.redBg : color.cardBg2} shadowColor={status === "CANCELLED" ? color.redShadow : undefined} height={height} r={10} pad={6} width={wp("100%") - 30} left={-4} />
-      {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is 1 hour</Text> : null}
+      {isBarVisible ? <Text style={[styles.estimateText, { color: color.accentText }]}>The estimated time for this order is {estimateTime} minutes</Text> : null}
       <View style={styles.detailBox}>
         <View style={styles.detailHeader}>
           <Text style={[styles.resName, { color: status === "CANCELLED" ? color.danger : color.mainText }]}>{vendorName}</Text>
