@@ -1,7 +1,7 @@
 import { CustomBox } from "@components/misc";
-import { MaterialIcons, Octicons, AntDesign, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, MaterialIcons, Octicons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
-import { fonts, outline, shadowStyle, showError } from "@utils";
+import { fonts, showError } from "@utils";
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -23,11 +23,11 @@ const DetailElement = ({ label, value, verifible, editable, isVerified, verify, 
 
   const handleEdit = () => {
     if (isEditing) {
-      if (value === newValue) showError("There was no value change")
-      else edit!(newValue)
-      setIsEditing(false)
-    } else setIsEditing(true)
-  }
+      if (value === newValue) showError("There was no value change");
+      else edit!(newValue);
+      setIsEditing(false);
+    } else setIsEditing(true);
+  };
   return (
     <View style={styles.container} testID="detail element">
       <Text style={[styles.elementHeader, { color: color.mainText }]}>{label}</Text>
