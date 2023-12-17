@@ -22,7 +22,7 @@ const trackItems = [
   { title: "Order delivered", desc: "Your meal is here and can be picked up from the rider", Icon: OrderDelivered }
 ];
 
-const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderInterface) => {
+const TrackOrder = ({ order: { status, id, orderedAt, updatedAt, estimatedDeliveryTime } }: TrackOrderInterface) => {
   const { color } = useAppTheme();
   const progress = useSharedValue(0);
   const [showTrackBox, setShowTrackBox] = useState<boolean>(false);
@@ -56,12 +56,12 @@ const TrackOrder = ({ order: { status, id, orderedAt, updatedAt } }: TrackOrderI
         <CustomBox bgColor={color.cardBg2} width={wp("100%") - 33} height={trackHeight + 220} r={10} pad={6} />
         <View style={[styles.trackHeader, { borderColor: color.mainGreen }]}>
           <View style={styles.orderInfo}>
-            <Text style={[styles.orderId, { color: color.mainText }]}>Order ID: {id}</Text>
+            <Text style={[styles.orderId, { color: color.mainText }]}>Order ID: #{id.split("-")[0].toUpperCase()}</Text>
             <Text style={[styles.statusBox, { color: color.mainGreen, borderColor: color.mainGreen }]}>{status}</Text>
           </View>
           <View style={styles.orderTimeInfo}>
             <Text style={[styles.orderTime, { color: color.mainText }]}>Order Date: {dayjs(orderedAt).format("D MMM, YYYY | hh:mma")}</Text>
-            <Text style={[styles.orderEstimate, { color: color.mainGreen }]}>Estimated delivery: {dayjs(orderedAt).add(1, "h").format("D MMM, YYYY | hh:mma")}</Text>
+            <Text style={[styles.orderEstimate, { color: color.mainGreen }]}>Estimated delivery: {dayjs(estimatedDeliveryTime).format("D MMM, YYYY | hh:mma")}</Text>
           </View>
         </View>
         <View>
