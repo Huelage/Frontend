@@ -1,5 +1,6 @@
 // About
 // FAQ
+export { default as FAQElement } from "./FAQElement";
 // Help
 // Location
 export { default as LocationElement } from "./LocationElement";
