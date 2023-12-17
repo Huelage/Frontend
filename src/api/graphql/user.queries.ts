@@ -102,3 +102,39 @@ export const CREATE_ORDER = gql(`
     }
   }
 `);
+
+export const GET_USER_ORDERS = gql(`
+  query GetUserOrder {
+    findUserOrders {
+      orderId
+      vendor {
+        vendorId
+        businessName
+        businessAddress
+      }
+      status
+      deliveryAddress
+      estimatedDeliveryTime
+      subtotal
+      deliveryFee
+      paymentBreakdown
+      totalAmount
+      paymentStatus
+      orderItems {
+        itemId
+        product {
+          productId
+          name
+        }
+        quantity
+        portion
+        price
+        size
+        extras
+        totalPrice
+      }
+      orderedAt
+      updatedAt
+    }
+  }
+`);
