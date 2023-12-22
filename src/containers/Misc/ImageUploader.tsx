@@ -14,8 +14,13 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import uuid from "react-native-uuid";
 
 interface ImageUploaderInterface {
+  buttonGap?: number;
+  buttonPadV?: number;
   clear?: boolean;
+  iconSize?: number;
   prevImage?: string;
+  right?: number;
+  size?: number;
   onUpload: (image: string) => void;
 }
 
@@ -25,7 +30,7 @@ const generateFile = (uri: string, name: string) => {
   return new ReactNativeFile({ uri, name: `${name}.${extension}`, type });
 };
 
-const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) => {
+const ImageUploader = ({ buttonGap, buttonPadV, clear, iconSize, prevImage, right, size, onUpload }: ImageUploaderInterface) => {
   const entity = useAppSelector(getEntity);
   const { color } = useAppTheme();
   const [image, setImage] = useState<string>(prevImage ?? "");
@@ -95,19 +100,19 @@ const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) =
     if (clear) setImage("");
   }, [clear]);
   return (
-    <View style={styles.container} testID="image uploader">
-      <View style={[styles.imageBox, { backgroundColor: color.cardBg2 }]}>
+    <View style={{ gap: buttonGap ?? 10 }} testID="image uploader">
+      <View style={[styles.imageBox, { backgroundColor: color.cardBg2, height: size ?? hp("15%"), width: size ?? hp("15%") }]}>
         {!!image ? (
           <Image style={styles.image} source={{ uri: image }} testID="user image" />
         ) : (
           <Text style={[styles.imageText, { color: color.mainText }]} testID="user image alt">Add an image</Text>
         )}
-        <TouchableOpacity style={styles.editImage} onPress={handleImageSelection} testID="add image button">
-          <MaterialCommunityIcons name="camera" size={30} color={color.mainGreen} />
+        <TouchableOpacity style={[styles.editImage, { right: right ?? 5 }]} onPress={handleImageSelection} testID="add image button">
+          <MaterialCommunityIcons name="camera" size={iconSize ?? 30} color={color.mainGreen} />
         </TouchableOpacity>
       </View>
       {isSelected ? (
-        <TouchableOpacity disabled={loading} onPress={upload} style={[styles.uploadBox, { borderColor: color.mainGreen }]} testID="upload button">
+        <TouchableOpacity disabled={loading} onPress={upload} style={[styles.uploadBox, { borderColor: color.mainGreen, paddingVertical: buttonPadV ?? 5 }]} testID="upload button">
           {loading ? (
             <ActivityIndicator color={color.mainGreen} size={20} testID="upload image loading" />
           ) : (
@@ -122,17 +127,12 @@ const ImageUploader = ({ clear, prevImage, onUpload }: ImageUploaderInterface) =
 export default memo(ImageUploader);
 
 const styles = StyleSheet.create({
-  container: {
-    gap: 10
-  },
   imageBox: {
     alignItems: "center",
     borderColor: "rgba(76, 175, 80, .5)",
     borderWidth: 1,
-    borderRadius: hp("7.5%"),
-    height: hp("15%"),
+    borderRadius: hp("50%"),
     justifyContent: "center",
-    width: hp("15%")
   },
   image: {
     borderRadius: 1000,
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
   editImage: {
     position: "absolute",
     bottom: 0,
-    right: 5
   },
   uploadBox: {
     alignItems: "center",
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingVertical: 5
   },
   uploadText: {
     fontFamily: fonts.I_600,
