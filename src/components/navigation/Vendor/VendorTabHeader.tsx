@@ -1,3 +1,5 @@
+import { useAppSelector } from "@api/app/appHooks";
+import { getEntity } from "@api/slices/globalSlice";
 import { fonts } from "@utils";
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
@@ -6,10 +8,12 @@ import OrderBar from "./OrderBar";
 
 const VendorTabHeader = () => {
   const inset = useSafeAreaInsets();
+  const entity = useAppSelector(getEntity);
+
   return (
     <ImageBackground style={[styles.container, { paddingTop: inset.top + 20 }]} source={require("@images/salado.png")} testID="vendor tab header">
       <View style={styles.headerBox}>
-        <Text testID="vendor name" style={styles.resName}>Salado Cafeteria</Text>
+        <Text testID="vendor name" style={styles.resName}>{entity?.businessName}</Text>
       </View>
       <OrderBar />
     </ImageBackground>
