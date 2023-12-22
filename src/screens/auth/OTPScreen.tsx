@@ -1,6 +1,6 @@
-import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
+import { useAppSelector } from "@api/app/appHooks";
 import { REQUEST_PHONE_VERIFICATION, VERIFY_OTP } from "@api/graphql";
-import { getVendorStatus, setCredentials } from "@api/slices/globalSlice";
+import { getVendorStatus } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomPinInput, SubmitButton } from "@components/auth";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,14 +17,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const OTPScreen = () => {
   const { color } = useAppTheme();
-  const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
   const isVendor = useAppSelector(getVendorStatus);
   const { params: { phoneno } } = useRoute<OTPRouteProps>();
   const [verifyCode, { data, loading }] = useMutation(VERIFY_OTP);
   const [refreshOTP] = useMutation(REQUEST_PHONE_VERIFICATION);
   const [phoneOtp, setPhoneOtp] = useState<string>("");
-  const { goBack } = useNavigation<AuthNavigationProps>();
+  const { goBack, navigate } = useNavigation<AuthNavigationProps>();
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
 
   const numbers = phoneno.replace(/-\./g, " ").split(" ");
@@ -72,7 +71,7 @@ const OTPScreen = () => {
         entity.knownLocation = locations;
       }
       (async () => await setItem("huelageRefreshToken", res.refreshToken))();
-      dispatch(setCredentials({ entity, accessToken: res.accessToken }));
+      navigate("ImageUpload", { entity, accessToken: res.accessToken });
     }
   }, [data, loading]);
   return (
