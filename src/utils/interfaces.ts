@@ -48,6 +48,7 @@ export type AuthStackParamList = {
   OnBoard: undefined;
   Login: undefined;
   SignUp: undefined;
+  ImageUpload: { entity: entityInterface; accessToken: string; };
   OTP: { phoneno: string; };
   SignupSelect: undefined;
   ForgotPassword: undefined;
@@ -147,6 +148,7 @@ export type VendorOrdersTabProps = CompositeNavigationProp<NativeStackNavigation
 export type VendorMenuTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorMenuTabStackParamList>, VendorTabProps>;
 export type VendorAccountTabProps = CompositeNavigationProp<NativeStackNavigationProp<VendorAccountTabStackParamList>, VendorTabProps>;
 // // Screen Routes
+export type ImageUploadRouteProps = RouteProp<AuthStackParamList, "ImageUpload">;
 export type OTPRouteProps = RouteProp<AuthStackParamList, "OTP">;
 export type SetPasswordRouteProps = RouteProp<AuthStackParamList, "SetPassword">;
 export type VerifyEmailRouteProps = RouteProp<AuthStackParamList, "VerifyEmail">;
