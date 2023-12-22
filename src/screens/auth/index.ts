@@ -1,4 +1,5 @@
 export { default as ForgotPasswordScreen } from "./ForgotPasswordScreen";
+export { default as ImageUploadScreen } from "./ImageUploadScreen";
 export { default as LoginScreen } from "./LoginScreen";
 export { default as OTPScreen } from "./OTPScreen";
 export { default as OnBoardScreen } from "./OnBoardScreen";
