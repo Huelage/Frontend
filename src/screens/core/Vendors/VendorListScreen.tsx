@@ -2,6 +2,7 @@ import { GET_VENDORS_LIST } from "@api/graphql";
 import { useQuery } from "@apollo/client";
 import { MainSearchBar } from "@components/core/Home";
 import { VendorResCard, VendorResCardInterface } from "@components/core/Vendor";
+import { VendorListLoader } from "@components/loaders";
 import { useAppTheme } from "@hooks";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
@@ -24,17 +25,19 @@ const VendorListScreen = () => {
   }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor list screen">
-      <FlatList
-        data={vendors}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<MainSearchBar searchFunc={handleSearch} />}
-        keyExtractor={item => item.id!}
-        testID="vendors list"
-        renderItem={({ item }) => (
-          <VendorResCard {...item} />
-        )}
-        contentContainerStyle={styles.vendorList}
-      />
+      <MainSearchBar searchFunc={handleSearch} />
+      {loading ? <VendorListLoader /> : (
+        <FlatList
+          data={vendors}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.id!}
+          testID="vendors list"
+          renderItem={({ item }) => (
+            <VendorResCard {...item} />
+          )}
+          contentContainerStyle={styles.vendorList}
+        />
+      )}
     </View>
   );
 };
@@ -44,8 +47,7 @@ export default VendorListScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
+    flex: 1
   },
   vendorList: {
     gap: 15,

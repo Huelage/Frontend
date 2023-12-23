@@ -2,6 +2,7 @@ import { GET_VENDOR_INFO } from "@api/graphql";
 import { useQuery } from "@apollo/client";
 import { CustomButton, MainSearchBar } from "@components/core/Home";
 import { VendorProduct } from "@components/core/Vendor";
+import { VendorLoader } from "@components/loaders";
 import { StarRating } from "@components/misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
@@ -52,44 +53,48 @@ const VendorScreen = () => {
   }, [data]);
   return (
     <>
-      <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor?.imgUrl }} testID="vendor screen header">
-        <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen }]} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color="black" style={{ left: -1 }} />
-        </TouchableOpacity>
-        <MainSearchBar searchFunc={handleSearch} />
-      </ImageBackground>
-      <View style={[styles.mainBox, { backgroundColor: color.mainBg }]} testID="vendor screen">
-        <View style={styles.infoBox} testID="vendor info box">
-          <Text style={[styles.resName, { color: color.mainText }]}>{vendor?.businessName}</Text>
-          <View style={styles.ratingBox}>
-            <StarRating rating={vendor?.rating ?? 0} size={18} />
-            <Text style={[styles.ratingText, { color: color.mainText }]}>({vendor?.noOfReviews} Reviews)</Text>
+      {loading ? <VendorLoader /> : (
+        <>
+          <ImageBackground style={[styles.headerBox, { paddingTop: insets.top + 40 }]} source={{ uri: vendor?.imgUrl }} testID="vendor screen header">
+            <TouchableOpacity style={[styles.backButton, { backgroundColor: color.mainGreen }]} onPress={goBack} testID="go back">
+              <MaterialCommunityIcons name="chevron-left" size={35} color="black" style={{ left: -1 }} />
+            </TouchableOpacity>
+            <MainSearchBar searchFunc={handleSearch} />
+          </ImageBackground>
+          <View style={[styles.mainBox, { backgroundColor: color.mainBg }]} testID="vendor screen">
+            <View style={styles.infoBox} testID="vendor info box">
+              <Text style={[styles.resName, { color: color.mainText }]}>{vendor?.businessName}</Text>
+              <View style={styles.ratingBox}>
+                <StarRating rating={vendor?.rating ?? 0} size={18} />
+                <Text style={[styles.ratingText, { color: color.mainText }]}>({vendor?.noOfReviews} Reviews)</Text>
+              </View>
+              <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor?.businessAddress}</Text>
+            </View>
+            <FlatList
+              contentContainerStyle={styles.categoryItemList}
+              data={foodCategories}
+              horizontal
+              keyExtractor={item => item}
+              renderItem={({ item }) => (
+                <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
+              )}
+              testID="vendor category list"
+              showsHorizontalScrollIndicator={false}
+              style={styles.categoryContainer}
+            />
+            <Animated.FlatList
+              contentContainerStyle={styles.vendorProductList}
+              data={filteredMenu}
+              itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => (
+                <VendorProduct item={item} vendorId={vendorId} />
+              )}
+              testID="vendor product list"
+            />
           </View>
-          <Text style={[styles.locationText, { color: color.mainTextDim }]}>📍 {vendor?.businessAddress}</Text>
-        </View>
-        <FlatList
-          contentContainerStyle={styles.categoryItemList}
-          data={foodCategories}
-          horizontal
-          keyExtractor={item => item}
-          renderItem={({ item }) => (
-            <CustomButton fontSize={16} label={item} height={36} inactive={item !== currCategory} onPress={() => setCurrCategory(item)} />
-          )}
-          testID="vendor category list"
-          showsHorizontalScrollIndicator={false}
-          style={styles.categoryContainer}
-        />
-        <Animated.FlatList
-          contentContainerStyle={styles.vendorProductList}
-          data={filteredMenu}
-          itemLayoutAnimation={Layout.springify().damping(15).delay(350)}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <VendorProduct item={item} vendorId={vendorId} />
-          )}
-          testID="vendor product list"
-        />
-      </View>
+        </>
+      )}
     </>
   );
 };
