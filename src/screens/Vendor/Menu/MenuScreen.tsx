@@ -3,6 +3,7 @@ import { GET_PRODUCTS } from "@api/graphql";
 import { getEntity } from "@api/slices/globalSlice";
 import { useQuery } from "@apollo/client";
 import { CustomButton } from "@components/core/Home";
+import { MenuLoader } from "@components/loaders";
 import { MenuItem } from "@components/vendor/Menu";
 import { Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
@@ -43,7 +44,7 @@ const MenuScreen = () => {
   }, [refetch]));
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="menu screen">
-      {!menuItems.length ? (
+      {loading ? <MenuLoader /> : !menuItems.length ? (
         <View style={styles.noOrdersBox}>
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You don't have any item in your menu</Text>
@@ -87,8 +88,7 @@ export default MenuScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
+    flex: 1
   },
   noOrdersBox: {
     gap: 30,

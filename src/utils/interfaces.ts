@@ -328,7 +328,7 @@ export interface itemExtraInterface {
   price: number;
   quantity?: number;
 }
-export type PaymentMethod = "CARD" | "HUENIT" | "CASH";
+export type PaymentMethod = "HUENIT" | "CASH" | "SPLIT";
 export type OrderStatus = "PENDING" | "PREPARING" | "READY" | "EN_ROUTE" | "DELIVERED" | "COMPLETED" | "CANCELLED";
 
 // // Vendor

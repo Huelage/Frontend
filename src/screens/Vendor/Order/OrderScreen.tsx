@@ -1,5 +1,6 @@
 import { GET_VENDOR_ORDERS } from "@api/graphql";
 import { useQuery } from "@apollo/client";
+import { VendorOrderLoader } from "@components/loaders";
 import { CustomFilterBox } from "@components/misc";
 import { OrderElement } from "@components/vendor/Orders";
 import { useAppTheme } from "@hooks";
@@ -77,7 +78,7 @@ const OrderScreen = () => {
   }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="vendor order screen">
-      {!orderItems.length ? (
+      {loading ? <VendorOrderLoader /> : !orderItems.length ? (
         <View style={styles.noOrdersBox} testID="no orders box">
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>No order has been made from your store</Text>
@@ -112,8 +113,7 @@ export default OrderScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
+    flex: 1
   },
   noOrdersBox: {
     gap: 30,

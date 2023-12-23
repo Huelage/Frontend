@@ -1,6 +1,7 @@
 import { GET_USER_ORDERS } from "@api/graphql";
 import { useQuery } from "@apollo/client";
 import { SubmitButton } from "@components/auth";
+import { OrderLoader } from "@components/loaders";
 import { CustomFilterBox } from "@components/misc";
 import { OrderSummaryElement } from "@containers/User";
 import { useAppTheme } from "@hooks";
@@ -77,7 +78,7 @@ const OrderScreen = () => {
   }, [data]);
   return (
     <View style={[styles.container, { backgroundColor: color.mainBg }]} testID="order screen">
-      {!orderItems.length ? (
+      {loading ? <OrderLoader /> : !orderItems.length ? (
         <View style={styles.noOrdersBox}>
           <Image source={require("@images/myorderscreen.png")} testID="order empty image" />
           <Text style={[styles.noOrdersBoxText, { color: color.accentText }]}>You haven't made any order with Huelage</Text>
@@ -113,8 +114,7 @@ export default OrderScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    flex: 1,
-    justifyContent: "center"
+    flex: 1
   },
   noOrdersBox: {
     gap: 30,
@@ -129,7 +129,8 @@ const styles = StyleSheet.create({
   ordersBox: {
     flex: 1,
     gap: 20,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 10,
     width: "100%"
   },
   subHeader: {
