@@ -29,7 +29,9 @@ const colors = {
     searchBg: "#4F4F4F",
     searchText: "#FFF",
     tabBg: "#000",
-    redBg: "#170e0e"
+    redBg: "#170E0E",
+    loaderBase: "#232323",
+    loaderGray: "#353535"
   },
   light: {
     accentText: "#626262",
@@ -52,7 +54,9 @@ const colors = {
     searchBg: "#F3F3F3",
     searchText: "#626262",
     tabBg: "#F5F5F5",
-    redBg: "rgb(253, 246, 244)"
+    redBg: "rgb(253, 246, 244)",
+    loaderBase: "#E3E2E2",
+    loaderGray: "#CECECE"
   }
 };
 
