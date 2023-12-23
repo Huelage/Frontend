@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { clearCredentials, getGlobalState, toggleAllowLocation, toggleAllowPush, toggleTheme, toggleThemeType } from "@api/slices/globalSlice";
 import { SettingElement } from "@components/core/Profile";
+import { ScreenHeader } from "@components/misc";
 import { Fontisto, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { SettingElementInterface, UserProfileTabProps } from "@interfaces";
@@ -61,12 +62,7 @@ const SettingScreen = () => {
   ]), [globalState]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="setting screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Settings</Text>
-      </View>
+      <ScreenHeader title="Settings" goBack={goBack} />
       <FlatList
         data={settings}
         keyExtractor={(_, idx) => idx.toString()}
@@ -82,22 +78,5 @@ export default SettingScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_500,
-    fontSize: 20
   }
 });

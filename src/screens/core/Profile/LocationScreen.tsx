@@ -3,14 +3,14 @@ import { EDIT_LOCATIONS } from "@api/graphql";
 import { getEntity, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { LocationInput } from "@components/core/Profile";
+import { ScreenHeader } from "@components/misc";
 import { LocationList } from "@containers/User";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
-import { fonts, showError } from "@utils";
+import { showError } from "@utils";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { GooglePlaceData, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -44,12 +44,7 @@ const LocationScreen = () => {
   }, [added]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="location screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Locations</Text>
-      </View>
+      <ScreenHeader title="Locations" goBack={goBack} />
       <GooglePlacesAutocomplete
         placeholder="Add a new location"
         query={{ key: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY, components: "country:ng" }}
@@ -78,23 +73,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 20
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_500,
-    fontSize: 20
   },
   googlePlacesContainer: {
     flex: 0,

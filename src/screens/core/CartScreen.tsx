@@ -2,9 +2,8 @@ import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { CREATE_ORDER, GET_MANY_VENDORS } from "@api/graphql";
 import { clearCart, getCart } from "@api/slices/globalSlice";
 import { useMutation, useQuery } from "@apollo/client";
-import { FastImage } from "@components/misc";
+import { FastImage, ScreenHeader } from "@components/misc";
 import { CartItem } from "@containers/User";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { OrderItemInterface, UserTabProps, VendorInterface } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -76,12 +75,7 @@ const CartScreen = () => {
   }, [order]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="cart screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Cart</Text>
-      </View>
+      <ScreenHeader title="Cart" goBack={goBack} />
       <View style={styles.cartBody}>
         {cartItems.length ? (
           <FlatList
@@ -134,23 +128,6 @@ export default CartScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: 0,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_500,
-    fontSize: 25
   },
   cartBody: {
     flex: 1

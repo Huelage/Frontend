@@ -3,6 +3,7 @@ import { REQUEST_PHONE_VERIFICATION } from "@api/graphql";
 import { getEntity, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomTextInput, SubmitButton } from "@components/auth";
+import { ScreenHeader } from "@components/misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { ResetPasswordInterface, UserProfileTabProps } from "@interfaces";
@@ -10,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { fonts } from "@utils";
 import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Keyboard, StyleSheet, Text, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -42,12 +43,7 @@ const ChangePhoneScreen = () => {
   }, [data]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="change phone screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Change Phone Number</Text>
-      </View>
+      <ScreenHeader title="Change Phone Number" goBack={goBack} />
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
           <MaterialCommunityIcons name="lock-reset" size={100} color="white" />
@@ -90,23 +86,6 @@ export default ChangePhoneScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_600,
-    fontSize: 20
   },
   mainBox: {
     flex: 1,

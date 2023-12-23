@@ -3,7 +3,7 @@ import { REQUEST_PHONE_VERIFICATION, VERIFY_PHONE } from "@api/graphql";
 import { getEntity, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomPinInput, SubmitButton } from "@components/auth";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ScreenHeader } from "@components/misc";
 import { useAppTheme } from "@hooks";
 import { UserProfileTabProps } from "@interfaces";
 import { useNavigation } from "@react-navigation/native";
@@ -59,12 +59,7 @@ const VerifyPhoneScreen = () => {
   }, [data, loading]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="verify phone screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Verify Phone Number</Text>
-      </View>
+      <ScreenHeader title="Verify Phone Number" goBack={goBack} />
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.Image
           sharedTransitionTag="huelageLogo"
@@ -107,23 +102,6 @@ export default VerifyPhoneScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_600,
-    fontSize: 20
   },
   mainBox: {
     flex: 1,

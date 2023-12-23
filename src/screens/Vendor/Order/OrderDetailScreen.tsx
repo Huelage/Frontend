@@ -1,7 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@api/app/appHooks";
 import { getOrderItemRenderType, setOrderItemRenderGrid } from "@api/slices/globalSlice";
+import { ScreenHeader } from "@components/misc";
 import { OrderItemElement } from "@components/vendor/Orders";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { VendorOrdersTabOrderDetailRouteProps, VendorOrdersTabProps } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -21,12 +22,7 @@ const OrderDetailScreen = () => {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="vendor order detail screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="general header box">
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Order Detail</Text>
-      </View>
+      <ScreenHeader title="Order Detail" goBack={goBack} />
       <View style={styles.mainBox}>
         <View style={[styles.mainHeader, { borderColor: color.mainTextDim }]} testID="main header box">
           <View style={styles.mainHeaderFlex}>
@@ -80,23 +76,6 @@ export default OrderDetailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_500,
-    fontSize: 20
   },
   mainBox: {
     flex: 1,

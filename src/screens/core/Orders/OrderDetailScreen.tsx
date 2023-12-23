@@ -1,7 +1,8 @@
 import { OverviewBox } from "@components/core/Cart";
 import { OrderDetailDelivery, TrackOrder } from "@components/core/Order";
+import { ScreenHeader } from "@components/misc";
 import { OrderDetailItem } from "@containers/User";
-import { Feather, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserOrdersTabOrderDetailRouteProps, UserOrdersTabProps } from "@interfaces";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -24,12 +25,7 @@ const OrderDetailScreen = () => {
   ]), []);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} testID="order detail screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]} testID="header box">
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Order Summary</Text>
-      </View>
+      <ScreenHeader title="Order Summary" goBack={goBack} />
       <ScrollView>
         <View style={styles.order}>
           <View style={styles.orderHeader} testID="order header box">
@@ -78,23 +74,6 @@ export default OrderDetailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_500,
-    fontSize: 20
   },
   order: {
     flex: 1,

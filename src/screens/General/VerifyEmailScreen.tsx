@@ -3,6 +3,7 @@ import { REQUEST_EMAIL_VERIFICATION, VERIFY_EMAIL } from "@api/graphql";
 import { getEntity, setCredentials } from "@api/slices/globalSlice";
 import { useMutation } from "@apollo/client";
 import { CustomPinInput, SubmitButton } from "@components/auth";
+import { ScreenHeader } from "@components/misc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@hooks";
 import { UserProfileTabProps } from "@interfaces";
@@ -54,12 +55,7 @@ const VerifyEmailScreen = () => {
   }, [data]);
   return (
     <View style={[styles.container, { paddingTop: insets.top, backgroundColor: color.mainBg }]} onTouchStart={dismissKeyboard} testID="profile verify email screen">
-      <View style={[styles.headerBox, { borderColor: color.mainGreen }]}>
-        <TouchableOpacity style={styles.backButton} onPress={goBack} testID="go back">
-          <MaterialCommunityIcons name="chevron-left" size={35} color={color.mainText} />
-        </TouchableOpacity>
-        <Text style={[styles.headerText, { color: color.mainText }]}>Verify Email Address</Text>
-      </View>
+      <ScreenHeader title="Verify Email Address" goBack={goBack} />
       <KeyboardAwareScrollView scrollEnabled keyboardOpeningTime={Number.MAX_SAFE_INTEGER} contentContainerStyle={styles.mainBox}>
         <Animated.View sharedTransitionTag="reset password icons" style={[styles.iconWrap, { backgroundColor: color.mainGreen }]} testID="screen icon">
           <MaterialCommunityIcons name="email-check" size={100} color="white" />
@@ -98,23 +94,6 @@ export default VerifyEmailScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  headerBox: {
-    alignItems: "center",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingBottom: 20,
-    paddingHorizontal: 10
-  },
-  backButton: {
-    position: "absolute",
-    top: -5,
-    left: 10
-  },
-  headerText: {
-    fontFamily: fonts.I_600,
-    fontSize: 20
   },
   mainBox: {
     flex: 1,

@@ -6,4 +6,5 @@ export { default as CustomModal } from "./CustomModal";
 export { default as CustomPopupModal } from "./CustomPopupModal";
 export { default as DropItem } from "./DropItem";
 export { default as FastImage } from "./FastImage";
+export { default as ScreenHeader } from "./ScreenHeader";
 export { default as StarRating } from "./StarRating";
